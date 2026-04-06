@@ -1,0 +1,7 @@
+export default function AuthLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return <div className="w-full mx-auto h-full ">{children}</div>;
+}
