@@ -21,22 +21,23 @@ interface HomeProps {
 const HomeData = [
   {
     label: "Men",
-    src: "http://localhost:5000/p_img2.png",
+    // src: "http://localhost:5000/p_img2.png",
+    src: `${process.env.NEXT_PUBLIC_API_URL}/p_img2.png`,
     href: "/men",
   },
   {
     label: "Women",
-    src: "http://localhost:5000/p_img1.png",
+    src: `${process.env.NEXT_PUBLIC_API_URL}/p_img1.png`,
     href: "/women",
   },
   {
     label: "Kids",
-    src: "http://localhost:5000//p_img4.png",
+    src: `${process.env.NEXT_PUBLIC_API_URL}/p_img4.png`,
     href: "/kids",
   },
   {
     label: "Sale",
-    src: "http://localhost:5000//p_img3.png",
+    src: `${process.env.NEXT_PUBLIC_API_URL}/p_img3.png`,
     href: "/sale",
   },
 ];
