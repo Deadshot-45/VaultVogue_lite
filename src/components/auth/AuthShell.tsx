@@ -23,13 +23,13 @@ export function AuthShell({
   footerLinkLabel,
 }: AuthShellProps) {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background px-4 py-10 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen overflow-hidden bg-background px-4 sm:py-10 sm:px-6 lg:px-8">
       
       {/* Glow Effects */}
       <div className="absolute -top-40 -left-40 h-96 w-96 bg-blue/20 blur-3xl rounded-full"></div>
       <div className="absolute top-1/2 -right-40 h-96 w-96 bg-purple-500/20 blur-3xl rounded-full"></div>
 
-      <div className="relative mx-auto flex max-lg:min-h-[95dvh]  min-h-[calc(100vh-5rem)] w-full max-w-6xl flex-col gap-8 lg:flex-row lg:items-stretch">
+      <div className="relative mx-auto flex max-lg:min-h-[95dvh] min-h-[calc(100vh-5rem)] w-full max-w-6xl flex-col gap-8 lg:flex-row lg:items-stretch">
         
         {/* LEFT PANEL */}
         <div className="relative hidden overflow-hidden rounded-[2rem] border bg-gradient-to-br from-foreground to-foreground/80 px-8 py-8 text-background shadow-2xl lg:sticky lg:top-10 lg:flex lg:h-[calc(100vh-5rem)] lg:w-[52%] lg:flex-col lg:justify-between">
@@ -71,8 +71,8 @@ export function AuthShell({
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="flex items-center justify-center max-sm:min-h-[85dvh] max-lg:h-full lg:h-[calc(100vh-5rem)] lg:w-[48%] lg:overflow-y-auto lg:pr-1 no-scrollbar">
-          <Card className="w-full max-w-md rounded-[2rem] border bg-background/80 p-6 max-lgshadow-2xl backdrop-blur-xl sm:p-8 max-lg:border-none max-lg:rounded-none max-lg:bg-transparent max-lg:shadow-none">
+        <div className="flex items-center justify-center max-sm:min-h-[80dvh] h-full max-lg:h-full lg:h-[calc(100vh-5rem)] lg:w-[48%] overflow-y-auto lg:pr-1 no-scrollbar">
+          <Card className="w-full max-w-md rounded-[2rem] border bg-background/80 p-4 max-lgshadow-2xl backdrop-blur-xl sm:p-8 max-lg:border-none max-lg:rounded-none max-lg:bg-transparent max-lg:shadow-none">
             
             {/* Header */}
             <div className="mb-8 flex items-center justify-between">
