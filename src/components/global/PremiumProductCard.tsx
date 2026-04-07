@@ -16,6 +16,26 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { decrementItem, removeFromCart } from "@/lib/store/slices/cartSlice";
 import { toast } from "sonner";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "";
+const FALLBACK_IMAGE =
+  "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Crect width='300' height='400' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='%239ca3af' font-family='Arial, sans-serif' font-size='18'%3ENo image%3C/text%3E%3C/svg%3E";
+
+const resolveProductImage = (image: string) => {
+  if (!image) {
+    return FALLBACK_IMAGE;
+  }
+
+  if (/^https?:\/\//i.test(image) || image.startsWith("data:")) {
+    return image;
+  }
+
+  if (image.startsWith("/")) {
+    return API_URL ? `${API_URL}${image}` : image;
+  }
+
+  return API_URL ? `${API_URL}/${image}` : `/${image}`;
+};
+
 export default function PremiumProductCard({
   product,
   onAddToCart,
@@ -32,6 +52,7 @@ export default function PremiumProductCard({
   );
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [imageSrc, setImageSrc] = useState(() => resolveProductImage(product.image));
 
   // Auto select if only one size
   useEffect(() => {
@@ -46,6 +67,10 @@ export default function PremiumProductCard({
       queueMicrotask(() => setSelectedSize(onlySize));
     }
   }, [cartItem?.selectedSize, product]);
+
+  useEffect(() => {
+    setImageSrc(resolveProductImage(product.image));
+  }, [product.image]);
 
   const handleAdd = () => {
     if (!auth?.isAuthenticated) {
@@ -103,11 +128,12 @@ export default function PremiumProductCard({
       {/* IMAGE */}
       <CardHeader className="p-0 relative">
         <Image
-          src={product.image}
+          src={imageSrc}
           alt={product.name}
           width={300}
           height={300}
           className="w-full aspect-3/4 object-cover"
+          onError={() => setImageSrc(FALLBACK_IMAGE)}
         />
 
         {/* Badges */}
