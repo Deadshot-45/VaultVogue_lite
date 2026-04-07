@@ -71,7 +71,7 @@ export function AuthShell({
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="flex items-center justify-center max-sm:min-h-[90dvh] max-lg:h-full lg:h-[calc(100vh-5rem)] lg:w-[48%] lg:overflow-y-auto lg:pr-1 no-scrollbar">
+        <div className="flex items-center justify-center max-sm:min-h-[85dvh] max-lg:h-full lg:h-[calc(100vh-5rem)] lg:w-[48%] lg:overflow-y-auto lg:pr-1 no-scrollbar">
           <Card className="w-full max-w-md rounded-[2rem] border bg-background/80 p-6 max-lgshadow-2xl backdrop-blur-xl sm:p-8 max-lg:border-none max-lg:rounded-none max-lg:bg-transparent max-lg:shadow-none">
             
             {/* Header */}
