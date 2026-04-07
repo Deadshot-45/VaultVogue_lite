@@ -1,71 +1,84 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { ShoppingCart } from "lucide-react";
 import { UIProduct } from "@/lib/query/useGetProducts";
-import { useCart } from "@/context/CreateContext";
 
-const ProductModal = ({
+export default function PremiumProductCard({
   product,
-  onClose,
+  onAddToCart,
 }: {
-  product: UIProduct | null;
-  onClose: () => void;
-}) => {
-  const { addToCart, setCartOpen } = useCart();
-
-  if (!product) return null;
-
-  const handleAdd = () => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-    });
-    setCartOpen(true);
-    onClose();
-  };
+  product: UIProduct;
+  onAddToCart: () => void;
+}) {
+  const productImage = product?.image || "/images/placeholder.png";
 
   return (
-    <Dialog open={!!product} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogTitle>{product.name}</DialogTitle>
-        </DialogHeader>
+    <Card className="rounded-2xl overflow-hidden border bg-background shadow-sm active:scale-[0.98] transition-all">
+      {/* IMAGE */}
+      <CardHeader className="p-0 relative">
+        <img
+          src={productImage}
+          alt={product.name}
+          className="w-full aspect-3/4 object-cover"
+        />
 
-        <div className="flex flex-col md:flex-row gap-6">
-          <img
-            src={product.image}
-            alt={product.name}
-            loading="lazy"
-            className="w-full md:w-1/2 h-80 object-cover rounded"
-          />
-
-          <div>
-            <p className="text-muted-foreground">{product.category}</p>
-            <p className="text-xl font-bold mt-2">${product.price}</p>
-            <p className="mt-4 text-sm text-muted-foreground">
-              {product.description}
-            </p>
-          </div>
+        {/* Badges */}
+        <div className="absolute top-2 left-2">
+          {product.isNew && (
+            <Badge className="bg-black text-white text-xs px-2 py-1">New</Badge>
+          )}
         </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
-            Close
-          </Button>
-          <Button onClick={handleAdd}>Add to Cart</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};
+        <div className="absolute top-2 right-2">
+          <Badge className="bg-orange-600 text-white text-xs px-2 py-1">
+            Only 2 left 🔥
+          </Badge>
+        </div>
+      </CardHeader>
 
-export default ProductModal;
+      {/* CONTENT */}
+      <CardContent className="p-3 space-y-1">
+        <p className="text-[11px] text-muted-foreground">{product.category}</p>
+
+        <h3 className="text-sm font-medium leading-tight line-clamp-2">
+          {product.name}
+        </h3>
+
+        <p className="text-lg font-bold mt-1">₹{product.price}</p>
+
+        {/* Sizes */}
+        {product.availableSizes?.length > 0 && (
+          <div className="flex gap-2 mt-2">
+            {product.availableSizes.slice(0, 4).map((size) => (
+              <span
+                key={size}
+                className="px-3 py-1.5 text-xs border rounded-md bg-background active:scale-95"
+              >
+                {size}
+              </span>
+            ))}
+          </div>
+        )}
+      </CardContent>
+
+      {/* CTA */}
+      <CardFooter className="p-3 pt-0">
+        <Button
+          onClick={onAddToCart}
+          className="w-full h-11 rounded-full text-sm font-medium flex items-center justify-center gap-2"
+        >
+          <ShoppingCart className="h-4 w-4" />
+          Add to Cart
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}

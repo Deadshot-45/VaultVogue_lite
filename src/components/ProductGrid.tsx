@@ -1,48 +1,97 @@
 "use client";
 
 import { UIProduct } from "@/lib/query/useGetProducts";
-import { useState } from "react";
-import ProductCard from "./global/ProductCard";
-import ProductModal from "./global/ProductModal";
+import PremiumProductCard from "./global/PremiumProductCard";
+import { useAddToCart } from "@/lib/query/useAddToCart";
+import { useAppSelector } from "@/lib/store/hooks";
+import { toast } from "sonner";
 
-const ProductGrid = ({ products }: { products: UIProduct[] }) => {
-  const [selectedProduct, setSelectedProduct] = useState<UIProduct | null>(
-    null,
-  );
+const ProductGrid = ({
+  products,
+  isLoading,
+}: {
+  products: UIProduct[];
+  isLoading?: boolean;
+}) => {
+  const auth = useAppSelector((state) => state.auth);
 
+  const { mutateAsync: addToCartApi } = useAddToCart();
+
+  // 🔥 Core logic (reusable per product)
+  const handleAddToCart = async (product: UIProduct, size: string) => {
+    if (!auth?.isAuthenticated) {
+      toast.error("Please sign in first");
+      return;
+    }
+
+    if (!product.availableSizes.length) {
+      toast.error("Out of stock");
+      return;
+    }
+
+    const res = await addToCartApi({
+      productId: product.id,
+      sellerId: product.sellerId ?? "",
+      size,
+      quantity: 1,
+      priceSnapshot: product.price,
+    });
+
+    if (!res.success) {
+      toast.error("Unable to add item to cart.");
+    }
+  };
+
+  // 🔹 Loading
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className="rounded-2xl overflow-hidden border bg-muted/30 animate-pulse"
+          >
+            <div className="aspect-3/4 bg-muted" />
+            <div className="p-3 space-y-2">
+              <div className="h-3 w-1/2 bg-muted rounded" />
+              <div className="h-4 w-full bg-muted rounded" />
+              <div className="h-4 w-3/4 bg-muted rounded" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // 🔹 Empty
   if (products.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-72 text-center space-y-4">
-        <div className="w-14 h-14 flex items-center justify-center rounded-full bg-muted text-lg font-semibold">
-          Box
+      <div className="flex flex-col items-center justify-center h-80 text-center space-y-4">
+        <div className="w-16 h-16 flex items-center justify-center rounded-full bg-muted text-xl">
+          📦
         </div>
-
-        <h3 className="text-lg font-semibold">No Products Found</h3>
-
+        <h3 className="text-lg font-semibold">No products found</h3>
         <p className="text-sm text-muted-foreground max-w-xs">
-          Try adjusting filters or search terms.
+          Try adjusting your filters or search query.
         </p>
       </div>
     );
   }
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
+    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5">
+      {products.map((product) => (
+        <div
+          key={product.id}
+          className="transition-transform duration-200 active:scale-[0.98] hover:-translate-y-1"
+        >
+          <PremiumProductCard
             product={product}
-            onQuickView={setSelectedProduct}
+            onAddToCart={(size) => handleAddToCart(product, size)}
           />
-        ))}
-      </div>
-
-      <ProductModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
-    </>
+        </div>
+      ))}
+    </div>
   );
 };
 

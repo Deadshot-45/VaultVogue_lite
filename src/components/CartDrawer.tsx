@@ -1,70 +1,70 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-// components/CartDrawer.tsx
 import React from "react";
-import { useCart } from "@/context/CreateContext";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogPortal } from "@/components/ui/dialog";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import {
+  decrementItem,
+  incrementItem,
+  removeFromCart,
+  setCartOpen,
+} from "@/lib/store/slices/cartSlice";
 import { Trash2 } from "lucide-react";
 
 const CartDrawer: React.FC = () => {
-  const {
-    cartItems,
-    increment,
-    decrement,
-    removeFromCart,
-    cartOpen,
-    setCartOpen,
-  } = useCart();
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const cartOpen = useAppSelector((state) => state.cart.isOpen);
 
   const subtotal = cartItems.reduce(
-    (acc: any, item: any) => acc + item.price * item.quantity,
+    (acc, item) => acc + item.price * item.quantity,
     0,
   );
 
   return (
     <>
-      <Button variant="secondary" onClick={() => setCartOpen(true)}>
+      <Button variant="secondary" onClick={() => dispatch(setCartOpen(true))}>
         Cart ({cartItems.length})
       </Button>
 
-      <Dialog open={cartOpen} onOpenChange={setCartOpen}>
+      <Dialog
+        open={cartOpen}
+        onOpenChange={(open) => dispatch(setCartOpen(open))}
+      >
         <DialogPortal>
-          {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black bg-opacity-40 z-40"
-            onClick={() => setCartOpen(false)}
+            className="fixed inset-0 z-40 bg-black bg-opacity-40"
+            onClick={() => dispatch(setCartOpen(false))}
           />
 
-          {/* Drawer */}
-          <DialogContent className="fixed right-0 top-0 h-full w-96 bg-background shadow-lg p-6 z-50 overflow-y-auto transform transition-transform duration-300">
-            <h2 className="text-2xl font-bold mb-6 text-secondary-foreground">
+          <DialogContent className="fixed right-0 top-0 z-50 h-full w-96 overflow-y-auto bg-background p-6 shadow-lg transition-transform duration-300">
+            <h2 className="mb-6 text-2xl font-bold text-secondary-foreground">
               Your Cart
             </h2>
 
             {cartItems.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full">
-                <p className="text-secondary-foreground/70 text-center mb-4">
+              <div className="flex h-full flex-col items-center justify-center">
+                <p className="mb-4 text-center text-secondary-foreground/70">
                   Your cart is empty!
                 </p>
                 <img
                   src="/images/empty-cart.png"
                   alt="Empty Cart"
-                  className="w-40 h-40 animate-bounce"
+                  className="h-40 w-40 animate-bounce"
                 />
               </div>
             ) : (
               <div className="flex flex-col gap-4">
                 {cartItems.map((item) => (
                   <div
-                    key={item.id}
+                    key={`${item.id}-${item.selectedSize ?? "default"}`}
                     className="flex items-center gap-4 border-b pb-4"
                   >
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-20 h-20 object-cover rounded"
+                      className="h-20 w-20 rounded object-cover"
                     />
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-secondary-foreground">
@@ -73,12 +73,37 @@ const CartDrawer: React.FC = () => {
                       <p className="text-secondary-foreground/70">
                         ${item.price}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Button size="sm" onClick={() => decrement(item.id)}>
+                      {item.selectedSize ? (
+                        <p className="text-xs text-secondary-foreground/60">
+                          Size: {item.selectedSize}
+                        </p>
+                      ) : null}
+                      <div className="mt-2 flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() =>
+                            dispatch(
+                              decrementItem({
+                                id: item.id,
+                                selectedSize: item.selectedSize,
+                              }),
+                            )
+                          }
+                        >
                           -
                         </Button>
                         <span>{item.quantity}</span>
-                        <Button size="sm" onClick={() => increment(item.id)}>
+                        <Button
+                          size="sm"
+                          onClick={() =>
+                            dispatch(
+                              incrementItem({
+                                id: item.id,
+                                selectedSize: item.selectedSize,
+                              }),
+                            )
+                          }
+                        >
                           +
                         </Button>
                       </div>
@@ -86,9 +111,16 @@ const CartDrawer: React.FC = () => {
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() =>
+                        dispatch(
+                          removeFromCart({
+                            id: item.id,
+                            selectedSize: item.selectedSize,
+                          }),
+                        )
+                      }
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 ))}

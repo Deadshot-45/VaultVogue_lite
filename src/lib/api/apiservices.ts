@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { logError } from "../log-error";
+import { getAuthCookie } from "../auth";
 
 // Configure with NEXT_PUBLIC_ for client-side availability
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/";
@@ -19,17 +20,18 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // You can retrieve the auth token from localStorage, cookie, or store here
-    // Example: 
-    // const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    // Example:
+    
+    const token = typeof window !== 'undefined' ? getAuthCookie() : null;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
     logError(error, "Axios Request Interceptor");
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response Interceptor: Handle Global Errors
@@ -44,27 +46,39 @@ api.interceptors.response.use(
 
     logError(error, `API Error: ${error.response?.status || "Unknown"}`);
     return Promise.reject(error);
-  }
+  },
 );
 
 /**
  * Example Service Methods (Optional)
  */
 export const ApiService = {
-  get: async <T>(url: string, params?: object) => {
-    const response = await api.get<T>(url, { params });
+  get: async <T>(
+    url: string,
+    params?: object,
+    headers?: AxiosRequestConfig["headers"],
+  ) => {
+    const response = await api.get<T>(url, { params, headers });
     return response.data;
   },
-  post: async <T>(url: string, data?: object) => {
-    const response = await api.post<T>(url, data);
+  post: async <T>(
+    url: string,
+    data?: object,
+    headers?: AxiosRequestConfig["headers"],
+  ) => {
+    const response = await api.post<T>(url, data, { headers });
     return response.data;
   },
-  put: async <T>(url: string, data?: object) => {
-    const response = await api.put<T>(url, data);
+  put: async <T>(
+    url: string,
+    data?: object,
+    headers?: AxiosRequestConfig["headers"],
+  ) => {
+    const response = await api.put<T>(url, data, { headers });
     return response.data;
   },
-  delete: async <T>(url: string) => {
-    const response = await api.delete<T>(url);
+  delete: async <T>(url: string, headers?: AxiosRequestConfig["headers"]) => {
+    const response = await api.delete<T>(url, { headers });
     return response.data;
   },
 };

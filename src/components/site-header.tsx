@@ -1,12 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Search, ShoppingBag, User } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,12 +15,17 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
-
-import { ModeToggle } from "./mode-toggle";
-import { useCart } from "@/context/CreateContext";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { authService } from "@/lib/api/authServices";
-import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { clearAuth } from "@/lib/store/slices/authSlice";
+import { cn } from "@/lib/utils";
+import { Search, ShoppingBag, User } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { ModeToggle } from "./mode-toggle";
+import { getAuthCookie } from "@/lib/auth";
+import { useCartDetails } from "@/lib/query/useCartDetails";
 
 export function SiteHeader() {
   const NAV_ITEMS = [
@@ -37,47 +37,37 @@ export function SiteHeader() {
   ];
   const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const token = getAuthCookie();
+  useCartDetails({ isEnable: !!token });
 
-  const { cartItems } = useCart();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const syncAuthState = () => {
-      setIsAuthenticated(authService.isAuthenticated());
-    };
-
-    syncAuthState();
-
-    window.addEventListener("authchange", syncAuthState);
-    window.addEventListener("storage", syncAuthState);
-
-    return () => {
-      window.removeEventListener("authchange", syncAuthState);
-      window.removeEventListener("storage", syncAuthState);
-    };
-  }, []);
+  const handleLogout = () => {
+    authService.signOut();
+    dispatch(clearAuth());
+    router.push("/login");
+  };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md transition-all duration-300 ease-in-out h-(--header-height)">
-      <div className="mx-auto flex h-full items-center justify-between px-4 sm:px-6 lg:px-8 max-w-7xl">
-        {/* Left Section: Menu (Mobile) & Logo */}
+    <header className="sticky top-0 z-50 h-(--header-height) w-full border-b bg-background/80 backdrop-blur-md transition-all duration-300 ease-in-out">
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
-          <SidebarTrigger className="md:hidden -ml-2 text-muted-foreground hover:text-foreground transition-colors" />
+          <SidebarTrigger className="-ml-2 text-muted-foreground transition-colors hover:text-foreground md:hidden" />
           <Link
             href="/"
-            className="flex items-center gap-2 group transition-transform duration-200 hover:scale-[1.02]"
+            className="group flex items-center gap-2 transition-transform duration-200 hover:scale-[1.02]"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20">
-              <span className="font-bold text-lg">V</span>
+              <span className="text-lg font-bold">V</span>
             </div>
-            <h1 className="text-xl font-bold tracking-tight bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+            <h1 className="bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-xl font-bold tracking-tight text-transparent">
               Vault Vogue
             </h1>
           </Link>
         </div>
 
-        {/* Center Section: Navigation (Desktop) */}
-        <nav className="hidden md:flex flex-1 justify-center px-8">
+        <nav className="hidden flex-1 justify-center px-8 md:flex">
           <NavigationMenu>
             <NavigationMenuList className="gap-8">
               {NAV_ITEMS.map(({ label, href, destructive }) => (
@@ -91,9 +81,8 @@ export function SiteHeader() {
                           ? "text-destructive"
                           : "text-muted-foreground",
                         pathname === href || pathname?.startsWith(`${href}/`)
-                          ? "text-primary bg-muted/10"
+                          ? "bg-muted/10 text-primary"
                           : "",
-
                         "after:absolute after:-bottom-5 after:left-0 after:h-0.5 after:w-full after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:scale-x-100",
                       )}
                     >
@@ -106,14 +95,12 @@ export function SiteHeader() {
           </NavigationMenu>
         </nav>
 
-        {/* Right Section: Search, User, Cart */}
         <div className="flex items-center gap-2 lg:gap-4">
-          {/* Desktop Search */}
-          <div className="hidden lg:flex relative group max-w-60">
+          <div className="relative hidden max-w-60 group lg:flex">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
             <Input
               placeholder="Search..."
-              className="h-9 w-full rounded-full bg-muted/50 pl-9 pr-4 text-sm border-transparent transition-all focus:bg-background focus:ring-2 focus:ring-primary/20 group-hover:bg-muted"
+              className="h-9 w-full rounded-full border-transparent bg-muted/50 pl-9 pr-4 text-sm transition-all focus:bg-background focus:ring-2 focus:ring-primary/20 group-hover:bg-muted"
             />
           </div>
 
@@ -123,7 +110,7 @@ export function SiteHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="relative text-muted-foreground hover:text-foreground hover:bg-muted group"
+              className="group relative text-muted-foreground hover:bg-muted hover:text-foreground"
               onClick={() => router.push("/carts")}
             >
               <ShoppingBag className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
@@ -139,12 +126,12 @@ export function SiteHeader() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-muted-foreground hover:text-foreground hover:bg-muted group"
+                  className="group text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
                   <User className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-50 mt-2">
+              <DropdownMenuContent align="end" className="mt-2 w-50">
                 {isAuthenticated ? (
                   <>
                     <DropdownMenuItem asChild className="cursor-pointer">
@@ -160,7 +147,10 @@ export function SiteHeader() {
                       </Link>
                     </DropdownMenuItem>
                     <div className="my-1 border-t" />
-                    <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+                    <DropdownMenuItem
+                      className="cursor-pointer text-destructive focus:text-destructive"
+                      onClick={handleLogout}
+                    >
                       Logout
                     </DropdownMenuItem>
                   </>

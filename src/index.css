@@ -123,6 +123,50 @@
   }
 }
 
+/* ------------ PSYCHUP THEMED TOAST -------------- */
+/* BASE STYLE */
+.toast {
+  background: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border: 1px solid var(--border) !important;
+  padding: 14px 18px !important;
+  border-radius: 14px !important;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15) !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* SUCCESS */
+.toast-success {
+  background: rgb(var(--color-success)) !important;
+  color: white !important;
+}
+
+/* ERROR */
+.toast-error {
+  background: var(--destructive) !important;
+  color: white !important;
+}
+
+/* INFO */
+.toast-info {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+/* WARNING */
+.toast-warning {
+  background: oklch(65% 0.12 80) !important;
+  /* Yellow-ish */
+  color: black !important;
+}
+
+/* DARK MODE */
+.dark .toast {
+  box-shadow: 0px 4px 14px rgba(255, 255, 255, 0.1) !important;
+}
+
 /* src/index.css or src/globals.css */
 .no-scrollbar {
   scrollbar-width: none; /* Firefox */

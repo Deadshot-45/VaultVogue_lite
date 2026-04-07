@@ -2,15 +2,18 @@ import { api } from "./apiservices";
 
 export interface User {
   id: string;
+  _id?: string;
   email: string;
   fullName: string;
 }
 
 export interface AuthResponse {
-  user: User;
-  token: string;
   success: boolean;
   message?: string;
+  data?: {
+    user: User;
+    token: string;
+  };
 }
 
 export interface SignUpPayload {
@@ -30,16 +33,16 @@ export const authService = {
   },
 
   signIn: async (email: string, password: string): Promise<AuthResponse> => {
-    const response = await api.post<AuthResponse>(
-      "/api/authcontroller/signin",
-      { email, password },
-    );
+    const response = await api.post<AuthResponse>("/api/authcontroller/login", {
+      identifier: email,
+      password,
+    });
 
     const data = response.data;
-    authService.token = data.token;
+    authService.token = data?.data?.token ?? "";
 
     if (typeof window !== "undefined") {
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("authToken", data?.data?.token ?? "");
     }
 
     authService.notifyAuthChange();
@@ -54,10 +57,10 @@ export const authService = {
     );
 
     const data = response.data;
-    authService.token = data.token;
+    authService.token = data?.data?.token ?? "";
 
     if (typeof window !== "undefined") {
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("authToken", data?.data?.token ?? "");
     }
 
     authService.notifyAuthChange();

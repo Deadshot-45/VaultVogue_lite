@@ -5,6 +5,8 @@ export type UIProduct = {
   id: string;
   name: string;
   price: number;
+  sellerId?: string;
+  availableSizes: string[];
   image: string;
   category: string;
   description: string;
@@ -21,6 +23,11 @@ const mapProduct = (p: ApiProduct): UIProduct => ({
   id: p._id,
   name: p.name,
   price: p.price,
+  sellerId: p.sellerId,
+  availableSizes:
+    p.inventoryId?.items
+      ?.filter((item) => item.quantity > 0)
+      .map((item) => item.size) ?? [],
   image:
     p.images.find((img) => img.isPrimary)?.url ||
     p.images[0]?.url ||

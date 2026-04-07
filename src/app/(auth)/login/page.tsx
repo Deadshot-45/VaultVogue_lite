@@ -1,16 +1,20 @@
 "use client";
 
 import { AuthShell } from "@/components/auth/AuthShell";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authService } from "@/lib/api/authServices";
+import { setCookieWithExpiry } from "@/lib/auth";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { setCredentials } from "@/lib/store/slices/authSlice";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { z } from "zod";
 import { toast } from "sonner";
+import { z } from "zod";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
@@ -32,6 +36,8 @@ const initialState: LoginFormState = {
 
 export default function LoginPage() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   const [form, setForm] = useState<LoginFormState>(initialState);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof LoginFormState, string>>
@@ -89,7 +95,20 @@ export default function LoginPage() {
       });
 
       const response = await signInPromise;
-      console.log(response);
+
+      dispatch(
+        setCredentials({
+          token: response?.data?.token ?? "",
+          user: response?.data?.user ?? null,
+        }),
+      );
+      await queryClient.invalidateQueries({ queryKey: ["cart-details"] });
+      setCookieWithExpiry(
+        process.env.AUTH_COOKIE_KEY || "vault_vogue_token",
+        response?.data?.token ?? "",
+        2,
+        "hours",
+      );
       router.push("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed");

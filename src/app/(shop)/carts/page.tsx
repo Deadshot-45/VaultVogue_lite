@@ -2,12 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useCart } from "@/context/CreateContext";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import {
+  decrementItem,
+  incrementItem,
+  removeFromCart,
+} from "@/lib/store/slices/cartSlice";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import React from "react";
 
 const CartDrawer: React.FC = () => {
-  const { cartItems, increment, decrement, removeFromCart } = useCart();
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.items);
+
+  console.log(cartItems);
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -29,7 +37,7 @@ const CartDrawer: React.FC = () => {
             <div className="grid gap-4">
               {cartItems.map((item) => (
                 <Card
-                  key={item.id}
+                  key={`${item.id}-${item.selectedSize ?? "default"}`}
                   className="flex flex-col gap-4 rounded-xl border px-4 py-4 transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex items-center gap-4">
@@ -45,6 +53,11 @@ const CartDrawer: React.FC = () => {
                       <p className="text-sm text-muted-foreground">
                         ${item.price.toFixed(2)}
                       </p>
+                      {item.selectedSize ? (
+                        <p className="text-xs text-muted-foreground">
+                          Size: {item.selectedSize}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
 
@@ -53,7 +66,14 @@ const CartDrawer: React.FC = () => {
                       size="icon"
                       variant="ghost"
                       className="h-8 w-8"
-                      onClick={() => decrement(item.id)}
+                      onClick={() =>
+                        dispatch(
+                          decrementItem({
+                            id: item.id,
+                            selectedSize: item.selectedSize,
+                          }),
+                        )
+                      }
                     >
                       -
                     </Button>
@@ -66,7 +86,14 @@ const CartDrawer: React.FC = () => {
                       size="icon"
                       variant="ghost"
                       className="h-8 w-8"
-                      onClick={() => increment(item.id)}
+                      onClick={() =>
+                        dispatch(
+                          incrementItem({
+                            id: item.id,
+                            selectedSize: item.selectedSize,
+                          }),
+                        )
+                      }
                     >
                       +
                     </Button>
@@ -80,7 +107,14 @@ const CartDrawer: React.FC = () => {
                     <Button
                       size="icon"
                       variant="ghost"
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() =>
+                        dispatch(
+                          removeFromCart({
+                            id: item.id,
+                            selectedSize: item.selectedSize,
+                          }),
+                        )
+                      }
                       className="text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />

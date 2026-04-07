@@ -5,6 +5,17 @@ export interface Product {
   _id: string;
   name: string;
   price: number;
+  sellerId?: string;
+  inventoryId?: {
+    _id: string;
+    productId: string;
+    items: {
+      _id: string;
+      size: string;
+      quantity: number;
+      updatedAt: string;
+    }[];
+  };
   images: { url: string; isPrimary: boolean }[];
   categoryIds?: string[];
 }
