@@ -1,9 +1,10 @@
+import { Facebook, Instagram, Twitter } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
   return (
     <footer className="border-t border-border bg-background">
-      <div className="mx-auto w-full max-w-7xl overflow-x-hidden px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full overflow-x-hidden px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           {/* Brand */}
           <div>
@@ -77,13 +78,13 @@ export default function Footer() {
 
           <div className="flex gap-4">
             <span className="cursor-pointer hover:text-foreground">
-              Instagram
+              <Instagram /> 
             </span>
             <span className="cursor-pointer hover:text-foreground">
-              Facebook
+              <Facebook /> 
             </span>
             <span className="cursor-pointer hover:text-foreground">
-              Twitter
+              <Twitter />
             </span>
           </div>
         </div>

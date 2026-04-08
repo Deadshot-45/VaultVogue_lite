@@ -1,7 +1,7 @@
 "use client";
 
 import { UIProduct } from "@/lib/query/useGetProducts";
-import PremiumProductCard from "./global/PremiumProductCard";
+import AnimatedProductCard from "./global/AnimatedProductCard";
 import { useAddToCart } from "@/lib/query/useAddToCart";
 import { useAppSelector } from "@/lib/store/hooks";
 import { toast } from "sonner";
@@ -85,7 +85,7 @@ const ProductGrid = ({
           key={product.id}
           className="transition-transform duration-200 active:scale-[0.98] hover:-translate-y-1"
         >
-          <PremiumProductCard
+          <AnimatedProductCard
             product={product}
             onAddToCart={(size) => handleAddToCart(product, size)}
           />

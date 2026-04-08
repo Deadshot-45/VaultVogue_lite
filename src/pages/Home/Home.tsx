@@ -4,7 +4,9 @@ import { images } from "@/assets/data/images";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import HeroSection from "./HeroSection";
-import { useRouter } from "next/navigation";
+import AnimatedSection from "@/components/AnimatedSection";
+import { ArrowRight, Star, Truck, Shield, RefreshCw } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Product {
   _id: string;
@@ -21,7 +23,6 @@ interface HomeProps {
 const HomeData = [
   {
     label: "Men",
-    // src: "http://localhost:5000/p_img2.png",
     src: `${process.env.NEXT_PUBLIC_API_URL}/p_img2.png`,
     href: "/men",
   },
@@ -42,109 +43,274 @@ const HomeData = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
+const trustSignals = [
+  {
+    icon: Truck,
+    title: "Free Shipping",
+    description: "Free delivery on orders over ₹999",
+  },
+  {
+    icon: Shield,
+    title: "Secure Payment",
+    description: "100% secure checkout process",
+  },
+  {
+    icon: RefreshCw,
+    title: "Easy Returns",
+    description: "30-day return policy",
+  },
+  {
+    icon: Star,
+    title: "Premium Quality",
+    description: "Handpicked fashion items",
+  },
+];
+
 export default function Home({ recentProducts = [] }: HomeProps) {
-  const router = useRouter();
+
   return (
-    <div className="h-full w-full overflow-x-hidden">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20"
+    >
       <HeroSection />
 
-      <main className="mx-auto w-full max-w-7xl space-y-12 px-4 py-10 sm:px-6 lg:px-8">
-        <section className="">
-          <h2 className="mb-6 text-2xl font-bold">Shop by Category</h2>
+      <main className="mx-auto w-full space-y-16 px-4 py-16 sm:px-6 lg:px-8">
+        {/* Trust Signals */}
+        <AnimatedSection className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {trustSignals.map((signal) => (
+            <motion.div
+              key={signal.title}
+              whileHover={{ scale: 1.05 }}
+              className="flex flex-col items-center gap-3 rounded-xl bg-card/50 p-6 text-center shadow-sm backdrop-blur-sm transition-all hover:shadow-md"
+            >
+              <div className="rounded-full bg-primary/10 p-3">
+                <signal.icon className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">{signal.title}</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {signal.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatedSection>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 xl:gap-6">
+        {/* Shop by Category */}
+        <motion.section variants={itemVariants} className="space-y-8">
+          <motion.div variants={itemVariants} className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight">
+              Shop by Category
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Discover your perfect style from our curated collections
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          >
             {HomeData.map((item) => (
-              <Card
+              <motion.div
                 key={item.label}
-                className="group h-full cursor-pointer overflow-hidden py-0 transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                variants={itemVariants}
+                whileHover={{ y: -8, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="group cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-card to-card/50 shadow-lg backdrop-blur-sm transition-all hover:shadow-2xl"
               >
-                <CardContent className="p-0 overflow-hidden">
-                  <div
-                    className="aspect-[4/3] bg-muted bg-cover bg-center transition duration-500 group-hover:scale-105 sm:aspect-[5/4] lg:aspect-[4/3]"
-                    style={{ backgroundImage: `url(${item.src})` }}
-                  />
-                </CardContent>
+                <Card className="border-0 bg-transparent shadow-none">
+                  <CardContent className="p-0 overflow-hidden">
+                    <motion.div
+                      className="aspect-[4/3] bg-muted bg-cover bg-center transition-all duration-700 group-hover:scale-110 sm:aspect-[5/4] lg:aspect-[4/3]"
+                      style={{ backgroundImage: `url(${item.src})` }}
+                      whileHover={{ scale: 1.1 }}
+                    />
+                  </CardContent>
 
-                <CardFooter className="justify-center px-4 pb-4 pt-3 sm:px-5">
-                  <p
-                    onClick={() => router.push(item.href)}
-                    className="text-sm font-semibold text-foreground sm:text-base"
-                  >
-                    {item.label}
-                  </p>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <section className="bg-background/10">
-          <div className="mx-auto ">
-            <h2 className="mb-6 text-2xl font-bold">New Arrivals</h2>
-
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
-              {recentProducts.length > 0
-                ? recentProducts.map((product) => (
-                    <Card
-                      key={product._id}
-                      className="rounded-lg border gap-2 bg-background p-0 shadow-sm transition hover:shadow-md"
+                  <CardFooter className="justify-between items-center px-6 pb-6 pt-4">
+                    <p className="text-lg font-semibold text-foreground">
+                      {item.label}
+                    </p>
+                    <motion.div
+                      whileHover={{ x: 4 }}
+                      className="rounded-full bg-primary/10 p-2"
                     >
-                      <CardTitle className="mb-3 overflow-hidden rounded-md h-52 bg-secondary">
-                        <img
+                      <ArrowRight className="h-4 w-4 text-primary" />
+                    </motion.div>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.section>
+
+        {/* New Arrivals */}
+        <motion.section variants={itemVariants} className="space-y-8">
+          <motion.div variants={itemVariants} className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight">New Arrivals</h2>
+            <p className="mt-2 text-muted-foreground">
+              Be the first to wear the latest trends
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5"
+          >
+            {recentProducts.length > 0
+              ? recentProducts.map((product) => (
+                  <motion.div
+                    key={product._id}
+                    variants={itemVariants}
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="group cursor-pointer"
+                  >
+                    <Card className="overflow-hidden border-0 bg-card/50 shadow-lg backdrop-blur-sm transition-all hover:shadow-2xl">
+                      <CardTitle className="mb-3 overflow-hidden rounded-t-lg h-52 bg-secondary relative">
+                        <motion.img
                           src={
                             product.images.find((img) => img.isPrimary)?.url ||
                             product.images[0]?.url
                           }
                           alt={product.name}
-                          className="h-full w-full object-cover transition hover:scale-105"
+                          className="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+                          whileHover={{ scale: 1.1 }}
                         />
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileHover={{ opacity: 1, scale: 1 }}
+                          className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Button
+                            size="sm"
+                            className="bg-white/90 text-black hover:bg-white"
+                          >
+                            Quick View
+                          </Button>
+                        </motion.div>
                       </CardTitle>
                       <CardContent className="pb-4 px-4 m-0">
-                        <p className="font-medium line-clamp-1">
+                        <p className="font-semibold line-clamp-1 text-sm">
                           {product.name}
                         </p>
-                        <p className="text-sm text-foreground/50 font-semibold">
+                        <p className="text-lg font-bold mt-1 text-primary">
                           Rs. {product.price}
                         </p>
                       </CardContent>
                     </Card>
-                  ))
-                : [...Array(10)].map((_, i) => (
-                    <div
-                      key={i + 1}
-                      className="rounded-lg bg-background p-4 shadow-sm animate-pulse"
-                    >
-                      <div className="mb-3 h-52 bg-muted rounded-md" />
-                      <div className="h-4 bg-muted w-3/4 mb-2" />
-                      <div className="h-4 bg-muted w-1/4" />
+                  </motion.div>
+                ))
+              : Array.from({ length: 10 }).map((_, i) => (
+                  <motion.div
+                    key={i + 1}
+                    variants={itemVariants}
+                    className="rounded-2xl overflow-hidden border bg-muted/30 animate-pulse shadow-lg"
+                  >
+                    <div className="aspect-3/4 bg-muted" />
+                    <div className="p-4 space-y-2">
+                      <div className="h-3 w-1/2 bg-muted rounded" />
+                      <div className="h-4 w-full bg-muted rounded" />
+                      <div className="h-4 w-3/4 bg-muted rounded" />
                     </div>
-                  ))}
-            </div>
-          </div>
-        </section>
+                  </motion.div>
+                ))}
+          </motion.div>
+        </motion.section>
 
-        <section className="">
-          <div className="rounded-lg relative bg-foreground/10 dark:bg-slate-800 px-10 py-12 text-foreground/80 dark:border dark:shadow-4xl">
-            <h3 className="text-3xl font-bold">Flat 30% Off</h3>
-            <p className="mt-2">On selected summer collections</p>
-            <Button
-              variant={"ghost"}
-              className="mt-6 shadow-sm shadow-background/30 rounded py-3 font-semibold"
-            >
-              Shop Collection
-            </Button>
+        {/* Promotional Banner */}
+        <motion.section
+          variants={itemVariants}
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-primary/90 to-primary/80 px-8 py-12 text-primary-foreground shadow-2xl"
+        >
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="relative z-10 max-w-md"
+          >
+            <h3 className="text-3xl font-bold mb-2">Flat 30% Off</h3>
+            <p className="text-primary-foreground/90 mb-6">
+              On selected summer collections. Limited time offer!
+            </p>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                variant="secondary"
+                size="lg"
+                className="shadow-lg hover:shadow-xl transition-all"
+              >
+                Shop Collection
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
+          </motion.div>
 
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="absolute right-0 top-0 h-full w-1/2 hidden md:block"
+          >
             <div
-              className="h-[90%] w-[49.5%] rounded absolute top-2 left-1/2 bg-cover bg-center hidden md:block"
+              className="h-full w-full bg-cover bg-center opacity-20"
               style={{
                 backgroundImage: `url(${images.heroBanners.bannerImg_02.src})`,
               }}
-            >
-              <div className="h-full w-full bg-foreground/40"></div>
-            </div>
-          </div>
-        </section>
+            />
+          </motion.div>
+
+          {/* Animated background elements */}
+          <motion.div
+            animate={{
+              rotate: 360,
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+              scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+            }}
+            className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-white/10 blur-xl"
+          />
+          <motion.div
+            animate={{
+              rotate: -360,
+              scale: [1.1, 1, 1.1],
+            }}
+            transition={{
+              rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+              scale: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+            }}
+            className="absolute -bottom-10 -left-10 h-24 w-24 rounded-full bg-white/10 blur-xl"
+          />
+        </motion.section>
       </main>
-    </div>
+    </motion.div>
   );
 }

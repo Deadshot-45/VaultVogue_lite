@@ -8,12 +8,12 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { UIProduct } from "@/lib/query/useGetProducts";
-import Image from "next/image";
-import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { decrementItem, removeFromCart } from "@/lib/store/slices/cartSlice";
+import { Minus, Plus, ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "";
@@ -52,9 +52,23 @@ export default function PremiumProductCard({
   );
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [imageSrc, setImageSrc] = useState(() => resolveProductImage(product.image));
+  const [imageSrc, setImageSrc] = useState(() =>
+    resolveProductImage(product.image),
+  );
 
-  // Auto select if only one size
+  const selectedStock = selectedSize
+    ? product.sizeQuantities[selectedSize]
+    : undefined;
+  const fallbackLowStock = Object.values(product.sizeQuantities)
+    .filter((quantity) => quantity > 0 && quantity <= product.lowStockThreshold)
+    .sort((a, b) => a - b)[0];
+  const lowStockCount =
+    typeof selectedStock === "number" && selectedStock > 0
+      ? selectedStock <= product.lowStockThreshold
+        ? selectedStock
+        : undefined
+      : fallbackLowStock;
+
   useEffect(() => {
     if (cartItem?.selectedSize) {
       const nextSize = cartItem.selectedSize ?? null;
@@ -124,55 +138,52 @@ export default function PremiumProductCard({
   };
 
   return (
-    <Card className="rounded-2xl overflow-hidden border bg-background shadow-sm active:scale-[0.98] transition-all">
-      {/* IMAGE */}
-      <CardHeader className="p-0 relative">
+    <Card className="overflow-hidden rounded-2xl border bg-background shadow-sm transition-all active:scale-[0.98]">
+      <CardHeader className="relative p-0">
         <Image
           src={imageSrc}
           alt={product.name}
           width={300}
           height={300}
-          className="w-full aspect-3/4 object-cover"
+          className="aspect-3/4 w-full object-cover"
           onError={() => setImageSrc(FALLBACK_IMAGE)}
         />
 
-        {/* Badges */}
         <div className="absolute top-2 left-2">
           {product.isNew && (
-            <Badge className="bg-black text-white text-xs px-2 py-1">New</Badge>
+            <Badge className="bg-black px-2 py-1 text-xs text-white">New</Badge>
           )}
         </div>
 
-        <div className="absolute top-2 right-2">
-          <Badge className="bg-orange-600 text-white text-xs px-2 py-1">
-            Only 2 left 🔥
-          </Badge>
-        </div>
+        {typeof lowStockCount === "number" ? (
+          <div className="absolute top-2 right-2">
+            <Badge className="bg-orange-600 px-2 py-1 text-xs text-white">
+              Only {lowStockCount} left
+            </Badge>
+          </div>
+        ) : null}
       </CardHeader>
 
-      {/* CONTENT */}
-      <CardContent className="p-3 space-y-1">
+      <CardContent className="space-y-1 p-3">
         <p className="text-[11px] text-muted-foreground">{product.category}</p>
 
-        <h3 className="text-sm font-medium leading-tight line-clamp-2">
+        <h3 className="line-clamp-2 text-sm font-medium leading-tight">
           {product.name}
         </h3>
 
-        <p className="text-lg font-bold mt-1">₹{product.price}</p>
+        <p className="mt-1 text-lg font-bold">₹{product.price}</p>
 
-        {/* Sizes (SELECTABLE) */}
-        {product.availableSizes?.length > 0 && (
-          <div className="flex gap-2 mt-2 flex-wrap">
+        {product.availableSizes.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
             {product.availableSizes.slice(0, 4).map((size) => (
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`px-3 py-1.5 text-xs border rounded-md transition
-                  ${
-                    selectedSize === size
-                      ? "bg-black dark:bg-white dark:text-black text-white border-black dark:border-white"
-                      : "bg-background"
-                  }`}
+                className={`rounded-md border px-3 py-1.5 text-xs transition ${
+                  selectedSize === size
+                    ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+                    : "bg-background"
+                }`}
               >
                 {size}
               </button>
@@ -181,7 +192,6 @@ export default function PremiumProductCard({
         )}
       </CardContent>
 
-      {/* CTA */}
       <CardFooter className="p-3 pt-0">
         {cartItem ? (
           <div className="w-full space-y-2">

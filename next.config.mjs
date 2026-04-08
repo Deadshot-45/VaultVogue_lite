@@ -1,5 +1,3 @@
-import path from "path";
-
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const remotePatterns = [
   {
@@ -12,6 +10,11 @@ const remotePatterns = [
     protocol: "http",
     hostname: "127.0.0.1",
     port: "5000",
+    pathname: "/**",
+  },
+  {
+    protocol: "https",
+    hostname: "vault-vogue-server.vercel.app",
     pathname: "/**",
   },
 ];
@@ -36,25 +39,7 @@ const nextConfig = {
   images: {
     remotePatterns,
   },
-  webpack(config) {
-    config.resolve ??= {};
-    config.resolve.alias = {
-      ...(config.resolve.alias ?? {}),
-      "next/dist/compiled/next-devtools": path.resolve(
-        "src/shims/next-devtools.ts",
-      ),
-    };
-
-    return config;
-  },
   allowedDevOrigins: ["192.168.6.167"],
-  turbopack: {
-    resolveAlias: {
-      "next/dist/compiled/next-devtools": path.resolve(
-        "src/shims/next-devtools.ts",
-      ),
-    },
-  },
 };
 
 export default nextConfig;

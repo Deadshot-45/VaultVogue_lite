@@ -5,8 +5,11 @@ export type UIProduct = {
   id: string;
   name: string;
   price: number;
+  originalPrice?: number;
   sellerId?: string;
   availableSizes: string[];
+  sizeQuantities: Record<string, number>;
+  lowStockThreshold: number;
   image: string;
   category: string;
   description: string;
@@ -19,23 +22,35 @@ interface UseGetProductsProps {
   label?: string; // e.g. "men" | "women" | "kids" - used as part of query key
 }
 
-const mapProduct = (p: ApiProduct): UIProduct => ({
-  id: p._id,
-  name: p.name,
-  price: p.price,
-  sellerId: p.sellerId,
-  availableSizes:
-    p.inventoryId?.items
-      ?.filter((item) => item.quantity > 0)
-      .map((item) => item.size) ?? [],
-  image:
-    p.images.find((img) => img.isPrimary)?.url ||
-    p.images[0]?.url ||
-    "/images/placeholder.png",
-  category: "Fashion",
-  description: "Premium selection from Vault Vogue.",
-  isNew: true,
-});
+const mapProduct = (p: ApiProduct): UIProduct => {
+  const inventoryItems = p.inventoryId?.items ?? [];
+
+  return {
+    id: p._id,
+    name: p.name,
+    price: p.price,
+    originalPrice:
+      typeof (p as ApiProduct & { originalPrice?: number }).originalPrice ===
+      "number"
+        ? (p as ApiProduct & { originalPrice?: number }).originalPrice
+        : undefined,
+    sellerId: p.sellerId,
+    availableSizes: inventoryItems
+      .filter((item) => item.quantity > 0)
+      .map((item) => item.size),
+    sizeQuantities: Object.fromEntries(
+      inventoryItems.map((item) => [item.size, item.quantity]),
+    ),
+    lowStockThreshold: 5,
+    image:
+      p.images.find((img) => img.isPrimary)?.url ||
+      p.images[0]?.url ||
+      "/images/placeholder.png",
+    category: "Fashion",
+    description: "Premium selection from Vault Vogue.",
+    isNew: true,
+  };
+};
 
 /**
  * Infinite-scroll hook for products using TanStack Query's useInfiniteQuery.

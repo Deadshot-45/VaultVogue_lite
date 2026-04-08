@@ -3,11 +3,11 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 import { AuthInitializer } from "@/lib/store/AuthInitializer";
 import { getAuthCookie } from "@/lib/auth";
 import { makePersistor, makeStore } from "@/lib/store/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
@@ -43,12 +43,7 @@ export function Providers({ children }: Props) {
         <ErrorBoundary>
           <AuthInitializer />
           <QueryClientProvider client={queryClient}>
-            <NextThemesProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
+            <ThemeProvider>
               <SidebarProvider>
                 <div>
                   <Toaster
@@ -70,7 +65,7 @@ export function Providers({ children }: Props) {
                 </div>
                 {children}
               </SidebarProvider>
-            </NextThemesProvider>
+            </ThemeProvider>
           </QueryClientProvider>
         </ErrorBoundary>
       </PersistGate>

@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,8 +23,10 @@ import { Search, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
+import { motion } from "framer-motion";
 import { getAuthCookie } from "@/lib/auth";
 import { useCartDetails } from "@/lib/query/useCartDetails";
+import CartDrawer from "./CartDrawer";
 
 export function SiteHeader() {
   const NAV_ITEMS = [
@@ -38,7 +39,6 @@ export function SiteHeader() {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const cartItems = useAppSelector((state) => state.cart.items);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const token = getAuthCookie();
   useCartDetails({ isEnable: !!token });
@@ -50,17 +50,26 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 h-(--header-height) w-full border-b bg-background/80 backdrop-blur-md transition-all duration-300 ease-in-out">
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="sticky top-0 z-50 h-(--header-height) w-full border-b border-white/10 bg-background/80 backdrop-blur-xl transition-all duration-300 ease-in-out supports-[backdrop-filter]:bg-background/60"
+    >
+      <div className="mx-auto flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
           <SidebarTrigger className="-ml-2 text-muted-foreground transition-colors hover:text-foreground md:hidden" />
           <Link
             href="/"
             className="group flex items-center gap-2 transition-transform duration-200 hover:scale-[1.02]"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+            <motion.div
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
               <span className="text-lg font-bold">V</span>
-            </div>
+            </motion.div>
             <h1 className="bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-xl font-bold tracking-tight text-transparent">
               Vault Vogue
             </h1>
@@ -99,7 +108,7 @@ export function SiteHeader() {
           <div className="relative hidden max-w-60 group lg:flex">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
             <Input
-              placeholder="Search..."
+              placeholder="Search products..."
               className="h-9 w-full rounded-full border-transparent bg-muted/50 pl-9 pr-4 text-sm transition-all focus:bg-background focus:ring-2 focus:ring-primary/20 group-hover:bg-muted"
             />
           </div>
@@ -107,19 +116,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-1">
             <ModeToggle />
 
-            <Button
-              variant="ghost"
-              size="icon"
-              className="group relative text-muted-foreground hover:bg-muted hover:text-foreground"
-              onClick={() => router.push("/carts")}
-            >
-              <ShoppingBag className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
-              {cartItems.length > 0 && (
-                <Badge className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary p-0 text-[10px] text-primary-foreground shadow-sm">
-                  {cartItems.length}
-                </Badge>
-              )}
-            </Button>
+            <CartDrawer />
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -131,24 +128,33 @@ export function SiteHeader() {
                   <User className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="mt-2 w-50">
+              <DropdownMenuContent
+                align="end"
+                className="mt-2 w-50 bg-background/95 backdrop-blur-xl border-white/10"
+              >
                 {isAuthenticated ? (
                   <>
-                    <DropdownMenuItem asChild className="cursor-pointer">
+                    <DropdownMenuItem
+                      asChild
+                      className="cursor-pointer hover:bg-muted/50"
+                    >
                       <Link href="/account" className="flex items-center gap-2">
                         <User className="h-4 w-4" />
                         <span>Account</span>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="cursor-pointer">
+                    <DropdownMenuItem
+                      asChild
+                      className="cursor-pointer hover:bg-muted/50"
+                    >
                       <Link href="/orders" className="flex items-center gap-2">
                         <ShoppingBag className="h-4 w-4" />
                         <span>Orders</span>
                       </Link>
                     </DropdownMenuItem>
-                    <div className="my-1 border-t" />
+                    <div className="my-1 border-t border-white/10" />
                     <DropdownMenuItem
-                      className="cursor-pointer text-destructive focus:text-destructive"
+                      className="cursor-pointer text-destructive focus:text-destructive hover:bg-destructive/10"
                       onClick={handleLogout}
                     >
                       Logout
@@ -156,13 +162,19 @@ export function SiteHeader() {
                   </>
                 ) : (
                   <>
-                    <DropdownMenuItem asChild className="cursor-pointer">
+                    <DropdownMenuItem
+                      asChild
+                      className="cursor-pointer hover:bg-muted/50"
+                    >
                       <Link href="/login" className="flex items-center gap-2">
                         <User className="h-4 w-4" />
                         <span>Login</span>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="cursor-pointer">
+                    <DropdownMenuItem
+                      asChild
+                      className="cursor-pointer hover:bg-muted/50"
+                    >
                       <Link
                         href="/create-account"
                         className="flex items-center gap-2"
@@ -178,6 +190,6 @@ export function SiteHeader() {
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }
