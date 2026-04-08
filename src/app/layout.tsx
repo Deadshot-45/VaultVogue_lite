@@ -2,6 +2,7 @@ import "@/index.css";
 import type { Metadata } from "next";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: "Vault Vogue Lite",
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <Analytics />
+        <SpeedInsights/>
         <Providers>{children}</Providers>
       </body>
     </html>
