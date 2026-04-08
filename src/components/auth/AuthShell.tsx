@@ -32,7 +32,7 @@ export function AuthShell({
       <div className="relative mx-auto flex max-lg:min-h-[95dvh] min-h-[calc(100vh-5rem)] w-full max-w-6xl flex-col gap-8 lg:flex-row lg:items-stretch">
         
         {/* LEFT PANEL */}
-        <div className="relative hidden overflow-hidden rounded-[2rem] border bg-gradient-to-br from-foreground to-foreground/80 px-8 py-8 text-background shadow-2xl lg:sticky lg:top-10 lg:flex lg:h-[calc(100vh-5rem)] lg:w-[52%] lg:flex-col lg:justify-between">
+        <div className="relative hidden overflow-hidden rounded-[2rem] border bg-linear-to-br from-foreground to-foreground/80 px-8 py-8 text-background shadow-2xl lg:sticky lg:top-10 lg:flex lg:h-[calc(100vh-5rem)] lg:w-[52%] lg:flex-col lg:justify-between">
           
           {/* subtle overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.08),transparent_40%)]" />
