@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { logError } from "../log-error";
 import { Product as ApiProduct, productService } from "../api/productService";
 
 export type UIProduct = {
@@ -66,16 +67,20 @@ export const useGetProducts = ({
     queryKey: ["products", label, categoryId, limit],
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {
-      const response = await productService.getAllProducts({
-        page: pageParam,
-        limit,
-        sortBy: "createdAt",
-        order: "desc",
-        categoryId: categoryId as string,
-      });
+      try {
+        const apiProducts: ApiProduct[] = await productService.getAllProducts({
+          page: pageParam,
+          limit,
+          sortBy: "createdAt",
+          order: "desc",
+          categoryId: categoryId as string,
+        });
 
-      const apiProducts: ApiProduct[] = response?.data?.data || [];
-      return apiProducts.map(mapProduct);
+        return apiProducts.map(mapProduct);
+      } catch (error) {
+        logError(error, "Failed to fetch products");
+        return [];
+      }
     },
     // If the last page returned a full batch, assume there's a next page
     getNextPageParam: (lastPage, allPages) =>

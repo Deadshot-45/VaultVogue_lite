@@ -16,14 +16,18 @@ import {
   removeFromCart,
   setCartOpen,
 } from "@/lib/store/slices/cartSlice";
-import { Trash2, ShoppingBag, X, Plus, Minus } from "lucide-react";
+import { ShoppingBag, X, Plus, Minus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const CartDrawer: React.FC = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
   const cartOpen = useAppSelector((state) => state.cart.isOpen);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
+  const router = useRouter();
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -57,7 +61,7 @@ const CartDrawer: React.FC = () => {
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="w-full sm:max-w-lg bg-background/95 backdrop-blur-xl border-l shadow-2xl">
+      <SheetContent className="w-full sm:max-w-lg bg-background/95 backdrop-blur-xl border-l shadow-2xl px-4">
         <SheetHeader className="border-b pb-4">
           <SheetTitle className="flex items-center gap-2 text-xl">
             <ShoppingBag className="h-5 w-5" />
@@ -65,8 +69,34 @@ const CartDrawer: React.FC = () => {
           </SheetTitle>
         </SheetHeader>
 
-        <div className="flex flex-col h-full">
-          {cartItems.length === 0 ? (
+        <div className="flex flex-col h-full pb-4">
+          {!isAuthenticated ? (
+            <motion.div
+              className="flex flex-col items-center justify-center flex-1 text-center space-y-4 py-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className="w-20 h-20 flex items-center justify-center rounded-full bg-muted/50 text-3xl">
+                🔒
+              </div>
+
+              <h3 className="text-lg font-semibold">Login Required</h3>
+
+              <p className="text-sm text-muted-foreground max-w-xs">
+                Please sign in to view your cart and continue shopping.
+              </p>
+
+              <Button
+                className="mt-4"
+                onClick={() => {
+                  dispatch(setCartOpen(false));
+                  router.push("/login?redirect=/carts");
+                }}
+              >
+                Login
+              </Button>
+            </motion.div>
+          ) : cartItems.length === 0 ? (
             <motion.div
               className="flex flex-col items-center justify-center flex-1 text-center space-y-4 py-12"
               initial={{ opacity: 0, y: 20 }}

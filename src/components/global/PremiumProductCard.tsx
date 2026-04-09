@@ -195,9 +195,7 @@ export default function PremiumProductCard({
       <CardFooter className="p-3 pt-0">
         {cartItem ? (
           <div className="w-full space-y-2">
-            <div className="text-xs font-medium text-primary">
-              Already in cart
-            </div>
+            <div className="text-xs font-medium sale-text">Already in cart</div>
             <div className="text-xs text-muted-foreground">
               Size: {cartItem.selectedSize || selectedSize || "N/A"}
             </div>

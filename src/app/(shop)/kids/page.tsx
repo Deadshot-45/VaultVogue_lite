@@ -17,7 +17,7 @@ const KidsPage: React.FC = () => {
   const products = data?.pages.flat() ?? [];
 
   return (
-    <section className="w-full bg-background py-12">
+    <section className="w-full py-12">
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
         <h2 className="mb-6 text-3xl font-bold text-secondary-foreground">
           Kid&apos;s Section

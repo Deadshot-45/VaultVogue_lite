@@ -15,9 +15,10 @@ const appSlice = createSlice({
     setInitialized: (state, action: PayloadAction<boolean>) => {
       state.initialized = action.payload;
     },
+    logOut: () => initialState,
   },
 });
 
-export const { setInitialized } = appSlice.actions;
+export const { setInitialized, logOut } = appSlice.actions;
 
 export default appSlice.reducer;

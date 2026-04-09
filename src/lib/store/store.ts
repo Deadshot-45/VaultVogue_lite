@@ -39,6 +39,10 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+export const clearPersistedStore = async () => {
+  await storage.removeItem(`persist:${persistConfig.key}`);
+};
+
 export const makeStore = () => {
   return configureStore({
     reducer: persistedReducer,

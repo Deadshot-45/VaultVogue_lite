@@ -13,13 +13,13 @@ interface Props {
 export default function MainLayout({ children }: Props) {
   return (
     <>
-      <div className="min-lg:hidden">
+      <div className="md:hidden">
         <AppSidebar />
       </div>
 
       <SidebarInset>
         <SiteHeader />
-        <main className="min-h-[85vh] overflow-x-hidden overflow-y-auto no-scrollbar">
+        <main className="min-h-[85vh] overflow-x-hidden overflow-y-auto no-scrollbar sale-theme">
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />

@@ -15,9 +15,8 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { authService } from "@/lib/api/authServices";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { clearAuth } from "@/lib/store/slices/authSlice";
+import { performAppLogout } from "@/lib/store/logout";
 import { cn } from "@/lib/utils";
 import { Search, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
@@ -43,9 +42,8 @@ export function SiteHeader() {
   const token = getAuthCookie();
   useCartDetails({ isEnable: !!token });
 
-  const handleLogout = () => {
-    authService.signOut();
-    dispatch(clearAuth());
+  const handleLogout = async () => {
+    await performAppLogout(dispatch);
     router.push("/login");
   };
 
@@ -54,7 +52,7 @@ export function SiteHeader() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="sticky top-0 z-50 h-(--header-height) w-full border-b border-white/10 bg-background/80 backdrop-blur-xl transition-all duration-300 ease-in-out supports-[backdrop-filter]:bg-background/60"
+      className="sticky top-0 z-50 h-(--header-height) w-full border-b border-white/10 sale-theme backdrop-blur-xl transition-all duration-300 ease-in-out supports-[backdrop-filter]:bg-background/60"
     >
       <div className="mx-auto flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">

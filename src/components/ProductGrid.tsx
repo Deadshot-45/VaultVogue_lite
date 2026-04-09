@@ -45,7 +45,7 @@ const ProductGrid = ({
   // 🔹 Loading
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4 xl:gap-5">
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
@@ -79,11 +79,11 @@ const ProductGrid = ({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5">
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4 xl:gap-5">
       {products.map((product) => (
         <div
           key={product.id}
-          className="transition-transform duration-200 active:scale-[0.98] hover:-translate-y-1"
+          className="mx-auto w-full max-w-[240px] transition-transform duration-200 active:scale-[0.98] hover:-translate-y-1 md:max-w-none"
         >
           <AnimatedProductCard
             product={product}

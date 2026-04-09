@@ -26,7 +26,7 @@ const WomensPage: React.FC = () => {
       : allProducts.filter((p) => p.category === selectedCategory);
 
   return (
-    <section className="w-full bg-background py-12">
+    <section className="w-full py-12">
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
         <h2 className="mb-6 text-3xl font-bold text-secondary-foreground">
           Women&apos;s Collection
@@ -47,7 +47,7 @@ const WomensPage: React.FC = () => {
 
         {isLoading ? (
           <div className="flex h-[70vh] items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loader2 className="h-8 w-8 animate-spin sale-text" />
           </div>
         ) : (
           <ProductGrid products={filteredProducts} />

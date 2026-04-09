@@ -28,7 +28,7 @@ const MensPage: React.FC = () => {
       : allProducts.filter((p) => p.category === selectedCategory);
 
   return (
-    <section className="w-full bg-background py-12">
+    <section className="w-full py-12">
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
         <h2 className="mb-6 text-3xl font-bold text-secondary-foreground">
           Men&apos;s Collection

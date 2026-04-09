@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   IconBrandTabler,
   IconChartBar,
@@ -12,13 +12,14 @@ import {
   IconSearch,
   IconSettings,
   IconShoppingBag,
-} from "@tabler/icons-react"
-import Link from "next/link"
+} from "@tabler/icons-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavDocuments } from "@/components/nav-documents";
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -27,7 +28,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+  useSidebar,
+} from "@/components/ui/sidebar";
 
 const data = {
   user: {
@@ -96,9 +98,20 @@ const data = {
       icon: IconFileWord,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  const { isMobile, openMobile, setOpenMobile } = useSidebar();
+  const previousPathname = React.useRef(pathname);
+
+  React.useEffect(() => {
+    if (previousPathname.current !== pathname && isMobile && openMobile) {
+      setOpenMobile(false);
+    }
+    previousPathname.current = pathname;
+  }, [isMobile, openMobile, pathname, setOpenMobile]);
+
   return (
     <Sidebar
       collapsible="offcanvas"
@@ -113,7 +126,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="h-auto rounded-2xl border border-sidebar-border/60 bg-sidebar-accent/40 p-3 shadow-sm hover:bg-sidebar-accent/60"
             >
               <Link href="/">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl sale-primary shadow-lg shadow-primary/20">
                   <IconBrandTabler className="size-5" />
                 </div>
                 <div className="flex flex-col items-start text-left">
@@ -147,5 +160,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

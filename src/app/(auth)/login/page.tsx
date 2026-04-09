@@ -119,11 +119,11 @@ export default function LoginPage() {
 
   return (
     <AuthShell
-      title="Sign in to your account"
-      description="Access your Vault Vogue orders, wishlist, and faster checkout in one place."
-      footerText="New here?"
-      footerLink="/create-account"
-      footerLinkLabel="Create an account"
+      title="Welcome back"
+      description="Sign in to continue your shopping experience."
+      footerText="Don't have an account?"
+      footerLink="/register"
+      footerLinkLabel="Create one"
     >
       <form className="space-y-5" onSubmit={handleLogin}>
         <div className="space-y-2">

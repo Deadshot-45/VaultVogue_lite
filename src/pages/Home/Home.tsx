@@ -33,12 +33,12 @@ const HomeData = [
   },
   {
     label: "Kids",
-    src: `${process.env.NEXT_PUBLIC_API_URL}/p_img4.png`,
+    src: `${process.env.NEXT_PUBLIC_API_URL}/p_img3.png`,
     href: "/kids",
   },
   {
     label: "Sale",
-    src: `${process.env.NEXT_PUBLIC_API_URL}/p_img3.png`,
+    src: `${process.env.NEXT_PUBLIC_API_URL}/p_img4.png`,
     href: "/sale",
   },
 ];
@@ -90,38 +90,16 @@ const trustSignals = [
 ];
 
 export default function Home({ recentProducts = [] }: HomeProps) {
-
   return (
     <motion.div
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20"
+      className="min-h-screen"
     >
       <HeroSection />
 
       <main className="mx-auto w-full space-y-16 px-4 py-16 sm:px-6 lg:px-8">
-        {/* Trust Signals */}
-        <AnimatedSection className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {trustSignals.map((signal) => (
-            <motion.div
-              key={signal.title}
-              whileHover={{ scale: 1.05 }}
-              className="flex flex-col items-center gap-3 rounded-xl bg-card/50 p-6 text-center shadow-sm backdrop-blur-sm transition-all hover:shadow-md"
-            >
-              <div className="rounded-full bg-primary/10 p-3">
-                <signal.icon className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-sm">{signal.title}</h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {signal.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatedSection>
-
         {/* Shop by Category */}
         <motion.section variants={itemVariants} className="space-y-8">
           <motion.div variants={itemVariants} className="text-center">
@@ -145,7 +123,7 @@ export default function Home({ recentProducts = [] }: HomeProps) {
                 whileTap={{ scale: 0.98 }}
                 className="group cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-card to-card/50 shadow-lg backdrop-blur-sm transition-all hover:shadow-2xl"
               >
-                <Card className="border-0 bg-transparent shadow-none">
+                <Card className="border-0 bg-transparent shadow-none p-0 py-0">
                   <CardContent className="p-0 overflow-hidden">
                     <motion.div
                       className="aspect-[4/3] bg-muted bg-cover bg-center transition-all duration-700 group-hover:scale-110 sm:aspect-[5/4] lg:aspect-[4/3]"
@@ -193,7 +171,7 @@ export default function Home({ recentProducts = [] }: HomeProps) {
                     whileTap={{ scale: 0.98 }}
                     className="group cursor-pointer"
                   >
-                    <Card className="overflow-hidden border-0 bg-card/50 shadow-lg backdrop-blur-sm transition-all hover:shadow-2xl">
+                    <Card className="overflow-hidden p-0 border-0 bg-card/50 shadow-lg backdrop-blur-sm transition-all hover:shadow-2xl">
                       <CardTitle className="mb-3 overflow-hidden rounded-t-lg h-52 bg-secondary relative">
                         <motion.img
                           src={
@@ -248,7 +226,7 @@ export default function Home({ recentProducts = [] }: HomeProps) {
         {/* Promotional Banner */}
         <motion.section
           variants={itemVariants}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-primary/90 to-primary/80 px-8 py-12 text-primary-foreground shadow-2xl"
+          className="relative overflow-hidden rounded-3xl sale-primary dark:sale-priamry/60 px-8 py-12 shadow-2xl"
         >
           <motion.div
             initial={{ x: -100, opacity: 0 }}
@@ -257,7 +235,7 @@ export default function Home({ recentProducts = [] }: HomeProps) {
             className="relative z-10 max-w-md"
           >
             <h3 className="text-3xl font-bold mb-2">Flat 30% Off</h3>
-            <p className="text-primary-foreground/90 mb-6">
+            <p className="sale-text-light mb-6">
               On selected summer collections. Limited time offer!
             </p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -310,6 +288,26 @@ export default function Home({ recentProducts = [] }: HomeProps) {
             className="absolute -bottom-10 -left-10 h-24 w-24 rounded-full bg-white/10 blur-xl"
           />
         </motion.section>
+        {/* Trust Signals */}
+        <AnimatedSection className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {trustSignals.map((signal) => (
+            <motion.div
+              key={signal.title}
+              whileHover={{ scale: 1.05 }}
+              className="flex flex-col items-center gap-3 rounded-xl bg-card/50 p-6 text-center shadow-sm backdrop-blur-sm transition-all hover:shadow-md"
+            >
+              <div className="rounded-full bg-primary/10 p-3">
+                <signal.icon className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">{signal.title}</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {signal.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatedSection>
       </main>
     </motion.div>
   );

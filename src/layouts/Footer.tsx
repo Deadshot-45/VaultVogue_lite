@@ -21,16 +21,16 @@ export default function Footer() {
               Shop
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li className="cursor-pointer hover:text-foreground">
+              <li className="cursor-pointer hover:text-sale-red-600">
                 <Link href={"/men"}>Men</Link>
               </li>
-              <li className="cursor-pointer hover:text-foreground">
+              <li className="cursor-pointer hover:text-sale-red-600">
                 <Link href={"/women"}>Women</Link>
               </li>
-              <li className="cursor-pointer hover:text-foreground">
+              <li className="cursor-pointer hover:text-sale-red-600">
                 <Link href={"/kids"}>Kids</Link>
               </li>
-              <li className="cursor-pointer hover:text-foreground">
+              <li className="cursor-pointer hover:text-sale-red-600">
                 <Link href={"/sale"}>Sale</Link>
               </li>
             </ul>
@@ -42,12 +42,18 @@ export default function Footer() {
               Support
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li className="cursor-pointer hover:text-foreground">
-                Contact Us
+              <li className="cursor-pointer hover:text-sale-red-600">
+                <Link href="/contact-us">Contact Us</Link>
               </li>
-              <li className="cursor-pointer hover:text-foreground">FAQs</li>
-              <li className="cursor-pointer hover:text-foreground">Returns</li>
-              <li className="cursor-pointer hover:text-foreground">Shipping</li>
+              <li className="cursor-pointer hover:text-sale-red-600">
+                <Link href="/faqs">FAQs</Link>
+              </li>
+              <li className="cursor-pointer hover:text-sale-red-600">
+                <Link href="/returns">Returns</Link>
+              </li>
+              <li className="cursor-pointer hover:text-sale-red-600">
+                <Link href="/shipping">Shipping</Link>
+              </li>
             </ul>
           </div>
 
@@ -57,14 +63,14 @@ export default function Footer() {
               Legal
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li className="cursor-pointer hover:text-foreground">
-                Privacy Policy
+              <li className="cursor-pointer hover:text-sale-red-600">
+                <Link href="/privacy-policy">Privacy Policy</Link>
               </li>
-              <li className="cursor-pointer hover:text-foreground">
-                Terms & Conditions
+              <li className="cursor-pointer hover:text-sale-red-600">
+                <Link href="/terms-and-conditions">Terms & Conditions</Link>
               </li>
-              <li className="cursor-pointer hover:text-foreground">
-                Refund Policy
+              <li className="cursor-pointer hover:text-sale-red-600">
+                <Link href="/refund-policy">Refund Policy</Link>
               </li>
             </ul>
           </div>
@@ -77,13 +83,13 @@ export default function Footer() {
           </p>
 
           <div className="flex gap-4">
-            <span className="cursor-pointer hover:text-foreground">
-              <Instagram /> 
+            <span className="cursor-pointer hover:text-sale-red-600">
+              <Instagram />
             </span>
-            <span className="cursor-pointer hover:text-foreground">
-              <Facebook /> 
+            <span className="cursor-pointer hover:text-sale-red-600">
+              <Facebook />
             </span>
-            <span className="cursor-pointer hover:text-foreground">
+            <span className="cursor-pointer hover:text-sale-red-600">
               <Twitter />
             </span>
           </div>

@@ -1,4 +1,3 @@
-import type { AxiosResponse } from "axios";
 import { api } from "./apiservices";
 
 export interface Product {
@@ -20,10 +19,14 @@ export interface Product {
   categoryIds?: string[];
 }
 
+interface ProductListResponse {
+  data: Product[];
+}
+
 export const productService = {
-  getDashboardProducts: async (): Promise<AxiosResponse> => {
+  getDashboardProducts: async () => {
     const response = await api.get("/api/products/dashboard");
-    return response;
+    return response.data;
   },
 
   getAllProducts: async (
@@ -40,13 +43,16 @@ export const productService = {
       order: string;
       categoryId: string;
     },
-  ): Promise<AxiosResponse> => {
-    const response = await api.get("/api/products/getAll", { params });
-    return response;
+  ): Promise<Product[]> => {
+    const response = await api.get<ProductListResponse>(
+      "/api/products/getAll",
+      { params },
+    );
+    return response.data?.data ?? [];
   },
 
-  getProductById: async (id: string): Promise<AxiosResponse> => {
+  getProductById: async (id: string) => {
     const response = await api.get(`/api/products/${id}`);
-    return response;
+    return response.data;
   },
 };

@@ -2,8 +2,18 @@ import axios, { AxiosRequestConfig } from "axios";
 import { logError } from "../log-error";
 import { getAuthCookie } from "../auth";
 
-// Configure with NEXT_PUBLIC_ for client-side availability
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/";
+const getBaseUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
+
+  if (typeof window === "undefined") {
+    return process.env.API_URL || envUrl || "http://localhost:5000";
+  }
+
+  // On client-side, use the public API URL when provided; otherwise use relative paths.
+  return envUrl ?? "";
+};
+
+const BASE_URL = getBaseUrl();
 
 /**
  * Custom Axios Instance
@@ -21,8 +31,8 @@ api.interceptors.request.use(
   (config) => {
     // You can retrieve the auth token from localStorage, cookie, or store here
     // Example:
-    
-    const token = typeof window !== 'undefined' ? getAuthCookie() : null;
+
+    const token = typeof window !== "undefined" ? getAuthCookie() : null;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -44,7 +54,12 @@ api.interceptors.response.use(
       console.warn("Unauthorized! Redirecting to login...");
     }
 
-    logError(error, `API Error: ${error.response?.status || "Unknown"}`);
+    const status = error.response?.status;
+    const errorContext = status
+      ? `API Error: ${status}`
+      : `API Network Error: ${error.message || "Unknown"}`;
+
+    logError(error, errorContext);
     return Promise.reject(error);
   },
 );

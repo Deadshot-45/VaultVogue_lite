@@ -30,16 +30,15 @@ export default function HeroSection() {
       {heroBanners.map((banner, index) => (
         <AnimatePresence key={banner.id}>
           <motion.div
-            initial={{ opacity: 0, scale: 1.1 }}
+            initial={{ opacity: 0 }}
             animate={{
               opacity: index === current ? 1 : 0,
-              scale: index === current ? 1 : 1.1,
               zIndex: index === current ? 10 : 0,
             }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            exit={{ opacity: 0 }}
             transition={{
-              opacity: { duration: 0.8, ease: "easeInOut" },
-              scale: { duration: 1.2, ease: "easeInOut" },
+              duration: 0.7,
+              ease: "easeInOut",
             }}
             className={cn(
               "absolute top-0 inset-0 transition-opacity duration-700 ease-in-out",
@@ -50,9 +49,9 @@ export default function HeroSection() {
             <motion.div
               className="h-full w-full bg-cover bg-center relative"
               style={{ backgroundImage: `url(${banner.image.src})` }}
-              initial={{ scale: 1.2 }}
-              animate={{ scale: index === current ? 1 : 1.2 }}
-              transition={{ duration: 8, ease: "easeOut" }}
+              initial={{ opacity: 0.95 }}
+              animate={{ opacity: index === current ? 1 : 0.95 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
               {/* Enhanced Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
@@ -60,94 +59,34 @@ export default function HeroSection() {
 
               <div className="relative mx-auto flex h-full max-w-7xl items-center px-6 lg:px-8">
                 <motion.div
-                  initial={{ x: -100, opacity: 0 }}
+                  initial={{ y: 16, opacity: 0 }}
                   animate={{
-                    x: index === current ? 0 : -100,
+                    y: index === current ? 0 : 16,
                     opacity: index === current ? 1 : 0,
                   }}
                   transition={{
-                    duration: 0.8,
-                    delay: index === current ? 0.3 : 0,
+                    duration: 0.55,
+                    delay: index === current ? 0.2 : 0,
                     ease: "easeOut",
                   }}
                   className="max-w-2xl text-white space-y-6"
                 >
-                  <motion.div
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{
-                      y: index === current ? 0 : 30,
-                      opacity: index === current ? 1 : 0,
-                    }}
-                    transition={{
-                      duration: 0.6,
-                      delay: index === current ? 0.5 : 0,
-                    }}
-                    className="flex items-center gap-2"
-                  >
+                  <div className="flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-background/60" />
                     <span className="text-sm font-medium text-foreground bg-background/60 px-3 py-1 rounded-full">
                       New Collection
                     </span>
-                  </motion.div>
+                  </div>
 
-                  <motion.h1
-                    initial={{ y: 50, opacity: 0 }}
-                    animate={{
-                      y: index === current ? 0 : 50,
-                      opacity: index === current ? 1 : 0,
-                    }}
-                    transition={{
-                      duration: 0.8,
-                      delay: index === current ? 0.7 : 0,
-                    }}
-                    className="text-5xl md:text-7xl font-bold leading-tight tracking-tight"
-                  >
-                    {banner.title.split(" ").map((word, i) => (
-                      <motion.span
-                        key={i}
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{
-                          y: index === current ? 0 : 20,
-                          opacity: index === current ? 1 : 0,
-                        }}
-                        transition={{
-                          duration: 0.5,
-                          delay: index === current ? 0.8 + i * 0.1 : 0,
-                        }}
-                        className="inline-block mr-4 last:mr-0"
-                      >
-                        {word}
-                      </motion.span>
-                    ))}
-                  </motion.h1>
+                  <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight">
+                    {banner.title}
+                  </h1>
 
-                  <motion.p
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{
-                      y: index === current ? 0 : 30,
-                      opacity: index === current ? 1 : 0,
-                    }}
-                    transition={{
-                      duration: 0.6,
-                      delay: index === current ? 1.0 : 0,
-                    }}
-                    className="text-xl text-white/90 max-w-lg leading-relaxed"
-                  >
+                  <p className="text-xl text-white/90 max-w-lg leading-relaxed">
                     {banner.subtitle}
-                  </motion.p>
+                  </p>
 
-                  <motion.div
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{
-                      y: index === current ? 0 : 30,
-                      opacity: index === current ? 1 : 0,
-                    }}
-                    transition={{
-                      duration: 0.6,
-                      delay: index === current ? 1.2 : 0,
-                    }}
-                    className="flex flex-col sm:flex-row gap-4 pt-4"
-                  >
+                  <div className="flex flex-col gap-4 pt-4 sm:flex-row">
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -172,7 +111,7 @@ export default function HeroSection() {
                         Explore Collection
                       </Button>
                     </motion.div>
-                  </motion.div>
+                  </div>
                 </motion.div>
               </div>
             </motion.div>

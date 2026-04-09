@@ -42,6 +42,10 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-sale-red-50: var(--sale-red-50);
+  --color-sale-red-100: var(--sale-red-100);
+  --color-sale-red-500: var(--sale-red-500);
+  --color-sale-red-600: var(--sale-red-600);
 }
 
 :root {
@@ -78,6 +82,10 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --header-height: 4rem;
+  --sale-red-50: oklch(0.968 0.007 25.326);
+  --sale-red-100: oklch(0.936 0.032 25.326);
+  --sale-red-500: oklch(0.637 0.237 25.331);
+  --sale-red-600: oklch(0.546 0.245 25.326);
 }
 
 .dark {
@@ -112,6 +120,12 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --sale-red-50: oklch(0.25 0.05 25.326); /* Darker background for dark mode */
+  --sale-red-100: oklch(
+    0.85 0.08 25.326
+  ); /* Lighter text for dark backgrounds */
+  --sale-red-500: oklch(0.75 0.25 25.331); /* Brighter red for dark mode */
+  --sale-red-600: oklch(0.7 0.25 25.326); /* Slightly darker hover state */
 }
 
 @layer base {
@@ -123,51 +137,112 @@
   }
 }
 
-/* ------------ PSYCHUP THEMED TOAST -------------- */
-/* BASE STYLE */
+/* ------------ APP THEMED TOAST -------------- */
 .toast {
   background: var(--card) !important;
   color: var(--card-foreground) !important;
   border: 1px solid var(--border) !important;
   padding: 14px 18px !important;
-  border-radius: 14px !important;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15) !important;
+  border-radius: var(--radius-xl) !important;
+  box-shadow:
+    0 18px 40px -24px oklch(0 0 0 / 0.28),
+    0 10px 18px -12px oklch(0 0 0 / 0.18) !important;
+  backdrop-filter: blur(14px);
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* SUCCESS */
 .toast-success {
-  background: rgb(var(--color-success)) !important;
-  color: white !important;
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border-color: var(--primary) !important;
 }
 
-/* ERROR */
 .toast-error {
   background: var(--destructive) !important;
-  color: white !important;
+  color: var(--primary-foreground) !important;
+  border-color: var(--destructive) !important;
 }
 
-/* INFO */
 .toast-info {
   background: var(--accent) !important;
   color: var(--accent-foreground) !important;
 }
 
-/* WARNING */
 .toast-warning {
-  background: oklch(65% 0.12 80) !important;
-  /* Yellow-ish */
-  color: black !important;
+  background: var(--secondary) !important;
+  color: var(--secondary-foreground) !important;
+  border-color: var(--border) !important;
 }
 
-/* DARK MODE */
+.toaster [data-sonner-toast][data-type="success"] {
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border-color: var(--primary) !important;
+}
+
+.toaster [data-sonner-toast][data-type="error"] {
+  background: var(--destructive) !important;
+  color: var(--primary-foreground) !important;
+  border-color: var(--destructive) !important;
+}
+
+.toaster [data-sonner-toast][data-type="info"] {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+  border-color: var(--border) !important;
+}
+
+.toaster [data-sonner-toast][data-type="warning"] {
+  background: var(--secondary) !important;
+  color: var(--secondary-foreground) !important;
+  border-color: var(--border) !important;
+}
+
+.toaster [data-sonner-toast][data-type] [data-title],
+.toaster [data-sonner-toast][data-type] [data-description],
+.toaster [data-sonner-toast][data-type] [data-icon] {
+  color: inherit !important;
+}
+
 .dark .toast {
-  box-shadow: 0px 4px 14px rgba(255, 255, 255, 0.1) !important;
+  box-shadow:
+    0 24px 48px -28px oklch(0 0 0 / 0.65),
+    0 14px 24px -18px oklch(0 0 0 / 0.45) !important;
 }
 
-/* src/index.css or src/globals.css */
+/* ------------ SALE THEME CLASSES -------------- */
+.sale-theme {
+  background: var(--sale-red-50);
+  color: var(--foreground);
+}
+
+.sale-theme .sale-primary {
+  background-color: var(--sale-red-500);
+  color: white;
+}
+
+.sale-theme .sale-primary:hover {
+  background-color: var(--sale-red-600);
+}
+
+.sale-theme .sale-text {
+  color: var(--sale-red-500);
+}
+
+.sale-theme .sale-text-light {
+  color: var(--sale-red-100);
+}
+
+.sale-theme .sale-bg-gradient {
+  background: linear-gradient(to bottom, var(--sale-red-50), white);
+}
+
+.dark .sale-theme .sale-bg-gradient {
+  background: linear-gradient(to bottom, var(--sale-red-50), var(--background));
+}
+
 .no-scrollbar {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE & Edge */

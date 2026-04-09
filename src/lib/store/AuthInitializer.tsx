@@ -2,34 +2,37 @@
 
 import { useEffect } from "react";
 import { authService } from "@/lib/api/authServices";
-import { clearAuthCookie, getAuthCookie, isTokenExpired } from "@/lib/auth";
+import { getAuthCookie, isTokenExpired } from "@/lib/auth";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { clearAuth, hydrateAuth } from "@/lib/store/slices/authSlice";
+import { hydrateAuth } from "@/lib/store/slices/authSlice";
+import { performAppLogout } from "@/lib/store/logout";
 
 export function AuthInitializer() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const token = getAuthCookie();
+    const syncAuth = async () => {
+      const token = getAuthCookie();
 
-    if (!token || isTokenExpired(token)) {
-      clearAuthCookie();
-      authService.signOut();
-      dispatch(clearAuth());
-      return;
-    }
+      if (!token || isTokenExpired(token)) {
+        await performAppLogout(dispatch);
+        return;
+      }
 
-    authService.token = token;
+      authService.token = token;
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem("authToken", token);
-    }
+      if (typeof window !== "undefined") {
+        localStorage.setItem("authToken", token);
+      }
 
-    dispatch(
-      hydrateAuth({
-        token,
-      }),
-    );
+      dispatch(
+        hydrateAuth({
+          token,
+        }),
+      );
+    };
+
+    void syncAuth();
   }, [dispatch]);
 
   return null;
