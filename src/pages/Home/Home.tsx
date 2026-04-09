@@ -7,6 +7,7 @@ import HeroSection from "./HeroSection";
 import AnimatedSection from "@/components/AnimatedSection";
 import { ArrowRight, Star, Truck, Shield, RefreshCw } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface Product {
   _id: string;
@@ -90,6 +91,7 @@ const trustSignals = [
 ];
 
 export default function Home({ recentProducts = [] }: HomeProps) {
+  const router = useRouter();
   return (
     <motion.div
       initial="hidden"
@@ -189,6 +191,9 @@ export default function Home({ recentProducts = [] }: HomeProps) {
                         >
                           <Button
                             size="sm"
+                            onClick={() =>
+                              router.push(`/products/${product._id}`)
+                            }
                             className="bg-white/90 text-black hover:bg-white"
                           >
                             Quick View
@@ -200,7 +205,7 @@ export default function Home({ recentProducts = [] }: HomeProps) {
                           {product.name}
                         </p>
                         <p className="text-lg font-bold mt-1 text-primary">
-                          Rs. {product.price}
+                          ${product.price.toLocaleString()}
                         </p>
                       </CardContent>
                     </Card>

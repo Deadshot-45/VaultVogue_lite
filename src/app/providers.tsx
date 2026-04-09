@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { Loader } from "@/components/global/Loader";
 
 interface Props {
   readonly children: React.ReactNode;
@@ -35,7 +36,7 @@ export function Providers({ children }: Props) {
       <PersistGate
         loading={
           <div className="h-screen flex items-center justify-center">
-            Loading...
+            <Loader />
           </div>
         }
         persistor={persistor}

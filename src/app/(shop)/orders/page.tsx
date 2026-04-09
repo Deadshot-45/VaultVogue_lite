@@ -11,13 +11,13 @@ const orders = [
   {
     id: "VV-1234",
     status: "Delivered",
-    total: "Rs. 4,999",
+    total: "$ 4,999",
     date: "March 21, 2026",
   },
   {
     id: "VV-2871",
     status: "Processing",
-    total: "Rs. 2,499",
+    total: "$ 2,499",
     date: "April 4, 2026",
   },
 ];

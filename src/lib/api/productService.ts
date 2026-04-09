@@ -2,9 +2,13 @@ import { api } from "./apiservices";
 
 export interface Product {
   _id: string;
+  id?: string;
   name: string;
   price: number;
+  description?: string;
+  originalPrice?: number;
   sellerId?: string;
+  sellerName?: string;
   inventoryId?: {
     _id: string;
     productId: string;
@@ -52,7 +56,7 @@ export const productService = {
   },
 
   getProductById: async (id: string) => {
-    const response = await api.get(`/api/products/${id}`);
+    const response = await api.get(`/api/products/getbyId/${id}`);
     return response.data;
   },
 };

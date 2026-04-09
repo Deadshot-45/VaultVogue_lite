@@ -14,6 +14,7 @@ import { decrementItem, removeFromCart } from "@/lib/store/slices/cartSlice";
 import { motion } from "framer-motion";
 import { Eye, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -44,6 +45,7 @@ export default function AnimatedProductCard({
   product: UIProduct;
   onAddToCart: (size: string) => void;
 }) {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
   const cartItem = useAppSelector((state) =>
@@ -145,6 +147,10 @@ export default function AnimatedProductCard({
     toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
   };
 
+  const handleViewProduct = () => {
+    router.push(`/products/${product.id}`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -181,6 +187,7 @@ export default function AnimatedProductCard({
                 <Button
                   size="icon"
                   variant="secondary"
+                  onClick={handleViewProduct}
                   className="h-8 w-8 rounded-full bg-white/90 text-black shadow-md hover:bg-white"
                 >
                   <Eye className="h-3.5 w-3.5" />
@@ -239,7 +246,10 @@ export default function AnimatedProductCard({
             <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
               {product.category}
             </p>
-            <h3 className="mt-1 line-clamp-1 text-sm font-semibold leading-snug transition-colors group-hover:sale-text">
+            <h3
+              className="mt-1 line-clamp-1 cursor-pointer text-sm font-semibold leading-snug transition-colors group-hover:sale-text"
+              onClick={handleViewProduct}
+            >
               {product.name}
             </h3>
           </div>
@@ -249,7 +259,7 @@ export default function AnimatedProductCard({
               className="text-lg font-bold sale-text"
               whileHover={{ scale: 1.05 }}
             >
-              Rs. {product.price}
+            ${product.price.toLocaleString()}
             </motion.p>
           </div>
 

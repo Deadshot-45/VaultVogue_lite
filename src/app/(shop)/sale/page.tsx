@@ -87,10 +87,10 @@ export default function Page() {
 
                   <div className="mt-2 flex items-center gap-2">
                     <span className="text-xl font-bold text-sale-red-500">
-                      Rs. {product.price}
+                      ${product.price.toLocaleString()}
                     </span>
                     <span className="text-gray-400 line-through">
-                      Rs. {product.original}
+                      ${product.original.toLocaleString()}
                     </span>
                   </div>
 
