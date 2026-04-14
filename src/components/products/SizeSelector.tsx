@@ -26,10 +26,10 @@ export const SizeSelector = React.memo(
                 key={item.variantId}
                 disabled={disabled}
                 onClick={() => onSelect(item.size)}
-                className={`px-4 py-2 rounded-full border ${
+                className={`px-4 py-2 rounded-full cursor-pointer border border-ring ${
                   selectedSize === item.size
-                    ? "bg-black text-white"
-                    : "bg-white"
+                    ? "bg-destructive text-foreground"
+                    : "text-muted-foreground"
                 } ${disabled ? "opacity-30 cursor-not-allowed" : ""}`}
               >
                 {item.size}

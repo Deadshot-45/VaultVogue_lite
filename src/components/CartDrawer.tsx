@@ -79,7 +79,7 @@ const CartDrawer: React.FC = () => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0 }}
-                className="absolute -right-1 -top-1 h-5 w-5 flex items-center justify-center rounded-full bg-primary text-[10px] text-white"
+                className="absolute -right-1 -top-1 h-5 w-5 flex items-center justify-center rounded-full bg-ring/20 text-[10px] text-foreground"
               >
                 {cartItems.length}
               </motion.div>

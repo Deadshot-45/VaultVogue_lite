@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+* {
+  box-sizing: border-box;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -92,6 +96,22 @@
   --success-100: oklch(0.93 0.05 150);
   --success-500: oklch(0.72 0.19 150);
   --success-600: oklch(0.64 0.21 150);
+
+  --bg: #f5f0ea;
+  --gold: #8a6a42;
+  --gold-soft: rgba(138, 106, 66, 0.5);
+  --gold-faint: rgba(138, 106, 66, 0.12);
+  --gold-glow: rgba(138, 106, 66, 0.08);
+  --brand-text: #2e1f0e;
+  --slogan-text: rgba(80, 55, 28, 0.55);
+  --progress-track: rgba(138, 106, 66, 0.15);
+  --progress-label: rgba(138, 106, 66, 0.4);
+  --corner: rgba(138, 106, 66, 0.25);
+  --particle: rgba(138, 106, 66, 0.35);
+  --orbit: rgba(138, 106, 66, 0.18);
+  --orbit-outer: rgba(138, 106, 66, 0.08);
+  --light-gold: #f5f0ea;
+  --gold-hover: #8a6a42;
 }
 
 .dark {
@@ -137,6 +157,22 @@
   --success-100: oklch(0.4 0.07 150);
   --success-500: oklch(0.7 0.18 150);
   --success-600: oklch(0.62 0.2 150);
+
+  --light-gold: oklch(0.25 0.05 25.326);
+  --gold-hover: oklch(35.789% 0.08328 22.16);
+  --bg: #0a0a08;
+  --gold: #d4b796;
+  --gold-soft: rgba(212, 183, 150, 0.5);
+  --gold-faint: rgba(212, 183, 150, 0.12);
+  --gold-glow: rgba(212, 183, 150, 0.06);
+  --brand-text: #e8d9c4;
+  --slogan-text: rgba(212, 183, 150, 0.5);
+  --progress-track: rgba(212, 183, 150, 0.12);
+  --progress-label: rgba(212, 183, 150, 0.3);
+  --corner: rgba(212, 183, 150, 0.2);
+  --particle: rgba(212, 183, 150, 0.4);
+  --orbit: rgba(212, 183, 150, 0.15);
+  --orbit-outer: rgba(212, 183, 150, 0.07);
 }
 
 @layer base {
@@ -216,17 +252,17 @@
 
 /* ------------ SALE THEME CLASSES -------------- */
 .sale-theme {
-  background: var(--sale-red-50);
+  background: var(--light-gold);
   color: var(--foreground);
 }
 
 .sale-theme .sale-primary {
-  background-color: var(--sale-red-500);
+  background-color: var(--gold-soft);
   color: white;
 }
 
 .sale-theme .sale-primary:hover {
-  background-color: var(--sale-red-600);
+  background-color: var(--gold-hover);
 }
 
 .sale-theme .sale-text {

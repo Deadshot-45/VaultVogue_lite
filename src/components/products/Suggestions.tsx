@@ -14,9 +14,9 @@ export const Suggestions = React.memo(({ items }: SuggestionsProps) => {
       <div className="flex gap-4 overflow-x-auto">
         {items.map((item) => (
           <Link key={item.id} href={`/products/${item.id}`}>
-            <div className="min-w-40 border rounded-xl p-2">
-              <img src={item.image} alt={item.name} />
-              <p>{item.name}</p>
+            <div className="min-w-40 border border-ring/40 rounded-xl space-y-2">
+              <img src={item.image} alt={item.name} className=" rounded-t-xl" />
+              <p className="p-4">{item.name}</p>
             </div>
           </Link>
         ))}

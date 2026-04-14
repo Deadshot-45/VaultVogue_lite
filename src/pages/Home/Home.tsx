@@ -135,6 +135,7 @@ export default function Home({ recentProducts = [] }: HomeProps) {
       variants={containerVariants}
       className="min-h-screen"
     >
+      
       <HeroSection />
 
       <main className="mx-auto w-full space-y-16 px-4 py-16 sm:px-6 lg:px-8">

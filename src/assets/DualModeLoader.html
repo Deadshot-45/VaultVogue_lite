@@ -1,0 +1,737 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@200;300;400&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0a0a08;
+        --gold: #d4b796;
+        --gold-soft: rgba(212, 183, 150, 0.5);
+        --gold-faint: rgba(212, 183, 150, 0.12);
+        --gold-glow: rgba(212, 183, 150, 0.06);
+        --brand-text: #e8d9c4;
+        --slogan-text: rgba(212, 183, 150, 0.5);
+        --progress-track: rgba(212, 183, 150, 0.12);
+        --progress-label: rgba(212, 183, 150, 0.3);
+        --corner: rgba(212, 183, 150, 0.2);
+        --particle: rgba(212, 183, 150, 0.4);
+        --orbit: rgba(212, 183, 150, 0.15);
+        --orbit-outer: rgba(212, 183, 150, 0.07);
+      }
+
+      body.light-mode {
+        --bg: #f5f0ea;
+        --gold: #8a6a42;
+        --gold-soft: rgba(138, 106, 66, 0.5);
+        --gold-faint: rgba(138, 106, 66, 0.12);
+        --gold-glow: rgba(138, 106, 66, 0.08);
+        --brand-text: #2e1f0e;
+        --slogan-text: rgba(80, 55, 28, 0.55);
+        --progress-track: rgba(138, 106, 66, 0.15);
+        --progress-label: rgba(138, 106, 66, 0.4);
+        --corner: rgba(138, 106, 66, 0.25);
+        --particle: rgba(138, 106, 66, 0.35);
+        --orbit: rgba(138, 106, 66, 0.18);
+        --orbit-outer: rgba(138, 106, 66, 0.08);
+      }
+
+      body {
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        font-family: "Montserrat", sans-serif;
+        overflow: hidden;
+        transition: background 0.6s ease;
+      }
+
+      /* Toggle button */
+      .mode-toggle {
+        position: absolute;
+        top: 22px;
+        right: 28px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      .toggle-label {
+        font-family: "Montserrat", sans-serif;
+        font-size: 8.5px;
+        font-weight: 300;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: var(--gold-soft);
+        transition: color 0.4s;
+      }
+
+      .toggle-track {
+        width: 38px;
+        height: 18px;
+        border-radius: 9px;
+        background: var(--gold-faint);
+        border: 0.5px solid var(--corner);
+        position: relative;
+        transition:
+          background 0.4s,
+          border 0.4s;
+      }
+
+      .toggle-thumb {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--gold);
+        transition:
+          transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+          background 0.4s;
+      }
+
+      body.light-mode .toggle-thumb {
+        transform: translateX(20px);
+      }
+
+      /* Sun/moon icons */
+      .icon-sun,
+      .icon-moon {
+        width: 13px;
+        height: 13px;
+        flex-shrink: 0;
+      }
+
+      .loader-scene {
+        position: relative;
+        width: 480px;
+        height: 520px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .glow-ring {
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          var(--gold-glow) 0%,
+          transparent 70%
+        );
+        animation: pulse-glow 3s ease-in-out infinite;
+        transition: background 0.6s;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.6;
+        }
+        50% {
+          transform: scale(1.15);
+          opacity: 1;
+        }
+      }
+
+      .hanger-wrap {
+        position: relative;
+        width: 140px;
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+        animation: float 4s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .hanger-svg {
+        width: 100px;
+        height: 90px;
+        transition: filter 0.5s;
+      }
+
+      body:not(.light-mode) .hanger-svg {
+        filter: drop-shadow(0 0 18px rgba(212, 183, 150, 0.35));
+      }
+
+      body.light-mode .hanger-svg {
+        filter: drop-shadow(0 4px 14px rgba(138, 106, 66, 0.22));
+      }
+
+      .orbit-ring {
+        position: absolute;
+        width: 140px;
+        height: 140px;
+        border: 0.5px solid var(--orbit);
+        border-radius: 50%;
+        animation: spin 8s linear infinite;
+        transition: border-color 0.6s;
+      }
+
+      .orbit-ring::before {
+        content: "";
+        position: absolute;
+        top: -3px;
+        left: 50%;
+        width: 6px;
+        height: 6px;
+        background: var(--gold);
+        border-radius: 50%;
+        transform: translateX(-50%);
+        transition: background 0.4s;
+      }
+
+      body:not(.light-mode) .orbit-ring::before {
+        box-shadow: 0 0 8px rgba(212, 183, 150, 0.8);
+      }
+
+      body.light-mode .orbit-ring::before {
+        box-shadow: 0 0 6px rgba(138, 106, 66, 0.5);
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .orbit-ring-outer {
+        position: absolute;
+        width: 170px;
+        height: 170px;
+        border: 0.5px solid var(--orbit-outer);
+        border-radius: 50%;
+        animation: spin 14s linear infinite reverse;
+        transition: border-color 0.6s;
+      }
+
+      .brand-dash {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        justify-content: center;
+        margin: 10px 0 6px;
+      }
+
+      .brand-dash span {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 38px;
+        font-weight: 300;
+        letter-spacing: 0.22em;
+        color: var(--brand-text);
+        transition: color 0.5s;
+        animation: brand-reveal 1.2s ease forwards;
+        opacity: 0;
+      }
+
+      .brand-dash span:first-child {
+        animation-delay: 0.1s;
+      }
+      .brand-dash span:last-child {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes brand-reveal {
+        from {
+          opacity: 0;
+          letter-spacing: 0.4em;
+        }
+        to {
+          opacity: 1;
+          letter-spacing: 0.22em;
+        }
+      }
+
+      .dash-line {
+        width: 1px;
+        height: 28px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--gold),
+          transparent
+        );
+        animation: dash-grow 0.8s ease 0.3s forwards;
+        opacity: 0;
+        transition: background 0.5s;
+      }
+
+      @keyframes dash-grow {
+        from {
+          opacity: 0;
+          height: 0;
+        }
+        to {
+          opacity: 1;
+          height: 28px;
+        }
+      }
+
+      .slogan {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 200;
+        font-size: 9.5px;
+        letter-spacing: 0.28em;
+        color: var(--slogan-text);
+        text-align: center;
+        text-transform: uppercase;
+        max-width: 280px;
+        line-height: 1.8;
+        margin-top: 14px;
+        animation: fade-up 1s ease 0.8s forwards;
+        opacity: 0;
+        transition: color 0.5s;
+      }
+
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .progress-container {
+        width: 160px;
+        margin-top: 40px;
+      }
+
+      .progress-track {
+        width: 100%;
+        height: 0.5px;
+        background: var(--progress-track);
+        overflow: hidden;
+        transition: background 0.5s;
+      }
+
+      .progress-fill {
+        height: 100%;
+        animation: progress-run 2.8s ease-in-out infinite;
+        width: 0%;
+        transition: background 0.5s;
+      }
+
+      body:not(.light-mode) .progress-fill {
+        background: linear-gradient(
+          to right,
+          transparent,
+          #d4b796,
+          rgba(255, 240, 220, 0.9)
+        );
+      }
+
+      body.light-mode .progress-fill {
+        background: linear-gradient(
+          to right,
+          transparent,
+          #8a6a42,
+          rgba(100, 72, 40, 0.7)
+        );
+      }
+
+      @keyframes progress-run {
+        0% {
+          width: 0%;
+          opacity: 0.4;
+        }
+        50% {
+          width: 80%;
+          opacity: 1;
+        }
+        100% {
+          width: 100%;
+          opacity: 0.3;
+        }
+      }
+
+      .progress-label {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 300;
+        font-size: 8px;
+        letter-spacing: 0.32em;
+        color: var(--progress-label);
+        text-transform: uppercase;
+        text-align: center;
+        margin-top: 14px;
+        animation: blink-text 2.8s ease-in-out infinite;
+        transition: color 0.5s;
+      }
+
+      @keyframes blink-text {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      .corner {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        transition: border-color 0.5s;
+      }
+
+      .corner-tl {
+        top: 20px;
+        left: 20px;
+        border-top: 0.5px solid var(--corner);
+        border-left: 0.5px solid var(--corner);
+      }
+      .corner-tr {
+        top: 20px;
+        right: 20px;
+        border-top: 0.5px solid var(--corner);
+        border-right: 0.5px solid var(--corner);
+      }
+      .corner-bl {
+        bottom: 20px;
+        left: 20px;
+        border-bottom: 0.5px solid var(--corner);
+        border-left: 0.5px solid var(--corner);
+      }
+      .corner-br {
+        bottom: 20px;
+        right: 20px;
+        border-bottom: 0.5px solid var(--corner);
+        border-right: 0.5px solid var(--corner);
+      }
+
+      .particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: var(--particle);
+        border-radius: 50%;
+        animation: particle-drift linear infinite;
+        transition: background 0.5s;
+      }
+
+      @keyframes particle-drift {
+        0% {
+          transform: translateY(0) translateX(0);
+          opacity: 0;
+        }
+        20% {
+          opacity: 0.6;
+        }
+        80% {
+          opacity: 0.4;
+        }
+        100% {
+          transform: translateY(-80px) translateX(20px);
+          opacity: 0;
+        }
+      }
+
+      /* Light mode: subtle linen texture overlay */
+      body.light-mode::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(138, 106, 66, 0.025) 3px,
+            rgba(138, 106, 66, 0.025) 4px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 3px,
+            rgba(138, 106, 66, 0.015) 3px,
+            rgba(138, 106, 66, 0.015) 4px
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .loader-scene {
+        z-index: 1;
+      }
+      .mode-toggle {
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mode Toggle -->
+    <div
+      class="mode-toggle"
+      onclick="toggleMode()"
+      title="Toggle light/dark mode"
+    >
+      <svg
+        class="icon-moon"
+        viewBox="0 0 13 13"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M11.5 8.5A6 6 0 0 1 4.5 1.5a5.5 5.5 0 1 0 7 7z"
+          stroke="#d4b796"
+          stroke-width="0.8"
+          fill="none"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <div class="toggle-track">
+        <div class="toggle-thumb"></div>
+      </div>
+      <svg
+        class="icon-sun"
+        viewBox="0 0 13 13"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="6.5" cy="6.5" r="2.5" stroke="#8a6a42" stroke-width="0.8" />
+        <line
+          x1="6.5"
+          y1="0.5"
+          x2="6.5"
+          y2="2"
+          stroke="#8a6a42"
+          stroke-width="0.8"
+          stroke-linecap="round"
+        />
+        <line
+          x1="6.5"
+          y1="11"
+          x2="6.5"
+          y2="12.5"
+          stroke="#8a6a42"
+          stroke-width="0.8"
+          stroke-linecap="round"
+        />
+        <line
+          x1="0.5"
+          y1="6.5"
+          x2="2"
+          y2="6.5"
+          stroke="#8a6a42"
+          stroke-width="0.8"
+          stroke-linecap="round"
+        />
+        <line
+          x1="11"
+          y1="6.5"
+          x2="12.5"
+          y2="6.5"
+          stroke="#8a6a42"
+          stroke-width="0.8"
+          stroke-linecap="round"
+        />
+        <line
+          x1="2.4"
+          y1="2.4"
+          x2="3.45"
+          y2="3.45"
+          stroke="#8a6a42"
+          stroke-width="0.8"
+          stroke-linecap="round"
+        />
+        <line
+          x1="9.55"
+          y1="9.55"
+          x2="10.6"
+          y2="10.6"
+          stroke="#8a6a42"
+          stroke-width="0.8"
+          stroke-linecap="round"
+        />
+        <line
+          x1="10.6"
+          y1="2.4"
+          x2="9.55"
+          y2="3.45"
+          stroke="#8a6a42"
+          stroke-width="0.8"
+          stroke-linecap="round"
+        />
+        <line
+          x1="3.45"
+          y1="9.55"
+          x2="2.4"
+          y2="10.6"
+          stroke="#8a6a42"
+          stroke-width="0.8"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
+
+    <div class="loader-scene">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+
+      <div class="glow-ring"></div>
+
+      <div
+        class="particle"
+        style="
+          left: 60px;
+          top: 200px;
+          animation-duration: 5s;
+          animation-delay: 0s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 390px;
+          top: 260px;
+          animation-duration: 7s;
+          animation-delay: 1.5s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 120px;
+          top: 300px;
+          animation-duration: 6s;
+          animation-delay: 3s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 350px;
+          top: 180px;
+          animation-duration: 4.5s;
+          animation-delay: 0.8s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 200px;
+          top: 380px;
+          animation-duration: 8s;
+          animation-delay: 2s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 310px;
+          top: 340px;
+          animation-duration: 5.5s;
+          animation-delay: 4s;
+        "
+      ></div>
+
+      <div class="hanger-wrap">
+        <div class="orbit-ring-outer"></div>
+        <div class="orbit-ring"></div>
+        <svg
+          class="hanger-svg"
+          viewBox="0 0 100 88"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M50 6 C50 6 50 0 44 0 C38 0 36 5 36 8 C36 12 40 14 44 14"
+            stroke="var(--gold)"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            fill="none"
+          />
+          <path
+            d="M50 14 C50 14 50 28 26 40 L6 52"
+            stroke="var(--gold)"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            fill="none"
+          />
+          <path
+            d="M50 14 C50 14 50 28 74 40 L94 52"
+            stroke="var(--gold)"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            fill="none"
+          />
+          <line
+            x1="6"
+            y1="52"
+            x2="94"
+            y2="52"
+            stroke="var(--gold)"
+            stroke-width="1.2"
+            stroke-linecap="round"
+          />
+          <circle cx="6" cy="52" r="2.5" fill="var(--gold)" opacity="0.6" />
+          <circle cx="94" cy="52" r="2.5" fill="var(--gold)" opacity="0.6" />
+          <line
+            x1="6"
+            y1="58"
+            x2="94"
+            y2="58"
+            stroke="var(--gold-faint)"
+            stroke-width="0.5"
+          />
+          <circle cx="50" cy="14" r="2" fill="var(--gold-soft)" />
+        </svg>
+      </div>
+
+      <div class="brand-dash">
+        <span>VAULT</span>
+        <div class="dash-line"></div>
+        <span>VOGUE</span>
+      </div>
+
+      <p class="slogan">Premium fashion curated for<br />modern lifestyles</p>
+
+      <div class="progress-container">
+        <div class="progress-track">
+          <div class="progress-fill"></div>
+        </div>
+        <p class="progress-label">Curating your collection</p>
+      </div>
+    </div>
+
+    <script>
+      function toggleMode() {
+        document.body.classList.toggle("light-mode");
+      }
+    </script>
+  </body>
+</html>

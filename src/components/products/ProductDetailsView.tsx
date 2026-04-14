@@ -643,7 +643,7 @@ export default function ProductDetailsView({
 
           <p className="text-muted-foreground">{product.description}</p>
 
-          <div className="text-3xl font-bold">₹{product.price.toFixed(2)}</div>
+          <div className="text-3xl font-bold">${product.price.toFixed(2)}</div>
 
           <SizeSelector
             sizes={sizes}

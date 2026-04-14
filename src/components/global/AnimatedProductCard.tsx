@@ -274,7 +274,7 @@ export default function AnimatedProductCard({
                   onClick={() => setSelectedSize(size)}
                   className={`rounded-full border px-2.5 py-1 text-[11px] transition-all duration-200 ${
                     selectedSize === size
-                      ? "sale-primary border-sale-red-500 shadow-md"
+                      ? "bg-destructive border-sale-red-500 shadow-md"
                       : "border-border bg-background hover:bg-muted"
                   }`}
                   whileHover={{ scale: 1.05 }}
