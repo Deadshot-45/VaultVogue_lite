@@ -3,7 +3,7 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "next-themes";
 import { AuthInitializer } from "@/lib/store/AuthInitializer";
 import { getAuthCookie } from "@/lib/auth";
 import { makePersistor, makeStore } from "@/lib/store/store";
@@ -44,7 +44,7 @@ export function Providers({ children }: Props) {
         <ErrorBoundary>
           <AuthInitializer />
           <QueryClientProvider client={queryClient}>
-            <ThemeProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark">
               <SidebarProvider>
                 <div>
                   <Toaster
