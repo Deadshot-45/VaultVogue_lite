@@ -242,7 +242,7 @@ export default function Home({ recentProducts = [] }: HomeProps) {
                         </p>
                         {typeof product.minPrice === "number" ? (
                           <p className="text-lg font-bold mt-1 text-primary">
-                            Rs. {product.minPrice.toLocaleString()}
+                            ${product.minPrice}
                           </p>
                         ) : (
                           <p className="mt-1 text-sm text-muted-foreground">

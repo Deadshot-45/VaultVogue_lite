@@ -45,7 +45,7 @@ export default function ContactUsPage() {
       </div>
 
       {/* Cards */}
-      <div className="rounded-[1.5rem] space-y-4 border border-white/10 bg-muted/70 dark:bg-[#1a0a0c] p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:bg-[#221012]">
+      <div className="rounded-[1.5rem] space-y-4 border border-white/10 bg-muted/70 dark:bg-[#1a0a0c] p-6 transition-all">
         {contactCards.map((item) => (
           <div
             key={item.title}

@@ -3,7 +3,13 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-export const ProductGallery = ({ gallery, productName }: { gallery: string[]; productName: string }) => {
+export const ProductGallery = ({
+  gallery,
+  productName,
+}: {
+  gallery: string[];
+  productName: string;
+}) => {
   const [active, setActive] = useState(gallery[0]);
 
   useEffect(() => {
@@ -18,6 +24,8 @@ export const ProductGallery = ({ gallery, productName }: { gallery: string[]; pr
     });
   }, [gallery]);
 
+  console.log(gallery);
+
   return (
     <div className="space-y-4">
       <div className="relative aspect-4/5 rounded-3xl overflow-hidden">
@@ -26,6 +34,7 @@ export const ProductGallery = ({ gallery, productName }: { gallery: string[]; pr
           alt={productName}
           fill
           priority
+          unoptimized
           className="object-cover"
         />
       </div>

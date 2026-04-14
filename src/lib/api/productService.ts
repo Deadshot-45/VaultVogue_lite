@@ -2,6 +2,7 @@ import { api } from "./apiservices";
 
 export interface Product {
   _id: string;
+  id?: string;
   name: string;
 
   description?: string;

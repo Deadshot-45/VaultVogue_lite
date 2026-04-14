@@ -3,8 +3,22 @@ import ProductDetailsView from "@/components/products/ProductDetailsView";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { productService, type Product } from "@/lib/api/productService";
+import { Product } from "@/lib/api/productService";
+import { serverFetch } from "@/lib/api/serverApi";
 import Link from "next/link";
+
+type Response = {
+  success: string;
+  message: string;
+  code?: number;
+  data: Product[];
+};
+type ResponseById = {
+  success: string;
+  message: string;
+  code?: number;
+  data: Product;
+};
 
 type PageProps = {
   params: Promise<{
@@ -84,32 +98,29 @@ export default async function ProductPage({ params }: PageProps) {
   console.log(id);
 
   try {
-    const response = await productService.getProductById(id);
-    const suggestionResponse = await productService.getAllProducts({
-      page: 1,
-      limit: 5,
-      sortBy: "createdAt",
-      order: "desc",
-      categoryId: "67dfa578452634da4759bbb2",
-    });
+    const [response, suggestionResponse] = await Promise.all([
+      serverFetch<ResponseById>(`/products/getById/${id}`),
+      serverFetch<Response>(`/products/getAll?limit=4`),
+    ]);
 
-    const rawProduct =
-      response?.data ||
-      response?.data?.data ||
-      response?.data?.product ||
-      response?.product ||
-      response;
+    console.log(response);
+    console.log(suggestionResponse);
 
-    if (!(rawProduct?._id || rawProduct?.id)) {
+    const rawProduct = response?.data;
+
+    console.log("rawProduct", rawProduct);
+
+    if (!rawProduct?._id) {
       throw new Error("Product not found");
     }
 
-    const product = normalizeProduct(rawProduct as Product);
-    const suggestions = suggestionResponse
-      .filter((item) => item._id !== product.id)
-      .slice(0, 4)
-      .map(normalizeSuggestion);
-      
+    const product = normalizeProduct(rawProduct);
+    const suggestions = Array.isArray(suggestionResponse?.data)
+      ? suggestionResponse.data
+          .filter((item: Product) => item._id !== product.id)
+          .slice(0, 4)
+          .map(normalizeSuggestion)
+      : [];
 
     return (
       <div className="pb-8 px-0 md:px-4">
