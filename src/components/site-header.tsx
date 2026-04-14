@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -18,14 +17,13 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { performAppLogout } from "@/lib/store/logout";
 import { cn } from "@/lib/utils";
-import { Search, ShoppingBag, User } from "lucide-react";
+import {  ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
 import { motion } from "framer-motion";
-import { getAuthCookie } from "@/lib/auth";
-import { useCartDetails } from "@/lib/query/useCartDetails";
 import CartDrawer from "./CartDrawer";
+import SearchBar from "./global/SearchBarComponent";
 
 export function SiteHeader() {
   const NAV_ITEMS = [
@@ -39,8 +37,6 @@ export function SiteHeader() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const token = getAuthCookie();
-  useCartDetails({ isEnable: !!token });
 
   const handleLogout = async () => {
     await performAppLogout(dispatch);
@@ -104,11 +100,12 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2 lg:gap-4">
           <div className="relative hidden max-w-60 group lg:flex">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
-            <Input
+            <SearchBar />
+            {/* <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" /> */}
+            {/* <Input
               placeholder="Search products..."
               className="h-9 w-full rounded-full border-transparent bg-muted/50 pl-9 pr-4 text-sm transition-all focus:bg-background focus:ring-2 focus:ring-primary/20 group-hover:bg-muted"
-            />
+            /> */}
           </div>
 
           <div className="flex items-center gap-1">

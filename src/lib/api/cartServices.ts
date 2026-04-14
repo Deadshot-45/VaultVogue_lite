@@ -35,11 +35,14 @@ export interface CartItem {
   priceSnapshot?: number;
   inventoryId?: InventoryDetails;
   product?: CartProduct;
+  variantId?: string;
 }
 
 export interface CartResponse {
   success?: boolean;
   message?: string;
+  code: string;
+  data?: CartItem[];
   cart?:
     | CartItem[]
     | {
@@ -61,15 +64,12 @@ export const getCartResponseItems = (
 };
 
 export interface AddToCartPayload {
-  productId: string;
-  sellerId: string;
-  size: string;
   quantity: number;
-  priceSnapshot: number;
+  variantId?: string;
 }
 
 export interface UpdateCartPayload {
-  productId: string;
+  variantId: string;
   quantity: number;
 }
 
@@ -89,20 +89,25 @@ export const cartService = {
         },
       },
     );
+
+    console.log(response);
     return response.data;
   },
 
-  updateCartItem: async (payload: UpdateCartPayload): Promise<CartResponse> => {
-    const response = await api.put<CartResponse>(
-      "/api/cartController/updateCart",
+  decrementFromCart: async (
+    payload: UpdateCartPayload,
+  ): Promise<CartResponse> => {
+    const response = await api.post<CartResponse>(
+      "/api/cartController/decrementFromCart",
       payload,
     );
     return response.data;
   },
 
-  removeCartItem: async (productId: string): Promise<CartResponse> => {
-    const response = await api.delete<CartResponse>(
-      `/api/cartController/removeFromCart/${productId}`,
+  removeCartItem: async (variantId: string): Promise<CartResponse> => {
+    const response = await api.post<CartResponse>(
+      "/api/cartController/removeFromCart",
+      { variantId },
     );
     return response.data;
   },

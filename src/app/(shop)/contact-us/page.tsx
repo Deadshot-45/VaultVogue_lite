@@ -29,7 +29,7 @@ export default function ContactUsPage() {
   return (
     <section className="sale-theme mx-auto w-full max-w-6xl px-4 py-12 space-y-4 sm:px-6 lg:px-8">
       {/* Hero */}
-      <div className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#2a0c0f] to-[#140607] p-8 shadow-lg">
+      <div className="rounded-[2rem] border border-white/10 bg-background dark:bg-gradient-to-br from-[#2a0c0f] to-[#140607] p-8 shadow-lg">
         {" "}
         <Badge className="rounded-full px-3 py-1 sale-primary">Support</Badge>
         <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground">
@@ -45,11 +45,11 @@ export default function ContactUsPage() {
       </div>
 
       {/* Cards */}
-      <div className="rounded-[1.5rem] space-y-4 border border-white/10 bg-[#1a0a0c] p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:bg-[#221012]">
+      <div className="rounded-[1.5rem] space-y-4 border border-white/10 bg-muted/70 dark:bg-[#1a0a0c] p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:bg-[#221012]">
         {contactCards.map((item) => (
           <div
             key={item.title}
-            className="rounded-[1.5rem] border border-border/50 bg-background/70 p-6 backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-md"
+            className="rounded-[1.5rem] border border-border/50 bg-background p-6 backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-md"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/5 text-red-400">
               {" "}

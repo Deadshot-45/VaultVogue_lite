@@ -11,7 +11,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
-  IconShoppingBag,
+  // IconShoppingBag,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -58,11 +58,11 @@ const data = {
       url: "/kids",
       icon: IconFolder,
     },
-    {
-      title: "Cart",
-      url: "/carts",
-      icon: IconShoppingBag,
-    },
+    // {
+    //   title: "Cart",
+    //   url: "/carts",
+    //   icon: IconShoppingBag,
+    // },
   ],
   navSecondary: [
     {

@@ -83,7 +83,9 @@ export default function CreateAccountPage() {
       setError("");
     };
 
-  const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignup: React.FormEventHandler<HTMLFormElement> = async (
+    event,
+  ) => {
     event.preventDefault();
 
     const normalizedForm = {
@@ -116,22 +118,29 @@ export default function CreateAccountPage() {
     setError("");
 
     try {
-      const signUpPromise = authService.signUp({
-        fullName: parsed.data.fullName,
-        email: parsed.data.email,
-        password: parsed.data.password,
-        phoneNumber: parsed.data.phoneNumber,
-      });
+      await toast.promise(
+        authService.signUp({
+          fullName: parsed.data.fullName,
+          email: parsed.data.email,
+          password: parsed.data.password,
+          phoneNumber: parsed.data.phoneNumber,
+        }),
+        {
+          loading: "Creating your account...",
 
-      toast.promise(signUpPromise, {
-        loading: "Creating your account...",
-        success: "Account created successfully",
-        error: "Sign up failed",
-      });
+          success: (res) => {
+            if (!res.success) {
+              throw new Error(res.message);
+            }
+            router.push("/login");
+            return res.message || "Account created successfully";
+          },
 
-      const response = await signUpPromise;
-      if (response.success) router.push("/login");
+          error: (err) => err.message || "Signup failed",
+        },
+      );
     } catch (err) {
+      // ❗ This only triggers if YOU throw manually (as above)
       console.log(err instanceof Error ? err.message : "Sign up failed");
     } finally {
       setIsSubmitting(false);

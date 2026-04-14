@@ -18,9 +18,9 @@ const MensPage: React.FC = () => {
       label: "men",
     });
 
-  console.log(data);
+  console.log(data?.pages[0]);
 
-  const allProducts = data?.pages.flat() ?? [];
+  const allProducts = data?.pages[0].flat() ?? [];
 
   const filteredProducts =
     selectedCategory === "All"

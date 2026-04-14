@@ -86,6 +86,12 @@
   --sale-red-100: oklch(0.936 0.032 25.326);
   --sale-red-500: oklch(0.637 0.237 25.331);
   --sale-red-600: oklch(0.546 0.245 25.326);
+
+  /* SUCCESS (light mode) */
+  --success-50: oklch(0.97 0.02 150);
+  --success-100: oklch(0.93 0.05 150);
+  --success-500: oklch(0.72 0.19 150);
+  --success-600: oklch(0.64 0.21 150);
 }
 
 .dark {
@@ -121,11 +127,16 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
   --sale-red-50: oklch(0.25 0.05 25.326); /* Darker background for dark mode */
-  --sale-red-100: oklch(
-    0.85 0.08 25.326
-  ); /* Lighter text for dark backgrounds */
+  --sale-red-100: oklch(0.85 0.08 25.326);
+  /* Lighter text for dark backgrounds */
   --sale-red-500: oklch(0.75 0.25 25.331); /* Brighter red for dark mode */
   --sale-red-600: oklch(0.7 0.25 25.326); /* Slightly darker hover state */
+
+  /* SUCCESS (dark mode tuned) */
+  --success-50: oklch(0.3 0.05 150);
+  --success-100: oklch(0.4 0.07 150);
+  --success-500: oklch(0.7 0.18 150);
+  --success-600: oklch(0.62 0.2 150);
 }
 
 @layer base {
@@ -139,44 +150,35 @@
 
 /* ------------ APP THEMED TOAST -------------- */
 .toast {
-  background: var(--card) !important;
-  color: var(--card-foreground) !important;
-  border: 1px solid var(--border) !important;
-  padding: 14px 18px !important;
-  border-radius: var(--radius-xl) !important;
-  box-shadow:
-    0 18px 40px -24px oklch(0 0 0 / 0.28),
-    0 10px 18px -12px oklch(0 0 0 / 0.18) !important;
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  padding: 14px 18px;
+  border-radius: var(--radius-xl);
   backdrop-filter: blur(14px);
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .toast-success {
-  background: var(--primary) !important;
-  color: var(--primary-foreground) !important;
-  border-color: var(--primary) !important;
+  background: color-mix(in oklch, var(--success-500) 90%, white);
+  color: white;
 }
 
 .toast-error {
-  background: var(--destructive) !important;
-  color: var(--primary-foreground) !important;
-  border-color: var(--destructive) !important;
+  background: var(--destructive);
+  color: white;
 }
 
 .toast-info {
-  background: var(--accent) !important;
-  color: var(--accent-foreground) !important;
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 
 .toast-warning {
-  background: var(--secondary) !important;
-  color: var(--secondary-foreground) !important;
-  border-color: var(--border) !important;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
 }
 
-.toaster [data-sonner-toast][data-type="success"] {
+/* .toaster [data-sonner-toast][data-type="success"] {
   background: var(--primary) !important;
   color: var(--primary-foreground) !important;
   border-color: var(--primary) !important;
@@ -204,7 +206,7 @@
 .toaster [data-sonner-toast][data-type] [data-description],
 .toaster [data-sonner-toast][data-type] [data-icon] {
   color: inherit !important;
-}
+} */
 
 .dark .toast {
   box-shadow:

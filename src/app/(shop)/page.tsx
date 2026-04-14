@@ -6,13 +6,17 @@ export default async function Page() {
 
   try {
     const dashboardResponse = await productService.getDashboardProducts();
-    const dashboardData = dashboardResponse?.data;
+    const dashboardData = dashboardResponse?.data ?? dashboardResponse;
 
     recentProducts =
-      dashboardData?.data?.highlights?.recentProducts ||
-      dashboardData?.highlights?.recentProducts ||
-      dashboardData?.data?.recentProducts ||
-      dashboardData?.recentProducts ||
+      dashboardData?.sections?.featured ||
+      dashboardData?.sections?.newArrivals ||
+      dashboardData?.sections?.trending ||
+      dashboardData?.sections?.bestsellers ||
+      dashboardData?.data?.sections?.featured ||
+      dashboardData?.data?.sections?.newArrivals ||
+      dashboardData?.data?.sections?.trending ||
+      dashboardData?.data?.sections?.bestsellers ||
       [];
   } catch (error) {
     console.error("Dashboard data fetching failed on server", error);

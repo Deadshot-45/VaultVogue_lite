@@ -2,9 +2,6 @@
 
 import { UIProduct } from "@/lib/query/useGetProducts";
 import AnimatedProductCard from "./global/AnimatedProductCard";
-import { useAddToCart } from "@/lib/query/useAddToCart";
-import { useAppSelector } from "@/lib/store/hooks";
-import { toast } from "sonner";
 
 const ProductGrid = ({
   products,
@@ -13,34 +10,6 @@ const ProductGrid = ({
   products: UIProduct[];
   isLoading?: boolean;
 }) => {
-  const auth = useAppSelector((state) => state.auth);
-
-  const { mutateAsync: addToCartApi } = useAddToCart();
-
-  // 🔥 Core logic (reusable per product)
-  const handleAddToCart = async (product: UIProduct, size: string) => {
-    if (!auth?.isAuthenticated) {
-      toast.error("Please sign in first");
-      return;
-    }
-
-    if (!product.availableSizes.length) {
-      toast.error("Out of stock");
-      return;
-    }
-
-    const res = await addToCartApi({
-      productId: product.id,
-      sellerId: product.sellerId ?? "",
-      size,
-      quantity: 1,
-      priceSnapshot: product.price,
-    });
-
-    if (!res.success) {
-      toast.error("Unable to add item to cart.");
-    }
-  };
 
   // 🔹 Loading
   if (isLoading) {
@@ -83,11 +52,10 @@ const ProductGrid = ({
       {products.map((product) => (
         <div
           key={product.id}
-          className="mx-auto w-full max-w-[240px] transition-transform duration-200 active:scale-[0.98] hover:-translate-y-1 md:max-w-none"
+          className="mx-auto w-full max-w-60 transition-transform duration-200 active:scale-[0.98] hover:-translate-y-1 md:max-w-none"
         >
           <AnimatedProductCard
             product={product}
-            onAddToCart={(size) => handleAddToCart(product, size)}
           />
         </div>
       ))}

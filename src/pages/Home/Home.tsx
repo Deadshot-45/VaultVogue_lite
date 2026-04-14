@@ -12,9 +12,45 @@ import { useRouter } from "next/navigation";
 interface Product {
   _id: string;
   name: string;
-  price: number;
-  images: { url: string; isPrimary: boolean }[];
-  categoryIds?: string[];
+
+  description?: string;
+
+  images: {
+    url: string;
+    isPrimary: boolean;
+  }[];
+
+  // Pricing
+  minPrice: number;
+  maxPrice: number;
+
+  // Flags
+  bestseller?: boolean;
+  trending?: boolean;
+
+  // Variants (detailed level - optional for UI)
+  variants?: {
+    _id: string;
+    productId: string;
+    sellerId: string;
+    sku: string;
+    attributes: {
+      size: string;
+    };
+    price: number;
+    images: string[];
+    isActive: boolean;
+  }[];
+
+  // Sizes (UI friendly)
+  sizes: {
+    variantId: string;
+    size: string;
+    price: number;
+    stock: number;
+  }[];
+
+  createdAt: string;
 }
 
 interface HomeProps {
@@ -204,9 +240,15 @@ export default function Home({ recentProducts = [] }: HomeProps) {
                         <p className="font-semibold line-clamp-1 text-sm">
                           {product.name}
                         </p>
-                        <p className="text-lg font-bold mt-1 text-primary">
-                          ${product.price.toLocaleString()}
-                        </p>
+                        {typeof product.minPrice === "number" ? (
+                          <p className="text-lg font-bold mt-1 text-primary">
+                            Rs. {product.minPrice.toLocaleString()}
+                          </p>
+                        ) : (
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            Price coming soon
+                          </p>
+                        )}
                       </CardContent>
                     </Card>
                   </motion.div>

@@ -2,25 +2,46 @@ import { api } from "./apiservices";
 
 export interface Product {
   _id: string;
-  id?: string;
   name: string;
-  price: number;
+
   description?: string;
-  originalPrice?: number;
-  sellerId?: string;
-  sellerName?: string;
-  inventoryId?: {
+
+  images: {
+    url: string;
+    isPrimary: boolean;
+  }[];
+
+  // Pricing
+  minPrice: number;
+  maxPrice: number;
+
+  // Flags
+  bestseller?: boolean;
+  trending?: boolean;
+  sellerId: string; // Variants (detailed level - optional for UI)
+  variants?: {
     _id: string;
     productId: string;
-    items: {
-      _id: string;
+    sellerId: string;
+    sku: string;
+    stock: string;
+    attributes: {
       size: string;
-      quantity: number;
-      updatedAt: string;
-    }[];
-  };
-  images: { url: string; isPrimary: boolean }[];
-  categoryIds?: string[];
+    };
+    price: number;
+    images: string[];
+    isActive: boolean;
+  }[];
+
+  // Sizes (UI friendly)
+  sizes: {
+    variantId: string;
+    size: string;
+    price: number;
+    stock: number;
+  }[];
+
+  createdAt: string;
 }
 
 interface ProductListResponse {
@@ -29,8 +50,8 @@ interface ProductListResponse {
 
 export const productService = {
   getDashboardProducts: async () => {
-    const response = await api.get("/api/products/dashboard");
-    return response.data;
+    const response = await api.get("/api/landing");
+    return response.data.data;
   },
 
   getAllProducts: async (
@@ -52,11 +73,13 @@ export const productService = {
       "/api/products/getAll",
       { params },
     );
+    console.log(response);
     return response.data?.data ?? [];
   },
 
   getProductById: async (id: string) => {
-    const response = await api.get(`/api/products/getbyId/${id}`);
+    const response = await api.get(`/api/products/getById/${id}`);
+    console.log(response);
     return response.data;
   },
 };

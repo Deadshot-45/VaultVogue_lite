@@ -36,7 +36,7 @@ export function Providers({ children }: Props) {
       <PersistGate
         loading={
           <div className="h-screen flex items-center justify-center">
-            <Loader />
+            <Loader text="Loading..." />
           </div>
         }
         persistor={persistor}

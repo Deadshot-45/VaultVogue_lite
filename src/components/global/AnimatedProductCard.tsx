@@ -8,55 +8,68 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { useCartQueue } from "@/hooks/useCartQueue";
+import {
+  useAddToCart,
+  useCart,
+  useDecrementFromCart,
+  useRemoveFromCart,
+} from "@/lib/query/useCart";
 import { UIProduct } from "@/lib/query/useGetProducts";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { decrementItem, removeFromCart } from "@/lib/store/slices/cartSlice";
+import { useAppSelector } from "@/lib/store/hooks";
 import { motion } from "framer-motion";
-import { Eye, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
+import { Eye, Heart, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "";
-const FALLBACK_IMAGE =
-  "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Crect width='300' height='400' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='%239ca3af' font-family='Arial, sans-serif' font-size='18'%3ENo image%3C/text%3E%3C/svg%3E";
-
-const resolveProductImage = (image: string) => {
-  if (!image) {
-    return FALLBACK_IMAGE;
-  }
-
-  if (/^https?:\/\//i.test(image) || image.startsWith("data:")) {
-    return image;
-  }
-
-  if (image.startsWith("/")) {
-    return API_URL ? `${API_URL}${image}` : image;
-  }
-
-  return API_URL ? `${API_URL}/${image}` : `/${image}`;
-};
+import { AddToCartButton } from "../products/AddtoCart";
+import { Variant } from "@/utility/types/productVariant";
+import { FALLBACK_IMAGE, resolveUiProductImage } from "@/utility/utils";
 
 export default function AnimatedProductCard({
   product,
-  onAddToCart,
 }: {
   product: UIProduct;
-  onAddToCart: (size: string) => void;
 }) {
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
-  const cartItem = useAppSelector((state) =>
-    state.cart.items.find(
-      (item) => item.id === product.id || item.inventoryId === product.id,
-    ),
-  );
+  const { data: cartItems = [] } = useCart();
+  const addToCart = useAddToCart();
+  const decrement = useDecrementFromCart();
+  const remove = useRemoveFromCart();
 
+  const { add: queueCartAction } = useCartQueue((actions) => {
+    actions.forEach(({ variantId, delta }) => {
+      console.log(delta);
+
+      if (delta === 0) {
+        console.log("zero");
+
+        remove.mutate(variantId);
+      }
+      if (delta > 0) {
+        addToCart.mutate({ variantId, quantity: delta });
+      }
+
+      if (delta < 0) {
+        const abs = Math.abs(delta);
+
+        if (abs > 10) {
+          remove.mutate(variantId);
+        } else {
+          for (let i = 0; i < abs; i++) {
+            decrement.mutate(variantId);
+          }
+        }
+      }
+    });
+  });
+
+  const cartItem = cartItems.find((item) => item.productId === product.id);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [imageSrc, setImageSrc] = useState(() =>
-    resolveProductImage(product.image),
+    resolveUiProductImage(product.image),
   );
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -64,9 +77,11 @@ export default function AnimatedProductCard({
   const selectedStock = selectedSize
     ? product.sizeQuantities[selectedSize]
     : undefined;
+
   const fallbackLowStock = Object.values(product.sizeQuantities)
     .filter((quantity) => quantity > 0 && quantity <= product.lowStockThreshold)
     .sort((a, b) => a - b)[0];
+
   const lowStockCount =
     typeof selectedStock === "number" && selectedStock > 0
       ? selectedStock <= product.lowStockThreshold
@@ -75,71 +90,54 @@ export default function AnimatedProductCard({
       : fallbackLowStock;
 
   useEffect(() => {
-    if (cartItem?.selectedSize) {
-      const nextSize = cartItem.selectedSize ?? null;
-      queueMicrotask(() => setSelectedSize(nextSize));
-      return;
+    if (cartItem) {
+      if (cartItem?.size) {
+        const nextSize = cartItem.size ?? null;
+        queueMicrotask(() => setSelectedSize(nextSize));
+        return;
+      }
     }
 
     if (product.availableSizes.length === 1) {
       const onlySize = product.availableSizes[0] ?? null;
       queueMicrotask(() => setSelectedSize(onlySize));
     }
-  }, [cartItem?.selectedSize, product]);
+  }, [cartItem, product]);
 
   useEffect(() => {
-    queueMicrotask(() => setImageSrc(resolveProductImage(product.image)));
+    queueMicrotask(() => setImageSrc(resolveUiProductImage(product.image)));
   }, [product.image]);
 
   const handleAdd = () => {
-    if (!auth?.isAuthenticated) {
-      toast.error("Please sign in first");
-      return;
-    }
-
-    if (!product.availableSizes.length) {
-      toast.error("Out of stock");
-      return;
-    }
-
     if (!selectedSize) {
       toast.error("Select a size");
       return;
     }
 
-    onAddToCart(selectedSize);
-  };
+    const variant = product.sizes?.find(
+      (v: Variant) => v.size === selectedSize,
+    );
 
-  const handleIncrement = () => {
-    if (!selectedSize) {
-      toast.error("Select a size");
+    if (!variant) {
+      toast.error("Invalid variant");
       return;
     }
 
-    onAddToCart(selectedSize);
+    queueCartAction(variant.variantId, 1);
   };
 
   const handleDecrement = () => {
-    if (!cartItem) {
-      return;
-    }
+    if (!cartItem) return;
 
     if (cartItem.quantity <= 1) {
-      dispatch(
-        removeFromCart({
-          id: product.id,
-          selectedSize: cartItem.selectedSize,
-        }),
-      );
+      console.log("zero");
+      queueCartAction(cartItem?.variantId ?? "", 0);
+
       return;
     }
 
-    dispatch(
-      decrementItem({
-        id: product.id,
-        selectedSize: cartItem.selectedSize,
-      }),
-    );
+    // you need update mutation (not redux)
+    queueCartAction(cartItem?.variantId ?? "", -1);
   };
 
   const handleWishlist = () => {
@@ -259,7 +257,7 @@ export default function AnimatedProductCard({
               className="text-lg font-bold sale-text"
               whileHover={{ scale: 1.05 }}
             >
-            ${product.price.toLocaleString()}
+              ${product.maxPrice?.toFixed(2)}
             </motion.p>
           </div>
 
@@ -297,12 +295,12 @@ export default function AnimatedProductCard({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="rounded-full bg-sale-red-500/10 px-3 py-1 text-center text-[11px] font-medium sale-text">
+              {/* <div className="rounded-full bg-sale-red-500/10 px-3 py-1 text-center text-[11px] font-medium sale-text">
                 Already in cart
-              </div>
-              <div className="text-center text-[11px] text-muted-foreground">
-                Size: {cartItem.selectedSize || selectedSize || "N/A"}
-              </div>
+              </div> */}
+              {/* <div className="text-center text-[11px] text-muted-foreground">
+                Size: {cartItem.size || selectedSize || "N/A"}
+              </div> */}
               <div className="flex w-full items-center gap-1.5">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -331,7 +329,7 @@ export default function AnimatedProductCard({
                     type="button"
                     size="icon"
                     className="h-9 w-9 shrink-0 rounded-full"
-                    onClick={handleIncrement}
+                    onClick={handleAdd}
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
@@ -344,14 +342,11 @@ export default function AnimatedProductCard({
               whileTap={{ scale: 0.98 }}
               className="w-full"
             >
-              <Button
-                onClick={handleAdd}
+              <AddToCartButton
+                onAdd={handleAdd}
                 disabled={!auth?.isAuthenticated}
                 className="flex h-10 w-full items-center justify-center gap-2 rounded-full bg-primary text-sm font-semibold shadow-md transition-all hover:bg-primary/90 hover:shadow-lg disabled:opacity-60"
-              >
-                <ShoppingCart className="h-4 w-4" />
-                {auth?.isAuthenticated ? "Add to Cart" : "Login to Add"}
-              </Button>
+              />
             </motion.div>
           )}
         </CardFooter>

@@ -9,7 +9,7 @@ interface LoaderProps {
   className?: string;
 }
 
-export function Loader({ size = 40, text, className }: LoaderProps) {
+export function Loader({ size = 48, text, className }: LoaderProps) {
   return (
     <div
       className={cn(
@@ -17,32 +17,48 @@ export function Loader({ size = 40, text, className }: LoaderProps) {
         className,
       )}
     >
-      <div style={{ width: size, height: size }} className="relative">
+      <div
+        style={{ width: size, height: size }}
+        className="relative flex items-center justify-center"
+      >
+        {/* Glow Ring */}
         <motion.div
-          className="absolute inset-0 rounded-full border-[3px] border-primary/15"
-          animate={{ scale: [1, 1.05, 1] }}
+          className="absolute inset-0 rounded-full bg-primary/20 blur-xl"
+          animate={{ scale: [1, 1.4, 1] }}
           transition={{
             repeat: Infinity,
-            duration: 1.5,
+            duration: 2,
             ease: "easeInOut",
           }}
         />
 
+        {/* Rotating Arc */}
         <motion.div
-          className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-primary border-r-primary"
+          className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-primary border-l-primary"
           animate={{ rotate: 360 }}
           transition={{
             repeat: Infinity,
-            duration: 0.9,
+            duration: 1,
             ease: "linear",
           }}
         />
 
+        {/* Outer Pulse Ring */}
         <motion.div
-          className="absolute inset-[28%] rounded-full bg-primary/20"
+          className="absolute inset-0 rounded-full border border-primary/20"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.6, 0.2, 0.6] }}
+          transition={{
+            repeat: Infinity,
+            duration: 1.8,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Core Dot */}
+        <motion.div
+          className="w-2.5 h-2.5 rounded-full bg-primary"
           animate={{
-            scale: [0.9, 1.1, 0.9],
-            opacity: [0.45, 0.85, 0.45],
+            scale: [1, 1.4, 1],
           }}
           transition={{
             repeat: Infinity,
@@ -52,19 +68,21 @@ export function Loader({ size = 40, text, className }: LoaderProps) {
         />
       </div>
 
-      {text ? (
+      {text && (
         <motion.p
-          className="text-sm text-muted-foreground"
-          animate={{ opacity: [0.45, 1, 0.45], y: [0, -2, 0] }}
+          className="text-sm text-muted-foreground tracking-wide"
+          animate={{
+            opacity: [0.5, 1, 0.5],
+          }}
           transition={{
             repeat: Infinity,
-            duration: 1.4,
+            duration: 1.5,
             ease: "easeInOut",
           }}
         >
           {text}
         </motion.p>
-      ) : null}
+      )}
     </div>
   );
 }

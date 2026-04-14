@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ProductDetailsView from "@/components/products/ProductDetailsView";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,41 +12,65 @@ type PageProps = {
   }>;
 };
 
-const normalizeProduct = (product: Product) => {
-  const inventoryItems = product.inventoryId?.items ?? [];
-  const gallery = product.images.length
+const normalizeProduct = (product: any) => {
+  const variants = product.variants || [];
+
+  // fallback image
+  const gallery = product.images?.length
     ? product.images
-        .sort((a, b) => Number(b.isPrimary) - Number(a.isPrimary))
-        .map((image) => image.url)
+        .sort((a: any, b: any) => Number(b.isPrimary) - Number(a.isPrimary))
+        .map((img: any) => img.url)
     : ["/images/placeholder.png"];
 
+  // extract sizes + stock from variants
+  const sizeQuantities: Record<string, number> = {};
+
+  variants.forEach((v: any) => {
+    const size = v.attributes?.size;
+    if (!size) return;
+
+    sizeQuantities[size] = v.stock ?? 0; // assuming you merged inventory
+  });
+
+  const availableSizes = Object.keys(sizeQuantities).filter(
+    (size) => sizeQuantities[size] > 0,
+  );
+
+  // get price (min variant price)
+  const price =
+    variants.length > 0 ? Math.min(...variants.map((v: any) => v.price)) : 0;
+
   return {
-    id: product._id || product.id || "",
+    id: product._id,
     name: product.name,
-    price: product.price,
-    originalPrice: product.originalPrice,
+
+    price,
+    originalPrice: product.originalPrice || price,
+
     sellerId: product.sellerId,
     sellerName: product.sellerName || "Vault Vogue Partner",
+
     description:
       product.description ||
-      "A curated Vault Vogue piece designed for versatile everyday styling and a clean premium finish.",
+      "A curated Vault Vogue piece designed for versatile everyday styling.",
+
     category: "Fashion",
     isNew: true,
+
     images: gallery,
-    availableSizes: inventoryItems
-      .filter((item) => item.quantity > 0)
-      .map((item) => item.size),
-    sizeQuantities: Object.fromEntries(
-      inventoryItems.map((item) => [item.size, item.quantity]),
-    ),
+
+    availableSizes,
+    sizeQuantities,
+
     lowStockThreshold: 5,
+    variants: product.variants || [],
   };
 };
 
 const normalizeSuggestion = (product: Product) => ({
-  id: product._id || product.id || "",
+  id: product._id || "",
   name: product.name,
-  price: product.price,
+  price: product.minPrice,
   image:
     product.images.find((image) => image.isPrimary)?.url ||
     product.images[0]?.url ||
@@ -55,6 +80,8 @@ const normalizeSuggestion = (product: Product) => ({
 
 export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
+
+  console.log(id);
 
   try {
     const response = await productService.getProductById(id);
@@ -67,9 +94,9 @@ export default async function ProductPage({ params }: PageProps) {
     });
 
     const rawProduct =
+      response?.data ||
       response?.data?.data ||
       response?.data?.product ||
-      response?.data ||
       response?.product ||
       response;
 
@@ -79,9 +106,10 @@ export default async function ProductPage({ params }: PageProps) {
 
     const product = normalizeProduct(rawProduct as Product);
     const suggestions = suggestionResponse
-      .filter((item) => (item._id || item.id) !== product.id)
+      .filter((item) => item._id !== product.id)
       .slice(0, 4)
       .map(normalizeSuggestion);
+      
 
     return (
       <div className="pb-8 px-0 md:px-4">
