@@ -44,7 +44,7 @@ export function Providers({ children }: Props) {
         <ErrorBoundary>
           <AuthInitializer />
           <QueryClientProvider client={queryClient}>
-            <ThemeProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark">
               <SidebarProvider>
                 <div>
                   <Toaster
