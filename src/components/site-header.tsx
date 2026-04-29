@@ -17,11 +17,12 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { performAppLogout } from "@/lib/store/logout";
 import { cn } from "@/lib/utils";
-import {  ShoppingBag, User } from "lucide-react";
+import { Menu, ShoppingBag, User, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useSidebar } from "@/components/ui/sidebar";
 import CartDrawer from "./CartDrawer";
 import SearchBar from "./global/SearchBarComponent";
 
@@ -37,11 +38,14 @@ export function SiteHeader() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const { openMobile, setOpenMobile, isMobile } = useSidebar();
 
   const handleLogout = async () => {
     await performAppLogout(dispatch);
     router.push("/login");
   };
+
+  const toggleMobileMenu = () => setOpenMobile(!openMobile);
 
   return (
     <motion.header
@@ -52,7 +56,41 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
-          <SidebarTrigger className="-ml-2 text-muted-foreground transition-colors hover:text-foreground md:hidden" />
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleMobileMenu}
+              className="-ml-2 relative h-9 w-9 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+              aria-label="Toggle mobile menu"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {openMobile ? (
+                  <motion.span
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <X className="h-5 w-5" />
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="open"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <Menu className="h-5 w-5" />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </Button>
+          )}
           <Link
             href="/"
             className="group flex items-center gap-2 transition-transform duration-200 hover:scale-[1.02]"

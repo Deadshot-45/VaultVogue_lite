@@ -32,19 +32,19 @@ export function Providers({ children }: Props) {
   }, []);
 
   return (
-    <ReduxProvider store={store}>
-      <PersistGate
-        loading={
-          <div className="h-screen flex items-center justify-center">
-            <Loader  />
-          </div>
-        }
-        persistor={persistor}
-      >
-        <ErrorBoundary>
-          <AuthInitializer />
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider attribute="class" defaultTheme="dark">
+    <ThemeProvider attribute="class" defaultTheme="dark">
+      <ReduxProvider store={store}>
+        <PersistGate
+          loading={
+            <div className="h-screen flex items-center justify-center">
+              <Loader  />
+            </div>
+          }
+          persistor={persistor}
+        >
+          <ErrorBoundary>
+            <AuthInitializer />
+            <QueryClientProvider client={queryClient}>
               <SidebarProvider>
                 <div>
                   <Toaster
@@ -66,10 +66,10 @@ export function Providers({ children }: Props) {
                 </div>
                 {children}
               </SidebarProvider>
-            </ThemeProvider>
-          </QueryClientProvider>
-        </ErrorBoundary>
-      </PersistGate>
-    </ReduxProvider>
+            </QueryClientProvider>
+          </ErrorBoundary>
+        </PersistGate>
+      </ReduxProvider>
+    </ThemeProvider>
   );
 }

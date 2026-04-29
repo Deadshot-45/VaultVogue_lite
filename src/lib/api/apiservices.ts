@@ -48,13 +48,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    const status = error.response?.status;
+
     // Handle unauthorized (401), forbidden (403), etc.
-    if (error.response?.status === 401) {
+    if (status === 401) {
       // Logic for logout or re-auth can go here
-      console.warn("Unauthorized! Redirecting to login...");
+      console.warn("Unauthorized API call. Token may be missing or expired.");
+      return Promise.reject(error);
     }
 
-    const status = error.response?.status;
     const errorContext = status
       ? `API Error: ${status}`
       : `API Network Error: ${error.message || "Unknown"}`;

@@ -8,6 +8,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { ArrowRight, Star, Truck, Shield, RefreshCw } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import ProductCard from "@/components/products/ProductCard";
 
 interface Product {
   _id: string;
@@ -187,6 +188,8 @@ export default function Home({ recentProducts = [] }: HomeProps) {
             ))}
           </motion.div>
         </motion.section>
+
+        <ProductCard />
 
         {/* New Arrivals */}
         <motion.section variants={itemVariants} className="space-y-8">

@@ -87,7 +87,7 @@ const mapProduct = (p: ApiProduct): UIProduct => {
 
     lowStockThreshold: 5, // or from backend if available
 
-    image: p.images?.[0]?.url ?? "",
+    image: p.images?.find((img) => img.isPrimary)?.url ?? p.images?.[0]?.url ?? "",
     category: "unknown", // ⚠️ map properly if backend has category
 
     description: p.description,

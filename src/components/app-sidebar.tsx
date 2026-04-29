@@ -1,22 +1,19 @@
-import * as React from "react";
 import {
   IconBrandTabler,
   IconChartBar,
   IconDashboard,
-  IconDatabase,
-  IconFileWord,
   IconFolder,
   IconHelp,
   IconListDetails,
-  IconReport,
   IconSearch,
   IconSettings,
-  // IconShoppingBag,
+  IconTag,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import * as React from "react";
 
-import { NavDocuments } from "@/components/nav-documents";
+// import { NavDocuments } from "@/components/nav-documents";
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
@@ -58,46 +55,47 @@ const data = {
       url: "/kids",
       icon: IconFolder,
     },
-    // {
-    //   title: "Cart",
-    //   url: "/carts",
-    //   icon: IconShoppingBag,
-    // },
+    {
+      title: "Sale",
+      url: "/sale",
+      icon: IconTag,
+      destructive: true,
+    },
   ],
   navSecondary: [
     {
       title: "Search",
-      url: "#",
+      url: "/search",
       icon: IconSearch,
     },
     {
       title: "Get Help",
-      url: "#",
+      url: "/help",
       icon: IconHelp,
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/account",
       icon: IconSettings,
     },
   ],
-  documents: [
-    {
-      name: "New Arrivals",
-      url: "#",
-      icon: IconDatabase,
-    },
-    {
-      name: "Best Sellers",
-      url: "#",
-      icon: IconReport,
-    },
-    {
-      name: "Sale Edit",
-      url: "#",
-      icon: IconFileWord,
-    },
-  ],
+  // documents: [
+  //   {
+  //     name: "New Arrivals",
+  //     url: "/new-arrivals",
+  //     icon: IconDatabase,
+  //   },
+  //   {
+  //     name: "Best Sellers",
+  //     url: "/best-sellers",
+  //     icon: IconReport,
+  //   },
+  //   {
+  //     name: "Sale",
+  //     url: "/sale",
+  //     icon: IconFileWord,
+  //   },
+  // ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -153,7 +151,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="no-scrollbar">
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
+        {/* <NavDocuments items={data.documents} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

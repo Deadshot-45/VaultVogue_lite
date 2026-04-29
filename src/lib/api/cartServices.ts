@@ -75,6 +75,8 @@ export interface UpdateCartPayload {
 
 export const cartService = {
   getCartDetails: async (): Promise<CartResponse> => {
+    const token = getAuthCookie();
+    if (!token) return { success: false, code: "UNAUTHORIZED", data: [] };
     const response = await api.get<CartResponse>("/api/cartController/getCart");
     return response.data;
   },

@@ -38,6 +38,7 @@ if (apiUrl) {
 const nextConfig = {
   images: {
     remotePatterns,
+    unoptimized: true,
   },
   allowedDevOrigins: ["192.168.6.167", "192.168.6.151"],
 };
