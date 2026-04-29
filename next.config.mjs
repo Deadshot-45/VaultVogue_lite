@@ -41,6 +41,9 @@ const nextConfig = {
     unoptimized: true,
   },
   allowedDevOrigins: ["192.168.6.167", "192.168.6.151"],
+  experimental: {
+    optimizePackageImports: ["lucide-react", "@tabler/icons-react", "react-icons"],
+  },
 };
 
 export default nextConfig;
