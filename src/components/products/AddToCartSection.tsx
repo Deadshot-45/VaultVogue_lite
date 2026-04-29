@@ -102,7 +102,7 @@ export const AddToCartSection = ({
         className="w-full"
       />
 
-      <Button variant="outline" className="w-full">
+      <Button variant="outline" className="w-full h-11 transition-all duration-200 active:scale-95 hover:bg-muted/50 rounded-xl">
         Buy Now
       </Button>
     </div>

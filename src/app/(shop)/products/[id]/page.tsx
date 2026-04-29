@@ -6,7 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Product } from "@/lib/api/productService";
 import { serverFetch } from "@/lib/api/serverApi";
 import Link from "next/link";
-
+import { Suspense } from "react";
+import { Suggestions } from "@/components/products/Suggestions";
 type Response = {
   success: string;
   message: string;
@@ -98,29 +99,15 @@ export default async function ProductPage({ params }: PageProps) {
   console.log(id);
 
   try {
-    const [response, suggestionResponse] = await Promise.all([
-      serverFetch<ResponseById>(`/products/getById/${id}`),
-      serverFetch<Response>(`/products/getAll?limit=4`),
-    ]);
-
-    console.log(response);
-    console.log(suggestionResponse);
+    const response = await serverFetch<ResponseById>(`/products/getById/${id}`);
 
     const rawProduct = response?.data;
-
-    console.log("rawProduct", rawProduct);
 
     if (!rawProduct?._id) {
       throw new Error("Product not found");
     }
 
     const product = normalizeProduct(rawProduct);
-    const suggestions = Array.isArray(suggestionResponse?.data)
-      ? suggestionResponse.data
-          .filter((item: Product) => item._id !== product.id)
-          .slice(0, 4)
-          .map(normalizeSuggestion)
-      : [];
 
     return (
       <div className="pb-8 px-0 md:px-4">
@@ -139,7 +126,14 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
         </div>
 
-        <ProductDetailsView product={product} suggestions={suggestions} />
+        <ProductDetailsView 
+          product={product} 
+          suggestionsSection={
+            <Suspense fallback={<div className="mt-16 animate-pulse h-40 bg-muted/20 rounded-xl"></div>}>
+              <ProductSuggestionsServer currentProductId={product.id} />
+            </Suspense>
+          } 
+        />
       </div>
     );
   } catch (error) {
@@ -166,5 +160,25 @@ export default async function ProductPage({ params }: PageProps) {
         </Card>
       </section>
     );
+  }
+}
+
+async function ProductSuggestionsServer({ currentProductId }: { currentProductId: string }) {
+  try {
+    const suggestionResponse = await serverFetch<Response>(`/products/getAll?limit=4`);
+    
+    const suggestions = Array.isArray(suggestionResponse?.data)
+      ? suggestionResponse.data
+          .filter((item: Product) => item._id !== currentProductId)
+          .slice(0, 4)
+          .map(normalizeSuggestion)
+      : [];
+
+    if (suggestions.length === 0) return null;
+
+    return <Suggestions items={suggestions} />;
+  } catch (error) {
+    console.error("Failed to fetch suggestions", error);
+    return null;
   }
 }

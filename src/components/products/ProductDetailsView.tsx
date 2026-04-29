@@ -327,10 +327,10 @@
 //           </div>
 
 //           <div className="flex items-center gap-3">
-//             <p className="text-3xl font-bold sale-text">₹{product.price}</p>
+//             <p className="text-3xl font-bold sale-text">${product.price}</p>
 //             {product.originalPrice && (
 //               <p className="text-lg line-through text-muted-foreground">
-//                 ₹{product.originalPrice}
+//                 ${product.originalPrice}
 //               </p>
 //             )}
 //           </div>
@@ -386,11 +386,11 @@
 //         <div className="sticky top-24 h-fit space-y-4 rounded-2xl border bg-background/95 p-6 shadow-lg">
 //           <div>
 //             <p className="text-2xl font-bold sale-text">
-//               ₹{product.price.toLocaleString()}
+//               ${product.price.toLocaleString()}
 //             </p>
 //             {product.originalPrice && (
 //               <p className="text-sm line-through text-muted-foreground">
-//                 ₹{product.originalPrice.toLocaleString()}
+//                 ${product.originalPrice.toLocaleString()}
 //               </p>
 //             )}
 //           </div>
@@ -490,7 +490,7 @@
 //                     {item.name}
 //                   </p>
 //                   <p className="text-sm sale-text font-semibold">
-//                     ₹{item.price}
+//                     ${item.price}
 //                   </p>
 //                 </div>
 //               </div>
@@ -563,6 +563,7 @@ import { AddToCartSection } from "./AddToCartSection";
 import { Suggestions } from "./Suggestions";
 import { Reviews } from "./Reviews";
 import { resolveProductImage } from "@/utility/utils";
+import { ShieldCheck, Truck } from "lucide-react";
 
 import {
   ProductCard,
@@ -575,10 +576,10 @@ const FALLBACK_IMAGE =
 
 export default function ProductDetailsView({
   product,
-  suggestions = [],
+  suggestionsSection,
 }: {
   product: ProductDetail;
-  suggestions: ProductCard[];
+  suggestionsSection: React.ReactNode;
 }) {
   const [selectedSize, setSelectedSize] = useState<string | null>(() => {
     return product?.variants?.[0]?.attributes?.size ?? null;
@@ -637,13 +638,28 @@ export default function ProductDetailsView({
         {/* LEFT */}
         <ProductGallery gallery={gallery} productName={product.name} />
 
-        {/* CENTER */}
-        <div className="space-y-6">
-          <h1 className="text-4xl font-bold">{product.name}</h1>
+        {/* CENTER & RIGHT - Main Content & Sticky Box */}
+        <div className="space-y-8 lg:pr-8">
+          <div className="space-y-4">
+            <p className="text-sm font-medium tracking-wider text-muted-foreground uppercase">{product.category}</p>
+            <h1 className="font-cormorant font-medium text-4xl leading-tight lg:text-6xl text-foreground">
+              {product.name}
+            </h1>
+            <p className="text-muted-foreground leading-relaxed">
+              {product.description}
+            </p>
+          </div>
 
-          <p className="text-muted-foreground">{product.description}</p>
-
-          <div className="text-3xl font-bold">${product.price.toFixed(2)}</div>
+          <div className="flex items-baseline gap-4">
+            <p className="text-4xl font-semibold sale-text">
+              ${product.price.toLocaleString()}
+            </p>
+            {product.originalPrice && product.originalPrice > product.price && (
+              <p className="text-xl line-through text-muted-foreground">
+                ${product.originalPrice.toLocaleString()}
+              </p>
+            )}
+          </div>
 
           <SizeSelector
             sizes={sizes}
@@ -651,28 +667,42 @@ export default function ProductDetailsView({
             onSelect={handleSizeSelect}
             stockMap={stockMap}
           />
-          {/* RIGHT */}
-          <div className="max-lg:hidden">
+          {/* TRUST BADGES */}
+          <div className="flex flex-wrap gap-6 text-sm text-muted-foreground pt-4 border-t">
+            <div className="flex items-center gap-2">
+              <Truck className="h-5 w-5 text-foreground/70" />
+              <span>Fast delivery available</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-foreground/70" />
+              <span>Secure checkout</span>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT (Sticky Buy Box on Desktop) */}
+        <div className="relative">
+          <div className="sticky top-24 space-y-6 rounded-2xl border bg-card/80 backdrop-blur-xl p-6 shadow-sm">
+            <div className="space-y-1">
+              <p className="text-sm text-muted-foreground">Total Price</p>
+              <p className="text-2xl font-semibold sale-text">
+                ${product.price.toLocaleString()}
+              </p>
+            </div>
             <AddToCartSection
               product={product}
               selectedVariant={selectedVariant}
             />
           </div>
         </div>
-
-        {/* RIGHT */}
-        <div className="lg:hidden">
-          <AddToCartSection
-            product={product}
-            selectedVariant={selectedVariant}
-          />
-        </div>
-        <div className="max-lg:hidden">
+        
+        {/* REVIEWS (Desktop Bottom) */}
+        <div className="max-lg:hidden lg:col-span-2">
           <Reviews />
         </div>
       </div>
 
-      <Suggestions items={suggestions} />
+      {suggestionsSection}
       {/* RIGHT */}
       <div className="lg:hidden">
         <Reviews />

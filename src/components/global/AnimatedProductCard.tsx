@@ -159,8 +159,8 @@ export default function AnimatedProductCard({
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      <Card className="w-full rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl bg-card">
-        <CardContent className="p-4 space-y-4">
+      <Card className="w-full rounded-2xl gap-2 shadow-md transition-all duration-300 hover:shadow-xl py-2 bg-card">
+        <CardContent className="px-2 sm:px-3 space-y-2">
           {/* Image */}
           <div className="relative w-full h-40 overflow-hidden rounded-xl cursor-pointer" onClick={handleViewProduct}>
             <Image
@@ -213,8 +213,8 @@ export default function AnimatedProductCard({
           </div>
 
           {/* Quantity + Price */}
-          <div className="flex items-center justify-between pt-2">
-            <div>
+          <div className="flex max-sm:flex-col gap-2 sm:items-center sm:justify-between pt-2">
+            <div className="max-sm:flex max-sm:items-center gap-2">
               <p className="text-xs text-muted-foreground">Quantity</p>
               <div className="flex items-center gap-2 mt-1">
                 <Button variant="outline" size="icon" className="h-8 w-8" onClick={handleDecrement} disabled={!cartItem}>
@@ -227,7 +227,7 @@ export default function AnimatedProductCard({
               </div>
             </div>
 
-            <div className="text-right">
+            <div className="sm:text-right text-left max-sm:flex max-sm:items-center gap-2">
               <p className="text-xs text-muted-foreground">Total</p>
               <p className="text-lg font-bold text-primary">${((product.maxPrice || 0) * Math.max(1, cartItem?.quantity || 1)).toFixed(2)}</p>
             </div>
@@ -235,7 +235,7 @@ export default function AnimatedProductCard({
         </CardContent>
 
         {/* Footer */}
-        <CardFooter className="flex gap-2 p-4 pt-0">
+        <CardFooter className="flex gap-2 sm:p-4 p-2 pt-0">
           <Button variant="outline" size="icon" onClick={handleWishlist} className={isWishlisted ? "text-red-500 border-red-500 hover:text-red-600 hover:border-red-600" : ""}>
             <Heart size={18} className={isWishlisted ? "fill-current" : ""} />
           </Button>
