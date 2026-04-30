@@ -157,11 +157,13 @@ export default function CreateAccountPage() {
     >
       <form className="space-y-5" onSubmit={handleSignup}>
         <div className="space-y-2">
-          <Label htmlFor="fullName">Full name</Label>
+          <Label htmlFor="fullName" className="text-sm font-medium">Full name</Label>
           <Input
             id="fullName"
             type="text"
             placeholder="Aarav Shah"
+            className="h-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-2"
+            style={{ "--tw-ring-color": "var(--gold-soft)" } as React.CSSProperties}
             value={form.fullName}
             onChange={handleChange("fullName")}
             aria-invalid={!!fieldErrors.fullName}
@@ -172,11 +174,13 @@ export default function CreateAccountPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="text-sm font-medium">Email</Label>
           <Input
             id="email"
             type="email"
             placeholder="you@example.com"
+            className="h-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-2"
+            style={{ "--tw-ring-color": "var(--gold-soft)" } as React.CSSProperties}
             value={form.email}
             onChange={handleChange("email")}
             aria-invalid={!!fieldErrors.email}
@@ -187,11 +191,13 @@ export default function CreateAccountPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phoneNumber">Phone number</Label>
+          <Label htmlFor="phoneNumber" className="text-sm font-medium">Phone number</Label>
           <Input
             id="phoneNumber"
             type="tel"
             placeholder="9876543210"
+            className="h-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-2"
+            style={{ "--tw-ring-color": "var(--gold-soft)" } as React.CSSProperties}
             value={form.phoneNumber}
             onChange={handleChange("phoneNumber")}
             aria-invalid={!!fieldErrors.phoneNumber}
@@ -204,22 +210,21 @@ export default function CreateAccountPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password" className="text-sm font-medium">Password</Label>
           <div className="relative">
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Create a password"
-              className="pr-11"
+              className="h-11 rounded-xl border-border/40 bg-background/50 pr-11 focus-visible:ring-2"
+              style={{ "--tw-ring-color": "var(--gold-soft)" } as React.CSSProperties}
               value={form.password}
               onChange={handleChange("password")}
               aria-invalid={!!fieldErrors.password}
             />
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-1 top-1/2 h-9 w-9 -translate-y-1/2 text-muted-foreground"
+              className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
               onClick={() => setShowPassword((prev) => !prev)}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
@@ -228,7 +233,7 @@ export default function CreateAccountPage() {
               ) : (
                 <Eye className="h-4 w-4" />
               )}
-            </Button>
+            </button>
           </div>
           {fieldErrors.password ? (
             <p className="text-sm text-destructive">{fieldErrors.password}</p>
@@ -236,22 +241,21 @@ export default function CreateAccountPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm password</Label>
+          <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm password</Label>
           <div className="relative">
             <Input
               id="confirmPassword"
               type={showPassword ? "text" : "password"}
               placeholder="Re-enter your password"
-              className="pr-11"
+              className="h-11 rounded-xl border-border/40 bg-background/50 pr-11 focus-visible:ring-2"
+              style={{ "--tw-ring-color": "var(--gold-soft)" } as React.CSSProperties}
               value={form.confirmPassword}
               onChange={handleChange("confirmPassword")}
               aria-invalid={!!fieldErrors.confirmPassword}
             />
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-1 top-1/2 h-9 w-9 -translate-y-1/2 text-muted-foreground"
+              className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
               onClick={() => setShowPassword((prev) => !prev)}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
@@ -260,7 +264,7 @@ export default function CreateAccountPage() {
               ) : (
                 <Eye className="h-4 w-4" />
               )}
-            </Button>
+            </button>
           </div>
           {fieldErrors.confirmPassword ? (
             <p className="text-sm text-destructive">
@@ -278,7 +282,11 @@ export default function CreateAccountPage() {
           />
           <span>
             I agree to the{" "}
-            <Link href="#" className="font-medium text-primary">
+            <Link
+              href="#"
+              className="font-medium transition-colors hover:opacity-70"
+              style={{ color: "var(--gold)" }}
+            >
               Terms and Conditions
             </Link>
           </span>
@@ -291,21 +299,27 @@ export default function CreateAccountPage() {
 
         {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
-        <Button className="w-full" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Creating Account..." : "Create Account"}
-        </Button>
-        <Button
-          type="reset"
-          variant="outline"
-          className="w-full"
-          onClick={() => {
-            setForm(initialState);
-            setFieldErrors({});
-            setError("");
-          }}
-        >
-          Reset
-        </Button>
+        <div className="flex flex-col gap-3 pt-2">
+          <button
+            className="h-11 w-full rounded-xl text-base font-medium text-white shadow-md transition-all duration-200 hover:shadow-lg active:scale-[0.98] disabled:opacity-50"
+            style={{ background: "var(--gold)" }}
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Creating Account..." : "Create Account"}
+          </button>
+          <button
+            type="reset"
+            className="h-11 w-full rounded-xl border border-border/40 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/50"
+            onClick={() => {
+              setForm(initialState);
+              setFieldErrors({});
+              setError("");
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </form>
     </AuthShell>
   );

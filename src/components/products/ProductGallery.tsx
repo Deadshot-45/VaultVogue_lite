@@ -24,12 +24,10 @@ export const ProductGallery = ({
     });
   }, [gallery]);
 
-  console.log(gallery);
-
   return (
     <div className="space-y-6">
       {/* Main Image */}
-      <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-muted/20 border shadow-sm">
+      <div className="relative aspect-4/5 rounded-3xl overflow-hidden bg-muted/20 border shadow-sm">
         <Image
           key={active} // forces re-render for basic fade, but we can also do css transitions
           src={active}
@@ -42,7 +40,7 @@ export const ProductGallery = ({
       </div>
 
       {/* Thumbnails */}
-      <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+      <div className="flex gap-3 p-1 overflow-x-auto pb-2 no-scrollbar">
         {gallery.map((img, i) => {
           const isActive = active === img;
           return (

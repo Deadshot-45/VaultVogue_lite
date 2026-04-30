@@ -27,52 +27,79 @@ export default function OrdersPage() {
 
   return (
     <ProtectedPage>
-      <section className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="rounded-[1.75rem] border bg-background/75 p-6 shadow-sm backdrop-blur-xl">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
-                Orders
-              </p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight">
-                Track your recent purchases
-              </h1>
-            </div>
-            <Button
-              variant="outline"
-              className="rounded-full"
-              onClick={() => router.push("/")}
-            >
-              Continue Shopping
-              <ArrowUpRight className="ml-2 h-4 w-4" />
-            </Button>
+      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        {/* Editorial Heading */}
+        <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="section-label">Fulfillment History</p>
+            <div className="gold-divider" />
+            <h1 className="mt-5 font-cormorant text-4xl font-light text-foreground lg:text-5xl">
+              Your Orders
+            </h1>
           </div>
+          <Button
+            variant="outline"
+            className="hidden rounded-full sm:flex"
+            onClick={() => router.push("/")}
+          >
+            Continue Shopping
+            <ArrowUpRight className="ml-2 h-4 w-4" />
+          </Button>
         </div>
 
-        <div className="mt-6 grid gap-4">
+        <div className="grid gap-6">
           {orders.map((order) => (
-            <Card key={order.id} className="rounded-[1.5rem]">
-              <CardHeader className="flex flex-row items-start justify-between gap-4">
-                <div>
-                  <CardTitle className="text-lg">{order.id}</CardTitle>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Ordered on {order.date}
-                  </p>
+            <div
+              key={order.id}
+              className="overflow-hidden rounded-2xl border border-border/40 bg-background/50 transition-all hover:border-foreground/10"
+            >
+              <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-5">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-muted/30">
+                    <PackageCheck className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium">{order.id}</h3>
+                    <p className="text-sm text-muted-foreground">Placed on {order.date}</p>
+                  </div>
                 </div>
-                <Badge variant="secondary">{order.status}</Badge>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <PackageCheck className="h-5 w-5 text-primary" />
-                  Your order is in the current fulfillment timeline.
+
+                <div className="flex items-center gap-6 sm:gap-10">
+                  <div className="text-right">
+                    <p className="text-lg font-semibold">{order.total}</p>
+                    <Badge variant="secondary" className="rounded-full bg-muted/60 font-normal shadow-none">
+                      {order.status}
+                    </Badge>
+                  </div>
+                  <button className="rounded-full border border-border/40 px-6 py-2 text-sm font-medium transition-colors hover:bg-muted/50">
+                    Track Order
+                  </button>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="font-semibold">{order.total}</span>
-                  <Button variant="outline">View Details</Button>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+
+              {/* Status bar (visual only) */}
+              <div className="h-1 w-full bg-muted/30">
+                <div
+                  className="h-full"
+                  style={{
+                    width: order.status === "Delivered" ? "100%" : "45%",
+                    background: "var(--gold)",
+                  }}
+                />
+              </div>
+            </div>
           ))}
+        </div>
+
+        <div className="mt-12 text-center sm:hidden">
+          <Button
+            variant="outline"
+            className="w-full rounded-full"
+            onClick={() => router.push("/")}
+          >
+            Continue Shopping
+            <ArrowUpRight className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       </section>
     </ProtectedPage>

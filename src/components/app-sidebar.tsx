@@ -64,11 +64,6 @@ const data = {
   ],
   navSecondary: [
     {
-      title: "Search",
-      url: "/search",
-      icon: IconSearch,
-    },
-    {
       title: "Get Help",
       url: "/help",
       icon: IconHelp,
@@ -102,6 +97,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { isMobile, openMobile, setOpenMobile } = useSidebar();
   const previousPathname = React.useRef(pathname);
+  
 
   React.useEffect(() => {
     if (previousPathname.current !== pathname && isMobile && openMobile) {

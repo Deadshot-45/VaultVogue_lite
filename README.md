@@ -76,7 +76,7 @@ src/
 - `/kids`
 - `/carts`
 - `/login`
-- `/create-account`
+- `/register`
 
 ## Notes
 
@@ -90,4 +90,3 @@ This project is ready to deploy as a standard Next.js application. On platforms 
 
 - Build command: `npm run build`
 - Start command: `npm run start`
-

@@ -1,12 +1,11 @@
 "use client";
 
-// src/components/HeroBanner.tsx
 import { heroBanners } from "@/assets/data/homeSection";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const AUTO_SLIDE_INTERVAL = 6000;
 
@@ -22,11 +21,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(120,119,198,0.1),transparent_50%)] opacity-50" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,107,107,0.1),transparent_50%)] opacity-30" />
-
+    <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden">
       {heroBanners.map((banner, index) => (
         <AnimatePresence key={banner.id}>
           <motion.div
@@ -36,131 +31,106 @@ export default function HeroSection() {
               zIndex: index === current ? 10 : 0,
             }}
             exit={{ opacity: 0 }}
-            transition={{
-              duration: 0.7,
-              ease: "easeInOut",
-            }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
             className={cn(
-              "absolute top-0 inset-0 transition-opacity duration-700 ease-in-out",
+              "absolute inset-0",
               index === current ? "opacity-100 z-10" : "opacity-0 z-0",
             )}
           >
             {/* Background Image */}
-            <motion.div
-              className="h-full w-full bg-cover bg-center relative"
+            <div
+              className="h-full w-full bg-cover bg-center"
               style={{ backgroundImage: `url(${banner.image.src})` }}
-              initial={{ opacity: 0.95 }}
-              animate={{ opacity: index === current ? 1 : 0.95 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              {/* Enhanced Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              {/* Gradient overlays — warm tones */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
               <div className="relative mx-auto flex h-full max-w-7xl items-center px-6 lg:px-8">
                 <motion.div
-                  initial={{ y: 16, opacity: 0 }}
+                  initial={{ y: 24, opacity: 0 }}
                   animate={{
-                    y: index === current ? 0 : 16,
+                    y: index === current ? 0 : 24,
                     opacity: index === current ? 1 : 0,
                   }}
                   transition={{
-                    duration: 0.55,
-                    delay: index === current ? 0.2 : 0,
+                    duration: 0.6,
+                    delay: index === current ? 0.25 : 0,
                     ease: "easeOut",
                   }}
                   className="max-w-2xl text-white space-y-6"
                 >
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-background/60" />
-                    <span className="text-sm font-medium text-foreground bg-background/60 px-3 py-1 rounded-full">
-                      New Collection
-                    </span>
-                  </div>
+                  {/* Label */}
+                  <p className="text-xs font-medium tracking-[0.25em] uppercase text-white/60">
+                    New Collection
+                  </p>
 
-                  <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight">
+                  {/* Headline — Cormorant serif */}
+                  <h1 className="font-cormorant text-5xl font-light leading-[1.08] tracking-tight md:text-7xl lg:text-8xl">
                     {banner.title}
                   </h1>
 
-                  <p className="text-xl text-white/90 max-w-lg leading-relaxed">
+                  <p className="text-lg text-white/80 max-w-lg leading-relaxed">
                     {banner.subtitle}
                   </p>
 
-                  <div className="flex flex-col gap-4 pt-4 sm:flex-row">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                  <div className="flex flex-col gap-4 pt-2 sm:flex-row">
+                    <Button
+                      size="lg"
+                      className="rounded-full px-8 py-4 text-base font-medium shadow-xl transition-all duration-200 active:scale-95"
+                      style={{
+                        background: "var(--gold)",
+                        color: "#fff",
+                      }}
                     >
-                      <Button
-                        size="lg"
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl hover:shadow-primary/25 px-8 py-4 text-lg font-semibold rounded-full"
-                      >
-                        Shop Now
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </motion.div>
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      Shop Now
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="rounded-full bg-white/10 border-white/25 backdrop-blur-sm px-8 py-4 text-base font-medium transition-all duration-200 active:scale-95"
                     >
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="border-white/30 text-foreground hover:bg-white/10 backdrop-blur-sm px-8 py-4 text-lg font-semibold rounded-full"
-                      >
-                        Explore Collection
-                      </Button>
-                    </motion.div>
+                      Explore Collection
+                    </Button>
                   </div>
                 </motion.div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </AnimatePresence>
       ))}
 
-      {/* Enhanced Dots Indicator */}
+      {/* Slide indicators */}
       <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-3">
         {heroBanners.map((_, index) => (
-          <motion.button
+          <button
             key={index + 1}
             onClick={() => setCurrent(index)}
             className={cn(
-              "relative h-3 w-3 rounded-full transition-all duration-300",
+              "h-2 rounded-full transition-all duration-500",
               index === current
-                ? "bg-white shadow-lg"
-                : "bg-white/40 hover:bg-white/60",
+                ? "w-8 bg-white"
+                : "w-2 bg-white/35 hover:bg-white/55",
             )}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {index === current && (
-              <motion.div
-                className="absolute inset-0 rounded-full bg-white"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            )}
-          </motion.button>
+          />
         ))}
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2, duration: 0.6 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.5, duration: 0.6 }}
         className="absolute bottom-6 right-6 z-20"
       >
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-2 text-white/60"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-2 text-white/40"
         >
-          <span className="text-xs font-medium">Scroll</span>
-          <div className="w-px h-8 bg-white/40" />
-          <div className="w-2 h-2 border-r-2 border-b-2 border-white/40 rotate-45" />
+          <span className="text-[10px] font-medium tracking-widest uppercase">Scroll</span>
+          <div className="w-px h-6 bg-white/30" />
         </motion.div>
       </motion.div>
     </section>

@@ -18,24 +18,30 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-100 w-full flex-col items-center justify-center gap-4 p-6 text-center">
-      <h1 className="text-3xl font-semibold">Something went wrong!</h1>
-      <p className="text-muted-foreground">{error.message || "An unexpected error occurred."}</p>
+    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-8 p-6 py-24 text-center">
+      <p className="section-label">System Error</p>
+      <div className="gold-divider mx-auto" />
+      <h1 className="mt-4 font-cormorant text-4xl font-light tracking-tight text-foreground md:text-6xl">
+        Something went wrong
+      </h1>
+      <p className="max-w-md text-sm leading-7 text-muted-foreground">
+        {error.message || "An unexpected error occurred while loading this collection."}
+      </p>
 
-      <div className="flex gap-3">
-        <Button
+      <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+        <button
           onClick={() => reset()}
-          className="rounded-md border px-4 py-2 text-sm"
+          className="rounded-full px-10 py-3 text-sm font-medium text-white transition-all active:scale-95"
+          style={{ background: "var(--gold)" }}
         >
-          Try again
-        </Button>
-
-        <Button
+          Try Again
+        </button>
+        <button
           onClick={() => router.push("/")}
-          className="rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground"
+          className="rounded-full border border-border/40 px-10 py-3 text-sm font-medium transition-colors hover:bg-muted/50"
         >
-          Go Home
-        </Button>
+          Return Home
+        </button>
       </div>
     </div>
   );

@@ -26,37 +26,53 @@ const MensPage: React.FC = () => {
       : allProducts.filter((p) => p.category === selectedCategory);
 
   return (
-    <section className="w-full py-12">
+    <section className="w-full py-12 lg:py-16">
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-6 text-3xl font-bold text-secondary-foreground">
-          Men&apos;s Collection
-        </h2>
+        {/* Editorial heading */}
+        <div className="mb-10">
+          <p className="section-label">For Him</p>
+          <div className="gold-divider" />
+          <h1 className="mt-5 font-cormorant text-4xl font-light text-foreground lg:text-5xl">
+            Men&apos;s Collection
+          </h1>
+        </div>
 
-        <div className="mb-8 flex flex-wrap gap-3">
-          {categories.map((cat) => (
-            <Button
-              key={cat}
-              variant={selectedCategory === cat ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedCategory(cat)}
-            >
-              {cat}
-            </Button>
-          ))}
+        {/* Filter pills */}
+        <div className="mb-10 flex flex-wrap gap-2">
+          {categories.map((cat) => {
+            const isActive = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 active:scale-95 ${
+                  isActive
+                    ? "text-white shadow-sm"
+                    : "border border-border/50 text-muted-foreground hover:text-foreground hover:border-border"
+                }`}
+                style={isActive ? { background: "var(--gold)" } : undefined}
+              >
+                {cat}
+              </button>
+            );
+          })}
         </div>
 
         {isLoading ? (
           <div className="flex h-[70vh] items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--gold)" }} />
           </div>
         ) : (
           <ProductGrid products={filteredProducts} />
         )}
 
         {hasNextPage && (
-          <div className="mt-8 text-center">
+          <div className="mt-12 text-center">
             <Button
-              variant="secondary"
+              variant="outline"
+              size="lg"
+              className="rounded-full px-8 transition-all duration-200 active:scale-95"
+              style={{ borderColor: "var(--gold-soft)" }}
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
             >

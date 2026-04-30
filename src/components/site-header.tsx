@@ -13,7 +13,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { performAppLogout } from "@/lib/store/logout";
 import { cn } from "@/lib/utils";
@@ -25,6 +24,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSidebar } from "@/components/ui/sidebar";
 import CartDrawer from "./CartDrawer";
 import SearchBar from "./global/SearchBarComponent";
+import { useState } from "react";
+import { LogoutDialog } from "./auth/LogoutDialog";
 
 export function SiteHeader() {
   const NAV_ITEMS = [
@@ -40,6 +41,8 @@ export function SiteHeader() {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
 
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+
   const handleLogout = async () => {
     await performAppLogout(dispatch);
     router.push("/login");
@@ -49,12 +52,14 @@ export function SiteHeader() {
 
   return (
     <motion.header
-      initial={{ y: -100, opacity: 0 }}
+      initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="sticky top-0 z-50 h-(--header-height) w-full border-b border-white/10 sale-theme backdrop-blur-xl transition-all duration-300 ease-in-out supports-[backdrop-filter]:bg-background/60"
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="sticky top-0 z-50 h-(--header-height) w-full border-b sale-theme backdrop-blur-xl transition-all duration-300 supports-[backdrop-filter]:bg-background/60"
+      style={{ borderColor: "var(--gold-faint)" }}
     >
       <div className="mx-auto flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Left — Hamburger + Brand */}
         <div className="flex items-center gap-4">
           {isMobile && (
             <Button
@@ -91,23 +96,25 @@ export function SiteHeader() {
               </AnimatePresence>
             </Button>
           )}
+
+          {/* Gold serif wordmark */}
           <Link
             href="/"
-            className="group flex items-center gap-2 transition-transform duration-200 hover:scale-[1.02]"
+            className="group flex items-center gap-2.5 transition-opacity duration-200 hover:opacity-80"
           >
-            <motion.div
-              className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            <span
+              className="font-cormorant text-2xl font-semibold italic tracking-tight"
+              style={{ color: "var(--gold)" }}
             >
-              <span className="text-lg font-bold">V</span>
-            </motion.div>
-            <h1 className="bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-xl font-bold tracking-tight text-transparent">
+              V
+            </span>
+            <h1 className="font-cormorant text-xl font-medium tracking-wide text-foreground">
               Vault Vogue
             </h1>
           </Link>
         </div>
 
+        {/* Center — Nav */}
         <nav className="hidden flex-1 justify-center px-8 md:flex">
           <NavigationMenu>
             <NavigationMenuList className="gap-8">
@@ -117,15 +124,23 @@ export function SiteHeader() {
                     <Link
                       href={href}
                       className={cn(
-                        "relative text-sm font-medium transition-colors hover:text-primary",
+                        "relative text-sm font-medium transition-colors duration-200",
                         destructive
                           ? "text-destructive"
-                          : "text-muted-foreground",
+                          : "text-muted-foreground hover:text-foreground",
                         pathname === href || pathname?.startsWith(`${href}/`)
-                          ? "bg-muted/10 text-primary"
+                          ? "text-foreground"
                           : "",
-                        "after:absolute after:-bottom-5 after:left-0 after:h-0.5 after:w-full after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:scale-x-100",
+                        // Gold underline on hover
+                        "after:absolute after:-bottom-5 after:left-0 after:h-px after:w-full after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100",
+                        pathname === href || pathname?.startsWith(`${href}/`)
+                          ? "after:scale-x-100"
+                          : "",
                       )}
+                      style={{
+                        // @ts-expect-error CSS custom property
+                        "--tw-after-bg": "var(--gold)",
+                      }}
                     >
                       {label}
                     </Link>
@@ -136,19 +151,14 @@ export function SiteHeader() {
           </NavigationMenu>
         </nav>
 
+        {/* Right — Actions */}
         <div className="flex items-center gap-2 lg:gap-4">
           <div className="relative hidden max-w-60 group lg:flex">
             <SearchBar />
-            {/* <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" /> */}
-            {/* <Input
-              placeholder="Search products..."
-              className="h-9 w-full rounded-full border-transparent bg-muted/50 pl-9 pr-4 text-sm transition-all focus:bg-background focus:ring-2 focus:ring-primary/20 group-hover:bg-muted"
-            /> */}
           </div>
 
           <div className="flex items-center gap-1">
             <ModeToggle />
-
             <CartDrawer />
 
             <DropdownMenu>
@@ -163,7 +173,8 @@ export function SiteHeader() {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
-                className="mt-2 w-50 bg-background/95 backdrop-blur-xl border-white/10"
+                className="mt-2 w-50 bg-background/95 backdrop-blur-xl"
+                style={{ borderColor: "var(--gold-faint)" }}
               >
                 {isAuthenticated ? (
                   <>
@@ -185,10 +196,13 @@ export function SiteHeader() {
                         <span>Orders</span>
                       </Link>
                     </DropdownMenuItem>
-                    <div className="my-1 border-t border-white/10" />
+                    <div
+                      className="my-1 border-t"
+                      style={{ borderColor: "var(--gold-faint)" }}
+                    />
                     <DropdownMenuItem
                       className="cursor-pointer text-destructive focus:text-destructive hover:bg-destructive/10"
-                      onClick={handleLogout}
+                      onClick={() => setIsLogoutDialogOpen(true)}
                     >
                       Logout
                     </DropdownMenuItem>
@@ -209,7 +223,7 @@ export function SiteHeader() {
                       className="cursor-pointer hover:bg-muted/50"
                     >
                       <Link
-                        href="/create-account"
+                        href="/register"
                         className="flex items-center gap-2"
                       >
                         <User className="h-4 w-4" />
@@ -223,6 +237,11 @@ export function SiteHeader() {
           </div>
         </div>
       </div>
+      <LogoutDialog
+        isOpen={isLogoutDialogOpen}
+        onClose={() => setIsLogoutDialogOpen(false)}
+        onConfirm={handleLogout}
+      />
     </motion.header>
   );
 }

@@ -127,12 +127,13 @@ export default function LoginPage() {
     >
       <form className="space-y-5" onSubmit={handleLogin}>
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="text-sm font-medium">Email</Label>
           <Input
             id="email"
             type="email"
             placeholder="you@example.com"
-            className="h-11 rounded-lg focus-visible:ring-2 focus-visible:ring-primary/40"
+            className="h-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-2"
+            style={{ "--tw-ring-color": "var(--gold-soft)" } as React.CSSProperties}
             value={form.email}
             onChange={handleChange("email")}
             aria-invalid={!!fieldErrors.email}
@@ -143,13 +144,14 @@ export default function LoginPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password" className="text-sm font-medium">Password</Label>
           <div className="relative">
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
-              className="h-11 rounded-lg pr-11 focus-visible:ring-2 focus-visible:ring-primary/40"
+              className="h-11 rounded-xl border-border/40 bg-background/50 pr-11 focus-visible:ring-2"
+              style={{ "--tw-ring-color": "var(--gold-soft)" } as React.CSSProperties}
               value={form.password}
               onChange={handleChange("password")}
               aria-invalid={!!fieldErrors.password}
@@ -185,20 +187,25 @@ export default function LoginPage() {
             Remember me
           </label>
 
-          <Link href="#" className="text-sm font-medium text-primary">
+          <Link
+            href="#"
+            className="text-sm font-medium transition-colors duration-200 hover:opacity-70"
+            style={{ color: "var(--gold)" }}
+          >
             Forgot password?
           </Link>
         </div>
 
         {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
-        <Button
-          className="h-11 w-full rounded-xl text-base font-semibold shadow-md transition hover:shadow-lg"
+        <button
+          className="h-11 w-full rounded-xl text-base font-medium text-white shadow-md transition-all duration-200 hover:shadow-lg active:scale-[0.98] disabled:opacity-50"
+          style={{ background: "var(--gold)" }}
           type="submit"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Signing In..." : "Sign In"}
-        </Button>
+        </button>
       </form>
     </AuthShell>
   );

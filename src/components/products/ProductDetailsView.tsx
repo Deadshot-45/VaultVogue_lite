@@ -560,13 +560,11 @@ import { useMemo, useState, useCallback } from "react";
 import { ProductGallery } from "./ProductGallery";
 import { SizeSelector } from "./SizeSelector";
 import { AddToCartSection } from "./AddToCartSection";
-import { Suggestions } from "./Suggestions";
 import { Reviews } from "./Reviews";
 import { resolveProductImage } from "@/utility/utils";
 import { ShieldCheck, Truck } from "lucide-react";
 
 import {
-  ProductCard,
   ProductDetail,
   ProductVariant,
 } from "@/utility/types/productVariant";

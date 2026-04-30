@@ -17,24 +17,32 @@ const KidsPage: React.FC = () => {
   const products = data?.pages.flat() ?? [];
 
   return (
-    <section className="w-full py-12">
+    <section className="w-full py-12 lg:py-16">
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-6 text-3xl font-bold text-secondary-foreground">
-          Kid&apos;s Section
-        </h2>
+        {/* Editorial heading */}
+        <div className="mb-10">
+          <p className="section-label">Little Ones</p>
+          <div className="gold-divider" />
+          <h1 className="mt-5 font-cormorant text-4xl font-light text-foreground lg:text-5xl">
+            Kid&apos;s Collection
+          </h1>
+        </div>
 
         {isLoading ? (
           <div className="flex h-[70vh] items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--gold)" }} />
           </div>
         ) : (
           <ProductGrid products={products} />
         )}
 
         {hasNextPage && (
-          <div className="mt-8 text-center">
+          <div className="mt-12 text-center">
             <Button
-              variant="secondary"
+              variant="outline"
+              size="lg"
+              className="rounded-full px-8 transition-all duration-200 active:scale-95"
+              style={{ borderColor: "var(--gold-soft)" }}
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
             >

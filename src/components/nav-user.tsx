@@ -10,6 +10,8 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { LogoutDialog } from "@/components/auth/LogoutDialog";
 
 import {
   Avatar,
@@ -47,6 +49,8 @@ export function NavUser({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
 
   const handleLogout = async () => {
     await performAppLogout(dispatch);
@@ -122,7 +126,7 @@ export function NavUser({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="cursor-pointer text-destructive focus:text-destructive hover:bg-destructive/10"
-                  onClick={handleLogout}
+                  onClick={() => setIsLogoutDialogOpen(true)}
                 >
                   <IconLogout className="size-4" />
                   <span>Log out</span>
@@ -139,7 +143,7 @@ export function NavUser({
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild className="cursor-pointer">
                     <Link
-                      href="/create-account"
+                      href="/register"
                       className="flex items-center gap-2"
                     >
                       <IconUserPlus className="size-4" />
@@ -152,6 +156,12 @@ export function NavUser({
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
+
+      <LogoutDialog
+        isOpen={isLogoutDialogOpen}
+        onClose={() => setIsLogoutDialogOpen(false)}
+        onConfirm={handleLogout}
+      />
     </SidebarMenu>
   );
 }

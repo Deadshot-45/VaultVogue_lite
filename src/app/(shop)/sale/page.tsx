@@ -32,95 +32,106 @@ const products = [
 
 export default function Page() {
   return (
-    <div className="sale-theme min-h-screen bg-linear-to-b from-sale-red-50 to-white">
-      <section className="relative overflow-hidden py-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: -40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <Badge className="mb-4 sale-primary px-4 py-1">
-            Vault Vogue Sale Edit
-          </Badge>
-
-          <h1 className="text-4xl font-bold tracking-tight md:text-6xl">
-            Seasonal picks with{" "}
-            <span className="sale-text">member-favorite pricing</span>
+    <div className="min-h-screen">
+      <section className="relative overflow-hidden py-24 text-center">
+        {/* Editorial Heading */}
+        <div className="mx-auto max-w-4xl px-4">
+          <p className="section-label inline-block">The Sale Edit</p>
+          <div className="gold-divider mx-auto mt-4" />
+          <h1 className="mt-8 font-cormorant text-5xl font-light tracking-tight text-foreground md:text-7xl">
+            Seasonal picks with <br />
+            <span style={{ color: "var(--gold)" }}>member-exclusive</span> pricing
           </h1>
-
-          <p className="mt-4 text-lg text-gray-600">
-            Explore discounted jackets, sneakers, and everyday statement pieces
-            picked for the current Vault Vogue collection.
+          <p className="mx-auto mt-8 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+            Explore a curated selection of archival pieces and seasonal favorites, 
+            offering restrained luxury at an exceptional value for our members.
           </p>
+          <button
+            className="mt-10 rounded-full px-10 py-3 text-sm font-medium text-white transition-all hover:shadow-lg active:scale-95"
+            style={{ background: "var(--gold)" }}
+          >
+            Explore the Collection
+          </button>
+        </div>
 
-          <Button className="mt-6 rounded-xl sale-primary px-6 py-3 text-lg">
-            Browse Sale Styles
-          </Button>
-        </motion.div>
+        {/* Decorative background orb */}
+        <div 
+          className="pointer-events-none absolute left-1/2 top-0 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] opacity-10"
+          style={{ background: "var(--gold)" }}
+        />
       </section>
 
-      <section className="px-6 pb-16 md:px-12">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product, i) => (
             <motion.div
               key={product.id}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
+              className="group"
             >
-              <Card className="overflow-hidden rounded-2xl shadow-lg transition hover:shadow-xl">
-                <div className="relative">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="h-64 w-full object-cover"
-                  />
-
-                  <Badge className="absolute left-3 top-3 sale-primary">
-                    <Flame className="mr-1 h-4 w-4" /> Trending Drop
+              <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted/20">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute left-4 top-4">
+                  <Badge 
+                    className="rounded-full border-none px-3 py-1 text-[10px] font-medium tracking-wider text-white shadow-sm"
+                    style={{ background: "var(--gold)" }}
+                  >
+                    SALE
                   </Badge>
                 </div>
+              </div>
 
-                <CardContent className="p-4">
-                  <h3 className="text-lg font-semibold">{product.name}</h3>
-
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="text-xl font-bold text-sale-red-500">
-                      ${product.price}
-                    </span>
-                    <span className="text-gray-400 line-through">
-                      ${product.original}
-                    </span>
-                  </div>
-
-                  <Button className="mt-4 w-full rounded-xl">
-                    <ShoppingCart className="mr-2 h-4 w-4" /> Add Sale Item
-                  </Button>
-                </CardContent>
-              </Card>
+              <div className="mt-6 space-y-2">
+                <h3 className="font-cormorant text-xl font-light text-foreground group-hover:underline underline-offset-4">
+                  {product.name}
+                </h3>
+                <div className="flex items-center gap-3">
+                  <span className="text-lg font-medium" style={{ color: "var(--gold)" }}>
+                    ₹{product.price}
+                  </span>
+                  <span className="text-sm text-muted-foreground line-through opacity-60">
+                    ₹{product.original}
+                  </span>
+                </div>
+                <button
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-border/40 py-2.5 text-sm font-medium transition-colors hover:bg-muted/50"
+                >
+                  <ShoppingCart className="h-4 w-4" />
+                  Add to Cart
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      <section className="mx-6 mb-16 md:mx-12">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="rounded-3xl bg-sale-red-500 p-10 text-center text-white dark:bg-sale-red-200"
+      {/* Footer Banner */}
+      <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+        <div 
+          className="relative overflow-hidden rounded-[2.5rem] p-12 text-center text-white sm:p-20"
+          style={{ background: "var(--gold)" }}
         >
-          <h2 className="text-3xl font-bold">Refresh Your Wardrobe</h2>
-          <p className="mt-2 text-sale-red-100">
-            Build your next look with marked-down essentials from men, women,
-            and kids collections before the edit rotates.
-          </p>
-
-          <Button className="mt-6 rounded-xl bg-white px-6 py-3 text-sale-red-500 hover:bg-gray-100">
-            Explore the Full Sale
-          </Button>
-        </motion.div>
+          <div className="relative z-10">
+            <h2 className="font-cormorant text-4xl font-light sm:text-5xl">Refresh Your Wardrobe</h2>
+            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 opacity-90 sm:text-base">
+              Build your next look with marked-down essentials from across our 
+              collections before the selection rotates.
+            </p>
+            <button className="mt-10 rounded-full bg-white px-10 py-3 text-sm font-medium text-black transition-transform active:scale-95">
+              Explore All Offers
+            </button>
+          </div>
+          
+          {/* Subtle pattern overlay */}
+          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "24px 24px" }} />
+        </div>
       </section>
     </div>
   );

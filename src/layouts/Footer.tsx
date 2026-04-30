@@ -3,13 +3,18 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-ring sale-theme">
-      <div className="mx-auto w-full overflow-x-hidden px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+    <footer className="sale-theme" style={{ borderTop: "1px solid var(--gold-faint)" }}>
+      <div className="mx-auto w-full overflow-x-hidden px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
           {/* Brand */}
           <div>
-            <h3 className="text-lg font-bold text-foreground">Vault Vogue</h3>
-            <p className="mt-3 text-sm text-muted-foreground">
+            <h3
+              className="font-cormorant text-2xl font-medium tracking-wide text-foreground"
+            >
+              Vault Vogue
+            </h3>
+            <div className="gold-divider" />
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Premium fashion curated for modern lifestyles. Discover quality,
               comfort, and timeless style.
             </p>
@@ -17,80 +22,73 @@ export default function Footer() {
 
           {/* Shop */}
           <div>
-            <h4 className="text-sm font-semibold uppercase text-foreground">
-              Shop
-            </h4>
-            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href={"/men"}>Men</Link>
+            <h4 className="section-label">Shop</h4>
+            <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
+              <li>
+                <Link href="/men" className="transition-colors duration-200 hover:text-foreground">Men</Link>
               </li>
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href={"/women"}>Women</Link>
+              <li>
+                <Link href="/women" className="transition-colors duration-200 hover:text-foreground">Women</Link>
               </li>
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href={"/kids"}>Kids</Link>
+              <li>
+                <Link href="/kids" className="transition-colors duration-200 hover:text-foreground">Kids</Link>
               </li>
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href={"/sale"}>Sale</Link>
+              <li>
+                <Link href="/sale" className="transition-colors duration-200 hover:text-foreground">Sale</Link>
               </li>
             </ul>
           </div>
 
           {/* Support */}
           <div>
-            <h4 className="text-sm font-semibold uppercase text-foreground">
-              Support
-            </h4>
-            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href="/contact-us">Contact Us</Link>
+            <h4 className="section-label">Support</h4>
+            <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
+              <li>
+                <Link href="/contact-us" className="transition-colors duration-200 hover:text-foreground">Contact Us</Link>
               </li>
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href="/faqs">FAQs</Link>
+              <li>
+                <Link href="/faqs" className="transition-colors duration-200 hover:text-foreground">FAQs</Link>
               </li>
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href="/returns">Returns</Link>
+              <li>
+                <Link href="/returns" className="transition-colors duration-200 hover:text-foreground">Returns</Link>
               </li>
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href="/shipping">Shipping</Link>
+              <li>
+                <Link href="/shipping" className="transition-colors duration-200 hover:text-foreground">Shipping</Link>
               </li>
             </ul>
           </div>
 
           {/* Legal */}
           <div>
-            <h4 className="text-sm font-semibold uppercase text-foreground">
-              Legal
-            </h4>
-            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href="/privacy-policy">Privacy Policy</Link>
+            <h4 className="section-label">Legal</h4>
+            <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
+              <li>
+                <Link href="/privacy-policy" className="transition-colors duration-200 hover:text-foreground">Privacy Policy</Link>
               </li>
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href="/terms-and-conditions">Terms & Conditions</Link>
+              <li>
+                <Link href="/terms-and-conditions" className="transition-colors duration-200 hover:text-foreground">Terms & Conditions</Link>
               </li>
-              <li className="cursor-pointer hover:text-sale-red-600">
-                <Link href="/refund-policy">Refund Policy</Link>
+              <li>
+                <Link href="/refund-policy" className="transition-colors duration-200 hover:text-foreground">Refund Policy</Link>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-sm text-muted-foreground md:flex-row">
-          <p>
-            (c) {new Date().getFullYear()} Vault Vogue. All rights reserved.
-          </p>
+        <div className="gold-divider-full mt-12" />
+        <div className="flex flex-col items-center justify-between gap-4 pt-8 text-sm text-muted-foreground md:flex-row">
+          <p>&copy; {new Date().getFullYear()} Vault Vogue. All rights reserved.</p>
 
-          <div className="flex gap-4">
-            <span className="cursor-pointer hover:text-sale-red-600">
-              <Instagram />
+          <div className="flex gap-5">
+            <span className="cursor-pointer transition-colors duration-200 hover:text-foreground">
+              <Instagram className="h-5 w-5" />
             </span>
-            <span className="cursor-pointer hover:text-sale-red-600">
-              <Facebook />
+            <span className="cursor-pointer transition-colors duration-200 hover:text-foreground">
+              <Facebook className="h-5 w-5" />
             </span>
-            <span className="cursor-pointer hover:text-sale-red-600">
-              <Twitter />
+            <span className="cursor-pointer transition-colors duration-200 hover:text-foreground">
+              <Twitter className="h-5 w-5" />
             </span>
           </div>
         </div>

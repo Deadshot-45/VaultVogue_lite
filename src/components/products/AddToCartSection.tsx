@@ -1,13 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { resolveProductImage, updateCartCache } from "@/utility/utils";
-import { CartListItem } from "@/lib/query/useCart";
 import { ProductDetail, ProductVariant } from "@/utility/types/productVariant";
 import { AddToCartButton } from "./AddtoCart";
-import { useEffect } from "react";
 import { useAppSelector } from "@/lib/store/hooks";
+import { useCartQueue } from "@/hooks/useCartQueue";
+import {
+  useAddToCart,
+  useCart,
+  useDecrementFromCart,
+  useRemoveFromCart,
+} from "@/lib/query/useCart";
+import { Minus, Plus } from "lucide-react";
+import { toast } from "sonner";
 
 export const AddToCartSection = ({
   product,
@@ -17,92 +22,106 @@ export const AddToCartSection = ({
   selectedVariant?: ProductVariant;
 }) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const queryClient = useQueryClient();
+  const { data: cartItems = [] } = useCart();
+  const addToCart = useAddToCart();
+  const decrement = useDecrementFromCart();
+  const remove = useRemoveFromCart();
 
-  const mutation = useMutation({
-    mutationFn: async ({ variantId }: { variantId: string }) => {
-      if (isAuthenticated) {
-        const res = await fetch("/api/cart", {
-          method: "POST",
-          body: JSON.stringify({ variantId }),
-        });
-
-        console.log(res);
-
-        if (!res.ok) {
-          throw new Error("Failed to add to cart"); // ✅ forces onError
+  const { add: queueCartAction } = useCartQueue((actions) => {
+    actions.forEach(({ variantId, delta }) => {
+      if (delta === 0) {
+        remove.mutate(variantId);
+      }
+      if (delta > 0) {
+        addToCart.mutate({ variantId, quantity: delta });
+      }
+      if (delta < 0) {
+        const abs = Math.abs(delta);
+        if (abs > 10) {
+          remove.mutate(variantId);
+        } else {
+          for (let i = 0; i < abs; i++) {
+            decrement.mutate(variantId);
+          }
         }
-
-        return res.json();
       }
-    },
-
-    onMutate: async () => {
-      if (!selectedVariant || !isAuthenticated) return { prev: [] }; // ✅ always return ctx
-
-      await queryClient.cancelQueries({ queryKey: ["cart"] });
-
-      const prev = queryClient.getQueryData<CartListItem[]>(["cart"]) ?? [];
-
-      queryClient.setQueryData<CartListItem[]>(["cart"], (old) => {
-        const safeOld = old ?? [];
-
-        return updateCartCache(safeOld, {
-          variantId: selectedVariant.variantId,
-          productId: product.id,
-          name: product.name,
-          price: selectedVariant.price,
-          image: resolveProductImage(selectedVariant.images?.[0]?.url ?? ""),
-          size: selectedVariant.attributes?.size ?? "",
-          sellerId: product.sellerId,
-          priceSnapshot: selectedVariant.price,
-        });
-      });
-
-      return { prev };
-    },
-
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.prev) {
-        queryClient.setQueryData(["cart"], ctx.prev);
-      }
-    },
-
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"], exact: true });
-    },
+    });
   });
 
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      const t = setTimeout(() => {
-        mutation.reset();
-      }, 1500);
-
-      return () => clearTimeout(t);
-    }
-  }, [mutation.isSuccess]);
+  // Find the cart item matching the selected variant
+  const cartItem = cartItems.find(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (item: any) => item.variantId === selectedVariant?.variantId,
+  );
 
   const handleAdd = () => {
-    if (!selectedVariant) return;
+    if (!isAuthenticated) {
+      toast.error("Please sign in first");
+      return;
+    }
 
-    mutation.mutate({
-      variantId: selectedVariant.variantId,
-    });
+    if (!selectedVariant) {
+      toast.error("Select a size first");
+      return;
+    }
+
+    queueCartAction(selectedVariant.variantId, 1);
+  };
+
+  const handleDecrement = () => {
+    if (!cartItem) return;
+
+    if (cartItem.quantity <= 1) {
+      queueCartAction(cartItem.variantId ?? "", 0);
+      return;
+    }
+
+    queueCartAction(cartItem.variantId ?? "", -1);
   };
 
   return (
     <div className="space-y-3">
-      <AddToCartButton
-        onAdd={handleAdd}
-        disabled={!selectedVariant || selectedVariant.isOutOfStock}
-        isLoading={mutation.isPending}
-        isSuccess={mutation.isSuccess}
-        isError={mutation.isError}
-        className="w-full"
-      />
+      {cartItem ? (
+        <div className="flex items-center justify-between rounded-xl border p-3">
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-9 w-9 transition-all duration-200 active:scale-95"
+            onClick={handleDecrement}
+          >
+            <Minus size={16} />
+          </Button>
 
-      <Button variant="outline" className="w-full h-11 transition-all duration-200 active:scale-95 hover:bg-muted/50 rounded-xl">
+          <span className="text-lg font-semibold">{cartItem.quantity}</span>
+
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-9 w-9 transition-all duration-200 active:scale-95"
+            onClick={handleAdd}
+          >
+            <Plus size={16} />
+          </Button>
+        </div>
+      ) : (
+        <AddToCartButton
+          onAdd={handleAdd}
+          disabled={
+            !isAuthenticated ||
+            !selectedVariant ||
+            selectedVariant.isOutOfStock
+          }
+          isLoading={addToCart.isPending}
+          isSuccess={addToCart.isSuccess}
+          isError={addToCart.isError}
+          className="w-full"
+        />
+      )}
+
+      <Button
+        variant="outline"
+        className="w-full h-11 transition-all duration-200 active:scale-95 hover:bg-muted/50 rounded-xl"
+      >
         Buy Now
       </Button>
     </div>

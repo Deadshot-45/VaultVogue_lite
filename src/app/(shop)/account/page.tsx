@@ -4,20 +4,21 @@ import ProtectedPage from "@/components/auth/ProtectedPage";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { performAppLogout } from "@/lib/store/logout";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   ArrowUpRight,
-  MapPin,
   Package,
-  Settings,
   ShieldCheck,
-  User2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { useState } from "react";
+import { LogoutDialog } from "@/components/auth/LogoutDialog";
+import { toast } from "sonner";
 
 const orders = [
   {
@@ -62,6 +63,8 @@ export default function AccountPage() {
     .slice(0, 2)
     .toUpperCase();
 
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+
   const handleLogout = async () => {
     await performAppLogout(dispatch);
     router.push("/login");
@@ -69,224 +72,241 @@ export default function AccountPage() {
 
   return (
     <ProtectedPage>
-      <div className="mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-          <Card className="overflow-hidden rounded-[1.75rem] border-white/10 bg-[linear-gradient(160deg,rgba(15,23,42,1),rgba(30,41,59,0.95))] text-white shadow-[0_24px_80px_rgba(15,23,42,0.28)]">
-            <CardContent className="space-y-6 p-6">
-              <div className="flex items-center gap-4">
-                <Avatar className="h-16 w-16 border border-white/15">
-                  <AvatarFallback className="bg-white/10 text-lg font-semibold text-white">
+      <div className="mx-auto w-full px-4 py-12 sm:px-6 lg:px-8">
+        {/* Editorial Heading */}
+        <div className="mb-12">
+          <p className="section-label">Your Workspace</p>
+          <div className="gold-divider" />
+          <h1 className="mt-5 font-cormorant text-4xl font-light text-foreground lg:text-5xl">
+            Account Dashboard
+          </h1>
+        </div>
+
+        <div className="grid gap-10 lg:grid-cols-[320px_minmax(0,1fr)]">
+          {/* Profile Sidebar */}
+          <div className="space-y-8">
+            <div
+              className="overflow-hidden rounded-2xl border p-8"
+              style={{
+                borderColor: "var(--gold-faint)",
+                background: "var(--gold-glow)",
+              }}
+            >
+              <div className="flex flex-col items-center text-center">
+                <Avatar className="h-24 w-24 border-2" style={{ borderColor: "var(--gold-soft)" }}>
+                  <AvatarFallback className="bg-background text-2xl font-light text-foreground">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className="text-lg font-semibold">{fullName}</p>
-                  <p className="text-sm text-white/65">{email}</p>
-                </div>
-              </div>
+                <h3 className="mt-5 font-cormorant text-2xl font-light text-foreground">
+                  {fullName}
+                </h3>
+                <p className="text-sm text-muted-foreground">{email}</p>
 
-              <div className="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur-md">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.24em] text-white/45">
-                      Member Tier
+                <div className="mt-6 flex w-full items-center justify-between rounded-xl border border-border/40 bg-background/50 p-4">
+                  <div className="text-left">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                      Tier
                     </p>
-                    <p className="mt-2 text-xl font-semibold">Vault Select</p>
+                    <p className="text-sm font-medium">Vault Select</p>
                   </div>
-                  <Badge className="rounded-full bg-[#d4af37] px-3 py-1 text-black shadow-none">
+                  <Badge
+                    className="rounded-full px-3 py-0.5 text-[10px] font-medium shadow-none"
+                    style={{ background: "var(--gold)", color: "white" }}
+                  >
                     Active
                   </Badge>
                 </div>
-                <p className="mt-3 text-sm leading-6 text-white/70">
-                  Faster checkout, order tracking, and saved preferences across
-                  every drop.
-                </p>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-                <div className="rounded-2xl border border-white/10 bg-white/8 p-4">
-                  <p className="text-2xl font-semibold">12</p>
-                  <p className="mt-1 text-sm text-white/60">Orders placed</p>
+              <div className="mt-8 grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <p className="text-xl font-light text-foreground">{orders.length}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Orders</p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/8 p-4">
-                  <p className="text-2xl font-semibold">04</p>
-                  <p className="mt-1 text-sm text-white/60">Saved items</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/8 p-4">
-                  <p className="text-2xl font-semibold">02</p>
-                  <p className="mt-1 text-sm text-white/60">Addresses</p>
+                <div className="space-y-1">
+                  <p className="text-xl font-light text-foreground">04</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Saved</p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
 
-          <div className="space-y-6">
-            <div className="rounded-[1.75rem] border bg-background/75 p-6 shadow-sm backdrop-blur-xl">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
-                    Account Center
-                  </p>
-                  <h1 className="mt-2 text-3xl font-semibold tracking-tight">
-                    Manage your profile and orders
-                  </h1>
-                </div>
-                <Button
-                  variant="outline"
-                  className="rounded-full"
-                  onClick={() => router.push("/")}
-                >
-                  Continue Shopping
-                  <ArrowUpRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
+              <button
+                onClick={() => setIsLogoutDialogOpen(true)}
+                className="mt-8 w-full rounded-full border border-border/40 py-2 text-xs font-medium transition-colors hover:bg-muted/50"
+              >
+                Sign Out
+              </button>
             </div>
 
+            <div className="hidden lg:block">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                Need Assistance?
+              </p>
+              <Link
+                href="/help"
+                className="mt-4 flex items-center justify-between rounded-xl border border-border/40 p-4 transition-colors hover:bg-muted/50"
+              >
+                <span className="text-sm font-medium">Help Center</span>
+                <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="space-y-10">
             <Tabs defaultValue="profile" className="w-full">
-              <TabsList className="grid h-auto grid-cols-2 gap-2 rounded-2xl bg-muted/50 p-2 md:grid-cols-4">
-                <TabsTrigger
-                  value="profile"
-                  className="rounded-xl cursor-pointer"
-                >
-                  <User2 className="mr-2 h-4 w-4" />
-                  Profile
-                </TabsTrigger>
-                <TabsTrigger
-                  value="orders"
-                  className="rounded-xl cursor-pointer"
-                >
-                  <Package className="mr-2 h-4 w-4" />
-                  Orders
-                </TabsTrigger>
-                <TabsTrigger
-                  value="addresses"
-                  className="rounded-xl cursor-pointer"
-                >
-                  <MapPin className="mr-2 h-4 w-4" />
-                  Addresses
-                </TabsTrigger>
-                <TabsTrigger
-                  value="settings"
-                  className="rounded-xl cursor-pointer"
-                >
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
-                </TabsTrigger>
+              <TabsList className="flex h-auto w-full justify-start gap-8 rounded-none border-b bg-transparent p-0">
+                {["profile", "orders", "addresses", "settings"].map((tab) => (
+                  <TabsTrigger
+                    key={tab}
+                    value={tab}
+                    className="rounded-none border-b-2 border-transparent px-0 pb-4 pt-0 text-sm font-medium tracking-wide transition-all data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground"
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </TabsTrigger>
+                ))}
               </TabsList>
 
-              <TabsContent value="profile" className="mt-6">
-                <Card className="rounded-[1.5rem]">
-                  <CardHeader>
-                    <CardTitle>Profile Details</CardTitle>
-                  </CardHeader>
-                  <CardContent className="grid gap-4 sm:grid-cols-2">
-                    <Input defaultValue={fullName} placeholder="Full Name" />
-                    <Input defaultValue={email} placeholder="Email" />
+              <TabsContent value="profile" className="mt-10 animate-in fade-in slide-in-from-bottom-2">
+                <div className="grid gap-8 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">Full Name</Label>
+                    <Input
+                      defaultValue={fullName}
+                      className="h-12 rounded-xl border-border/40 bg-background/50"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">Email Address</Label>
+                    <Input
+                      defaultValue={email}
+                      className="h-12 rounded-xl border-border/40 bg-background/50"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">Phone Number</Label>
                     <Input
                       defaultValue="+91 9876543210"
-                      placeholder="Phone Number"
+                      className="h-12 rounded-xl border-border/40 bg-background/50"
                     />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">Preferred Collection</Label>
                     <Input
-                      defaultValue="Vault Select"
-                      placeholder="Membership"
+                      defaultValue="Womenswear"
+                      className="h-12 rounded-xl border-border/40 bg-background/50"
                     />
-                    <div className="sm:col-span-2">
-                      <Button className="w-full sm:w-auto">
-                        Save Changes
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="orders" className="mt-6">
-                <Card className="rounded-[1.5rem]">
-                  <CardHeader>
-                    <CardTitle>Your Orders</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {orders.map((order) => (
-                      <div
-                        key={order.id}
-                        className="flex flex-col gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between"
-                      >
-                        <div>
-                          <p className="font-medium">{order.id}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {order.date}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Badge variant="secondary">{order.status}</Badge>
-                          <span className="font-semibold">{order.total}</span>
-                          <Button variant="outline">View</Button>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="addresses" className="mt-6">
-                <Card className="rounded-[1.5rem]">
-                  <CardHeader>
-                    <CardTitle>Saved Addresses</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {addresses.map((address) => (
-                      <div
-                        key={address.label}
-                        className="rounded-2xl border p-4"
-                      >
-                        <p className="font-medium">{address.label}</p>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {address.line1}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {address.line2}
-                        </p>
-                      </div>
-                    ))}
-                    <Button className="w-full sm:w-auto">
-                      Add New Address
-                    </Button>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="settings" className="mt-6">
-                <Card className="rounded-[1.5rem]">
-                  <CardHeader>
-                    <CardTitle>Account Settings</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4 space-x-4">
-                    <div className="flex items-start gap-3 rounded-2xl border bg-muted/30 p-4">
-                      <ShieldCheck className="mt-0.5 h-5 w-5 text-primary" />
-                      <div>
-                        <p className="font-medium">Security</p>
-                        <p className="text-sm text-muted-foreground">
-                          Keep your password strong and review sessions
-                          regularly.
-                        </p>
-                      </div>
-                    </div>
-                    <Button variant="outline" className="w-full sm:w-auto ">
-                      Change Password
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      className="w-full sm:w-auto"
-                      onClick={handleLogout}
+                  </div>
+                  <div className="pt-4 sm:col-span-2">
+                    <button
+                      onClick={() => toast.success("Profile updated successfully", {
+                        description: "Your account details have been securely saved."
+                      })}
+                      className="rounded-full px-10 py-3 text-sm font-medium text-white transition-transform active:scale-95"
+                      style={{ background: "var(--gold)" }}
                     >
-                      Logout
-                    </Button>
-                  </CardContent>
-                </Card>
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="orders" className="mt-10 animate-in fade-in slide-in-from-bottom-2">
+                <div className="space-y-4">
+                  {orders.map((order) => (
+                    <div
+                      key={order.id}
+                      className="flex flex-col gap-6 rounded-2xl border border-border/40 bg-background/50 p-6 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="flex gap-6 items-center">
+                        <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-muted/30">
+                          <Package className="h-5 w-5 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{order.id}</p>
+                          <p className="text-xs text-muted-foreground">{order.date}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between gap-8 sm:justify-end">
+                        <div className="text-right">
+                          <p className="text-sm font-semibold">{order.total}</p>
+                          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{order.status}</p>
+                        </div>
+                        <Button variant="ghost" size="sm" className="rounded-full">
+                          Details
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="addresses" className="mt-10 animate-in fade-in slide-in-from-bottom-2">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  {addresses.map((address) => (
+                    <div
+                      key={address.label}
+                      className="group relative rounded-2xl border border-border/40 p-6 transition-colors hover:border-foreground/20"
+                    >
+                      <Badge variant="outline" className="mb-4 rounded-full border-border/60 font-normal">
+                        {address.label}
+                      </Badge>
+                      <p className="text-sm font-medium text-foreground">{address.line1}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{address.line2}</p>
+                      <button className="mt-4 text-xs font-medium text-muted-foreground underline-offset-4 hover:underline">
+                        Edit Address
+                      </button>
+                    </div>
+                  ))}
+                  <button className="flex h-full min-h-[160px] flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 transition-colors hover:bg-muted/30">
+                    <span className="text-sm font-medium">Add New Address</span>
+                  </button>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="settings" className="mt-10 animate-in fade-in slide-in-from-bottom-2">
+                <div className="max-w-2xl space-y-8">
+                  <div className="flex items-start gap-4 rounded-2xl border border-border/40 p-6">
+                    <div className="mt-1 h-10 w-10 flex items-center justify-center rounded-full" style={{ background: "var(--gold-glow)" }}>
+                      <ShieldCheck className="h-5 w-5" style={{ color: "var(--gold)" }} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium">Account Security</h4>
+                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                        Your account is currently protected with standard encryption. 
+                        Enable multi-factor authentication for enhanced security.
+                      </p>
+                      <button className="mt-4 text-xs font-medium" style={{ color: "var(--gold)" }}>
+                        Manage Security Settings
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <button className="w-full rounded-xl border border-border/40 py-3 text-sm font-medium transition-colors hover:bg-muted/50">
+                      Change Account Password
+                    </button>
+                    <button 
+                      onClick={() => toast.error("Action restricted", {
+                        description: "Please contact support to initiate account data deletion."
+                      })}
+                      className="w-full rounded-xl border border-destructive/20 py-3 text-sm font-medium text-destructive transition-colors hover:bg-destructive/5"
+                    >
+                      Delete Account Data
+                    </button>
+                  </div>
+                </div>
               </TabsContent>
             </Tabs>
           </div>
         </div>
       </div>
+
+      <LogoutDialog
+        isOpen={isLogoutDialogOpen}
+        onClose={() => setIsLogoutDialogOpen(false)}
+        onConfirm={handleLogout}
+      />
     </ProtectedPage>
   );
 }
