@@ -69,7 +69,7 @@ const normalizeProduct = (product: any) => {
       product.description ||
       "A curated Vault Vogue piece designed for versatile everyday styling.",
 
-    category: "Fashion",
+    category: product.categories?.[0]?.name || "Fashion",
     isNew: true,
 
     images: gallery,
@@ -90,7 +90,7 @@ const normalizeSuggestion = (product: Product) => ({
     product.images.find((image) => image.isPrimary)?.url ||
     product.images[0]?.url ||
     "/images/placeholder.png",
-  category: "Fashion",
+  category: product.categories?.[0]?.name || "Fashion",
 });
 
 export default async function ProductPage({ params }: PageProps) {

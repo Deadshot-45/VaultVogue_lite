@@ -16,14 +16,10 @@ const WomensPage: React.FC = () => {
       categoryId: "67dfa578452634da4759bbb1",
       limit: 12,
       label: "women",
+      categoryName: selectedCategory,
     });
 
-  const allProducts = data?.pages.flat() ?? [];
-
-  const filteredProducts =
-    selectedCategory === "All"
-      ? allProducts
-      : allProducts.filter((p) => p.category === selectedCategory);
+  const products = data?.pages.flat() ?? [];
 
   return (
     <section className="w-full py-12 lg:py-16">
@@ -67,7 +63,7 @@ const WomensPage: React.FC = () => {
             <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--gold)" }} />
           </div>
         ) : (
-          <ProductGrid products={filteredProducts} />
+          <ProductGrid products={products} />
         )}
 
         {hasNextPage && (

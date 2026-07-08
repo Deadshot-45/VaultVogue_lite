@@ -1,30 +1,15 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
 } from "@/components/ui/card";
-import { useCartQueue } from "@/hooks/useCartQueue";
-import {
-  useAddToCart,
-  useCart,
-  useDecrementFromCart,
-  useRemoveFromCart,
-} from "@/lib/query/useCart";
 import { UIProduct } from "@/lib/query/useGetProducts";
-import { useAppSelector } from "@/lib/store/hooks";
 import { motion } from "framer-motion";
-import { Eye, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { AddToCartButton } from "../products/AddtoCart";
-import { Variant } from "@/utility/types/productVariant";
 import { FALLBACK_IMAGE, resolveUiProductImage } from "@/utility/utils";
 
 export default function AnimatedProductCard({
@@ -33,117 +18,17 @@ export default function AnimatedProductCard({
   product: UIProduct;
 }) {
   const router = useRouter();
-  const auth = useAppSelector((state) => state.auth);
-  const { data: cartItems = [] } = useCart();
-  const addToCart = useAddToCart();
-  const decrement = useDecrementFromCart();
-  const remove = useRemoveFromCart();
-
-  const { add: queueCartAction } = useCartQueue((actions) => {
-    actions.forEach(({ variantId, delta }) => {
-      console.log(delta);
-
-      if (delta === 0) {
-        console.log("zero");
-
-        remove.mutate(variantId);
-      }
-      if (delta > 0) {
-        addToCart.mutate({ variantId, quantity: delta });
-      }
-
-      if (delta < 0) {
-        const abs = Math.abs(delta);
-
-        if (abs > 10) {
-          remove.mutate(variantId);
-        } else {
-          for (let i = 0; i < abs; i++) {
-            decrement.mutate(variantId);
-          }
-        }
-      }
-    });
-  });
-
-  const cartItem = cartItems.find((item) => item.productId === product.id);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [imageSrc, setImageSrc] = useState(() =>
     resolveUiProductImage(product.image),
   );
-  const [isHovered, setIsHovered] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const selectedStock = selectedSize
-    ? product.sizeQuantities[selectedSize]
-    : undefined;
-
-  const fallbackLowStock = Object.values(product.sizeQuantities)
+  const lowStockCount = Object.values(product.sizeQuantities)
     .filter((quantity) => quantity > 0 && quantity <= product.lowStockThreshold)
     .sort((a, b) => a - b)[0];
-
-  const lowStockCount =
-    typeof selectedStock === "number" && selectedStock > 0
-      ? selectedStock <= product.lowStockThreshold
-        ? selectedStock
-        : undefined
-      : fallbackLowStock;
-
-  useEffect(() => {
-    if (cartItem) {
-      if (cartItem?.size) {
-        const nextSize = cartItem.size ?? null;
-        queueMicrotask(() => setSelectedSize(nextSize));
-        return;
-      }
-    }
-
-    if (product.availableSizes.length === 1) {
-      const onlySize = product.availableSizes[0] ?? null;
-      queueMicrotask(() => setSelectedSize(onlySize));
-    }
-  }, [cartItem, product]);
 
   useEffect(() => {
     queueMicrotask(() => setImageSrc(resolveUiProductImage(product.image)));
   }, [product.image]);
-
-  const handleAdd = () => {
-    if (!selectedSize) {
-      toast.error("Select a size");
-      return;
-    }
-
-    const variant = product.sizes?.find(
-      (v: Variant) => v.size === selectedSize,
-    );
-
-    if (!variant) {
-      toast.error("Invalid variant");
-      return;
-    }
-
-    queueCartAction(variant.variantId, 1);
-  };
-
-  const handleDecrement = () => {
-    if (!cartItem) return;
-
-    if (cartItem.quantity <= 1) {
-      console.log("zero");
-      queueCartAction(cartItem?.variantId ?? "", 0);
-
-      return;
-    }
-
-    // you need update mutation (not redux)
-    queueCartAction(cartItem?.variantId ?? "", -1);
-  };
-
-  const handleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
-    toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
-  };
 
   const handleViewProduct = () => {
     router.push(`/products/${product.id}`);
@@ -156,13 +41,14 @@ export default function AnimatedProductCard({
       transition={{ duration: 0.5 }}
       whileHover={{ y: -6 }}
       className="group relative"
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
     >
-      <Card className="w-full rounded-2xl gap-2 shadow-md transition-all duration-300 hover:shadow-xl py-2 bg-card">
-        <CardContent className="px-2 sm:px-3 space-y-2">
+      <Card
+        onClick={handleViewProduct}
+        className="w-full rounded-2xl gap-2 shadow-md transition-all duration-300 hover:shadow-xl py-3 bg-card cursor-pointer border border-border/40 hover:border-primary/20"
+      >
+        <CardContent className="px-2 sm:px-3 space-y-2 pb-1">
           {/* Image */}
-          <div className="relative w-full h-40 overflow-hidden rounded-xl cursor-pointer" onClick={handleViewProduct}>
+          <div className="relative w-full h-40 overflow-hidden rounded-xl">
             <Image
               src={imageSrc}
               alt={product.name}
@@ -185,11 +71,11 @@ export default function AnimatedProductCard({
           </div>
 
           {/* Title */}
-          <div onClick={handleViewProduct} className="cursor-pointer" suppressHydrationWarning>
-            <h2 className="text-lg font-semibold line-clamp-1 transition-colors group-hover:text-primary" suppressHydrationWarning>
+          <div suppressHydrationWarning>
+            <h2 className="text-lg font-semibold line-clamp-1 transition-colors group-hover:text-primary min-h-[1.75rem]" suppressHydrationWarning>
               {product.name}
             </h2>
-            <p className="text-sm text-muted-foreground line-clamp-2 mt-1" suppressHydrationWarning>
+            <p className="text-sm text-muted-foreground line-clamp-2 mt-1 min-h-[2.5rem]" suppressHydrationWarning>
               {product.description || `Explore our premium ${product.category} collection with modern design and unmatched comfort.`}
             </p>
           </div>
@@ -197,58 +83,13 @@ export default function AnimatedProductCard({
           {/* Tags */}
           <div className="flex gap-2 flex-wrap" suppressHydrationWarning>
             <Badge variant="secondary" className="capitalize" suppressHydrationWarning>{product.category}</Badge>
-            {product.availableSizes.slice(0, 3).map((size) => (
-              <Badge
-                key={size}
-                variant={selectedSize === size ? "default" : "secondary"}
-                className={`cursor-pointer ${selectedSize === size ? "" : "bg-secondary/50 hover:bg-secondary"}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedSize(size);
-                }}
-              >
-                {size}
-              </Badge>
-            ))}
           </div>
 
-          {/* Quantity + Price */}
-          <div className="flex max-sm:flex-col gap-2 sm:items-center sm:justify-between pt-2">
-            <div className="max-sm:flex max-sm:items-center gap-2">
-              <p className="text-xs text-muted-foreground">Quantity</p>
-              <div className="flex items-center gap-2 mt-1">
-                <Button variant="outline" size="icon" className="h-8 w-8" onClick={handleDecrement} disabled={!cartItem}>
-                  <Minus size={14} />
-                </Button>
-                <span className="text-sm font-medium w-4 text-center">{cartItem?.quantity || 0}</span>
-                <Button variant="outline" size="icon" className="h-8 w-8" onClick={handleAdd} disabled={!auth?.isAuthenticated}>
-                  <Plus size={14} />
-                </Button>
-              </div>
-            </div>
-
-            <div className="sm:text-right text-left max-sm:flex max-sm:items-center gap-2">
-              <p className="text-xs text-muted-foreground">Total</p>
-              <p className="text-lg font-bold text-primary">${((product.maxPrice || 0) * Math.max(1, cartItem?.quantity || 1)).toFixed(2)}</p>
-            </div>
+          {/* Price */}
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-lg font-bold text-primary">${(product.maxPrice || 0).toFixed(2)}</span>
           </div>
         </CardContent>
-
-        {/* Footer */}
-        <CardFooter className="flex gap-2 sm:p-4 p-2 pt-0">
-          <Button variant="outline" size="icon" onClick={handleWishlist} className={isWishlisted ? "text-red-500 border-red-500 hover:text-red-600 hover:border-red-600" : ""}>
-            <Heart size={18} className={isWishlisted ? "fill-current" : ""} />
-          </Button>
-          {!cartItem ? (
-            <Button className="flex-1 font-semibold bg-primary hover:bg-primary/90 text-primary-foreground" onClick={handleAdd} disabled={!auth?.isAuthenticated}>
-              Add to cart
-            </Button>
-          ) : (
-            <Button className="flex-1 font-semibold" variant="secondary" onClick={() => router.push('/cart')}>
-              View Cart
-            </Button>
-          )}
-        </CardFooter>
       </Card>
     </motion.div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -29,9 +29,14 @@ const FALLBACK_IMAGE =
 
 const CartDrawer: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const token = getAuthCookie();
-  const isAuthenticated = !!token;
+  const isAuthenticated = mounted && !!token;
 
   const router = useRouter();
 

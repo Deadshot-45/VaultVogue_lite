@@ -123,9 +123,12 @@ export default function Home({ recentProducts = [] }: HomeProps) {
                 className="group relative aspect-[3/4] overflow-hidden rounded-2xl cursor-pointer"
               >
                 {/* Image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                  style={{ backgroundImage: `url(${item.src})` }}
+                <Image
+                  src={item.src}
+                  alt={item.label}
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 640px) 50vw, 25vw"
                 />
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />

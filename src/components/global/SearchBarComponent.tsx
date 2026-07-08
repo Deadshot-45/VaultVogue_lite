@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { searchService, SearchResult } from "@/lib/api/searchService";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Input } from "@/components/ui/input";
 import { Loader2, Search } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { resolveUiProductImage } from "@/utility/utils";
 
 export default function SearchBar() {
   const router = useRouter();
+  const pathname = usePathname();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -18,6 +20,28 @@ export default function SearchBar() {
   const [open, setOpen] = useState(false);
 
   const debouncedQuery = useDebounce(query, 400);
+
+  // Close dropdown when route changes
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (!debouncedQuery.trim()) {
@@ -50,7 +74,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="relative w-full max-w-xl">
+    <div ref={containerRef} className="relative w-full max-w-xl">
       {/* INPUT */}
       <div className="relative">
         <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />

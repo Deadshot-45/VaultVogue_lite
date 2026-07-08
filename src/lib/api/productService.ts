@@ -42,6 +42,12 @@ export interface Product {
     stock: number;
   }[];
 
+  categories?: {
+    _id: string;
+    name: string;
+    slug: string;
+  }[];
+
   createdAt: string;
 }
 
@@ -68,6 +74,7 @@ export const productService = {
       sortBy: string;
       order: string;
       categoryId: string;
+      categoryName?: string;
     },
   ): Promise<Product[]> => {
     const response = await api.get<ProductListResponse>(

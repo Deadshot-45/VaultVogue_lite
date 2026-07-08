@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ProductDetail, ProductVariant } from "@/utility/types/productVariant";
 import { AddToCartButton } from "./AddtoCart";
@@ -22,6 +23,14 @@ export const AddToCartSection = ({
   selectedVariant?: ProductVariant;
 }) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const showAuthenticated = mounted && isAuthenticated;
+
   const { data: cartItems = [] } = useCart();
   const addToCart = useAddToCart();
   const decrement = useDecrementFromCart();
@@ -107,7 +116,7 @@ export const AddToCartSection = ({
         <AddToCartButton
           onAdd={handleAdd}
           disabled={
-            !isAuthenticated ||
+            !showAuthenticated ||
             !selectedVariant ||
             selectedVariant.isOutOfStock
           }

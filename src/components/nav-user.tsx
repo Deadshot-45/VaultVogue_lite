@@ -10,7 +10,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogoutDialog } from "@/components/auth/LogoutDialog";
 
 import {
@@ -50,6 +50,13 @@ export function NavUser({
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const showAuthenticated = mounted && isAuthenticated;
+
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -72,10 +79,10 @@ export function NavUser({
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {isAuthenticated ? user.name : "Guest"}
+                  {showAuthenticated ? user.name : "Guest"}
                 </span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {isAuthenticated ? user.email : "Sign in to your account"}
+                  {showAuthenticated ? user.email : "Sign in to your account"}
                 </span>
               </div>
               <IconDotsVertical className="ml-auto size-4" />
@@ -96,10 +103,10 @@ export function NavUser({
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {isAuthenticated ? user.name : "Guest"}
+                    {showAuthenticated ? user.name : "Guest"}
                   </span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {isAuthenticated ? user.email : "Not signed in"}
+                    {showAuthenticated ? user.email : "Not signed in"}
                   </span>
                 </div>
               </div>
@@ -107,7 +114,7 @@ export function NavUser({
 
             <DropdownMenuSeparator />
 
-            {isAuthenticated ? (
+            {showAuthenticated ? (
               <>
                 <DropdownMenuGroup>
                   <DropdownMenuItem asChild className="cursor-pointer">

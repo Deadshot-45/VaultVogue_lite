@@ -52,10 +52,7 @@ export function SiteHeader() {
 
   return (
     <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="sticky top-0 z-50 h-(--header-height) w-full border-b sale-theme backdrop-blur-xl transition-all duration-300 supports-[backdrop-filter]:bg-background/60"
+      className="sticky top-0 z-50 h-(--header-height) w-full border-b sale-theme backdrop-blur-xl transition-all duration-300 bg-background/60"
       style={{ borderColor: "var(--gold-faint)" }}
     >
       <div className="mx-auto flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">

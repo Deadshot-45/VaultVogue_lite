@@ -39,6 +39,7 @@ interface UseGetProductsProps {
   categoryId?: string;
   limit?: number;
   label?: string; // e.g. "men" | "women" | "kids" - used as part of query key
+  categoryName?: string; // Add this
 }
 
 // type UIProductBase = Pick<
@@ -88,7 +89,7 @@ const mapProduct = (p: ApiProduct): UIProduct => {
     lowStockThreshold: 5, // or from backend if available
 
     image: p.images?.find((img) => img.isPrimary)?.url ?? p.images?.[0]?.url ?? "",
-    category: "unknown", // ⚠️ map properly if backend has category
+    category: p.categories?.[0]?.name || "Fashion",
 
     description: p.description,
 
@@ -123,9 +124,10 @@ export const useGetProducts = ({
   categoryId,
   limit = 12,
   label = "all",
+  categoryName,
 }: UseGetProductsProps = {}) => {
   return useInfiniteQuery({
-    queryKey: ["products", label, categoryId, limit],
+    queryKey: ["products", label, categoryId, limit, categoryName],
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {
       try {
@@ -135,6 +137,7 @@ export const useGetProducts = ({
           sortBy: "createdAt",
           order: "desc",
           categoryId: categoryId as string,
+          categoryName,
         });
 
         return apiProducts.map(mapProduct);
