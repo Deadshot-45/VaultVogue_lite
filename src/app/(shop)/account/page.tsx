@@ -71,7 +71,7 @@ export default function AccountPage() {
 
   return (
     <ProtectedPage>
-      <div className="mx-auto w-full px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
+      <div className="mx-auto max-w-7xl w-full px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
         {/* Editorial Heading */}
         <div className="mb-12">
           <p className="section-label">Your Workspace</p>

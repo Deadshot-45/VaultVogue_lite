@@ -187,11 +187,11 @@ export default function ProductDetailsView({
               </p>
               <div className="flex items-baseline gap-2 mt-1">
                 <p className="text-2xl font-bold text-[var(--gold)]">
-                  ${product.price.toFixed(2)}
+                  ₹{product.price.toFixed(2)}
                 </p>
                 {hasDiscount && (
                   <p className="text-sm line-through text-muted-foreground/60">
-                    ${product.originalPrice!.toFixed(2)}
+                    ₹{product.originalPrice!.toFixed(2)}
                   </p>
                 )}
               </div>
