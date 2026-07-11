@@ -9,8 +9,9 @@ import { UIProduct } from "@/lib/query/useGetProducts";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FALLBACK_IMAGE, resolveUiProductImage } from "@/utility/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AnimatedProductCard({
   product,
@@ -21,6 +22,9 @@ export default function AnimatedProductCard({
   const [imageSrc, setImageSrc] = useState(() =>
     resolveUiProductImage(product.image),
   );
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleImageLoad = useCallback(() => setImageLoaded(true), []);
 
   const lowStockCount = Object.values(product.sizeQuantities)
     .filter((quantity) => quantity > 0 && quantity <= product.lowStockThreshold)
@@ -49,13 +53,20 @@ export default function AnimatedProductCard({
         <CardContent className="px-2 sm:px-3 space-y-2 pb-1">
           {/* Image */}
           <div className="relative w-full h-40 overflow-hidden rounded-xl">
+            {/* Image skeleton placeholder */}
+            {!imageLoaded && (
+              <Skeleton className="absolute inset-0 z-10 rounded-xl" />
+            )}
             <Image
               src={imageSrc}
               alt={product.name}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="object-cover transition-all duration-500 group-hover:scale-105"
+              className={`object-cover transition-all duration-500 group-hover:scale-105 ${
+                imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
               onError={() => setImageSrc(FALLBACK_IMAGE)}
+              onLoad={handleImageLoad}
               loading="eager"
             />
             {product.isNew && (
@@ -64,7 +75,10 @@ export default function AnimatedProductCard({
               </Badge>
             )}
             {typeof lowStockCount === "number" && (
-              <Badge className="absolute right-2 top-2 animate-pulse rounded-full bg-orange-500 px-2 py-0.5 text-[10px] text-white shadow-md">
+              <Badge 
+                className="absolute right-2 top-2 animate-pulse rounded-full px-2 py-0.5 text-[10px] text-white shadow-md"
+                style={{ backgroundColor: "var(--gold)" }}
+              >
                 Only {lowStockCount} left
               </Badge>
             )}
@@ -87,7 +101,7 @@ export default function AnimatedProductCard({
 
           {/* Price */}
           <div className="flex items-center justify-between pt-2">
-            <span className="text-lg font-bold text-primary">${(product.maxPrice || 0).toFixed(2)}</span>
+            <span className="text-lg font-bold text-primary">₹{(product.maxPrice || 0).toFixed(2)}</span>
           </div>
         </CardContent>
       </Card>

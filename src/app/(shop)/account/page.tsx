@@ -3,7 +3,6 @@
 import ProtectedPage from "@/components/auth/ProtectedPage";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { performAppLogout } from "@/lib/store/logout";
@@ -22,22 +21,22 @@ import { toast } from "sonner";
 
 const orders = [
   {
-    id: "VV-1234",
+    id: "SH-1234",
     status: "Delivered",
-    total: "₹4,999",
+    total: "$495.00",
     date: "March 21, 2026",
   },
   {
-    id: "VV-2871",
+    id: "SH-2871",
     status: "Processing",
-    total: "₹2,499",
+    total: "$245.00",
     date: "April 4, 2026",
   },
 ];
 
 const addresses = [
   {
-    label: "Home",
+    label: "Primary Residence",
     line1: "221B Baker Street",
     line2: "London, NW1 6XE",
   },
@@ -72,12 +71,12 @@ export default function AccountPage() {
 
   return (
     <ProtectedPage>
-      <div className="mx-auto w-full px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
         {/* Editorial Heading */}
         <div className="mb-12">
           <p className="section-label">Your Workspace</p>
           <div className="gold-divider" />
-          <h1 className="mt-5 font-cormorant text-4xl font-light text-foreground lg:text-5xl">
+          <h1 className="mt-5 font-cormorant text-4xl font-light text-[var(--brand-text)] lg:text-5xl">
             Account Dashboard
           </h1>
         </div>
@@ -86,67 +85,60 @@ export default function AccountPage() {
           {/* Profile Sidebar */}
           <div className="space-y-8">
             <div
-              className="overflow-hidden rounded-2xl border p-8"
-              style={{
-                borderColor: "var(--gold-faint)",
-                background: "var(--gold-glow)",
-              }}
+              className="overflow-hidden rounded-2xl border p-8 bg-card/45 backdrop-blur-md border-[var(--gold-soft)] shadow-xl"
             >
               <div className="flex flex-col items-center text-center">
-                <Avatar className="h-24 w-24 border-2" style={{ borderColor: "var(--gold-soft)" }}>
-                  <AvatarFallback className="bg-background text-2xl font-light text-foreground">
+                <Avatar className="h-24 w-24 border-2 border-[var(--gold-soft)]">
+                  <AvatarFallback className="bg-background text-2xl font-light text-[var(--brand-text)] font-cormorant">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                <h3 className="mt-5 font-cormorant text-2xl font-light text-foreground">
+                <h3 className="mt-5 font-cormorant text-2xl font-light text-[var(--brand-text)]">
                   {fullName}
                 </h3>
-                <p className="text-sm text-muted-foreground">{email}</p>
+                <p className="text-xs text-muted-foreground">{email}</p>
 
                 <div className="mt-6 flex w-full items-center justify-between rounded-xl border border-border/40 bg-background/50 p-4">
                   <div className="text-left">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                      Tier
+                    <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
+                      Client Tier
                     </p>
-                    <p className="text-sm font-medium">Vault Select</p>
+                    <p className="text-xs font-semibold text-[var(--brand-text)]">Atelier Select</p>
                   </div>
-                  <Badge
-                    className="rounded-full px-3 py-0.5 text-[10px] font-medium shadow-none"
-                    style={{ background: "var(--gold)", color: "white" }}
-                  >
+                  <Badge className="rounded-full px-3 py-0.5 text-[9px] font-semibold badge-gold">
                     Active
                   </Badge>
                 </div>
               </div>
 
-              <div className="mt-8 grid grid-cols-2 gap-4">
+              <div className="mt-8 grid grid-cols-2 gap-4 text-center border-t border-b border-border/20 py-4">
                 <div className="space-y-1">
-                  <p className="text-xl font-light text-foreground">{orders.length}</p>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Orders</p>
+                  <p className="text-xl font-light text-[var(--brand-text)] font-cormorant">{orders.length}</p>
+                  <p className="text-[9px] uppercase tracking-wider text-muted-foreground">Orders</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xl font-light text-foreground">04</p>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Saved</p>
+                  <p className="text-xl font-light text-[var(--brand-text)] font-cormorant">04</p>
+                  <p className="text-[9px] uppercase tracking-wider text-muted-foreground">Wishlist</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setIsLogoutDialogOpen(true)}
-                className="mt-8 w-full rounded-full border border-border/40 py-2 text-xs font-medium transition-colors hover:bg-muted/50"
+                className="btn-secondary w-full py-2.5 text-xs font-semibold uppercase tracking-wider mt-8 border-red-200/50 hover:bg-red-500/5 text-red-500"
               >
                 Sign Out
               </button>
             </div>
 
             <div className="hidden lg:block">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                 Need Assistance?
               </p>
               <Link
                 href="/help"
-                className="mt-4 flex items-center justify-between rounded-xl border border-border/40 p-4 transition-colors hover:bg-muted/50"
+                className="mt-4 flex items-center justify-between rounded-xl border border-border/40 p-4 transition-colors hover:border-[var(--gold-soft)]"
               >
-                <span className="text-sm font-medium">Help Center</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]">Client Care</span>
                 <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
               </Link>
             </div>
@@ -160,41 +152,41 @@ export default function AccountPage() {
                   <TabsTrigger
                     key={tab}
                     value={tab}
-                    className="rounded-none border-b-2 border-transparent px-0 pb-4 pt-0 text-sm font-medium tracking-wide transition-all data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground"
+                    className="rounded-none border-b-2 border-transparent px-0 pb-4 pt-0 text-xs font-semibold uppercase tracking-widest transition-all data-[state=active]:border-[var(--gold)] data-[state=active]:bg-transparent data-[state=active]:text-[var(--brand-text)] text-muted-foreground"
                   >
-                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    {tab}
                   </TabsTrigger>
                 ))}
               </TabsList>
 
-              <TabsContent value="profile" className="mt-10 animate-in fade-in slide-in-from-bottom-2">
+              <TabsContent value="profile" className="mt-10 space-y-6">
                 <div className="grid gap-8 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">Full Name</Label>
+                    <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Full Name</Label>
                     <Input
                       defaultValue={fullName}
-                      className="h-12 rounded-xl border-border/40 bg-background/50"
+                      className="h-12 rounded-xl border-border/40 bg-background/50 text-xs font-medium"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">Email Address</Label>
+                    <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Email Address</Label>
                     <Input
                       defaultValue={email}
-                      className="h-12 rounded-xl border-border/40 bg-background/50"
+                      className="h-12 rounded-xl border-border/40 bg-background/50 text-xs font-medium"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">Phone Number</Label>
+                    <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Phone Number</Label>
                     <Input
-                      defaultValue="+91 9876543210"
-                      className="h-12 rounded-xl border-border/40 bg-background/50"
+                      defaultValue="+1 (555) 902-1920"
+                      className="h-12 rounded-xl border-border/40 bg-background/50 text-xs font-medium"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">Preferred Collection</Label>
+                    <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Preferred Collection</Label>
                     <Input
                       defaultValue="Womenswear"
-                      className="h-12 rounded-xl border-border/40 bg-background/50"
+                      className="h-12 rounded-xl border-border/40 bg-background/50 text-xs font-medium"
                     />
                   </div>
                   <div className="pt-4 sm:col-span-2">
@@ -202,8 +194,7 @@ export default function AccountPage() {
                       onClick={() => toast.success("Profile updated successfully", {
                         description: "Your account details have been securely saved."
                       })}
-                      className="rounded-full px-10 py-3 text-sm font-medium text-white transition-transform active:scale-95"
-                      style={{ background: "var(--gold)" }}
+                      className="btn-primary"
                     >
                       Save Changes
                     </button>
@@ -211,86 +202,89 @@ export default function AccountPage() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="orders" className="mt-10 animate-in fade-in slide-in-from-bottom-2">
+              <TabsContent value="orders" className="mt-10 space-y-4">
                 <div className="space-y-4">
                   {orders.map((order) => (
                     <div
                       key={order.id}
-                      className="flex flex-col gap-6 rounded-2xl border border-border/40 bg-background/50 p-6 sm:flex-row sm:items-center sm:justify-between"
+                      className="flex flex-col gap-6 rounded-2xl border border-border/40 bg-card/40 p-6 sm:flex-row sm:items-center sm:justify-between hover:border-[var(--gold-soft)] transition-colors"
                     >
                       <div className="flex gap-6 items-center">
-                        <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-muted/30">
-                          <Package className="h-5 w-5 text-muted-foreground" />
+                        <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-[var(--gold-glow)] text-[var(--gold)] border border-[var(--gold-faint)]">
+                          <Package className="h-5 w-5" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium">{order.id}</p>
+                          <p className="text-sm font-semibold text-[var(--brand-text)]">{order.id}</p>
                           <p className="text-xs text-muted-foreground">{order.date}</p>
                         </div>
                       </div>
                       <div className="flex items-center justify-between gap-8 sm:justify-end">
-                        <div className="text-right">
-                          <p className="text-sm font-semibold">{order.total}</p>
-                          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{order.status}</p>
+                        <div className="text-right space-y-0.5">
+                          <p className="text-sm font-bold text-[var(--gold)]">{order.total}</p>
+                          <p className="text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">{order.status}</p>
                         </div>
-                        <Button variant="ghost" size="sm" className="rounded-full">
+                        <button 
+                          onClick={() => router.push("/orders")}
+                          className="btn-secondary py-2 px-5 text-xs font-semibold uppercase tracking-wider"
+                        >
                           Details
-                        </Button>
+                        </button>
                       </div>
                     </div>
                   ))}
                 </div>
               </TabsContent>
 
-              <TabsContent value="addresses" className="mt-10 animate-in fade-in slide-in-from-bottom-2">
+              <TabsContent value="addresses" className="mt-10 space-y-4">
                 <div className="grid gap-6 sm:grid-cols-2">
                   {addresses.map((address) => (
                     <div
                       key={address.label}
-                      className="group relative rounded-2xl border border-border/40 p-6 transition-colors hover:border-foreground/20"
+                      className="group relative rounded-2xl border border-border/40 p-6 transition-colors hover:border-[var(--gold-soft)] bg-card/20"
                     >
-                      <Badge variant="outline" className="mb-4 rounded-full border-border/60 font-normal">
+                      <Badge className="mb-4 rounded-full font-normal badge-gold text-[9px] px-2.5 py-0.5">
                         {address.label}
                       </Badge>
-                      <p className="text-sm font-medium text-foreground">{address.line1}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{address.line2}</p>
-                      <button className="mt-4 text-xs font-medium text-muted-foreground underline-offset-4 hover:underline">
+                      <p className="text-sm font-semibold text-[var(--brand-text)]">{address.line1}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{address.line2}</p>
+                      <button className="mt-4 text-[10px] uppercase font-bold tracking-wider text-[var(--gold)] hover:underline">
                         Edit Address
                       </button>
                     </div>
                   ))}
-                  <button className="flex h-full min-h-[160px] flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 transition-colors hover:bg-muted/30">
-                    <span className="text-sm font-medium">Add New Address</span>
+                  <button className="flex h-full min-h-[160px] flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--gold-soft)] bg-[var(--gold-glow)] transition-colors hover:bg-[var(--gold-faint)] cursor-pointer">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[var(--gold)]">Add New Address</span>
                   </button>
                 </div>
               </TabsContent>
 
-              <TabsContent value="settings" className="mt-10 animate-in fade-in slide-in-from-bottom-2">
+              <TabsContent value="settings" className="mt-10 space-y-6">
                 <div className="max-w-2xl space-y-8">
-                  <div className="flex items-start gap-4 rounded-2xl border border-border/40 p-6">
-                    <div className="mt-1 h-10 w-10 flex items-center justify-center rounded-full" style={{ background: "var(--gold-glow)" }}>
-                      <ShieldCheck className="h-5 w-5" style={{ color: "var(--gold)" }} />
+                  <div className="flex items-start gap-4 rounded-2xl border border-border/40 p-6 bg-card/20">
+                    <div className="mt-1 h-10 w-10 flex items-center justify-center rounded-full bg-[var(--gold-glow)] text-[var(--gold)] shrink-0 border border-[var(--gold-faint)]">
+                      <ShieldCheck className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium">Account Security</h4>
-                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                      <h4 className="text-sm font-semibold text-[var(--brand-text)]">Account Security</h4>
+                      <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
                         Your account is currently protected with standard encryption. 
                         Enable multi-factor authentication for enhanced security.
                       </p>
-                      <button className="mt-4 text-xs font-medium" style={{ color: "var(--gold)" }}>
+                      <button className="mt-4 text-[10px] uppercase tracking-wider font-bold text-[var(--gold)] hover:underline">
                         Manage Security Settings
                       </button>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <button className="w-full rounded-xl border border-border/40 py-3 text-sm font-medium transition-colors hover:bg-muted/50">
+                    <button className="btn-secondary w-full py-3.5 text-xs font-semibold uppercase tracking-wider">
                       Change Account Password
                     </button>
                     <button 
                       onClick={() => toast.error("Action restricted", {
                         description: "Please contact support to initiate account data deletion."
                       })}
-                      className="w-full rounded-xl border border-destructive/20 py-3 text-sm font-medium text-destructive transition-colors hover:bg-destructive/5"
+                      className="w-full rounded-xl border border-red-200 py-3.5 text-xs font-semibold uppercase tracking-wider text-red-500 hover:bg-red-500/5 transition-colors cursor-pointer"
                     >
                       Delete Account Data
                     </button>

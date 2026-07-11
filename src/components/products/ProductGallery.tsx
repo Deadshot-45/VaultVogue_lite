@@ -49,7 +49,7 @@ export const ProductGallery = ({
               onClick={() => setActive(img)}
               className={`relative h-20 w-16 shrink-0 rounded-xl overflow-hidden transition-all duration-200 ease-out ${
                 isActive
-                  ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-100"
+                  ? "ring-1 ring-[var(--gold)] scale-100"
                   : "opacity-70 hover:opacity-100 hover:scale-105 border border-transparent"
               }`}
             >

@@ -3,7 +3,7 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/context/theme-context";
 import { AuthInitializer } from "@/lib/store/AuthInitializer";
 import { getAuthCookie } from "@/lib/auth";
 import { makePersistor, makeStore } from "@/lib/store/store";
@@ -41,12 +41,12 @@ export function Providers({ children }: Props) {
     const token = getAuthCookie();
     console.log(token);
     if (token) {
-      queryClient.invalidateQueries({ queryKey: ["cart-details"] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     }
   }, []);
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark">
+    <ThemeProvider>
       <ReduxProvider store={store}>
         <ErrorBoundary>
           <AuthInitializer />
@@ -66,6 +66,7 @@ export function Providers({ children }: Props) {
                       error: "toast-error",
                       info: "toast-info",
                       warning: "toast-warning",
+                      loading: "toast-loading",
                     },
                   }}
                 />

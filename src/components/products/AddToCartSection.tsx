@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { ProductDetail, ProductVariant } from "@/utility/types/productVariant";
 import { AddToCartButton } from "./AddtoCart";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useCartQueue } from "@/hooks/useCartQueue";
+import { useRouter } from "next/navigation";
 import {
   useAddToCart,
   useCart,
@@ -14,6 +14,8 @@ import {
 } from "@/lib/query/useCart";
 import { Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { getAuthCookie } from "@/lib/auth";
+import { openCartDrawer } from "@/components/CartDrawer";
 
 export const AddToCartSection = ({
   product,
@@ -22,6 +24,7 @@ export const AddToCartSection = ({
   product: ProductDetail;
   selectedVariant?: ProductVariant;
 }) => {
+  const router = useRouter();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const [mounted, setMounted] = useState(false);
 
@@ -57,20 +60,23 @@ export const AddToCartSection = ({
     });
   });
 
-  // Find the cart item matching the selected variant
   const cartItem = cartItems.find(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (item: any) => item.variantId === selectedVariant?.variantId,
   );
 
   const handleAdd = () => {
-    if (!isAuthenticated) {
-      toast.error("Please sign in first");
+    const token = getAuthCookie();
+    if (!token) {
+      toast.error("Authentication required", {
+        description: "Please sign in to add items to your bag.",
+      });
+      router.push("/login");
       return;
     }
 
     if (!selectedVariant) {
-      toast.error("Select a size first");
+      toast.error("Please select a size first");
       return;
     }
 
@@ -88,51 +94,68 @@ export const AddToCartSection = ({
     queueCartAction(cartItem.variantId ?? "", -1);
   };
 
+  const handleBuyNow = () => {
+    const token = getAuthCookie();
+    if (!token) {
+      toast.error("Authentication required", {
+        description: "Please sign in to buy items.",
+      });
+      router.push("/login");
+      return;
+    }
+
+    if (!selectedVariant) {
+      toast.error("Please select a size first");
+      return;
+    }
+
+    if (!cartItem) {
+      queueCartAction(selectedVariant.variantId, 1);
+    }
+    toast.success("Opening shopping bag...");
+    openCartDrawer();
+  };
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-3.5">
       {cartItem ? (
-        <div className="flex items-center justify-between rounded-xl border p-3">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-9 w-9 transition-all duration-200 active:scale-95"
+        <div className="flex items-center justify-between rounded-full border border-border/40 p-1.5 bg-background/50">
+          <button
+            className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors cursor-pointer active:scale-90"
             onClick={handleDecrement}
           >
-            <Minus size={16} />
-          </Button>
+            <Minus size={14} />
+          </button>
 
-          <span className="text-lg font-semibold">{cartItem.quantity}</span>
+          <span className="text-sm font-semibold text-[var(--brand-text)]">{cartItem.quantity}</span>
 
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-9 w-9 transition-all duration-200 active:scale-95"
+          <button
+            className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors cursor-pointer active:scale-90"
             onClick={handleAdd}
           >
-            <Plus size={16} />
-          </Button>
+            <Plus size={14} />
+          </button>
         </div>
       ) : (
         <AddToCartButton
           onAdd={handleAdd}
           disabled={
-            !showAuthenticated ||
             !selectedVariant ||
             selectedVariant.isOutOfStock
           }
           isLoading={addToCart.isPending}
           isSuccess={addToCart.isSuccess}
           isError={addToCart.isError}
-          className="w-full"
+          className="w-full py-3.5"
         />
       )}
 
-      <Button
-        variant="outline"
-        className="w-full h-11 transition-all duration-200 active:scale-95 hover:bg-muted/50 rounded-xl"
+      <button
+        onClick={handleBuyNow}
+        className="btn-secondary w-full py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] border-[var(--gold-soft)] text-[var(--gold)]"
       >
         Buy Now
-      </Button>
+      </button>
     </div>
   );
 };

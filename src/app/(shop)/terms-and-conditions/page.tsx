@@ -7,13 +7,13 @@ const termsSections = [
   {
     title: "Using the Platform",
     detail:
-      "By browsing or purchasing from Vault Vogue, you agree to use the platform lawfully and provide accurate account and order details.",
+      "By browsing or purchasing from StyleHub Maison, you agree to use the platform lawfully and provide accurate account and order details.",
     icon: FileText,
   },
   {
     title: "Pricing and Availability",
     detail:
-      "Product availability, pricing, and promotions may change without prior notice depending on inventory and campaign updates.",
+      "Product availability, pricing, and promotions may change without prior notice depending on inventory and collection updates.",
     icon: ShoppingBag,
   },
   {
@@ -26,49 +26,40 @@ const termsSections = [
 
 export default function TermsAndConditionsPage() {
   return (
-    <section className="sale-theme mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+    <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
       {/* Header */}
-      <div
-        className="rounded-[2rem] border border-border/50 bg-background/70 p-8 shadow-sm backdrop-blur-sm
-                      dark:border-white/10 dark:bg-gradient-to-br dark:from-[#2a0c0f] dark:to-[#140607] dark:shadow-lg"
-      >
-        <Badge className="rounded-full px-3 py-1 sale-primary">Legal</Badge>
+      <div className="text-center rounded-[2rem] border border-[var(--gold-soft)] bg-card/45 p-8 sm:p-12 shadow-xl backdrop-blur-md">
+        <Badge className="rounded-full px-3 py-1 badge-gold">Legal</Badge>
 
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground dark:text-white">
-          Terms & Conditions
+        <h1 className="mt-6 font-cormorant text-4xl font-light text-[var(--brand-text)] lg:text-5xl">
+          Terms &amp; Conditions
         </h1>
+        <div className="gold-divider mx-auto mt-4" />
 
-        <p className="mt-3 max-w-2xl text-muted-foreground">
-          These terms outline the basic conditions for shopping and interacting
-          with Vault Vogue.
+        <p className="mx-auto mt-6 max-w-xl text-xs text-muted-foreground leading-relaxed">
+          These terms outline the basic conditions for shopping and interacting with StyleHub Maison.
         </p>
       </div>
 
       {/* Sections */}
-      <div className="mt-8 space-y-4">
+      <div className="mt-12 space-y-4">
         {termsSections.map((section) => (
           <div
             key={section.title}
-            className="flex gap-4 rounded-[1.5rem] border border-border/50 bg-background/70 p-6 backdrop-blur-sm transition-all
-                       hover:-translate-y-1 hover:shadow-md
-                       dark:border-white/10 dark:bg-[#1a0a0c] dark:hover:bg-[#221012] dark:hover:shadow-lg"
+            className="flex gap-5 rounded-2xl border border-border/40 bg-card/25 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--gold-soft)] hover:shadow-md"
           >
             {/* Icon */}
-            <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl 
-                            bg-primary/10 text-primary
-                            dark:bg-white/5 dark:text-red-400"
-            >
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--gold-glow)] text-[var(--gold)] border border-[var(--gold-faint)]">
               <section.icon className="h-5 w-5" />
             </div>
 
             {/* Content */}
             <div>
-              <h2 className="text-lg font-semibold text-foreground dark:text-white">
+              <h2 className="text-sm font-semibold text-[var(--brand-text)]">
                 {section.title}
               </h2>
 
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
                 {section.detail}
               </p>
             </div>

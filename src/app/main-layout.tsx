@@ -19,7 +19,7 @@ export default function MainLayout({ children }: Props) {
 
       <SidebarInset>
         <SiteHeader />
-        <main className="min-h-[85vh] overflow-x-hidden overflow-y-auto no-scrollbar sale-theme">
+        <main className="min-h-[85vh] overflow-x-hidden overflow-y-auto no-scrollbar bg-[var(--background)]">
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />

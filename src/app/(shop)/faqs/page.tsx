@@ -1,55 +1,67 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 const faqs = [
   {
     question: "How long does delivery take?",
     answer:
-      "Most orders are delivered within 3 to 7 business days depending on your location.",
+      "Most atelier creations are delivered within 3 to 7 business days depending on your region. Express delivery is available for select metropolitan areas.",
   },
   {
     question: "Can I cancel my order after placing it?",
     answer:
-      "You can request a cancellation before the order moves into packed or shipped status.",
+      "You can request a cancellation before the order moves into packed or shipped status. Please reach out to our concierge team promptly.",
   },
   {
     question: "How do I choose the right size?",
     answer:
-      "Use the size options shown on each product card and refer to the product details before checkout.",
+      "Use the size options shown on each product page and reference the tailoring specifications before checkout. Our client care team can also assist with fittings.",
   },
   {
     question: "Do I need an account to place an order?",
     answer:
-      "You can browse freely, but signing in gives you faster checkout, saved details, and order tracking.",
+      "You can browse freely, but signing in gives you faster checkout, saved client details, and access to your full order history.",
+  },
+  {
+    question: "What materials are used in Maison pieces?",
+    answer:
+      "Our curated collections feature natural materials including cashmere, silk, fine merino wool, and premium cotton sourced from sustainable ateliers.",
+  },
+  {
+    question: "Is complimentary shipping available?",
+    answer:
+      "Yes — all orders above $150 qualify for complimentary delivery. Expedited and white-glove delivery options are available at an additional cost.",
   },
 ];
 
 export default function FaqsPage() {
   const router = useRouter();
+
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
       {/* Editorial Heading */}
       <div className="mb-16 text-center">
         <p className="section-label inline-block">Support Desk</p>
         <div className="gold-divider mx-auto mt-4" />
-        <h1 className="mt-6 font-cormorant text-4xl font-light text-foreground lg:text-6xl">
+        <h1 className="mt-6 font-cormorant text-4xl font-light text-[var(--brand-text)] lg:text-6xl">
           Frequently Asked Questions
         </h1>
-        <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-muted-foreground">
-          Everything you need to know about shopping, shipping, and members-only benefits at Vault Vogue.
+        <p className="mx-auto mt-6 max-w-xl text-xs leading-relaxed text-muted-foreground">
+          Everything you need to know about shopping, shipping, and Maison membership benefits.
         </p>
       </div>
 
       {/* FAQ Accordion */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         {faqs.map((faq) => (
           <details
             key={faq.question}
-            className="group rounded-2xl border border-border/40 bg-background/50 transition-all duration-300 open:bg-muted/10 open:shadow-sm"
+            className="group rounded-2xl border border-border/40 bg-card/35 backdrop-blur-sm transition-all duration-300 open:border-[var(--gold-soft)] open:bg-card/60 open:shadow-md"
           >
-            <summary className="flex cursor-pointer list-none items-center justify-between p-6 text-base font-medium text-foreground sm:text-lg">
-              <span className="max-w-[85%]">{faq.question}</span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 transition-transform duration-300 group-open:rotate-180 group-open:bg-foreground group-open:text-background">
+            <summary className="flex cursor-pointer list-none items-center justify-between p-6 text-xs font-bold uppercase tracking-wider text-[var(--brand-text)]">
+              <span className="max-w-[85%] normal-case text-sm font-medium text-foreground">{faq.question}</span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 text-muted-foreground transition-all duration-300 group-open:rotate-180 group-open:border-[var(--gold-soft)] group-open:bg-[var(--gold-glow)] group-open:text-[var(--gold)]">
                 <svg
                   width="12"
                   height="12"
@@ -71,7 +83,7 @@ export default function FaqsPage() {
 
             <div className="px-6 pb-8">
               <div className="gold-divider mb-4 w-8" />
-              <p className="text-sm leading-7 text-muted-foreground sm:text-base">
+              <p className="text-xs leading-relaxed text-muted-foreground">
                 {faq.answer}
               </p>
             </div>
@@ -80,15 +92,19 @@ export default function FaqsPage() {
       </div>
 
       {/* Contact Strip */}
-      <div className="mt-20 flex flex-col items-center gap-6 rounded-3xl border border-border/40 bg-muted/20 p-10 text-center">
-        <h3 className="font-cormorant text-2xl font-light">Still have questions?</h3>
-        <p className="text-sm text-muted-foreground">Our concierge team is available Monday through Friday to assist you.</p>
+      <div className="mt-20 flex flex-col items-center gap-6 rounded-3xl border border-[var(--gold-soft)] bg-card/40 backdrop-blur-md p-10 text-center shadow-lg">
+        <span className="section-label">Still Have Questions?</span>
+        <h3 className="font-cormorant text-2xl font-light text-[var(--brand-text)]">
+          Our concierge team is here for you.
+        </h3>
+        <p className="text-xs text-muted-foreground max-w-xs">
+          Available Monday through Friday. We typically respond within 24 hours.
+        </p>
         <button
-          className="rounded-full px-8 py-2.5 text-sm font-medium text-white transition-transform active:scale-95"
-          style={{ background: "var(--gold)" }}
-          onClick={() => router.push('/contact')}
+          className="btn-primary"
+          onClick={() => router.push("/contact-us")}
         >
-          Contact Support
+          Contact Concierge
         </button>
       </div>
     </section>

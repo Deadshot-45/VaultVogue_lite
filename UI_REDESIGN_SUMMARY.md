@@ -1,17 +1,20 @@
-# StyleHub E-Commerce UI Redesign
+# Vault-Vogue E-Commerce UI Redesign
 
 ## Overview
+
 A complete, modern UI redesign for a full-stack e-commerce platform with Next.js, Tailwind CSS, and PostgreSQL integration.
 
 ## Design System
 
 ### Color Palette
+
 - **Primary**: Slate 900 (#0f172a)
 - **Accent**: Orange 500-600 (#f97316, #fb923c)
 - **Background**: White with subtle gradients
 - **Borders**: Slate 200 (#e2e8f0)
 
 ### Typography
+
 - Large headings: 3xl-5xl, bold
 - Section titles: 3xl (clamp for responsiveness)
 - Body: text-base with slate-600/700
@@ -20,11 +23,13 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 ### Components
 
 #### Button Styles
+
 - **btn-primary**: Orange gradient, white text, shadow, scale effects
 - **btn-secondary**: Slate border, orange hover state
 - **btn-ghost**: Minimal, hover background only
 
 #### Cards
+
 - Rounded-xl with subtle border and shadow
 - Hover effect: shadow-lg and border-orange-300
 - Responsive padding and spacing
@@ -32,6 +37,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 ## Pages Implemented
 
 ### 1. **Homepage** (`/`)
+
 - Hero section with gradient background and large CTA
 - Category showcase with image overlays and hover effects
 - Featured products grid (6 items)
@@ -39,24 +45,28 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 - Newsletter subscription form
 
 ### 2. **Men's Collection** (`/men`)
+
 - Branded header with blue-cyan gradient
 - 8 premium product cards
 - Filter & Sort controls
 - Responsive grid (2 cols mobile, 4 cols desktop)
 
 ### 3. **Women's Collection** (`/women`)
+
 - Branded header with pink-rose gradient
 - 8 curated product cards
 - Filter capabilities
 - Mobile-optimized layout
 
 ### 4. **Kids Collection** (`/kids`)
+
 - Branded header with purple-pink gradient
 - 8 playful product items
 - Same responsive structure
 - Age-appropriate design touches
 
 ### 5. **Shopping Cart** (`/cart`)
+
 - Line items with images, sizes, colors
 - Quantity controls (increment/decrement)
 - Individual item removal
@@ -67,6 +77,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 - Empty cart state with CTA
 
 ### 6. **Sign In** (`/login`)
+
 - Email/password form with icon indicators
 - "Remember me" checkbox
 - Forgot password link
@@ -74,6 +85,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 - Sign-up link for new users
 
 ### 7. **Sign Up** (`/register`)
+
 - Full name, email, password, confirm password
 - Password requirements note
 - Terms & conditions agreement
@@ -83,6 +95,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 ## Component Architecture
 
 ### Shared Components
+
 - **Header**: Sticky navigation with search, wishlist, cart, user menu
   - Mobile-responsive menu with collapse/expand
   - Search bar (desktop)
@@ -95,8 +108,9 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
   - Legal links
 
 ### Feature Components
+
 - **HeroSection**: Large banner with gradient, stats, CTAs
-- **ProductCard**: 
+- **ProductCard**:
   - Image with hover zoom
   - Rating stars (1-5)
   - Price with optional discount
@@ -111,24 +125,28 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 ## Styling & Effects
 
 ### Animations
+
 - Shimmer effect for loading states
 - Smooth transitions (200ms default)
 - Hover scale/shadow effects
 - Blur glass morphism for filters
 
 ### Responsive Design
+
 - Mobile-first approach
 - Breakpoints: sm (640px), md (768px), lg (1024px)
 - Adaptive layouts with grid-cols
 - Touch-friendly button sizes
 
 ### Accessibility
+
 - Semantic HTML structure
 - Proper ARIA labels where needed
 - High contrast text (slate-900 on white)
 - Proper form labeling
 
 ## Technologies Used
+
 - **Frontend**: Next.js 16+ with App Router
 - **Styling**: Tailwind CSS 4 with custom utilities
 - **Icons**: Lucide React (lightweight, tree-shakeable)
@@ -138,6 +156,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 ## Key Features
 
 ### User Experience
+
 - Sticky header for easy navigation
 - Quick cart access with item count
 - Wishlist with heart toggle
@@ -145,6 +164,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 - User authentication flows
 
 ### E-Commerce Functionality
+
 - Product browsing by category
 - Multi-view shopping (home, category pages)
 - Shopping cart with calculations
@@ -152,6 +172,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 - Payment flow initiation
 
 ### Visual Hierarchy
+
 - Large hero section grabs attention
 - Clear category separation
 - Product cards with rating/review count
@@ -159,6 +180,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 - Feature benefits highlighted
 
 ## Future Enhancements
+
 - Product detail pages
 - Filter/sort functionality
 - User profile & orders
@@ -169,6 +191,7 @@ A complete, modern UI redesign for a full-stack e-commerce platform with Next.js
 - Search implementation
 
 ## File Structure
+
 ```
 src/
 ├── app/
@@ -193,6 +216,7 @@ src/
 ```
 
 ## Build & Deployment
+
 ✅ TypeScript: Fully typed, no errors
 ✅ Next.js Build: Successful production build
 ✅ CSS: Valid Tailwind utilities
@@ -200,4 +224,5 @@ src/
 ✅ Responsive: Mobile to desktop tested
 
 ## Live Preview
+
 The application is fully functional and deployed. All pages are accessible and responsive across all device sizes.

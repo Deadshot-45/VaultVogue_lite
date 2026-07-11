@@ -1,8 +1,9 @@
-# StyleHub Design Tokens & Usage Guide
+# Vault-Vogue Design Tokens & Usage Guide
 
 ## Color System
 
 ### Primary Palette
+
 ```
 Slate (Text & Backgrounds)
 ├── 50:   #f8fafc   (Lightest backgrounds)
@@ -29,11 +30,15 @@ Semantic Colors
 ## Typography
 
 ### Font Stack
+
 ```css
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+font-family:
+  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+  Arial, sans-serif;
 ```
 
 ### Size Scale
+
 ```
 xs:   12px / font-xs
 sm:   14px / font-sm
@@ -47,6 +52,7 @@ xl:   20px / text-xl
 ```
 
 ### Font Weights
+
 ```
 Light:   300 (rare, only for placeholders)
 Normal:  400 (body text)
@@ -57,6 +63,7 @@ Extrabold: 800 (hero titles)
 ```
 
 ## Spacing Scale (Tailwind Default)
+
 ```
 0:    0
 1:    4px
@@ -74,6 +81,7 @@ Extrabold: 800 (hero titles)
 ## Component Sizing
 
 ### Buttons
+
 ```
 Small:   px-3 py-1.5 text-sm
 Default: px-6 py-3 text-base
@@ -82,6 +90,7 @@ Full:    w-full
 ```
 
 ### Spacing
+
 ```
 Section padding:     py-16 sm:py-24
 Container max-width: max-w-7xl
@@ -103,6 +112,7 @@ full: rounded-full   (badges, circles)
 ## Shadows
 
 ### Elevation System
+
 ```
 Default: shadow-sm       (subtle, cards)
 Hover:   shadow-lg       (lifted, interactive)
@@ -121,20 +131,22 @@ Wide:       1536px+   (2xl:)
 ```
 
 ### Common Patterns
+
 ```jsx
 // Two columns on mobile, three on tablet, four on desktop
-className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+className = "grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
 
 // Full width on mobile, centered on desktop
-className="w-full md:w-auto md:mx-auto"
+className = "w-full md:w-auto md:mx-auto";
 
 // Hide on mobile, show on desktop
-className="hidden md:block"
+className = "hidden md:block";
 ```
 
 ## Interactive States
 
 ### Buttons
+
 ```
 Default:   bg-orange-500, text-white
 Hover:     shadow-xl, scale-105, bg-orange-600
@@ -144,6 +156,7 @@ Focus:     ring-2 ring-orange-300
 ```
 
 ### Input Fields
+
 ```
 Default:   border-slate-300, bg-white
 Hover:     border-slate-400
@@ -153,6 +166,7 @@ Disabled:  bg-slate-50, cursor-not-allowed
 ```
 
 ### Cards
+
 ```
 Default:   border-slate-200, shadow-sm
 Hover:     border-orange-300, shadow-lg
@@ -163,6 +177,7 @@ Focus:     ring-2 ring-orange-400
 ## Gradient Patterns
 
 ### Background Gradients
+
 ```
 Hero:           from-orange-50 to-blue-50 (left to right)
 Men Category:   from-blue-500 to-cyan-500
@@ -173,6 +188,7 @@ Newsletter:     from-orange-500 to-orange-600
 ```
 
 ### Text Gradients
+
 ```
 // Logo/prominent text
 background: linear-gradient(to-right, #0f172a, #f97316)
@@ -183,15 +199,15 @@ color: transparent
 ## Spacing & Layout Patterns
 
 ### Section Structure
+
 ```jsx
 <section className="py-16 sm:py-24 bg-white">
-  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    {/* Content */}
-  </div>
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{/* Content */}</div>
 </section>
 ```
 
 ### Grid Layouts
+
 ```jsx
 // 2 columns (mobile) → 3 (tablet) → 4 (desktop)
 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -206,6 +222,7 @@ color: transparent
 ## Animation Timing
 
 ### Default Durations
+
 ```
 Fast:     duration-150 (input focus)
 Normal:   duration-200 (hover effects)
@@ -214,6 +231,7 @@ Slowest:  duration-500 (complex animations)
 ```
 
 ### Easing
+
 ```
 Default: ease (cubic-bezier(0.4, 0, 0.2, 1))
 Linear:  ease-linear
@@ -225,6 +243,7 @@ InOut:   ease-in-out
 ## Icon Guidelines
 
 ### Sizes & Usage
+
 ```
 Navigation: h-5 w-5    (20px)
 Buttons:    h-5 w-5    (20px)
@@ -234,6 +253,7 @@ Card Badge: h-4 w-4    (16px)
 ```
 
 ### Stroke Width
+
 ```
 Default:  stroke-width: 2
 Thin:     stroke-width: 1.5
@@ -243,13 +263,13 @@ Thick:    stroke-width: 2.5
 ## Usage Examples
 
 ### Creating a New Button
+
 ```jsx
-<button className="btn-primary">
-  {/* content */}
-</button>
+<button className="btn-primary">{/* content */}</button>
 ```
 
 ### Creating a Product Card
+
 ```jsx
 <div className="card card-hover">
   <div className="relative mb-4 h-64 overflow-hidden rounded-lg">
@@ -260,6 +280,7 @@ Thick:    stroke-width: 2.5
 ```
 
 ### Responsive Typography
+
 ```jsx
 <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl">
   {/* Large heading that scales */}
@@ -267,6 +288,7 @@ Thick:    stroke-width: 2.5
 ```
 
 ### Color-Coded Sections
+
 ```jsx
 <section className="bg-gradient-to-br from-blue-50 to-cyan-50">
   {/* Men's section */}

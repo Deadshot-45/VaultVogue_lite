@@ -1,54 +1,59 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Flame, ShoppingCart } from "lucide-react";
+import ProductCardComponent from "@/components/product-card";
+import { UIProduct } from "@/lib/query/useGetProducts";
+import { useRouter } from "next/navigation";
 
 const products = [
   {
-    id: 1,
+    id: "sale-1",
     name: "City Layer Bomber Jacket",
-    price: 2299,
-    original: 3499,
-    image: "https://images.unsplash.com/photo-1523398002811-999ca8dec234",
+    price: 290,
+    original: 450,
+    image: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=500&h=500&fit=crop",
+    category: "Outerwear",
   },
   {
-    id: 2,
+    id: "sale-2",
     name: "Weekend Flow Co-ord Set",
-    price: 1899,
-    original: 2799,
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b",
+    price: 190,
+    original: 280,
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&h=500&fit=crop",
+    category: "Sets",
   },
   {
-    id: 3,
+    id: "sale-3",
     name: "Street Pace Everyday Sneakers",
-    price: 1599,
-    original: 2499,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+    price: 140,
+    original: 220,
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&h=500&fit=crop",
+    category: "Footwear",
   },
 ];
 
 export default function Page() {
+  const router = useRouter();
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[var(--background)]">
+      {/* Hero Section */}
       <section className="relative overflow-hidden py-24 text-center">
         {/* Editorial Heading */}
         <div className="mx-auto max-w-4xl px-4">
-          <p className="section-label inline-block">The Sale Edit</p>
+          <p className="section-label inline-block">The Private Archive</p>
           <div className="gold-divider mx-auto mt-4" />
-          <h1 className="mt-8 font-cormorant text-5xl font-light tracking-tight text-foreground md:text-7xl">
+          <h1 className="mt-8 font-cormorant text-5xl font-light tracking-tight text-[var(--brand-text)] md:text-7xl">
             Seasonal picks with <br />
-            <span style={{ color: "var(--gold)" }}>member-exclusive</span> pricing
+            <span className="italic font-normal text-[var(--gold)]">Maison Special</span> pricing
           </h1>
-          <p className="mx-auto mt-8 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+          <p className="mx-auto mt-8 max-w-2xl text-xs leading-relaxed text-muted-foreground">
             Explore a curated selection of archival pieces and seasonal favorites, 
             offering restrained luxury at an exceptional value for our members.
           </p>
           <button
-            className="mt-10 rounded-full px-10 py-3 text-sm font-medium text-white transition-all hover:shadow-lg active:scale-95"
-            style={{ background: "var(--gold)" }}
+            onClick={() => router.push("/women")}
+            className="btn-primary mt-10"
           >
             Explore the Collection
           </button>
@@ -56,75 +61,76 @@ export default function Page() {
 
         {/* Decorative background orb */}
         <div 
-          className="pointer-events-none absolute left-1/2 top-0 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] opacity-10"
-          style={{ background: "var(--gold)" }}
+          className="pointer-events-none absolute left-1/2 top-0 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] opacity-10 bg-[var(--gold)]"
         />
       </section>
 
+      {/* Product List */}
       <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product, i) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group"
-            >
-              <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted/20">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute left-4 top-4">
-                  <Badge 
-                    className="rounded-full border-none px-3 py-1 text-[10px] font-medium tracking-wider text-white shadow-sm"
-                    style={{ background: "var(--gold)" }}
-                  >
-                    SALE
-                  </Badge>
-                </div>
-              </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {products.map((p, i) => {
+            const uiProduct: UIProduct = {
+              id: p.id,
+              name: p.name,
+              price: p.price,
+              minPrice: p.price,
+              maxPrice: p.price,
+              availableSizes: ["XS", "S", "M", "L", "XL"],
+              sizeQuantities: { XS: 10, S: 10, M: 10, L: 10, XL: 10 },
+              sizeToVariantMap: {
+                XS: `${p.id}-xs`,
+                S: `${p.id}-s`,
+                M: `${p.id}-m`,
+                L: `${p.id}-l`,
+                XL: `${p.id}-xl`,
+              },
+              lowStockThreshold: 5,
+              image: p.image,
+              category: p.category,
+              description: "",
+              bestseller: false,
+              trending: false,
+              isNew: false,
+              isSale: true,
+              variants: [],
+              sizes: [
+                { variantId: `${p.id}-xs`, size: "XS", price: p.price, stock: 10 }
+              ],
+              createdAt: new Date().toISOString(),
+            };
 
-              <div className="mt-6 space-y-2">
-                <h3 className="font-cormorant text-xl font-light text-foreground group-hover:underline underline-offset-4">
-                  {product.name}
-                </h3>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-medium" style={{ color: "var(--gold)" }}>
-                    ₹{product.price}
-                  </span>
-                  <span className="text-sm text-muted-foreground line-through opacity-60">
-                    ₹{product.original}
-                  </span>
-                </div>
-                <button
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-border/40 py-2.5 text-sm font-medium transition-colors hover:bg-muted/50"
-                >
-                  <ShoppingCart className="h-4 w-4" />
-                  Add to Cart
-                </button>
-              </div>
-            </motion.div>
-          ))}
+            return (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <ProductCardComponent product={uiProduct} />
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
       {/* Footer Banner */}
       <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
         <div 
-          className="relative overflow-hidden rounded-[2.5rem] p-12 text-center text-white sm:p-20"
-          style={{ background: "var(--gold)" }}
+          className="relative overflow-hidden rounded-[2.5rem] p-12 text-center text-white sm:p-20 bg-gradient-to-tr from-[var(--gold)] via-[var(--brand-text)] to-[var(--brand-text)] shadow-2xl"
         >
-          <div className="relative z-10">
+          <div className="relative z-10 max-w-xl mx-auto space-y-6">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--gold)]">
+              Maison Archivist
+            </span>
             <h2 className="font-cormorant text-4xl font-light sm:text-5xl">Refresh Your Wardrobe</h2>
-            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 opacity-90 sm:text-base">
-              Build your next look with marked-down essentials from across our 
-              collections before the selection rotates.
+            <p className="text-xs opacity-90 leading-relaxed max-w-sm mx-auto">
+              Build your next look with marked-down essentials from across our collections before the selection rotates.
             </p>
-            <button className="mt-10 rounded-full bg-white px-10 py-3 text-sm font-medium text-black transition-transform active:scale-95">
+            <button 
+              onClick={() => router.push("/women")}
+              className="rounded-full bg-white px-8 py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-transform hover:scale-[1.02] active:scale-98 cursor-pointer"
+            >
               Explore All Offers
             </button>
           </div>

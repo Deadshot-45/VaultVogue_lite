@@ -190,7 +190,7 @@ export default function Home({ recentProducts = [] }: HomeProps) {
                           className="text-sm font-semibold"
                           style={{ color: "var(--gold)" }}
                         >
-                          ${product.minPrice}
+                          ₹{product.minPrice}
                         </p>
                       ) : (
                         <p className="text-sm text-muted-foreground">

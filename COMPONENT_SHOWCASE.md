@@ -1,17 +1,20 @@
-# StyleHub Component Showcase
+# Vault-Vogue Component Showcase
 
 ## Overview
-A complete catalog of all components in the StyleHub e-commerce platform with usage examples and props documentation.
+
+A complete catalog of all components in the Vault-Vogue e-commerce platform with usage examples and props documentation.
 
 ---
 
 ## Layout Components
 
 ### Header
+
 **Location**: `src/components/header.tsx`
 **Status**: ✓ Complete
 
 #### Features
+
 - Sticky navigation with z-index management
 - Responsive mobile menu
 - Search bar (desktop)
@@ -21,13 +24,15 @@ A complete catalog of all components in the StyleHub e-commerce platform with us
 - Social login option
 
 #### Code Example
+
 ```tsx
 import Header from "@/components/header";
 
-<Header />
+<Header />;
 ```
 
 #### Features Included
+
 - Mobile menu toggle
 - User authentication dropdown
 - Shopping cart access
@@ -37,10 +42,12 @@ import Header from "@/components/header";
 ---
 
 ### Footer
+
 **Location**: `src/components/footer.tsx`
 **Status**: ✓ Complete
 
 #### Features
+
 - Four-column layout
 - Brand information with social links
 - Quick navigation links
@@ -50,16 +57,18 @@ import Header from "@/components/header";
 - Responsive design
 
 #### Sections
+
 1. **Brand**: Logo, description, social icons
 2. **Shop**: Men, Women, Kids, Sale links
 3. **Support**: Help, Tracking, Returns, Contact
 4. **Contact**: Address, phone, email
 
 #### Code Example
+
 ```tsx
 import Footer from "@/components/footer";
 
-<Footer />
+<Footer />;
 ```
 
 ---
@@ -67,10 +76,12 @@ import Footer from "@/components/footer";
 ## Hero Components
 
 ### HeroSection
+
 **Location**: `src/components/hero-section.tsx`
 **Status**: ✓ Complete
 
 #### Features
+
 - Large gradient background
 - Eye-catching headline
 - CTA buttons
@@ -79,19 +90,22 @@ import Footer from "@/components/footer";
 - Badge for new collections
 
 #### Design Elements
+
 - Orange and blue gradient backdrop
 - Asymmetric layout
 - Category-specific CTAs
 - Responsive typography
 
 #### Code Example
+
 ```tsx
 import HeroSection from "@/components/hero-section";
 
-<HeroSection />
+<HeroSection />;
 ```
 
 #### Props
+
 None (static content)
 
 ---
@@ -99,10 +113,12 @@ None (static content)
 ## Product Components
 
 ### ProductCard
+
 **Location**: `src/components/product-card.tsx`
 **Status**: ✓ Complete
 
 #### Features
+
 - Product image with hover zoom
 - Star rating (1-5 stars)
 - Review count
@@ -114,22 +130,24 @@ None (static content)
 - View details link
 
 #### Props
+
 ```typescript
 interface ProductCardProps {
   id: string;
   name: string;
   category: string;
   price: number;
-  originalPrice?: number;        // Optional discount price
-  image: string;                 // Image URL
-  rating: number;                // 1-5
-  reviews: number;               // Number of reviews
-  isNew?: boolean;               // Show "New" badge
-  isSale?: boolean;              // Show discount badge
+  originalPrice?: number; // Optional discount price
+  image: string; // Image URL
+  rating: number; // 1-5
+  reviews: number; // Number of reviews
+  isNew?: boolean; // Show "New" badge
+  isSale?: boolean; // Show discount badge
 }
 ```
 
 #### Code Example
+
 ```tsx
 import ProductCard from "@/components/product-card";
 
@@ -144,10 +162,11 @@ import ProductCard from "@/components/product-card";
   reviews={248}
   isNew={true}
   isSale={true}
-/>
+/>;
 ```
 
 #### Interactive Elements
+
 - Heart button: Toggles favorite status, changes color
 - Cart button: Opens quick add (UI ready)
 - View Details: Links to product page (routes ready)
@@ -157,16 +176,19 @@ import ProductCard from "@/components/product-card";
 ## Grid Components
 
 ### FeaturedProducts
+
 **Location**: `src/components/featured-products.tsx`
 **Status**: ✓ Complete
 
 #### Features
+
 - Displays 6 curated products
 - Section header with subtitle
 - Responsive grid (1 col mobile, 2 tablet, 3 desktop)
 - Uses ProductCard component
 
 #### Data Structure
+
 ```typescript
 const featuredProducts = [
   {
@@ -185,19 +207,22 @@ const featuredProducts = [
 ```
 
 #### Code Example
+
 ```tsx
 import FeaturedProducts from "@/components/featured-products";
 
-<FeaturedProducts />
+<FeaturedProducts />;
 ```
 
 ---
 
 ### CategoryShowcase
+
 **Location**: `src/components/category-showcase.tsx`
 **Status**: ✓ Complete
 
 #### Features
+
 - Three large category cards (Men, Women, Kids)
 - Background images with gradient overlays
 - Color-coded categories
@@ -207,26 +232,29 @@ import FeaturedProducts from "@/components/featured-products";
 - Smooth transitions
 
 #### Category Details
+
 ```typescript
 {
-  name: string;              // "Men", "Women", "Kids"
-  href: string;              // Route path
-  image: string;             // Background image URL
-  description: string;       // Subtitle
-  color: string;             // Gradient colors (Tailwind format)
+  name: string; // "Men", "Women", "Kids"
+  href: string; // Route path
+  image: string; // Background image URL
+  description: string; // Subtitle
+  color: string; // Gradient colors (Tailwind format)
 }
 ```
 
 #### Color Schemes
+
 - **Men**: Blue to Cyan
 - **Women**: Pink to Rose
 - **Kids**: Purple to Pink
 
 #### Code Example
+
 ```tsx
 import CategoryShowcase from "@/components/category-showcase";
 
-<CategoryShowcase />
+<CategoryShowcase />;
 ```
 
 ---
@@ -234,10 +262,12 @@ import CategoryShowcase from "@/components/category-showcase";
 ## Feature Components
 
 ### Features
+
 **Location**: `src/components/features.tsx`
 **Status**: ✓ Complete
 
 #### Features Displayed
+
 1. **Free Shipping**: Orders over $50
 2. **Easy Returns**: 30-day policy
 3. **Secure Payment**: 256-bit SSL
@@ -246,6 +276,7 @@ import CategoryShowcase from "@/components/category-showcase";
 6. **Eco-Friendly**: Sustainable fashion
 
 #### Design
+
 - 6-column grid (responsive to 2, 3, then 6)
 - Dark background (slate-950)
 - Icon + title + description
@@ -253,19 +284,22 @@ import CategoryShowcase from "@/components/category-showcase";
 - Rounded corners
 
 #### Code Example
+
 ```tsx
 import Features from "@/components/features";
 
-<Features />
+<Features />;
 ```
 
 ---
 
 ### Newsletter
+
 **Location**: `src/components/newsletter.tsx`
 **Status**: ✓ Complete
 
 #### Features
+
 - Email input field
 - Subscribe button with icon
 - Success message feedback
@@ -275,19 +309,22 @@ import Features from "@/components/features";
 - Responsive form layout
 
 #### Functionality
+
 - Email validation (HTML5)
 - Form submission handler
 - Success state (3-second display)
 - Input clearing after submission
 
 #### Code Example
+
 ```tsx
 import Newsletter from "@/components/newsletter";
 
-<Newsletter />
+<Newsletter />;
 ```
 
 #### Props
+
 None (self-contained)
 
 ---
@@ -295,10 +332,12 @@ None (self-contained)
 ## Page Components
 
 ### Homepage
+
 **Location**: `src/app/page.tsx`
 **Status**: ✓ Complete
 
 #### Sections
+
 1. HeroSection
 2. CategoryShowcase
 3. FeaturedProducts
@@ -306,6 +345,7 @@ None (self-contained)
 5. Newsletter
 
 #### Layout
+
 - Full-width, white background
 - Database connection test
 - Server-side rendering
@@ -313,7 +353,9 @@ None (self-contained)
 ---
 
 ### Category Pages (Men/Women/Kids)
-**Location**: 
+
+**Location**:
+
 - `src/app/men/page.tsx`
 - `src/app/women/page.tsx`
 - `src/app/kids/page.tsx`
@@ -321,6 +363,7 @@ None (self-contained)
 **Status**: ✓ Complete
 
 #### Features
+
 - Category-specific header with gradient
 - Filter & Sort button
 - Product grid (8 items each)
@@ -328,11 +371,13 @@ None (self-contained)
 - Responsive layout
 
 #### Header Gradients
+
 - **Men**: Blue-Cyan
 - **Women**: Pink-Rose
 - **Kids**: Purple-Pink
 
 #### Code Structure
+
 ```tsx
 <main className="min-h-screen bg-white">
   {/* Header Section */}
@@ -344,10 +389,12 @@ None (self-contained)
 ---
 
 ### Shopping Cart
+
 **Location**: `src/app/cart/page.tsx`
 **Status**: ✓ Complete (UI)
 
 #### Features
+
 - Cart items list with:
   - Product image
   - Name and details (size, color)
@@ -364,6 +411,7 @@ None (self-contained)
 - Free shipping badge
 
 #### Layout
+
 - Two columns on desktop (items + summary)
 - Summary sticky on scroll
 - Responsive stack on mobile
@@ -371,13 +419,16 @@ None (self-contained)
 ---
 
 ### Authentication Pages
+
 **Location**:
+
 - `src/app/login/page.tsx`
 - `src/app/register/page.tsx`
 
 **Status**: ✓ Complete (UI)
 
 #### Login Page Features
+
 - Email input with icon
 - Password input with show/hide toggle
 - Remember me checkbox
@@ -386,6 +437,7 @@ None (self-contained)
 - Sign-up link for new users
 
 #### Register Page Features
+
 - Full name input
 - Email input
 - Password input with requirements
@@ -395,6 +447,7 @@ None (self-contained)
 - Sign-in link for existing users
 
 #### Both Pages Include
+
 - Form validation UI ready
 - Card-based layout
 - Icon indicators
@@ -407,27 +460,27 @@ None (self-contained)
 ### Button Variations
 
 #### Primary Button
+
 ```tsx
-<button className="btn-primary">
-  Click me
-</button>
+<button className="btn-primary">Click me</button>
 ```
+
 Style: Orange gradient, white text, shadow, scale effects
 
 #### Secondary Button
+
 ```tsx
-<button className="btn-secondary">
-  Click me
-</button>
+<button className="btn-secondary">Click me</button>
 ```
+
 Style: Outlined, orange hover state
 
 #### Ghost Button
+
 ```tsx
-<button className="btn-ghost">
-  Click me
-</button>
+<button className="btn-ghost">Click me</button>
 ```
+
 Style: Minimal, hover background only
 
 ---
@@ -435,21 +488,27 @@ Style: Minimal, hover background only
 ### Typography Classes
 
 #### Section Title
+
 ```tsx
 <h2 className="section-title">Heading</h2>
 ```
+
 Size: 3xl bold, responsive scaling
 
 #### Section Subtitle
+
 ```tsx
 <p className="section-subtitle">Subtitle</p>
 ```
+
 Size: Large, muted color
 
 #### Gradient Text
+
 ```tsx
 <h1 className="gradient-text">Featured</h1>
 ```
+
 Effect: Orange to slate gradient
 
 ---
@@ -457,21 +516,27 @@ Effect: Orange to slate gradient
 ### Visual Effects
 
 #### Badge
+
 ```tsx
 <span className="badge">New</span>
 ```
+
 Style: Orange background, rounded, compact
 
 #### Blur Glass
+
 ```tsx
 <div className="blur-glass">Content</div>
 ```
+
 Effect: Frosted glass with backdrop blur
 
 #### Shine Animation
+
 ```tsx
 <div className="shine">Loading...</div>
 ```
+
 Effect: Shimmer animation loop
 
 ---
@@ -479,6 +544,7 @@ Effect: Shimmer animation loop
 ## Icon Integration
 
 ### Used Icons (lucide-react)
+
 ```
 Navigation: Menu, X, Search, ChevronDown
 Commerce: ShoppingBag, ShoppingCart, Heart
@@ -489,6 +555,7 @@ Content: Sparkles, Eye, EyeOff
 ```
 
 ### Icon Sizing
+
 - Header: h-5 w-5
 - Buttons: h-5 w-5
 - Hero: h-12 w-12
@@ -499,6 +566,7 @@ Content: Sparkles, Eye, EyeOff
 ## Responsive Design
 
 ### Breakpoints Used
+
 ```
 Mobile:   < 640px   (default)
 Tablet:   640px+    (sm:)
@@ -507,15 +575,16 @@ Wide:     1024px+   (lg:)
 ```
 
 ### Common Responsive Patterns
+
 ```tsx
 // Two columns on mobile, three on tablet, four on desktop
-className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+className = "grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
 
 // Hide on mobile
-className="hidden md:block"
+className = "hidden md:block";
 
 // Flex column on mobile, row on desktop
-className="flex flex-col md:flex-row"
+className = "flex flex-col md:flex-row";
 ```
 
 ---
@@ -536,6 +605,7 @@ className="flex flex-col md:flex-row"
 ## Animation Classes
 
 ### Built-in Animations
+
 - Shimmer (loading effect)
 - Smooth transitions (200ms default)
 - Hover scale (1.05x)
@@ -547,7 +617,9 @@ className="flex flex-col md:flex-row"
 ## Data Sources
 
 ### Product Data
+
 Currently using static arrays in component files:
+
 - `featuredProducts` in FeaturedProducts
 - `menProducts` in Men page
 - `womenProducts` in Women page
@@ -555,6 +627,7 @@ Currently using static arrays in component files:
 - `cartItems` in Cart page
 
 ### Future Integration Points
+
 - Database queries via Drizzle ORM
 - API endpoints for dynamic data
 - Search and filtering backend

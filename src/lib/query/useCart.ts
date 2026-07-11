@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CartItem, cartService } from "../api/cartServices";
+import { CartItem, cartService, getCartResponseItems } from "../api/cartServices";
 import { useAppSelector } from "../store/hooks";
 
 export interface CartListItem {
@@ -63,7 +63,7 @@ export const normalizeCartItems = (items?: CartItem[]): CartListItem[] =>
 
 export const useCart = (isEnable?: boolean) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  return useQuery<CartItem[]>({
+  return useQuery<CartListItem[]>({
     queryKey: ["cart"],
     queryFn: async () => {
       const res = await cartService.getCartDetails();
@@ -87,9 +87,9 @@ export const useAddToCart = () => {
     onMutate: async (newItem) => {
       await queryClient.cancelQueries({ queryKey: ["cart"] });
 
-      const prev = queryClient.getQueryData<CartItem[]>(["cart"]);
+      const prev = queryClient.getQueryData<CartListItem[]>(["cart"]);
 
-      queryClient.setQueryData<CartItem[]>(["cart"], (old) => {
+      queryClient.setQueryData<CartListItem[]>(["cart"], (old) => {
         const prevData = old ?? [];
 
         const exists = prevData.find((i) => i.variantId === newItem.variantId);
@@ -115,6 +115,7 @@ export const useAddToCart = () => {
             price: 0,
             image: "",
             quantity: newItem.quantity,
+            priceSnapshot: 0,
           },
         ];
       });
@@ -131,7 +132,8 @@ export const useAddToCart = () => {
     onSuccess: (data) => {
       // ✅ BEST PRACTICE: sync exact server state
       if (data?.cart) {
-        queryClient.setQueryData(["cart"], data.cart);
+        const rawItems = getCartResponseItems(data.cart);
+        queryClient.setQueryData(["cart"], normalizeCartItems(rawItems));
       }
     },
 
@@ -150,9 +152,9 @@ export const useRemoveFromCart = () => {
     onMutate: async (variantId) => {
       await queryClient.cancelQueries({ queryKey: ["cart"] });
 
-      const prev = queryClient.getQueryData<CartItem[]>(["cart"]);
+      const prev = queryClient.getQueryData<CartListItem[]>(["cart"]);
 
-      queryClient.setQueryData<CartItem[]>(["cart"], (old) => {
+      queryClient.setQueryData<CartListItem[]>(["cart"], (old) => {
         const prevData = old ?? [];
         return prevData.filter((i) => i.variantId !== variantId);
       });
@@ -168,7 +170,8 @@ export const useRemoveFromCart = () => {
 
     onSuccess: (data) => {
       if (data?.cart) {
-        queryClient.setQueryData(["cart"], data.cart);
+        const rawItems = getCartResponseItems(data.cart);
+        queryClient.setQueryData(["cart"], normalizeCartItems(rawItems));
       }
     },
 
@@ -188,9 +191,9 @@ export const useDecrementFromCart = () => {
     onMutate: async (variantId) => {
       await queryClient.cancelQueries({ queryKey: ["cart"] });
 
-      const prev = queryClient.getQueryData<CartItem[]>(["cart"]);
+      const prev = queryClient.getQueryData<CartListItem[]>(["cart"]);
 
-      queryClient.setQueryData<CartItem[]>(["cart"], (old = []) => {
+      queryClient.setQueryData<CartListItem[]>(["cart"], (old = []) => {
         return old
           .map((item) => {
             if (item.variantId !== variantId) return item;
@@ -205,7 +208,7 @@ export const useDecrementFromCart = () => {
               quantity: newQty,
             };
           })
-          .filter(Boolean) as CartItem[];
+          .filter(Boolean) as CartListItem[];
       });
 
       return { prev };
@@ -220,7 +223,8 @@ export const useDecrementFromCart = () => {
     onSuccess: (data) => {
       // optional: if backend returns full cart
       if (data?.cart) {
-        queryClient.setQueryData(["cart"], data.cart);
+        const rawItems = getCartResponseItems(data.cart);
+        queryClient.setQueryData(["cart"], normalizeCartItems(rawItems));
       }
     },
 

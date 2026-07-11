@@ -4,12 +4,12 @@ import ProductGrid from "@/components/ProductGrid";
 import { Button } from "@/components/ui/button";
 import { useGetProducts } from "@/lib/query/useGetProducts";
 import { Loader2 } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-const ProductsSearchPage: React.FC = () => {
+const SearchPageContent: React.FC = () => {
   const searchParams = useSearchParams();
-  const search = searchParams.get("search") || "";
+  const search = searchParams?.get("search") || "";
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useGetProducts({
@@ -62,4 +62,16 @@ const ProductsSearchPage: React.FC = () => {
   );
 };
 
-export default ProductsSearchPage;
+export default function ProductsSearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-[70vh] items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--gold)" }} />
+        </div>
+      }
+    >
+      <SearchPageContent />
+    </Suspense>
+  );
+}

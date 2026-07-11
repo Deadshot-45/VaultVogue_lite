@@ -52,3 +52,46 @@ export function updateCartCache(
 
   return [...prev, { ...newItem, quantity: 1 }];
 }
+
+export const classifySubcategory = (name: string, defaultCategory: string): string => {
+  const lowerName = name.toLowerCase();
+  
+  if (lowerName.includes("knit") || lowerName.includes("sweater") || lowerName.includes("cashmere") || lowerName.includes("pullover")) {
+    return "Knitwear";
+  }
+  if (lowerName.includes("coat") || lowerName.includes("jacket") || lowerName.includes("trench") || lowerName.includes("outerwear") || lowerName.includes("parka")) {
+    return "Outerwear";
+  }
+  if (lowerName.includes("blazer") || lowerName.includes("suit")) {
+    return "Blazers";
+  }
+  if (lowerName.includes("shirt") || lowerName.includes("polo") || lowerName.includes("t-shirt") || lowerName.includes("tee")) {
+    return "Shirts";
+  }
+  if (lowerName.includes("boot") || lowerName.includes("shoe") || lowerName.includes("sneaker") || lowerName.includes("loafer") || lowerName.includes("footwear")) {
+    return "Footwear";
+  }
+  if (lowerName.includes("jeans") || lowerName.includes("denim") || lowerName.includes("trousers") || lowerName.includes("pant") || lowerName.includes("chinos")) {
+    return "Denim";
+  }
+  if (lowerName.includes("dress") || lowerName.includes("gown")) {
+    return "Dresses";
+  }
+  if (lowerName.includes("skirt")) {
+    return "Skirts";
+  }
+  if (lowerName.includes("accessory") || lowerName.includes("bag") || lowerName.includes("wallet") || lowerName.includes("belt")) {
+    return "Accessories";
+  }
+  if (lowerName.includes("baby") || lowerName.includes("playsuit") || lowerName.includes("romper")) {
+    return "Baby";
+  }
+  if (lowerName.includes("outfit") || lowerName.includes("set")) {
+    return "Outfits";
+  }
+  if (lowerName.includes("sleep") || lowerName.includes("pyjama") || lowerName.includes("pajama") || lowerName.includes("sleepwear")) {
+    return "Sleepwear";
+  }
+  
+  return defaultCategory;
+};

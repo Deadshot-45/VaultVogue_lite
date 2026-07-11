@@ -1,19 +1,22 @@
-# StyleHub - Quick Start Guide
+# Vault-Vogue - Quick Start Guide
 
 ## 🚀 Get Started in 3 Steps
 
 ### 1. Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### 2. Set Up Environment
+
 ```bash
 # Create .env file with database connection
 DATABASE_URL=postgresql://user:password@localhost:5432/app_db
 ```
 
 ### 3. Start Development Server
+
 ```bash
 npm run dev
 ```
@@ -24,22 +27,23 @@ Open [http://localhost:3000](http://localhost:3000) 🎉
 
 ## 📍 Available Routes
 
-| Route | Purpose | Status |
-|-------|---------|--------|
-| `/` | Homepage | ✓ Complete |
-| `/men` | Men's Collection | ✓ Complete |
-| `/women` | Women's Collection | ✓ Complete |
-| `/kids` | Kids Collection | ✓ Complete |
-| `/cart` | Shopping Cart | ✓ Complete |
-| `/login` | Sign In | ✓ Complete |
-| `/register` | Sign Up | ✓ Complete |
-| `/api/health` | Health Check | ✓ Complete |
+| Route         | Purpose            | Status     |
+| ------------- | ------------------ | ---------- |
+| `/`           | Homepage           | ✓ Complete |
+| `/men`        | Men's Collection   | ✓ Complete |
+| `/women`      | Women's Collection | ✓ Complete |
+| `/kids`       | Kids Collection    | ✓ Complete |
+| `/cart`       | Shopping Cart      | ✓ Complete |
+| `/login`      | Sign In            | ✓ Complete |
+| `/register`   | Sign Up            | ✓ Complete |
+| `/api/health` | Health Check       | ✓ Complete |
 
 ---
 
 ## 🎨 What You Get
 
 ### Visual Design
+
 - Modern, clean aesthetic
 - Orange accent color scheme
 - Smooth animations and transitions
@@ -47,12 +51,14 @@ Open [http://localhost:3000](http://localhost:3000) 🎉
 - Dark and light mode ready
 
 ### Pages
+
 - **Homepage**: Hero section, categories, featured products, features, newsletter
 - **Category Pages**: Product grid with filters
 - **Shopping Cart**: Full cart management with checkout
 - **Auth Pages**: Beautiful sign in/up forms
 
 ### Components
+
 - Sticky navigation header with search
 - Multi-column footer
 - Reusable product cards
@@ -115,11 +121,13 @@ src/
 ## 🎯 Key Features
 
 ### Navigation
+
 - **Header**: Search, cart, wishlist, user menu
 - **Footer**: Company info, links, contact
 - **Mobile Menu**: Responsive hamburger menu
 
 ### Products
+
 - Rating system (1-5 stars)
 - Price with discount display
 - New/Sale badges
@@ -127,6 +135,7 @@ src/
 - Add to cart
 
 ### Shopping
+
 - Full cart management
 - Quantity controls
 - Price calculations
@@ -134,6 +143,7 @@ src/
 - Tax calculation
 
 ### Authentication
+
 - Email/password forms
 - Social login buttons
 - Remember me option
@@ -145,6 +155,7 @@ src/
 ## 🎨 Design System
 
 ### Colors
+
 ```
 Primary:   Slate 900 (#0f172a)
 Accent:    Orange 500 (#f97316)
@@ -153,6 +164,7 @@ Text:      Slate 700 (#334155)
 ```
 
 ### Typography
+
 ```
 Headings:  bold, 3xl-5xl
 Body:      regular, base
@@ -160,6 +172,7 @@ Labels:    semibold, sm-md
 ```
 
 ### Spacing
+
 ```
 Sections:  py-16 sm:py-24
 Cards:     p-6
@@ -172,24 +185,28 @@ Gaps:      gap-4 to gap-8
 ## 🚀 Next Steps
 
 ### Immediate
+
 1. Explore the pages
 2. Check the components folder
 3. Review the CSS in globals.css
 4. Customize colors if needed
 
 ### Short-term
+
 - Add product detail pages
 - Implement search functionality
 - Connect shopping cart to state
 - Add user authentication
 
 ### Medium-term
+
 - Set up payment processing
 - Create admin dashboard
 - Add order management
 - Implement wishlists
 
 ### Long-term
+
 - Advanced filtering/sorting
 - Product reviews system
 - Email notifications
@@ -200,7 +217,9 @@ Gaps:      gap-4 to gap-8
 ## 💡 Pro Tips
 
 ### Customize Colors
+
 Edit `src/app/globals.css`:
+
 ```css
 :root {
   --primary: #your-color;
@@ -209,22 +228,26 @@ Edit `src/app/globals.css`:
 ```
 
 ### Add Icons
+
 Use Lucide React:
+
 ```tsx
 import { ShoppingBag } from "lucide-react";
-<ShoppingBag className="h-5 w-5" />
+<ShoppingBag className="h-5 w-5" />;
 ```
 
 ### Make It Responsive
+
 Use Tailwind breakpoints:
+
 ```tsx
-<div className="w-full md:w-1/2 lg:w-1/3">
-  Responsive layout
-</div>
+<div className="w-full md:w-1/2 lg:w-1/3">Responsive layout</div>
 ```
 
 ### Add New Pages
+
 Create `src/app/[route]/page.tsx`:
+
 ```tsx
 export const metadata = {
   title: "Page Title",
@@ -262,21 +285,25 @@ export default function Page() {
 ## 🆘 Troubleshooting
 
 ### Tailwind not working?
+
 - Clear `.next` folder
 - Restart dev server
 - Check class names in content paths
 
 ### Database connection error?
+
 - Verify DATABASE_URL in .env
 - Check PostgreSQL is running
 - Ensure database exists
 
 ### Build errors?
+
 - Run `npm run typecheck`
 - Check TypeScript errors
 - Clear node_modules and reinstall
 
 ### Styles not applying?
+
 - Clear cache (Cmd+Shift+R)
 - Check Tailwind utility names
 - Verify class is in template

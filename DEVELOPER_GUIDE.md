@@ -1,18 +1,21 @@
-# StyleHub Developer Guide
+# Vault-Vogue Developer Guide
 
 ## Quick Start
 
 ### Installation
+
 ```bash
 npm install
 ```
 
 ### Development
+
 ```bash
 npm run dev
 ```
 
 ### Production Build
+
 ```bash
 npm run build
 npm start
@@ -21,7 +24,7 @@ npm start
 ## Project Structure
 
 ```
-StyleHub/
+Vault-Vogue/
 ├── src/
 │   ├── app/
 │   │   ├── api/
@@ -60,42 +63,37 @@ StyleHub/
 ## Adding New Features
 
 ### Create a New Page
+
 ```tsx
 // src/app/[route]/page.tsx
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Page Title - StyleHub",
+  title: "Page Title - Vault-Vogue",
   description: "Page description",
 };
 
 export default function PageName() {
-  return (
-    <main className="min-h-screen bg-white">
-      {/* Content */}
-    </main>
-  );
+  return <main className="min-h-screen bg-white">{/* Content */}</main>;
 }
 ```
 
 ### Create a New Component
+
 ```tsx
 // src/components/new-component.tsx
-"use client";  // If using interactivity
+"use client"; // If using interactivity
 
 import { useState } from "react";
 import { SomeIcon } from "lucide-react";
 
 export default function NewComponent() {
-  return (
-    <div className="your-classes">
-      {/* Content */}
-    </div>
-  );
+  return <div className="your-classes">{/* Content */}</div>;
 }
 ```
 
 ### Add Styling
+
 - Use Tailwind utility classes directly
 - For complex styles, add to `globals.css` under `@layer components`
 - Custom animations go under `@layer utilities`
@@ -103,37 +101,39 @@ export default function NewComponent() {
 ## Component API
 
 ### ProductCard
+
 ```tsx
 <ProductCard
   id="1"
   name="Product Name"
   category="Men"
   price={49.99}
-  originalPrice={79.99}           // Optional
+  originalPrice={79.99} // Optional
   image="https://..."
-  rating={5}                        // 1-5
+  rating={5} // 1-5
   reviews={248}
-  isNew={true}                      // Optional
-  isSale={true}                     // Optional
+  isNew={true} // Optional
+  isSale={true} // Optional
 />
 ```
 
 ### Features Used
 
-| Feature | Location | Status |
-|---------|----------|--------|
-| Product Browsing | /men, /women, /kids | ✓ Complete |
-| Shopping Cart | /cart | ✓ Complete (UI) |
-| User Auth | /login, /register | ✓ Complete (UI) |
-| Search | Header | 🔲 Ready for backend |
-| Wishlist | Header badge | 🔲 Ready for backend |
-| Filters | Category pages | 🔲 Ready for backend |
-| Checkout | - | 🔲 In progress |
-| Product Details | - | 🔲 To implement |
+| Feature          | Location            | Status               |
+| ---------------- | ------------------- | -------------------- |
+| Product Browsing | /men, /women, /kids | ✓ Complete           |
+| Shopping Cart    | /cart               | ✓ Complete (UI)      |
+| User Auth        | /login, /register   | ✓ Complete (UI)      |
+| Search           | Header              | 🔲 Ready for backend |
+| Wishlist         | Header badge        | 🔲 Ready for backend |
+| Filters          | Category pages      | 🔲 Ready for backend |
+| Checkout         | -                   | 🔲 In progress       |
+| Product Details  | -                   | 🔲 To implement      |
 
 ## Database Integration (Drizzle ORM)
 
 ### Query Example
+
 ```tsx
 // In a Server Component
 import { db } from "@/db";
@@ -146,6 +146,7 @@ export default async function Page() {
 ```
 
 ### Add New Table
+
 1. Edit `src/db/schema.ts`
 2. Run `npx drizzle-kit push` to apply changes
 3. Import and use in components
@@ -153,6 +154,7 @@ export default async function Page() {
 ## Styling Guidelines
 
 ### Use Predefined Classes
+
 ```tsx
 // ✓ Good
 <button className="btn-primary">Click</button>
@@ -162,6 +164,7 @@ export default async function Page() {
 ```
 
 ### Responsive Design Pattern
+
 ```tsx
 // Mobile-first approach
 <div className="
@@ -173,6 +176,7 @@ export default async function Page() {
 ```
 
 ### Common Tailwind Patterns
+
 ```tsx
 // Sticky header
 <header className="sticky top-0 z-50 ...">
@@ -203,11 +207,13 @@ export default async function Page() {
 ## Environment Variables
 
 ### Required
+
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/app_db
 ```
 
 ### Optional
+
 ```env
 NEXT_PUBLIC_API_URL=https://api.example.com
 ```
@@ -215,16 +221,19 @@ NEXT_PUBLIC_API_URL=https://api.example.com
 ## Testing
 
 ### Type Checking
+
 ```bash
 npm run typecheck
 ```
 
 ### Build Test
+
 ```bash
 npm run build
 ```
 
 ### Type Generation
+
 ```bash
 npx next typegen
 ```
@@ -232,20 +241,26 @@ npx next typegen
 ## Common Issues & Solutions
 
 ### Issue: Tailwind class not applied
-**Solution**: 
+
+**Solution**:
+
 - Check class name spelling
 - Ensure class is in template string (not outside quotes)
 - Rebuild project
 - Check tailwind.config.ts content paths
 
 ### Issue: Image not showing
+
 **Solution**:
+
 - Ensure image path is correct
 - Use absolute URLs for external images
 - Check Next.js Image import
 
 ### Issue: Component not rendering
+
 **Solution**:
+
 - Check export statement (default vs named)
 - Verify import path matches file location
 - Check for syntax errors
@@ -254,17 +269,20 @@ npx next typegen
 ## Deployment
 
 ### Vercel (Recommended)
+
 ```bash
 vercel deploy
 ```
 
 ### Self-Hosted
+
 ```bash
 npm run build
 npm start
 ```
 
 ### Environment Setup
+
 - Set DATABASE_URL
 - Set any API keys needed
 - Configure NEXT_PUBLIC variables
@@ -297,6 +315,7 @@ npm start
 ## Support
 
 For issues or questions:
+
 1. Check existing documentation
 2. Review similar components
 3. Test in isolated component

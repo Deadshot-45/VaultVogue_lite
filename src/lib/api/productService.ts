@@ -1,5 +1,11 @@
 import { api } from "./apiservices";
 
+export interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
 export interface Product {
   _id: string;
   id?: string;
@@ -42,11 +48,7 @@ export interface Product {
     stock: number;
   }[];
 
-  categories?: {
-    _id: string;
-    name: string;
-    slug: string;
-  }[];
+  categories?: Category[];
 
   createdAt: string;
 }

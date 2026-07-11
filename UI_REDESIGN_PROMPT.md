@@ -1,19 +1,20 @@
-# UI Redesign Prompt — StyleHub Luxury Maison
+# UI Redesign Prompt — Vault-Vogue Luxury Maison
 
 > A complete, production-ready prompt for redesigning a luxury fashion e-commerce site.
-> Hand this to a developer or AI to reproduce the StyleHub redesign.
+> Hand this to a developer or AI to reproduce the Vault-Vogue redesign.
 
 ---
 
 ## The Prompt
 
-**Project:** Redesign the UI for "StyleHub," a luxury fashion maison selling clothing and accessories for men, women, and kids. Build it as a fullstack Next.js application with PostgreSQL (Drizzle ORM) backend support. The design language is **quiet luxury** — editorial, restrained, and premium.
+**Project:** Redesign the UI for "Vault-Vogue," a luxury fashion maison selling clothing and accessories for men, women, and kids. Build it as a fullstack Next.js application with PostgreSQL (Drizzle ORM) backend support. The design language is **quiet luxury** — editorial, restrained, and premium.
 
 ### 1. Design Vision
 
 Create a **luxury minimal** shopping experience inspired by the world's most refined fashion houses. The aesthetic should feel like a Parisian atelier — warm cream backgrounds, gold accents, editorial serif typography, generous whitespace, and glassmorphic surfaces. Every interaction should feel deliberate and unhurried.
 
 **Design principles:**
+
 - **Editorial typography** — Montserrat with wide letter-spacing, light weights for headings, uppercase section labels
 - **Quiet luxury palette** — warm gold (#8a6a42) accent on cream (#f5f0ea) backgrounds, never loud
 - **Glassmorphism** — frosted surfaces with backdrop-blur for cards, header, and toasts
@@ -27,31 +28,34 @@ Create a **luxury minimal** shopping experience inspired by the world's most ref
 The design system uses CSS custom properties with OKLCH color space for perceptual uniformity. Both light and dark themes are defined.
 
 **Light theme:**
+
 ```css
---background: oklch(1 0 0);           /* Pure white */
---foreground: oklch(0.145 0 0);       /* Near black */
---primary: oklch(0.205 0 0);          /* Dark */
---border: oklch(0.922 0 0);           /* Light gray */
---gold: #8a6a42;                       /* Brand gold */
---bg: #f5f0ea;                         /* Warm cream */
---brand-text: #2e1f0e;                /* Deep brown text */
---slogan-text: rgba(80, 55, 28, 0.55);/* Muted brown */
+--background: oklch(1 0 0); /* Pure white */
+--foreground: oklch(0.145 0 0); /* Near black */
+--primary: oklch(0.205 0 0); /* Dark */
+--border: oklch(0.922 0 0); /* Light gray */
+--gold: #8a6a42; /* Brand gold */
+--bg: #f5f0ea; /* Warm cream */
+--brand-text: #2e1f0e; /* Deep brown text */
+--slogan-text: rgba(80, 55, 28, 0.55); /* Muted brown */
 --gold-soft: rgba(138, 106, 66, 0.5); /* Semi-transparent gold */
---gold-faint: rgba(138, 106, 66, 0.12);/* Very light gold */
---gold-glow: rgba(138, 106, 66, 0.08);/* Glow effect */
+--gold-faint: rgba(138, 106, 66, 0.12); /* Very light gold */
+--gold-glow: rgba(138, 106, 66, 0.08); /* Glow effect */
 --sale-red-500: oklch(0.637 0.237 25.331); /* Sale accent */
 ```
 
 **Dark theme:**
+
 ```css
---background: oklch(0.145 0.02 25.326);  /* Warm near-black */
+--background: oklch(0.145 0.02 25.326); /* Warm near-black */
 --foreground: oklch(0.985 0.01 25.326); /* Warm white */
---gold: #d4b796;                         /* Lighter gold for dark */
---bg: #0a0a08;                           /* Near black */
---brand-text: #e8d9c4;                   /* Cream text */
+--gold: #d4b796; /* Lighter gold for dark */
+--bg: #0a0a08; /* Near black */
+--brand-text: #e8d9c4; /* Cream text */
 ```
 
 **Color roles:**
+
 - **Gold** (`--gold`): Primary brand accent — CTAs, links, icons, hover states
 - **Brand text** (`--brand-text`): Primary headings and body
 - **Slogan text** (`--slogan-text`): Secondary/descriptive text (muted)
@@ -70,6 +74,7 @@ The design system uses CSS custom properties with OKLCH color space for perceptu
 ### 4. Component Utilities (in globals.css)
 
 Define these reusable component classes:
+
 - `.btn-primary` — solid gold button, Montserrat, hover lift + gold glow shadow
 - `.btn-secondary` — gold-outlined button, fills with gold glow on hover
 - `.btn-ghost` — minimal text button, gold glow background on hover
@@ -89,24 +94,26 @@ Define these reusable component classes:
 
 ### 5. Routes to Implement
 
-| Route | Purpose |
-|-------|---------|
-| `/` | Storefront home — hero, categories, featured products, USPs, newsletter |
-| `/men` | Men's collection — editorial header + product grid |
-| `/women` | Women's collection — editorial header + product grid |
-| `/kids` | Kids collection — editorial header + product grid |
-| `/cart` | Shopping bag — line items, quantity controls, order summary |
-| `/login` | Sign-in page — email/password, social login |
-| `/register` | Sign-up page — registration form with terms |
-| `/api/health` | Database health check endpoint |
+| Route         | Purpose                                                                 |
+| ------------- | ----------------------------------------------------------------------- |
+| `/`           | Storefront home — hero, categories, featured products, USPs, newsletter |
+| `/men`        | Men's collection — editorial header + product grid                      |
+| `/women`      | Women's collection — editorial header + product grid                    |
+| `/kids`       | Kids collection — editorial header + product grid                       |
+| `/cart`       | Shopping bag — line items, quantity controls, order summary             |
+| `/login`      | Sign-in page — email/password, social login                             |
+| `/register`   | Sign-up page — registration form with terms                             |
+| `/api/health` | Database health check endpoint                                          |
 
 ### 6. Required Components
 
 **Layout:**
-- **Header** — sticky, glassmorphic. Logo with serif "STYLEHUB" + "Maison" subtitle, desktop search, theme toggle (light/dark), wishlist badge, cart badge, user dropdown, mobile hamburger, category nav with "Complimentary Shipping" label
+
+- **Header** — sticky, glassmorphic. Logo with serif "Vault-Vogue" + "Maison" subtitle, desktop search, theme toggle (light/dark), wishlist badge, cart badge, user dropdown, mobile hamburger, category nav with "Complimentary Shipping" label
 - **Footer** — warm cream background, editorial intro with section-label, 4-column layout (brand, collections, client care, atelier), gold dividers, social icons, legal bar
 
 **Homepage sections:**
+
 - **HeroSection** — gold glow orbs, "Autumn/Winter Collection" badge, "The Art of Quiet Luxury" headline with gradient italic accent, gold divider, dual CTA, stats row with gold dividers, featured edit card with gold gradient
 - **CategoryShowcase** — 3 large image cards (Men/Women/Kids) with gold overlays, hover zoom, editorial descriptions
 - **FeaturedProducts** — section-label + title + gold divider, responsive grid of 6 ProductCards
@@ -114,13 +121,16 @@ Define these reusable component classes:
 - **Newsletter** — gold-to-brand gradient section, glassmorphic email form, "Join the Maison" CTA
 
 **Commerce:**
+
 - **ProductCard** — glassmorphic `.product-card`, image with slow zoom, New/Sale badges, gold star ratings, price with strikethrough, wishlist heart toggle, gold add-to-cart button, "View Details" link
 
 **Auth:**
+
 - Login: card with section-label, gold divider, icon-adorned inputs, remember me, forgot password link, Google + Apple buttons, sign-up link
 - Register: same editorial structure, name/email/password/confirm, terms checkbox with gold accent
 
 **Cart:**
+
 - Editorial header with gold divider
 - Line items in glassmorphic cards with image, category label, name, size/color, price, quantity stepper, remove button
 - Sticky order summary: subtotal, complimentary shipping, 8% tax, total, checkout button, complimentary shipping confirmation
@@ -128,6 +138,7 @@ Define these reusable component classes:
 ### 7. Theme System
 
 Implement a `ThemeProvider` context that:
+
 - Reads stored theme from `localStorage` on mount
 - Respects `prefers-color-scheme` for initial value
 - Toggles `dark` class on `<html>` element
@@ -213,4 +224,4 @@ Each category page renders 8 luxury products with elevated naming (e.g., "Cashme
 
 ## TL;DR (Short Version)
 
-> Redesign a luxury fashion e-commerce site ("StyleHub Maison") in Next.js 16 + Tailwind CSS 4 + TypeScript. Use a quiet luxury design system: warm gold (#8a6a42) accent on cream (#f5f0ea) backgrounds, Montserrat font, editorial typography with uppercase section labels, glassmorphic cards, gold dividers, and full dark mode support via a ThemeProvider context. Build 7 pages (home, men, women, kids, cart, login, register) with a sticky glass header (including theme toggle), editorial footer, luxury hero, category showcase, featured product grid, reusable glassmorphic ProductCard, features section, and gradient newsletter. Install `lucide-react` and `tw-animate-css`. Use OKLCH color variables for theming. All builds and type checks must pass.
+> Redesign a luxury fashion e-commerce site ("Vault-Vogue Maison") in Next.js 16 + Tailwind CSS 4 + TypeScript. Use a quiet luxury design system: warm gold (#8a6a42) accent on cream (#f5f0ea) backgrounds, Montserrat font, editorial typography with uppercase section labels, glassmorphic cards, gold dividers, and full dark mode support via a ThemeProvider context. Build 7 pages (home, men, women, kids, cart, login, register) with a sticky glass header (including theme toggle), editorial footer, luxury hero, category showcase, featured product grid, reusable glassmorphic ProductCard, features section, and gradient newsletter. Install `lucide-react` and `tw-animate-css`. Use OKLCH color variables for theming. All builds and type checks must pass.

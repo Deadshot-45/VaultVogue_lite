@@ -29,6 +29,7 @@ export type UIProduct = {
   trending: boolean;
 
   isNew: boolean;
+  isSale: boolean;
 
   variants: any;
   sizes: { variantId: string; size: string; price: number; stock: number }[];
@@ -98,6 +99,7 @@ const mapProduct = (p: ApiProduct): UIProduct => {
     trending: p.trending ?? false,
 
     isNew: false, // derive from createdAt if needed
+    isSale: false, // derive from product flags if available
 
     variants: variants.map((v) => ({
       id: v._id,
