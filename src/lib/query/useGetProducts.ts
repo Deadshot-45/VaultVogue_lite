@@ -40,6 +40,7 @@ interface UseGetProductsProps {
   limit?: number;
   label?: string; // e.g. "men" | "women" | "kids" - used as part of query key
   categoryName?: string; // Add this
+  search?: string;
 }
 
 // type UIProductBase = Pick<
@@ -125,9 +126,10 @@ export const useGetProducts = ({
   limit = 12,
   label = "all",
   categoryName,
+  search,
 }: UseGetProductsProps = {}) => {
   return useInfiniteQuery({
-    queryKey: ["products", label, categoryId, limit, categoryName],
+    queryKey: ["products", label, categoryId, limit, categoryName, search],
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {
       try {
@@ -138,6 +140,7 @@ export const useGetProducts = ({
           order: "desc",
           categoryId: categoryId as string,
           categoryName,
+          search,
         });
 
         return apiProducts.map(mapProduct);

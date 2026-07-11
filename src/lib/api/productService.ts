@@ -67,14 +67,14 @@ export const productService = {
       limit: 10,
       sortBy: "createdAt",
       order: "desc",
-      categoryId: "67dfa578452634da4759bbb2",
     } as {
       page: number;
       limit: number;
       sortBy: string;
       order: string;
-      categoryId: string;
+      categoryId?: string;
       categoryName?: string;
+      search?: string;
     },
   ): Promise<Product[]> => {
     const response = await api.get<ProductListResponse>(

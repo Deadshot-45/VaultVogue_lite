@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { searchService, SearchResult } from "@/lib/api/searchService";
+import { searchService, SearchResult, SuggestionItem } from "@/lib/api/searchService";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Input } from "@/components/ui/input";
 import { Loader2, Search } from "lucide-react";
@@ -15,7 +15,8 @@ export default function SearchBar() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [suggestions, setSuggestions] = useState<SuggestionItem[]>([]);
+  const [products, setProducts] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -45,20 +46,22 @@ export default function SearchBar() {
 
   useEffect(() => {
     if (!debouncedQuery.trim()) {
-      setResults([]);
+      setSuggestions([]);
+      setProducts([]);
       return;
     }
 
     const fetchResults = async () => {
       try {
         setLoading(true);
-        const data = await searchService.search(debouncedQuery);
-        setResults(data);
-        console.log(data);
+        const data = await searchService.getSuggestions(debouncedQuery);
+        setSuggestions(data.suggestions || []);
+        setProducts(data.products || []);
         setOpen(true);
       } catch (err) {
         console.error(err);
-        setResults([]);
+        setSuggestions([]);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
@@ -67,10 +70,23 @@ export default function SearchBar() {
     fetchResults();
   }, [debouncedQuery]);
 
-  const handleSelect = (id: string) => {
+  const handleSuggestionSelect = (text: string) => {
+    setOpen(false);
+    setQuery("");
+    router.push(`/products?search=${encodeURIComponent(text)}`);
+  };
+
+  const handleProductSelect = (id: string) => {
     setOpen(false);
     setQuery("");
     router.push(`/products/${id}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && query.trim()) {
+      setOpen(false);
+      router.push(`/products?search=${encodeURIComponent(query.trim())}`);
+    }
   };
 
   return (
@@ -82,9 +98,10 @@ export default function SearchBar() {
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Search products..."
           className="pl-9"
-          onFocus={() => results.length && setOpen(true)}
+          onFocus={() => (suggestions.length || products.length) && setOpen(true)}
         />
 
         {loading && (
@@ -95,38 +112,73 @@ export default function SearchBar() {
       {/* DROPDOWN */}
       {open && (
         <div className="absolute z-50 mt-2 w-full rounded-xl border bg-background shadow-lg overflow-hidden">
-          {results.length === 0 && !loading ? (
+          {suggestions.length === 0 && products.length === 0 && !loading ? (
             <div className="p-4 text-sm text-muted-foreground">
               No results found
             </div>
           ) : (
-            <div className="max-h-80 overflow-y-auto">
-              {results.map((item) => (
-                <button
-                  key={item._id}
-                  onClick={() => handleSelect(item._id)}
-                  className="flex w-full items-center gap-3 p-3 hover:bg-muted transition"
-                >
-                  {item?.images?.[0]?.url && (
-                    <Image
-                      src={resolveUiProductImage(item?.images?.[0]?.url)}
-                      alt={item.name}
-                      width={40}
-                      height={40}
-                      className="rounded-md object-cover"
-                    />
-                  )}
-
-                  <div className="flex flex-col text-left">
-                    <span className="text-sm font-medium">{item.name}</span>
-                    {item.price && (
-                      <span className="text-xs text-muted-foreground">
-                        ₹{item.price}
-                      </span>
-                    )}
+            <div className="max-h-96 overflow-y-auto p-2 space-y-3">
+              {/* SUGGESTIONS */}
+              {suggestions.length > 0 && (
+                <div className="space-y-1">
+                  <div className="px-3 py-1 text-[10px] font-semibold text-muted-foreground tracking-wider uppercase">
+                    Suggestions
                   </div>
-                </button>
-              ))}
+                  {suggestions.map((item, idx) => (
+                    <button
+                      key={`suggest-${idx}`}
+                      onClick={() => handleSuggestionSelect(item.text)}
+                      className="flex w-full items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left hover:bg-muted transition text-foreground"
+                    >
+                      <Search className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span>{item.text}</span>
+                      {item.type === "category" && (
+                        <span 
+                          className="ml-auto text-[10px] px-1.5 py-0.5 rounded border font-medium"
+                          style={{ color: "var(--gold)", borderColor: "var(--gold-soft)" }}
+                        >
+                          Category
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* PRODUCTS */}
+              {products.length > 0 && (
+                <div className="space-y-1">
+                  <div className="px-3 py-1 text-[10px] font-semibold text-muted-foreground tracking-wider uppercase">
+                    Products
+                  </div>
+                  {products.map((item) => (
+                    <button
+                      key={item._id}
+                      onClick={() => handleProductSelect(item._id)}
+                      className="flex w-full items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted transition text-left"
+                    >
+                      {item?.images?.[0]?.url && (
+                        <Image
+                          src={resolveUiProductImage(item?.images?.[0]?.url)}
+                          alt={item.name}
+                          width={36}
+                          height={36}
+                          className="rounded-md object-cover border"
+                        />
+                      )}
+
+                      <div className="flex flex-col text-left">
+                        <span className="text-sm font-medium">{item.name}</span>
+                        {item.price && (
+                          <span className="text-xs text-muted-foreground">
+                            ₹{item.price}
+                          </span>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

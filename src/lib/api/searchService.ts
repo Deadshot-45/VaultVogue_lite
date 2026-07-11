@@ -14,9 +14,28 @@ export type SearchResult = {
   price?: number;
 };
 
+export type SuggestionItem = {
+  type: "category" | "keyword";
+  text: string;
+  id?: string;
+};
+
+export type SuggestionsResponse = {
+  suggestions: SuggestionItem[];
+  products: SearchResult[];
+};
+
 export const searchService = {
   search: async (query: string): Promise<SearchResult[]> => {
     const res = await api.get("/api/products/getAll", {
+      params: { search: query },
+    });
+
+    return res.data.data;
+  },
+
+  getSuggestions: async (query: string): Promise<SuggestionsResponse> => {
+    const res = await api.get("/api/products/search-suggestions", {
       params: { search: query },
     });
 
