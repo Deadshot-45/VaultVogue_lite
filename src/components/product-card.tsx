@@ -76,6 +76,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const rating = product.name.length % 2 === 0 ? 5 : 4.5;
   const originalPrice = product.isSale ? Math.round(product.price * 1.3) : null;
 
+  console.log("product : ", product)
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
@@ -180,12 +182,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Inline CTA for elegant visibility */}
           <div className="pt-2 flex justify-between items-center text-xs font-medium border-t border-border/20 mt-1">
             <span className="text-muted-foreground link-underline">View Details</span>
-            <button
+            {/* <button
               onClick={handleAddToCart}
               className="text-[var(--gold)] hover:opacity-85 transition-opacity"
             >
               Add To Bag
-            </button>
+            </button> */}
           </div>
         </CardContent>
       </Card>

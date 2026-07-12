@@ -44,7 +44,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
         exit="out"
         variants={pageVariants}
         transition={pageTransition}
-        className="min-h-screen"
+        className="flex-1 flex flex-col min-h-0 w-full"
       >
         {children}
       </motion.div>

@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { handleGoogleLogin } from "@/utility/socialAuth";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
@@ -116,7 +117,8 @@ export default function LoginPage() {
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
+  const handleSocialLogin = async (provider: string) => {
+    provider === "Google" && await handleGoogleLogin()
     toast.success(`Redirecting to ${provider} authentication...`);
   };
 

@@ -13,13 +13,12 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch } from "@/lib/store/hooks";
 import { performAppLogout } from "@/lib/store/logout";
 import { cn } from "@/lib/utils";
 import { Menu, ShoppingBag, User, X, Heart, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useTheme } from "@/context/theme-context";
 import { ModeToggle } from "./mode-toggle";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -27,7 +26,6 @@ import CartDrawer from "./CartDrawer";
 import SearchBar from "./global/SearchBarComponent";
 import { useState, useEffect } from "react";
 import { LogoutDialog } from "./auth/LogoutDialog";
-import { useCart } from "@/lib/query/useCart";
 import { getAuthCookie } from "@/lib/auth";
 
 export function SiteHeader() {
@@ -40,19 +38,23 @@ export function SiteHeader() {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
   
   const [mounted, setMounted] = useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Close mobile search on route change
+  useEffect(() => {
+    setMobileSearchOpen(false);
+  }, [pathname]);
+
   const token = getAuthCookie();
   const isUserAuthed = mounted && !!token;
-  const { data: cartItems = [] } = useCart(isUserAuthed);
 
   const handleLogout = async () => {
     await performAppLogout(dispatch);
@@ -75,7 +77,7 @@ export function SiteHeader() {
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           
           {/* Left — Mobile Hamburg & Brand Logo */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center md:gap-4 gap-0">
             {isMobile && (
               <Button
                 variant="ghost"
@@ -117,7 +119,7 @@ export function SiteHeader() {
               href="/"
               className="flex flex-col items-start transition-opacity duration-200 hover:opacity-85"
             >
-              <h1 className="font-cormorant text-2xl font-light tracking-[0.1em] text-[var(--brand-text)] leading-none">
+              <h1 className="font-cormorant md:text-2xl text-xl font-light tracking-[0.1em] text-[var(--brand-text)] leading-none">
                 Vault-Vogue
               </h1>
               {/* <span className="text-[8px] font-semibold uppercase tracking-[0.45em] text-[var(--gold)] mt-0.5 leading-none">
@@ -159,14 +161,49 @@ export function SiteHeader() {
           {/* Right — Actions Panel */}
           <div className="flex items-center gap-3 lg:gap-4">
             
-            {/* Desktop Search Bar */}
-            <div className="relative hidden max-w-60 group lg:flex">
+            {/* Desktop Search Bar — hidden on mobile */}
+            <div className="hidden md:flex relative max-w-60 group">
               <SearchBar />
             </div>
 
             {/* Icons */}
             <div className="flex items-center gap-1">
               <ModeToggle />
+
+              {/* Mobile Search Toggle — visible only on small screens */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden group relative text-muted-foreground hover:text-foreground"
+                onClick={() => setMobileSearchOpen((v) => !v)}
+                aria-label="Toggle search"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {mobileSearchOpen ? (
+                    <motion.span
+                      key="close-search"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute inset-0 flex items-center justify-center"
+                    >
+                      <X className="h-5 w-5" />
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="open-search"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute inset-0 flex items-center justify-center"
+                    >
+                      <Search className="h-5 w-5" />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </Button>
               
               {/* Wishlist Icon */}
               <Button
@@ -258,6 +295,24 @@ export function SiteHeader() {
           onConfirm={handleLogout}
         />
       </motion.header>
+
+      {/* ─── Mobile Search Bar (slides in below header) ─── */}
+      <AnimatePresence>
+        {mobileSearchOpen && (
+          <motion.div
+            key="mobile-search"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden border-b border-border/20 bg-background/95 backdrop-blur-xl"
+          >
+            <div className="px-4 py-3">
+              <SearchBar />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

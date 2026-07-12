@@ -5,6 +5,8 @@ export interface User {
   _id?: string;
   email: string;
   fullName: string;
+  role?: 'admin' | 'seller' | 'user';
+  avatar?: string;
 }
 
 export interface AuthResponse {
