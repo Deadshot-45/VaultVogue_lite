@@ -71,11 +71,8 @@ export function SiteHeader() {
       </div>
 
       {/* ─── Sticky Header Frame ─── */}
-      <motion.header
-        className="h-(--header-height) w-full border-b border-border/10 backdrop-blur-xl bg-background/60 transition-all duration-300"
-      >
+      <motion.header className="h-(--header-height) w-full border-b border-border/10 backdrop-blur-xl bg-background/60 transition-all duration-300">
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          
           {/* Left — Mobile Hamburg & Brand Logo */}
           <div className="flex items-center md:gap-4 gap-0">
             {isMobile && (
@@ -146,7 +143,7 @@ export function SiteHeader() {
                           "after:absolute after:-bottom-4 after:left-0 after:h-[1px] after:w-full after:scale-x-0 after:bg-[var(--gold)] after:transition-transform after:duration-300 hover:after:scale-x-100",
                           pathname === href || pathname?.startsWith(`${href}/`)
                             ? "after:scale-x-100"
-                            : ""
+                            : "",
                         )}
                       >
                         {label}
@@ -160,7 +157,6 @@ export function SiteHeader() {
 
           {/* Right — Actions Panel */}
           <div className="flex items-center gap-3 lg:gap-4">
-            
             {/* Desktop Search Bar — hidden on mobile */}
             <div className="hidden md:flex relative max-w-60 group">
               <SearchBar />
@@ -204,7 +200,7 @@ export function SiteHeader() {
                   )}
                 </AnimatePresence>
               </Button>
-              
+
               {/* Wishlist Icon */}
               <Button
                 variant="ghost"
@@ -239,7 +235,10 @@ export function SiteHeader() {
                         asChild
                         className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-foreground"
                       >
-                        <Link href="/account" className="flex items-center gap-2">
+                        <Link
+                          href="/account"
+                          className="flex items-center gap-2"
+                        >
                           <User className="h-4 w-4 text-[var(--gold)]" />
                           <span>Account</span>
                         </Link>
@@ -248,7 +247,10 @@ export function SiteHeader() {
                         asChild
                         className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-foreground"
                       >
-                        <Link href="/orders" className="flex items-center gap-2">
+                        <Link
+                          href="/orders"
+                          className="flex items-center gap-2"
+                        >
                           <ShoppingBag className="h-4 w-4 text-[var(--gold)]" />
                           <span>Orders</span>
                         </Link>
@@ -276,7 +278,10 @@ export function SiteHeader() {
                         asChild
                         className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-foreground"
                       >
-                        <Link href="/register" className="flex items-center gap-2">
+                        <Link
+                          href="/register"
+                          className="flex items-center gap-2"
+                        >
                           <User className="h-4 w-4 text-[var(--gold)]" />
                           <span>Create Account</span>
                         </Link>
@@ -286,7 +291,6 @@ export function SiteHeader() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-
           </div>
         </div>
         <LogoutDialog
@@ -297,7 +301,7 @@ export function SiteHeader() {
       </motion.header>
 
       {/* ─── Mobile Search Bar (slides in below header) ─── */}
-      <AnimatePresence>
+      <AnimatePresence> 
         {mobileSearchOpen && (
           <motion.div
             key="mobile-search"
@@ -305,7 +309,7 @@ export function SiteHeader() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden border-b border-border/20 bg-background/95 backdrop-blur-xl"
+            className="md:hidden overflow-visible relative border-b border-border/20 bg-background/95 backdrop-blur-xl group"
           >
             <div className="px-4 py-3">
               <SearchBar />

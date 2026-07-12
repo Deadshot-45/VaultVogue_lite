@@ -10,6 +10,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
+import { handleGoogleLogin } from "@/utility/socialAuth";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { setCredentials } from "@/lib/store/slices/authSlice";
+import { setCookieWithExpiry } from "@/lib/auth";
+import { useQueryClient } from "@tanstack/react-query";
 
 const stringField = (schema: z.ZodString) =>
   z.preprocess((value) => (typeof value === "string" ? value : ""), schema);
@@ -61,6 +66,8 @@ const initialState: SignupFormState = {
 
 export default function CreateAccountPage() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   const [form, setForm] = useState<SignupFormState>(initialState);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof SignupFormState, string>>
@@ -143,8 +150,61 @@ export default function CreateAccountPage() {
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
-    toast.success(`Redirecting to ${provider} authentication...`);
+  const handleSocialLogin = async (provider: string) => {
+    if (provider === "Google") {
+      setIsSubmitting(true);
+      setError("");
+      try {
+        const loginPromise = handleGoogleLogin();
+        
+        toast.promise(loginPromise, {
+          loading: "Signing you up with Google...",
+          success: "Welcome back to Vault-Vogue Maison",
+          error: (err: any) => {
+            if (err?.code === "auth/popup-closed-by-user" || err?.code === "auth/cancelled-popup-request") {
+              return "Google sign-in was cancelled.";
+            }
+            return "Google registration failed.";
+          },
+        });
+
+        const response = await loginPromise;
+
+        // Support nested or direct payloads
+        const token = response?.data?.token ?? response?.token;
+        const user = response?.data?.user ?? response?.user;
+
+        if (token && user) {
+          dispatch(
+            setCredentials({
+              token,
+              user,
+            }),
+          );
+          await queryClient.invalidateQueries({ queryKey: ["cart"] });
+          setCookieWithExpiry(
+            process.env.AUTH_COOKIE_KEY || "vault_vogue_token",
+            token,
+            2,
+            "hours",
+          );
+          router.push("/");
+        } else {
+          setError("OAuth payload format is incorrect or incomplete.");
+        }
+      } catch (err: any) {
+        if (err?.code === "auth/popup-closed-by-user" || err?.code === "auth/cancelled-popup-request") {
+          // Do not display hard page error for user cancellation
+          console.log("Google sign-in cancelled by user.");
+        } else {
+          setError(err instanceof Error ? err.message : "Google signup failed");
+        }
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      toast.success(`Redirecting to ${provider} authentication...`);
+    }
   };
 
   return (
@@ -335,13 +395,13 @@ export default function CreateAccountPage() {
             <div className="flex-grow border-t border-border/20"></div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex justify-center items-center gap-3">
             <button
               type="button"
               onClick={() => handleSocialLogin("Google")}
-              className="flex items-center justify-center gap-2 rounded-xl border border-border/40 bg-background/40 hover:bg-muted py-3 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-colors cursor-pointer"
+              className="flex items-center px-2 justify-center gap-2 rounded-xl border border-border/40 bg-background/40 hover:bg-muted py-3 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-colors cursor-pointer"
             >
-              <svg className="h-4 w-4" viewBox="0 0 24 24">
+              <svg className="size-4" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
                   d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-6.887 4.114-4.664 0-8.384-3.666-8.384-8.299 0-4.632 3.72-8.3 8.384-8.3 2.215 0 4.115.82 5.602 2.225l3.14-3.14A12.44 12.44 0 0012.24 0C5.556 0 0 5.4 0 12.083 0 18.767 5.556 24 12.24 24c6.72 0 11.238-4.7 11.238-11.4 0-.766-.08-1.503-.228-2.315H12.24z"
@@ -349,7 +409,7 @@ export default function CreateAccountPage() {
               </svg>
               Google
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={() => handleSocialLogin("Apple")}
               className="flex items-center justify-center gap-2 rounded-xl border border-border/40 bg-background/40 hover:bg-muted py-3 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-colors cursor-pointer"
@@ -361,7 +421,7 @@ export default function CreateAccountPage() {
                 />
               </svg>
               Apple
-            </button>
+            </button> */}
           </div>
         </div>
 

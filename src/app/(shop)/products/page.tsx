@@ -21,7 +21,7 @@ const SearchPageContent: React.FC = () => {
   const products = data?.pages.flat() ?? [];
 
   return (
-    <section className="w-full py-12 lg:py-16">
+    <section className="w-full py-12 max-w-7xl mx-auto lg:py-16">
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
         {/* Editorial heading */}
         <div className="mb-10">
