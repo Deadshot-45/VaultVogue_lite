@@ -54,7 +54,13 @@ export default function OrdersPage() {
       <div className="mb-6">
         <div className="relative w-72">
           <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input placeholder="Search orders..." value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)} className="input-field pl-10 h-10" />
+          <input 
+            placeholder="Search orders..." 
+            value={globalFilter} 
+            onChange={(e) => setGlobalFilter(e.target.value)} 
+            className="input-field h-10 w-full" 
+            style={{ paddingLeft: '2.5rem' }}
+          />
         </div>
       </div>
       <div className="card">

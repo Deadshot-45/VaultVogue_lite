@@ -78,7 +78,8 @@ export default function ProductsPage() {
             placeholder="Search products..."
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            className="input-field pl-10 h-10 w-72"
+            className="rounded-lg h-10 w-72"
+            style={{ paddingLeft: '2.5rem' }}
           />
         </div>
         <button className="btn-primary py-2.5 px-5 text-xs flex items-center gap-2">

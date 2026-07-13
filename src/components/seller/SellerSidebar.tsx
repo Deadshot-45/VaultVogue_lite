@@ -7,13 +7,12 @@ import {
   LayoutDashboard,
   Package,
   ShoppingCart,
-  Users,
-  Store,
-  Settings,
+  CreditCard,
   ChevronLeft,
   ChevronRight,
   LogOut,
   Gem,
+  ArrowLeft,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { clearAuth } from "@/lib/store/slices/authSlice";
@@ -24,15 +23,13 @@ import { cn } from "@/lib/utils";
 import { useLayoutEffect } from "react";
 
 const navItems = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { label: "Products", href: "/admin/products", icon: Package },
-  { label: "Orders", href: "/admin/orders", icon: ShoppingCart },
-  { label: "Users", href: "/admin/users", icon: Users },
-  { label: "Sellers", href: "/admin/sellers", icon: Store },
-  { label: "Settings", href: "/admin/settings", icon: Settings },
+  { label: "Dashboard", href: "/seller/dashboard", icon: LayoutDashboard },
+  { label: "Inventory", href: "/seller/inventory", icon: Package },
+  { label: "Orders", href: "/seller/orders", icon: ShoppingCart },
+  { label: "Payments Options", href: "/seller/payments", icon: CreditCard },
 ];
 
-export function AdminSidebar() {
+export function SellerSidebar() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -47,7 +44,7 @@ export function AdminSidebar() {
   const handleLogout = () => {
     dispatch(clearAuth());
     clearAuthCookie();
-    router.push("/admin/login");
+    router.push("/login");
   };
 
   return (
@@ -62,7 +59,7 @@ export function AdminSidebar() {
       }}
     >
       <section className="flex flex-col h-full w-full">
-        {/* Brand */}
+        {/* Brand Header */}
         <div
           className="flex items-center gap-3 px-4 py-5 shrink-0"
           style={{ borderBottom: "1px solid var(--gold-faint)" }}
@@ -88,15 +85,15 @@ export function AdminSidebar() {
                 <p className="section-label text-[10px] leading-none">
                   Vault Vogue
                 </p>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Admin Console
+                <p className="text-xs text-muted-foreground mt-0.5 font-medium">
+                  Seller Atelier
                 </p>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        {/* Nav */}
+        {/* Navigation Items */}
         <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto no-scrollbar">
           {navItems.map((item) => {
             const active =
@@ -140,11 +137,35 @@ export function AdminSidebar() {
               </Link>
             );
           })}
+
+          {/* Quick link back to shop */}
+          <div className="my-4 border-t border-[var(--gold-faint)]" />
+          <Link
+            href="/"
+            className={cn(
+              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground transition-all duration-200 hover:text-foreground",
+            )}
+            style={{ border: "1px solid transparent" }}
+          >
+            <ArrowLeft className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <AnimatePresence>
+              {!collapsed && (
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  Back to Boutique
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </Link>
         </nav>
 
-        {/* User + Logout */}
+        {/* User Info & Logout */}
         <div
-          className="px-2 pb-12 shrink-0"
+          className="px-2 pb-4 shrink-0"
           style={{
             borderTop: "1px solid var(--gold-faint)",
             paddingTop: "1rem",
@@ -156,7 +177,7 @@ export function AdminSidebar() {
                 className="text-xs font-semibold truncate"
                 style={{ color: "var(--brand-text)" }}
               >
-                {user?.fullName || "Admin User"}
+                {user?.fullName || "Seller Partner"}
               </p>
               <p className="text-[10px] text-muted-foreground truncate">
                 {user?.email}
@@ -192,7 +213,7 @@ export function AdminSidebar() {
         </div>
       </section>
 
-      {/* Collapse toggle */}
+      {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed((p) => !p)}
         className="absolute -right-3 top-20 z-10 hidden md:flex h-6 w-6 items-center justify-center rounded-full border shadow-sm transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
@@ -203,10 +224,7 @@ export function AdminSidebar() {
         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
         {collapsed ? (
-          <ChevronRight
-            className="h-3 w-3"
-            style={{ color: "var(--gold)" }}
-          />
+          <ChevronRight className="h-3 w-3" style={{ color: "var(--gold)" }} />
         ) : (
           <ChevronLeft className="h-3 w-3" style={{ color: "var(--gold)" }} />
         )}

@@ -13,10 +13,10 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { performAppLogout } from "@/lib/store/logout";
 import { cn } from "@/lib/utils";
-import { Menu, ShoppingBag, User, X, Heart, Search } from "lucide-react";
+import { Menu, ShoppingBag, User, X, Heart, Search, Gem } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
@@ -38,6 +38,7 @@ export function SiteHeader() {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
   
   const [mounted, setMounted] = useState(false);
@@ -255,6 +256,34 @@ export function SiteHeader() {
                           <span>Orders</span>
                         </Link>
                       </DropdownMenuItem>
+                      {mounted && (user?.role === "seller" || user?.role === "admin") && (
+                        <DropdownMenuItem
+                          asChild
+                          className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-[var(--gold)] font-medium"
+                        >
+                          <Link
+                            href="/seller/dashboard"
+                            className="flex items-center gap-2"
+                          >
+                            <Gem className="h-4 w-4 text-[var(--gold)]" />
+                            <span>Seller Atelier</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
+                      {mounted && user?.role === "admin" && (
+                        <DropdownMenuItem
+                          asChild
+                          className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-[var(--gold)] font-medium"
+                        >
+                          <Link
+                            href="/admin/dashboard"
+                            className="flex items-center gap-2"
+                          >
+                            <Gem className="h-4 w-4 text-[var(--gold)]" />
+                            <span>Admin Console</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
                       <div className="my-1 border-t border-[var(--gold-faint)]" />
                       <DropdownMenuItem
                         className="cursor-pointer text-xs uppercase tracking-wider text-destructive focus:text-destructive hover:bg-destructive/10"

@@ -4,8 +4,10 @@ import { useReactTable, getCoreRowModel, flexRender, createColumnHelper, getFilt
 import type { SellerRow, SellerStatus } from "@/types/admin";
 import { motion } from "framer-motion";
 import { Search, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
+import { sellerService } from "@/lib/api/sellerService";
 
 const SELLERS: SellerRow[] = [
   { id: 'SEL-001', businessName: 'Luxe Collections Pvt Ltd',  ownerName: 'Rohan Mehta',      email: 'rohan@luxecollections.com',  category: 'Handbags',    joinedAt: '2024-02-20', status: 'approved',  revenue: 480000,  products: 14 },
@@ -26,20 +28,124 @@ const statusCfg: Record<SellerStatus, { label: string; cls: string }> = {
 };
 
 const col = createColumnHelper<SellerRow>();
-const columns = [
-  col.accessor('businessName', { header: 'Business', cell: (i) => <div><p className="text-sm font-medium" style={{ color: 'var(--brand-text)' }}>{i.getValue()}</p><p className="text-xs text-muted-foreground">{i.row.original.email}</p></div> }),
-  col.accessor('ownerName',    { header: 'Owner',    cell: (i) => <span className="text-sm" style={{ color: 'var(--brand-text)' }}>{i.getValue()}</span> }),
-  col.accessor('category',     { header: 'Category', cell: (i) => <span className="text-xs text-muted-foreground">{i.getValue()}</span> }),
-  col.accessor('joinedAt',     { header: 'Joined',   cell: (i) => <span className="text-xs text-muted-foreground">{new Date(i.getValue()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span> }),
-  col.accessor('revenue',      { header: 'Revenue',  cell: (i) => <span className="text-sm font-semibold" style={{ color: 'var(--brand-text)' }}>{i.getValue() > 0 ? `\u20b9${i.getValue().toLocaleString('en-IN')}` : '\u2014'}</span> }),
-  col.accessor('products',     { header: 'Products', cell: (i) => <span className="text-xs text-muted-foreground">{i.getValue()}</span> }),
-  col.accessor('status',       { header: 'Status',   cell: (i) => { const c = statusCfg[i.getValue()]; return <span className={c.cls}>{c.label}</span>; } }),
-];
 
 export default function SellersPage() {
   const [globalFilter, setGlobalFilter] = useState('');
+  const [sellers, setSellers] = useState<SellerRow[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  const loadSellers = async () => {
+    try {
+      const data = await sellerService.getAll();
+      const normalized = data.map((s: any) => ({
+        id: s._id || s.id,
+        businessName: s.name || s.businessName,
+        ownerName: s.ownerName || s.ownerUserId || "Owner",
+        email: s.contactEmail || s.email,
+        category: s.category || "Handbags",
+        joinedAt: s.createdAt ? new Date(s.createdAt).toISOString().split("T")[0] : s.joinedAt,
+        status: s.status,
+        revenue: s.revenue || 0,
+        products: s.products || 0,
+      }));
+      setSellers(normalized);
+      return;
+    } catch (err) {
+      console.warn("Failed to load sellers from backend API, using localStorage fallback:", err);
+    }
+
+    // Local fallback
+    let localSellers = localStorage.getItem("vault_vogue_admin_sellers");
+    if (!localSellers) {
+      localStorage.setItem("vault_vogue_admin_sellers", JSON.stringify(SELLERS));
+      localSellers = JSON.stringify(SELLERS);
+    }
+    setSellers(JSON.parse(localSellers));
+  };
+
+  useEffect(() => {
+    setMounted(true);
+    loadSellers();
+  }, []);
+
+  const handleApprove = async (id: string) => {
+    try {
+      await sellerService.approve(id);
+      toast.success("Seller status approved on backend.");
+    } catch (err) {
+      console.warn("Backend approval failed, applying locally:", err);
+    }
+
+    // Apply to local state & localStorage fallback
+    const updated = sellers.map((s) => {
+      if (s.id === id) {
+        toast.success(`Seller ${s.businessName} approved!`);
+        return { ...s, status: "approved" as const };
+      }
+      return s;
+    });
+    setSellers(updated);
+    localStorage.setItem("vault_vogue_admin_sellers", JSON.stringify(updated));
+  };
+
+  const handleReject = async (id: string) => {
+    try {
+      await sellerService.reject(id);
+      toast.error("Seller status rejected on backend.");
+    } catch (err) {
+      console.warn("Backend rejection failed, applying locally:", err);
+    }
+
+    // Apply to local state & localStorage fallback
+    const updated = sellers.map((s) => {
+      if (s.id === id) {
+        toast.error(`Seller ${s.businessName} rejected.`);
+        return { ...s, status: "rejected" as const };
+      }
+      return s;
+    });
+    setSellers(updated);
+    localStorage.setItem("vault_vogue_admin_sellers", JSON.stringify(updated));
+  };
+
+  const columns = [
+    col.accessor('businessName', { header: 'Business', cell: (i) => <div><p className="text-sm font-medium" style={{ color: 'var(--brand-text)' }}>{i.getValue()}</p><p className="text-xs text-muted-foreground">{i.row.original.email}</p></div> }),
+    col.accessor('ownerName',    { header: 'Owner',    cell: (i) => <span className="text-sm" style={{ color: 'var(--brand-text)' }}>{i.getValue()}</span> }),
+    col.accessor('category',     { header: 'Category', cell: (i) => <span className="text-xs text-muted-foreground">{i.getValue()}</span> }),
+    col.accessor('joinedAt',     { header: 'Joined',   cell: (i) => <span className="text-xs text-muted-foreground">{new Date(i.getValue()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span> }),
+    col.accessor('revenue',      { header: 'Revenue',  cell: (i) => <span className="text-sm font-semibold" style={{ color: 'var(--brand-text)' }}>{i.getValue() > 0 ? `\u20b9${i.getValue().toLocaleString('en-IN')}` : '\u2014'}</span> }),
+    col.accessor('products',     { header: 'Products', cell: (i) => <span className="text-xs text-muted-foreground">{i.getValue()}</span> }),
+    col.accessor('status',       { header: 'Status',   cell: (i) => { const c = statusCfg[i.getValue()]; return <span className={c.cls}>{c.label}</span>; } }),
+    col.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: (i) => {
+        const row = i.row.original;
+        if (row.status === 'pending') {
+          return (
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleApprove(row.id)}
+                className="px-2 py-1 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 text-[10px] font-semibold uppercase tracking-wider rounded-lg border border-emerald-500/20 cursor-pointer transition-colors"
+              >
+                Approve
+              </button>
+              <button
+                onClick={() => handleReject(row.id)}
+                className="px-2 py-1 bg-red-500/10 text-red-600 hover:bg-red-500/20 text-[10px] font-semibold uppercase tracking-wider rounded-lg border border-red-500/20 cursor-pointer transition-colors"
+              >
+                Reject
+              </button>
+            </div>
+          );
+        }
+        return <span className="text-xs text-muted-foreground font-medium">—</span>;
+      }
+    })
+  ];
+
   const table = useReactTable({
-    data: SELLERS, columns,
+    data: sellers, columns,
     state: { globalFilter },
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
@@ -47,12 +153,26 @@ export default function SellersPage() {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  if (!mounted) {
+    return (
+      <div className="flex h-48 items-center justify-center">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground">Loading Sellers...</span>
+      </div>
+    );
+  }
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex gap-2 items-center justify-between">
         <div className="relative w-72">
           <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input placeholder="Search sellers..." value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)} className="input-field pl-10 h-10" />
+          <input 
+            placeholder="Search sellers..." 
+            value={globalFilter} 
+            onChange={(e) => setGlobalFilter(e.target.value)} 
+            className="input-field h-10 w-full" 
+            style={{ paddingLeft: '2.5rem' }}
+          />
         </div>
         <Link href="/admin/sellers/onboard" className="btn-primary py-2.5 px-5 text-xs flex items-center gap-2">
           <UserPlus className="h-4 w-4" />

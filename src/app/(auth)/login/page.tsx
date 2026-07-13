@@ -9,12 +9,14 @@ import { setCookieWithExpiry } from "@/lib/auth";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { setCredentials } from "@/lib/store/slices/authSlice";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { handleGoogleLogin } from "@/utility/socialAuth";
+import { backupRecovery } from "@/utility/backupRecovery";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
@@ -96,10 +98,14 @@ export default function LoginPage() {
 
       const response = await signInPromise;
 
+      const loggedInUser = response?.data?.user ?? null;
+      if (loggedInUser?.email) {
+        backupRecovery.createBackup(loggedInUser.email);
+      }
       dispatch(
         setCredentials({
           token: response?.data?.token ?? "",
-          user: response?.data?.user ?? null,
+          user: loggedInUser,
         }),
       );
       await queryClient.invalidateQueries({ queryKey: ["cart"] });
@@ -109,7 +115,12 @@ export default function LoginPage() {
         2,
         "hours",
       );
-      router.push("/");
+
+      if (loggedInUser?.role === "seller") {
+        router.push("/seller/dashboard");
+      } else {
+        router.push("/");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed");
     } finally {
@@ -143,6 +154,9 @@ export default function LoginPage() {
         const user = response?.data?.user ?? response?.user;
 
         if (token && user) {
+          if (user.email) {
+            backupRecovery.createBackup(user.email);
+          }
           dispatch(
             setCredentials({
               token,
@@ -156,7 +170,12 @@ export default function LoginPage() {
             2,
             "hours",
           );
-          router.push("/");
+
+          if (user.role === "seller") {
+            router.push("/seller/dashboard");
+          } else {
+            router.push("/");
+          }
         } else {
           setError("OAuth payload format is incorrect or incomplete.");
         }
@@ -286,14 +305,9 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => handleSocialLogin("Google")}
-              className="flex items-center justify-center gap-2 px-2 rounded-xl border border-border/40 bg-background/40 hover:bg-muted py-3 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-colors cursor-pointer"
+              className="flex items-center justify-center gap-2 w-full rounded-xl border border-border/40 bg-background/40 hover:bg-muted py-3 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-colors cursor-pointer"
             >
-              <svg className="size-4" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-6.887 4.114-4.664 0-8.384-3.666-8.384-8.299 0-4.632 3.72-8.3 8.384-8.3 2.215 0 4.115.82 5.602 2.225l3.14-3.14A12.44 12.44 0 0012.24 0C5.556 0 0 5.4 0 12.083 0 18.767 5.556 24 12.24 24c6.72 0 11.238-4.7 11.238-11.4 0-.766-.08-1.503-.228-2.315H12.24z"
-                />
-              </svg>
+              <FcGoogle className="size-5" />
               Google
             </button>
             {/* <button
