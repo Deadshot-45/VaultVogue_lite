@@ -1,47 +1,75 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import type { UserRow } from "@/types/admin";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { useState } from "react";
-
-const USERS: UserRow[] = [
-  { id: 'USR-001', fullName: 'Ananya Sharma',    email: 'ananya@gmail.com',    role: 'user',   joinedAt: '2024-01-15', orders: 12, status: 'active' },
-  { id: 'USR-002', fullName: 'Rohan Mehta',      email: 'rohan@outlook.com',   role: 'seller', joinedAt: '2024-02-20', orders: 3,  status: 'active' },
-  { id: 'USR-003', fullName: 'Priya Nair',       email: 'priya@yahoo.com',     role: 'user',   joinedAt: '2024-03-05', orders: 8,  status: 'active' },
-  { id: 'USR-004', fullName: 'Vikram Singh',     email: 'vikram@gmail.com',    role: 'user',   joinedAt: '2024-03-18', orders: 25, status: 'active' },
-  { id: 'USR-005', fullName: 'Meera Iyer',       email: 'meera@icloud.com',    role: 'seller', joinedAt: '2024-04-01', orders: 1,  status: 'active' },
-  { id: 'USR-006', fullName: 'Arjun Kapoor',     email: 'arjun@gmail.com',     role: 'user',   joinedAt: '2024-04-22', orders: 5,  status: 'suspended' },
-  { id: 'USR-007', fullName: 'Divya Reddy',      email: 'divya@outlook.com',   role: 'user',   joinedAt: '2024-05-10', orders: 19, status: 'active' },
-  { id: 'USR-008', fullName: 'Vault Admin',      email: 'admin@vaultvogue.com',role: 'admin',  joinedAt: '2024-01-01', orders: 0,  status: 'active' },
-];
+import { api } from "@/lib/api/apiservices";
 
 const roleCfg: Record<string, string> = {
   admin:  'badge badge-sale',
   seller: 'badge badge-new',
   user:   'badge badge-gold',
+  customer: 'badge badge-gold',
 };
 
 const col = createColumnHelper<UserRow>();
 const columns = [
   col.accessor('fullName', { header: 'Name', cell: (i) => <div><p className="text-sm font-medium" style={{ color: 'var(--brand-text)' }}>{i.getValue()}</p><p className="text-xs text-muted-foreground">{i.row.original.email}</p></div> }),
-  col.accessor('role',     { header: 'Role',    cell: (i) => <span className={roleCfg[i.getValue()]}>{i.getValue()}</span> }),
+  col.accessor('role',     { header: 'Role',    cell: (i) => <span className={roleCfg[i.getValue()] || 'badge'}>{i.getValue()}</span> }),
   col.accessor('joinedAt', { header: 'Joined',  cell: (i) => <span className="text-xs text-muted-foreground">{new Date(i.getValue()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span> }),
   col.accessor('orders',   { header: 'Orders',  cell: (i) => <span className="text-xs font-semibold" style={{ color: 'var(--brand-text)' }}>{i.getValue()}</span> }),
   col.accessor('status',   { header: 'Status',  cell: (i) => <span className={i.getValue() === 'active' ? 'badge badge-success' : 'badge badge-sale'}>{i.getValue()}</span> }),
 ];
 
 export default function UsersPage() {
+  const [users, setUsers] = useState<UserRow[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [globalFilter, setGlobalFilter] = useState('');
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get<{ success: boolean; data: any[] }>("/api/userController/admin/all");
+        if (response.data.success) {
+          const mapped = response.data.data.map((u: any) => ({
+            id: u._id || u.id,
+            fullName: u.fullName || u.email,
+            email: u.email,
+            role: u.role,
+            joinedAt: u.createdAt,
+            orders: u.ordersCount || 0,
+            status: (u.isActive ? "active" : "suspended") as "active" | "suspended",
+          }));
+          setUsers(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch users", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   const table = useReactTable({
-    data: USERS, columns,
+    data: users, columns,
     state: { globalFilter },
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold)]"></div>
+      </div>
+    );
+  }
 
   return (
     <motion.div

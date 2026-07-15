@@ -273,7 +273,8 @@ export default function LoginPage() {
           </label>
 
           <Link
-            href="#"
+            href="/forgot-password"
+            
             className="font-medium text-[var(--gold)] hover:opacity-85 transition-opacity"
           >
             Forgot security key?

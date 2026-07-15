@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -27,8 +28,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { api } from "@/lib/api/apiservices";
+import { useAppSelector } from "@/lib/store/hooks";
 
 interface ProductVariant {
+  _id?: string;
   size: string;
   color: string;
   stock: number;
@@ -36,10 +39,12 @@ interface ProductVariant {
 }
 
 interface Product {
+  id?: string;
   sku: string;
   name: string;
   price: number;
   category: string;
+  subCategory?: string;
   stock: number;
   status: "active" | "draft";
   image: string;
@@ -47,17 +52,27 @@ interface Product {
   variants?: ProductVariant[];
 }
 
-// Category List
-const CATEGORIES = ["Handbags", "Apparel", "Accessories", "Jewellery", "Footwear"];
+const SUBCATEGORIES: Record<string, string[]> = {
+  Shirt: ["Denim", "Cotton", "Linen", "Formal", "Oversized"],
+  Top: ["Crop Top", "Tank Top", "Blouse", "T-Shirt", "Knit Top"],
+  Pants: ["Denim", "Trousers", "Cargo", "Wide Leg", "Joggers"],
+  Dress: ["Maxi", "Midi", "Mini", "Bodycon", "Shirt Dress"],
+  Skirt: ["Denim", "Pleated", "Pencil", "Mini", "Midi"],
+  Jacket: ["Denim", "Leather", "Blazer", "Bomber", "Puffer"],
+};
+
+const CATEGORIES = Object.keys(SUBCATEGORIES);
+
+const getSubcategories = (category: string) => SUBCATEGORIES[category] || [];
+const getDefaultSubcategory = (category: string) => getSubcategories(category)[0] || "";
 
 const APPAREL_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
-const FOOTWEAR_SIZES = ["UK 6", "UK 7", "UK 8", "UK 9", "UK 10", "UK 11"];
 
 export default function SellerInventoryPage() {
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   
@@ -71,6 +86,7 @@ export default function SellerInventoryPage() {
     name: "",
     price: "",
     category: CATEGORIES[0],
+    subCategory: getDefaultSubcategory(CATEGORIES[0]),
     stock: "",
     image: "",
     description: "",
@@ -84,25 +100,71 @@ export default function SellerInventoryPage() {
   const [uploadingIndexes, setUploadingIndexes] = useState<Record<number, boolean>>({});
   const [isUploadingCover, setIsUploadingCover] = useState(false);
 
-  useEffect(() => {
-    // Load products from localStorage
-    const local = localStorage.getItem("vault_vogue_seller_products");
-    if (local) {
-      setProducts(JSON.parse(local));
-    }
+  const { user } = useAppSelector((s) => s.auth);
+  const [mounted, setMounted] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
+  const {
+    data: products = [],
+    isLoading,
+    refetch: fetchProducts,
+  } = useQuery({
+    queryKey: ["sellerProducts", user?.id],
+    queryFn: async (): Promise<Product[]> => {
+      if (!user?.id) return [];
+      const response = await api.get<{ success: boolean; data: any[] }>(
+        `/api/products/getAll?sellerId=${user.id}&limit=100&isActive=all`,
+      );
+      if (response.data.success) {
+        return response.data.data.map((p: any) => {
+          const totalStock =
+            p.sizes?.reduce((sum: number, s: any) => sum + (s.stock || 0), 0) || 0;
+          return {
+            id: p._id || p.id,
+            sku: p.variants?.[0]?.sku || p.sku || "",
+            name: p.name,
+            price: p.variants?.[0]?.price || p.minPrice || p.price || 0,
+            category:
+              typeof p.category === "object" && p.category !== null
+                ? p.category.name || ""
+                : p.category || "Fashion",
+            subCategory:
+              typeof p.subCategory === "object" && p.subCategory !== null
+                ? p.subCategory.name || ""
+                : typeof p.subcategory === "object" && p.subcategory !== null
+                ? p.subcategory.name || ""
+                : p.subCategory || p.subcategory || "",
+            stock: totalStock,
+            // ✅ Read isActive from DB — not derived from stock
+            status: (p.isActive !== false ? "active" : "draft") as "active" | "draft",
+            image: p.images?.[0]?.url || "",
+            description: p.description || "",
+            variants:
+              p.variants?.map((v: any) => ({
+                size: v.size || v.attributes?.size || "",
+                color: v.color || v.attributes?.color || "",
+                stock:
+                  p.sizes?.find((s: any) => s.variantId === (v._id || v.id))
+                    ?.stock ?? 0,
+                images: v.images || [],
+              })) || [],
+          };
+        });
+      }
+      return [];
+    },
+    enabled: !!user?.id,
+  });
+
+  useEffect(() => {
     // Auto-open modal if ?add=true is in URL
     if (searchParams?.get("add") === "true") {
       openAddModal();
       router.replace("/seller/inventory");
     }
-  }, [searchParams]);
 
-  // Sync to local storage on product change
-  const saveProducts = (updated: Product[]) => {
-    setProducts(updated);
-    localStorage.setItem("vault_vogue_seller_products", JSON.stringify(updated));
-  };
+    setMounted(true);
+  }, [searchParams, router]);
 
   const openAddModal = () => {
     setEditingProduct(null);
@@ -111,6 +173,7 @@ export default function SellerInventoryPage() {
       name: "",
       price: "",
       category: CATEGORIES[0],
+      subCategory: getDefaultSubcategory(CATEGORIES[0]),
       stock: "",
       image: "",
       description: "",
@@ -127,7 +190,18 @@ export default function SellerInventoryPage() {
       sku: product.sku,
       name: product.name,
       price: product.price.toString(),
-      category: product.category,
+      category:
+        typeof product.category === "object" && product.category !== null
+          ? (product.category as any).name || ""
+          : product.category || "",
+      subCategory:
+        typeof product.subCategory === "object" && product.subCategory !== null
+          ? (product.subCategory as any).name || ""
+          : product.subCategory || getDefaultSubcategory(
+              typeof product.category === "object" && product.category !== null
+                ? (product.category as any).name || ""
+                : product.category || ""
+            ),
       stock: product.stock.toString(),
       image: product.image,
       description: product.description,
@@ -138,24 +212,56 @@ export default function SellerInventoryPage() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (sku: string) => {
-    if (confirm("Are you sure you want to remove this item from your boutique catalog?")) {
-      const updated = products.filter((p) => p.sku !== sku);
-      saveProducts(updated);
-      toast.success("Listing deleted successfully");
+  const handleDelete = async (id: string) => {
+    if (
+      confirm("Are you sure you want to remove this item from your boutique catalog?")
+    ) {
+      try {
+        // Move to draft (isActive: false) — acts as a soft delete
+        const res = await api.delete<{ success: boolean }>(
+          `/api/products/${id}`,
+        );
+        if (res.data.success) {
+          toast.success("Listing moved to draft and hidden from customers");
+          fetchProducts();
+        }
+      } catch (err) {
+        console.error("Failed to delete product", err);
+        toast.error("Failed to delete product");
+      }
     }
   };
 
-  const toggleStatus = (sku: string) => {
-    const updated = products.map((p) => {
-      if (p.sku === sku) {
-        const nextStatus = p.status === "active" ? ("draft" as const) : ("active" as const);
-        toast.info(`Status changed to ${nextStatus.toUpperCase()}`);
-        return { ...p, status: nextStatus };
+  /**
+   * Toggle between active ↔ draft.
+   * active  → product is live and visible to customers
+   * draft   → product is hidden (isActive: false in DB)
+   */
+  const toggleStatus = async (id: string, currentStatus: string) => {
+    const nextIsActive = currentStatus !== "active"; // flip
+    const nextStatus = nextIsActive ? "active" : "draft";
+    try {
+      const res = await api.patch<{ success: boolean }>(
+        `/api/products/${id}/status`,
+        { isActive: nextIsActive },
+      );
+      if (res.data.success) {
+        // Optimistic local update — no full reload needed
+        queryClient.setQueryData<Product[]>(["sellerProducts", user?.id], (old) =>
+          old ? old.map((p) =>
+            p.id === id ? { ...p, status: nextStatus as "active" | "draft" } : p,
+          ) : []
+        );
+        toast.success(
+          nextIsActive
+            ? "Product is now live and visible to customers ✓"
+            : "Product moved to draft — hidden from customers",
+        );
       }
-      return p;
-    });
-    saveProducts(updated);
+    } catch (err) {
+      console.error("Failed to toggle status", err);
+      toast.error("Failed to update product status");
+    }
   };
 
   const validateForm = () => {
@@ -166,7 +272,9 @@ export default function SellerInventoryPage() {
       newErrors.price = "Enter a valid positive price";
     }
 
-    const isVariantCategory = formData.category === "Apparel" || formData.category === "Footwear";
+    if (!formData.subCategory) newErrors.subCategory = "Select a subcategory";
+
+    const isVariantCategory = CATEGORIES.includes(formData.category);
 
     if (isVariantCategory && variants.length > 0) {
       // Validate variants
@@ -192,11 +300,9 @@ export default function SellerInventoryPage() {
   };
 
   const handleAddVariant = () => {
-    const isFootwear = formData.category === "Footwear";
-    const defaultSize = isFootwear ? FOOTWEAR_SIZES[0] : APPAREL_SIZES[2]; // UK 6 or M
     setVariants((prev) => [
       ...prev,
-      { color: "Black", size: defaultSize, stock: 5, images: [] },
+      { color: "Black", size: APPAREL_SIZES[2], stock: 5, images: [] },
     ]);
   };
 
@@ -289,48 +395,49 @@ export default function SellerInventoryPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const itemPrice = Number(formData.price);
-    const isVariantCategory = formData.category === "Apparel" || formData.category === "Footwear";
+    const isVariantCategory = CATEGORIES.includes(formData.category);
     
     let itemStock = Number(formData.stock);
-    let finalVariants: ProductVariant[] | undefined = undefined;
 
-    if (isVariantCategory && variants.length > 0) {
-      // Total stock is sum of variant stocks
-      itemStock = variants.reduce((sum, v) => sum + v.stock, 0);
-      finalVariants = variants;
+    try {
+      setIsSaving(true);
+      const payload: any = {
+        name: formData.name,
+        price: itemPrice,
+        category: formData.category,
+        subCategory: formData.subCategory,
+        stock: itemStock,
+        description: formData.description,
+        status: formData.status,
+        image: formData.image,
+        sellerId: user?.id,
+      };
+
+      if (editingProduct) {
+        payload.id = editingProduct.id;
+      }
+
+      if (isVariantCategory && variants.length > 0) {
+        payload.variants = variants;
+      }
+
+      const res = await api.post<{ success: boolean }>("/api/products/create", payload);
+      if (res.data.success) {
+        toast.success(editingProduct ? "Catalog listing updated" : "New product added to catalog");
+        setIsModalOpen(false);
+        fetchProducts();
+      }
+    } catch (err: any) {
+      console.error("Failed to save product", err);
+      toast.error(err.response?.data?.message || "Failed to save product");
+    } finally {
+      setIsSaving(false);
     }
-
-    const productPayload: Product = {
-      sku: formData.sku,
-      name: formData.name,
-      price: itemPrice,
-      category: formData.category,
-      stock: itemStock,
-      image: formData.image.trim() || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80",
-      description: formData.description,
-      status: formData.status,
-      variants: finalVariants,
-    };
-
-    let updatedProducts: Product[];
-
-    if (editingProduct) {
-      // Edit mode
-      updatedProducts = products.map((p) => (p.sku === editingProduct.sku ? productPayload : p));
-      toast.success("Catalog listing updated");
-    } else {
-      // Add mode
-      updatedProducts = [productPayload, ...products];
-      toast.success("New product added to catalog");
-    }
-
-    saveProducts(updatedProducts);
-    setIsModalOpen(false);
   };
 
   // Filter products
@@ -342,8 +449,17 @@ export default function SellerInventoryPage() {
     return matchSearch && matchCategory;
   });
 
-  const isVariantCategory = formData.category === "Apparel" || formData.category === "Footwear";
-  const currentSizes = formData.category === "Footwear" ? FOOTWEAR_SIZES : APPAREL_SIZES;
+  const isVariantCategory = CATEGORIES.includes(formData.category);
+  const currentSizes = APPAREL_SIZES;
+  const currentSubcategories = getSubcategories(formData.category);
+
+  if (isLoading && products.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold)]"></div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -409,12 +525,18 @@ export default function SellerInventoryPage() {
           <div className="flex flex-col items-center justify-center text-center py-16 space-y-3">
             <Package className="h-12 w-12 text-muted-foreground/30" />
             <div>
-              <p className="text-sm font-semibold text-[var(--brand-text)]">No Catalog Items Found</p>
+              <p className="text-sm font-semibold text-[var(--brand-text)]">
+                No Catalog Items Found
+              </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Try resetting search parameters or add a new piece to get started.
+                Try resetting search parameters or add a new piece to get
+                started.
               </p>
             </div>
-            <button onClick={openAddModal} className="btn-secondary py-2 px-4 text-xs mt-2">
+            <button
+              onClick={openAddModal}
+              className="btn-secondary py-2 px-4 text-xs mt-2"
+            >
               Onboard First Product
             </button>
           </div>
@@ -422,27 +544,41 @@ export default function SellerInventoryPage() {
           <div className="overflow-x-auto no-scrollbar">
             <table className="w-full text-left">
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--gold-faint)" }}>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">Item Info</th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">SKU / Code</th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">Collection</th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">Retail Price</th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">Stock Status</th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">Visibility</th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)] text-right">Actions</th>
+                <tr style={{ borderBottom: "1px solid var(--gold-faint)" }} className="[&>th]:pl-4" >
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                    Item Info
+                  </th>
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                    SKU / Code
+                  </th>
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                    Collection
+                  </th>
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                    Retail Price
+                  </th>
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                    Stock Status
+                  </th>
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                    Visibility
+                  </th>
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)] text-right">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts.map((product) => (
                   <tr
-                    key={product.sku}
-                    className="transition-colors hover:bg-[var(--gold-glow)]"
+                    key={product.id}
+                    className="transition-colors hover:bg-[var(--gold-glow)] [&>td]:px-4"
                     style={{ borderBottom: "1px solid var(--gold-faint)" }}
                   >
                     {/* Item Info */}
                     <td className="py-3.5 flex items-center gap-3">
                       <img
-                        src={product.image}
+                        src={product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80"}
                         alt={product.name}
                         className="h-12 w-12 rounded-xl object-cover border border-border/40 bg-muted/40"
                         onError={(e) => {
@@ -456,21 +592,26 @@ export default function SellerInventoryPage() {
                         </p>
                         {product.variants && product.variants.length > 0 && (
                           <div className="flex flex-col gap-1.5 mt-2 max-w-[280px]">
-                            {product.variants.map((v, index) => (
-                              <div key={index} className="flex flex-col gap-1 bg-[var(--gold-faint)]/40 p-2 rounded border border-[var(--gold-soft)]/20">
+                            {product.variants.map((v) => (
+                              <div
+                                key={v._id || `${v.color}-${v.size}`}
+                                className="flex flex-col gap-1 bg-[var(--gold-faint)]/40 p-2 rounded border border-[var(--gold-soft)]/20"
+                              >
                                 <span className="text-[9px] font-semibold text-[var(--gold)]">
                                   {v.color} / {v.size} ({v.stock} units)
                                 </span>
                                 {v.images && v.images.length > 0 && (
                                   <div className="flex gap-1 flex-wrap mt-0.5">
-                                    {v.images.map((img, imgIdx) => (
+                                    {v.images.map((img: any, imgIdx: number) => (
                                       <img
                                         key={imgIdx}
-                                        src={img.url}
+                                        src={img.url || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80"}
                                         className="h-6 w-6 rounded object-cover border border-border/20 bg-background"
                                         alt=""
                                         onError={(e) => {
-                                          (e.target as HTMLImageElement).style.display = "none";
+                                          (
+                                            e.target as HTMLImageElement
+                                          ).style.display = "none";
                                         }}
                                       />
                                     ))}
@@ -484,10 +625,27 @@ export default function SellerInventoryPage() {
                     </td>
 
                     {/* SKU */}
-                    <td className="py-3.5 text-xs font-mono text-muted-foreground">{product.sku}</td>
+                    <td className="py-3.5 text-xs font-mono text-muted-foreground">
+                      {product.sku}
+                    </td>
 
                     {/* Category */}
-                    <td className="py-3.5 text-xs text-muted-foreground">{product.category}</td>
+                    <td className="py-3.5 text-xs text-muted-foreground">
+                      <div className="space-y-0.5">
+                        <p>
+                          {typeof product.category === "object"
+                            ? (product.category as any).name || ""
+                            : product.category}
+                        </p>
+                        {product.subCategory && (
+                          <p className="text-[9px] uppercase tracking-wider text-muted-foreground/70">
+                            {typeof product.subCategory === "object"
+                              ? (product.subCategory as any).name || ""
+                              : product.subCategory}
+                          </p>
+                        )}
+                      </div>
+                    </td>
 
                     {/* Price */}
                     <td className="py-3.5 text-xs font-medium text-[var(--brand-text)]">
@@ -497,17 +655,23 @@ export default function SellerInventoryPage() {
                     {/* Stock Status */}
                     <td className="py-3.5">
                       <div className="space-y-0.5">
-                        <span className={`text-[10px] font-semibold uppercase tracking-wider ${
-                          product.stock === 0
-                            ? "text-red-500"
-                            : product.stock <= 3
-                            ? "text-amber-500"
-                            : "text-emerald-600"
-                        }`}>
-                          {product.stock === 0 ? "Out of Stock" : `${product.stock} units`}
+                        <span
+                          className={`text-[10px] font-semibold uppercase tracking-wider ${
+                            product.stock === 0
+                              ? "text-red-500"
+                              : product.stock <= 3
+                                ? "text-amber-500"
+                                : "text-emerald-600"
+                          }`}
+                        >
+                          {product.stock === 0
+                            ? "Out of Stock"
+                            : `${product.stock} units`}
                         </span>
                         {product.variants && (
-                          <p className="text-[9px] text-muted-foreground">{product.variants.length} variations</p>
+                          <p className="text-[9px] text-muted-foreground">
+                            {product.variants.length} variations
+                          </p>
                         )}
                       </div>
                     </td>
@@ -515,7 +679,9 @@ export default function SellerInventoryPage() {
                     {/* Status Toggle */}
                     <td className="py-3.5">
                       <button
-                        onClick={() => toggleStatus(product.sku)}
+                        onClick={() =>
+                          toggleStatus(product.id!, product.status)
+                        }
                         className={`badge ${product.status === "active" ? "badge-success" : "badge-gold"}`}
                       >
                         {product.status === "active" ? "Active" : "Draft"}
@@ -532,7 +698,7 @@ export default function SellerInventoryPage() {
                           <Edit2 className="h-3.5 w-3.5" />
                         </button>
                         <button
-                          onClick={() => handleDelete(product.sku)}
+                          onClick={() => handleDelete(product.id!)}
                           className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-red-500/10 text-red-500 hover:text-red-600 transition-colors cursor-pointer"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -574,7 +740,9 @@ export default function SellerInventoryPage() {
                 <div className="flex items-center justify-between pb-4 border-b border-border/10 mb-6">
                   <h3 className="font-cormorant text-xl font-light text-[var(--brand-text)] flex items-center gap-1.5">
                     <Sparkles className="h-4 w-4 text-[var(--gold)]" />
-                    {editingProduct ? "Revise Collection Item" : "Onboard New Collection Item"}
+                    {editingProduct
+                      ? "Revise Collection Item"
+                      : "Onboard New Collection Item"}
                   </h3>
                   <button
                     onClick={() => setIsModalOpen(false)}
@@ -588,7 +756,10 @@ export default function SellerInventoryPage() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Name */}
                   <div className="space-y-1">
-                    <Label htmlFor="product-name" className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Label
+                      htmlFor="product-name"
+                      className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                    >
                       Product Name
                     </Label>
                     <Input
@@ -596,16 +767,25 @@ export default function SellerInventoryPage() {
                       type="text"
                       placeholder="e.g. Quilted Caviar Shoulder Bag"
                       value={formData.name}
-                      onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
+                      onChange={(e) =>
+                        setFormData((p) => ({ ...p, name: e.target.value }))
+                      }
                       className="h-9 text-xs"
                     />
-                    {errors.name && <p className="text-[10px] text-red-500 font-medium">{errors.name}</p>}
+                    {errors.name && (
+                      <p className="text-[10px] text-red-500 font-medium">
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     {/* Price */}
                     <div className="space-y-1">
-                      <Label htmlFor="retail-price" className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <Label
+                        htmlFor="retail-price"
+                        className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                      >
                         Retail Price (INR)
                       </Label>
                       <Input
@@ -613,36 +793,52 @@ export default function SellerInventoryPage() {
                         type="number"
                         placeholder="e.g. 185000"
                         value={formData.price}
-                        onChange={(e) => setFormData((p) => ({ ...p, price: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((p) => ({ ...p, price: e.target.value }))
+                        }
                         className="h-9 text-xs"
                       />
-                      {errors.price && <p className="text-[10px] text-red-500 font-medium">{errors.price}</p>}
+                      {errors.price && (
+                        <p className="text-[10px] text-red-500 font-medium">
+                          {errors.price}
+                        </p>
+                      )}
                     </div>
 
-                    {/* Stock (Disabled if Category is Footwear/Apparel with variants) */}
+                    {/* Stock (Disabled when clothing variants are added) */}
                     <div className="space-y-1">
-                      <Label htmlFor="starting-stock" className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        {isVariantCategory && variants.length > 0 ? "Computed Total Stock" : "Starting Stock"}
+                      <Label
+                        htmlFor="starting-stock"
+                        className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                      >
+                        {isVariantCategory && variants.length > 0
+                          ? "Computed Total Stock"
+                          : "Starting Stock"}
                       </Label>
                       <Input
                         id="starting-stock"
                         type="number"
                         placeholder="e.g. 10"
                         disabled={isVariantCategory && variants.length > 0}
-                        value={isVariantCategory && variants.length > 0 
-                          ? variants.reduce((sum, v) => sum + v.stock, 0)
-                          : formData.stock
+                        value={
+                          isVariantCategory && variants.length > 0
+                            ? variants.reduce((sum, v) => sum + v.stock, 0)
+                            : formData.stock
                         }
-                        onChange={(e) => setFormData((p) => ({ ...p, stock: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((p) => ({ ...p, stock: e.target.value }))
+                        }
                         className="h-9 text-xs font-medium disabled:opacity-60 bg-muted/20"
                       />
                       {!isVariantCategory && errors.stock && (
-                        <p className="text-[10px] text-red-500 font-medium">{errors.stock}</p>
+                        <p className="text-[10px] text-red-500 font-medium">
+                          {errors.stock}
+                        </p>
                       )}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {/* Category */}
                     <div className="space-y-1 flex flex-col justify-end">
                       <Label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
@@ -651,19 +847,19 @@ export default function SellerInventoryPage() {
                       <Select
                         value={formData.category}
                         onValueChange={(val) => {
-                          setFormData((p) => ({ ...p, category: val }));
-                          // Reset variants when category switches
-                          if (val !== "Apparel" && val !== "Footwear") {
-                            setVariants([]);
-                          }
+                          setFormData((p) => ({
+                            ...p,
+                            category: val,
+                            subCategory: getDefaultSubcategory(val),
+                          }));
                         }}
                       >
                         <SelectTrigger className="h-9 text-xs w-full">
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                         <SelectContent>
-                          {CATEGORIES.map((cat) => (
-                            <SelectItem key={cat} value={cat}>
+                          {CATEGORIES.map((cat,index) => (
+                            <SelectItem key={index} value={cat}>
                               {cat}
                             </SelectItem>
                           ))}
@@ -671,9 +867,41 @@ export default function SellerInventoryPage() {
                       </Select>
                     </div>
 
+                    {/* Subcategory */}
+                    <div className="space-y-1 flex flex-col justify-end">
+                      <Label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                        Subcategory
+                      </Label>
+                      <Select
+                        value={formData.subCategory}
+                        onValueChange={(val) =>
+                          setFormData((p) => ({ ...p, subCategory: val }))
+                        }
+                      >
+                        <SelectTrigger className="h-9 text-xs w-full">
+                          <SelectValue placeholder="Select subcategory" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {currentSubcategories.map((subCat) => (
+                            <SelectItem key={subCat} value={subCat}>
+                              {subCat}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.subCategory && (
+                        <p className="text-[10px] text-red-500 font-medium">
+                          {errors.subCategory}
+                        </p>
+                      )}
+                    </div>
+
                     {/* SKU */}
                     <div className="space-y-1">
-                      <Label htmlFor="sku-code" className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <Label
+                        htmlFor="sku-code"
+                        className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                      >
                         SKU / Code
                       </Label>
                       <Input
@@ -682,14 +910,20 @@ export default function SellerInventoryPage() {
                         disabled={!!editingProduct}
                         placeholder="e.g. VV-SL-821"
                         value={formData.sku}
-                        onChange={(e) => setFormData((p) => ({ ...p, sku: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((p) => ({ ...p, sku: e.target.value }))
+                        }
                         className="h-9 text-xs font-mono disabled:opacity-60 bg-muted/20"
                       />
-                      {errors.sku && <p className="text-[10px] text-red-500 font-medium">{errors.sku}</p>}
+                      {errors.sku && (
+                        <p className="text-[10px] text-red-500 font-medium">
+                          {errors.sku}
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  {/* Size & Color Variants (Apparel & Footwear Only) */}
+                  {/* Size & Color Variants */}
                   {isVariantCategory && (
                     <div className="space-y-4 p-4 rounded-xl border border-[var(--gold-faint)] bg-[var(--gold-glow)]/40 font-sans">
                       <div className="flex items-center justify-between border-b border-border/10 pb-1.5">
@@ -709,19 +943,29 @@ export default function SellerInventoryPage() {
 
                       {variants.length === 0 ? (
                         <p className="text-[10px] text-muted-foreground text-center py-2">
-                          No variations added. Using single flat inventory stock.
+                          No variations added. Using single flat inventory
+                          stock.
                         </p>
                       ) : (
                         <div className="space-y-4 max-h-[240px] overflow-y-auto pr-1 no-scrollbar">
                           {variants.map((v, index) => (
-                            <div key={index} className="space-y-2 border-b border-border/10 pb-3 last:border-b-0 last:pb-0">
+                            <div
+                              key={index}
+                              className="space-y-2 border-b border-border/10 pb-3 last:border-b-0 last:pb-0"
+                            >
                               <div className="flex gap-2 items-center">
                                 {/* Color */}
                                 <div className="flex-1">
                                   <Input
                                     placeholder="Color (e.g. Cobalt)"
                                     value={v.color}
-                                    onChange={(e) => handleUpdateVariant(index, "color", e.target.value)}
+                                    onChange={(e) =>
+                                      handleUpdateVariant(
+                                        index,
+                                        "color",
+                                        e.target.value,
+                                      )
+                                    }
                                     className="h-8 text-[11px]"
                                   />
                                 </div>
@@ -730,7 +974,9 @@ export default function SellerInventoryPage() {
                                 <div className="w-24">
                                   <Select
                                     value={v.size}
-                                    onValueChange={(val) => handleUpdateVariant(index, "size", val)}
+                                    onValueChange={(val) =>
+                                      handleUpdateVariant(index, "size", val)
+                                    }
                                   >
                                     <SelectTrigger className="h-8 text-[11px]">
                                       <SelectValue placeholder="Size" />
@@ -751,7 +997,13 @@ export default function SellerInventoryPage() {
                                     type="number"
                                     placeholder="Qty"
                                     value={v.stock}
-                                    onChange={(e) => handleUpdateVariant(index, "stock", parseInt(e.target.value) || 0)}
+                                    onChange={(e) =>
+                                      handleUpdateVariant(
+                                        index,
+                                        "stock",
+                                        parseInt(e.target.value) || 0,
+                                      )
+                                    }
                                     className="h-8 text-[11px] text-center"
                                   />
                                 </div>
@@ -771,9 +1023,10 @@ export default function SellerInventoryPage() {
                               {/* Multiple Variant Image Uploader */}
                               <div className="space-y-1.5 pl-1">
                                 <Label className="text-[9px] font-semibold text-muted-foreground">
-                                  Variation Images ({v.images?.length || 0} uploaded)
+                                  Variation Images ({v.images?.length || 0}{" "}
+                                  uploaded)
                                 </Label>
-                                
+
                                 <div className="flex gap-3 items-center">
                                   <label className="flex items-center gap-1.5 justify-center py-1.5 px-3 border border-dashed border-[var(--gold)]/45 rounded-lg hover:bg-[var(--gold-faint)] cursor-pointer text-[10px] text-[var(--gold)] font-medium transition-all">
                                     {uploadingIndexes[index] ? (
@@ -792,7 +1045,9 @@ export default function SellerInventoryPage() {
                                       multiple
                                       accept="image/*"
                                       disabled={uploadingIndexes[index]}
-                                      onChange={(e) => handleVariantImageUpload(index, e)}
+                                      onChange={(e) =>
+                                        handleVariantImageUpload(index, e)
+                                      }
                                       className="hidden"
                                     />
                                   </label>
@@ -801,24 +1056,39 @@ export default function SellerInventoryPage() {
                                   {v.images && v.images.length > 0 && (
                                     <div className="flex gap-1.5 flex-wrap">
                                       {v.images.map((img, imgIdx) => (
-                                        <div key={imgIdx} className="relative group h-7 w-7 border border-border/20 rounded overflow-hidden">
+                                        <div
+                                          key={imgIdx}
+                                          className="relative group h-7 w-7 border border-border/20 rounded overflow-hidden"
+                                        >
                                           <img
-                                            src={img.url}
+                                            src={img.url || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100&auto=format&fit=crop&q=80"}
                                             className="h-full w-full object-cover"
                                             alt=""
                                             onError={(e) => {
-                                              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100&auto=format&fit=crop&q=80";
+                                              (
+                                                e.target as HTMLImageElement
+                                              ).src =
+                                                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100&auto=format&fit=crop&q=80";
                                             }}
                                           />
                                           {/* Hover deletion */}
                                           <button
                                             type="button"
                                             onClick={() => {
-                                              const updated = v.images.filter((_, i) => i !== imgIdx);
-                                              if (img.isPrimary && updated.length > 0) {
+                                              const updated = v.images.filter(
+                                                (_, i) => i !== imgIdx,
+                                              );
+                                              if (
+                                                img.isPrimary &&
+                                                updated.length > 0
+                                              ) {
                                                 updated[0].isPrimary = true;
                                               }
-                                              handleUpdateVariant(index, "images", updated);
+                                              handleUpdateVariant(
+                                                index,
+                                                "images",
+                                                updated,
+                                              );
                                             }}
                                             className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white hover:text-red-400"
                                           >
@@ -835,7 +1105,9 @@ export default function SellerInventoryPage() {
                         </div>
                       )}
                       {errors.variants && (
-                        <p className="text-[10px] text-red-500 font-medium">{errors.variants}</p>
+                        <p className="text-[10px] text-red-500 font-medium">
+                          {errors.variants}
+                        </p>
                       )}
                     </div>
                   )}
@@ -853,12 +1125,15 @@ export default function SellerInventoryPage() {
                             className="h-full w-full object-cover"
                             alt="Cover"
                             onError={(e) => {
-                              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&auto=format&fit=crop&q=80";
+                              (e.target as HTMLImageElement).src =
+                                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&auto=format&fit=crop&q=80";
                             }}
                           />
                           <button
                             type="button"
-                            onClick={() => setFormData(p => ({ ...p, image: "" }))}
+                            onClick={() =>
+                              setFormData((p) => ({ ...p, image: "" }))
+                            }
                             className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
                           >
                             <X className="h-4 w-4" />
@@ -869,7 +1144,7 @@ export default function SellerInventoryPage() {
                           <Package className="h-5 w-5" />
                         </div>
                       )}
-                      
+
                       <div className="flex-1">
                         <label className="inline-flex items-center gap-1.5 justify-center py-2 px-4 border border-[var(--gold)]/45 rounded-lg hover:bg-[var(--gold-faint)] cursor-pointer text-xs text-[var(--gold)] font-medium transition-all">
                           {isUploadingCover ? (
@@ -900,7 +1175,10 @@ export default function SellerInventoryPage() {
 
                   {/* Description */}
                   <div className="space-y-1">
-                    <Label htmlFor="description" className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Label
+                      htmlFor="description"
+                      className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                    >
                       Description
                     </Label>
                     <textarea
@@ -908,7 +1186,12 @@ export default function SellerInventoryPage() {
                       rows={3}
                       placeholder="Describe the product details, fine materials, craftsmanship..."
                       value={formData.description}
-                      onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
+                      onChange={(e) =>
+                        setFormData((p) => ({
+                          ...p,
+                          description: e.target.value,
+                        }))
+                      }
                       className="input-field py-2 text-xs"
                     />
                   </div>
@@ -925,7 +1208,9 @@ export default function SellerInventoryPage() {
                           name="status"
                           value="active"
                           checked={formData.status === "active"}
-                          onChange={() => setFormData((p) => ({ ...p, status: "active" }))}
+                          onChange={() =>
+                            setFormData((p) => ({ ...p, status: "active" }))
+                          }
                           className="accent-[var(--gold)]"
                         />
                         Active (Shown in Boutique)
@@ -936,7 +1221,9 @@ export default function SellerInventoryPage() {
                           name="status"
                           value="draft"
                           checked={formData.status === "draft"}
-                          onChange={() => setFormData((p) => ({ ...p, status: "draft" }))}
+                          onChange={() =>
+                            setFormData((p) => ({ ...p, status: "draft" }))
+                          }
                           className="accent-[var(--gold)]"
                         />
                         Draft (Atelier view only)

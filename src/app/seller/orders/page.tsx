@@ -14,6 +14,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { toast } from "sonner";
+import { api } from "@/lib/api/apiservices";
 
 interface Order {
   id: string;
@@ -31,28 +32,43 @@ export default function SellerOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const local = localStorage.getItem("vault_vogue_seller_orders");
-    if (local) {
-      setOrders(JSON.parse(local));
+  const fetchOrders = async () => {
+    try {
+      setIsLoading(true);
+      const response = await api.get<{ success: boolean; data: any[] }>("/api/orders/seller/all");
+      if (response.data.success) {
+        const mappedOrders = response.data.data.map((o: any) => ({
+          ...o,
+          id: o.id || o._id,
+        }));
+        setOrders(mappedOrders);
+      }
+    } catch (err) {
+      console.error("Failed to load seller orders", err);
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
-
-  const saveOrders = (updated: Order[]) => {
-    setOrders(updated);
-    localStorage.setItem("vault_vogue_seller_orders", JSON.stringify(updated));
   };
 
-  const handleStatusChange = (orderId: string, newStatus: Order["status"]) => {
-    const updated = orders.map((o) => {
-      if (o.id === orderId) {
-        toast.success(`Order ${orderId} updated to ${newStatus.toUpperCase()}`);
-        return { ...o, status: newStatus };
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const handleStatusChange = async (orderId: string, newStatus: Order["status"]) => {
+    try {
+      const res = await api.patch<{ success: boolean }>(`/api/orders/${orderId}/status`, {
+        status: newStatus,
+      });
+      if (res.data.success) {
+        toast.success(`Order status updated to ${newStatus.toUpperCase()}`);
+        fetchOrders();
       }
-      return o;
-    });
-    saveOrders(updated);
+    } catch (err: any) {
+      console.error("Failed to update status", err);
+      toast.error(err.response?.data?.message || "Failed to update order status");
+    }
   };
 
   // Filter orders
@@ -73,6 +89,14 @@ export default function SellerOrdersPage() {
     delivered: { label: "Delivered", cls: "badge badge-success", icon: CheckCircle },
     cancelled: { label: "Cancelled", cls: "badge badge-sale", icon: XCircle },
   };
+
+  if (isLoading && orders.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold)]"></div>
+      </div>
+    );
+  }
 
   return (
     <motion.div

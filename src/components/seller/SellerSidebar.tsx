@@ -34,6 +34,7 @@ export function SellerSidebar() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const user = useAppSelector((s) => s.auth.user);
+  console.log(useAppSelector((s) => s));
   const [collapsed, setCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -177,7 +178,7 @@ export function SellerSidebar() {
                 className="text-xs font-semibold truncate"
                 style={{ color: "var(--brand-text)" }}
               >
-                {user?.fullName || "Seller Partner"}
+                {user?.name || "Seller Partner"}
               </p>
               <p className="text-[10px] text-muted-foreground truncate">
                 {user?.email}

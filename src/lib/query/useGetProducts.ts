@@ -13,10 +13,16 @@ export type UIProduct = {
 
   sellerId?: string;
 
+  /** Unique sizes across all variants e.g. ["S", "M", "L"] */
   availableSizes: string[];
+  /** Unique colors across all variants e.g. ["Black", "Red"] */
+  availableColors: string[];
   sizeQuantities: Record<string, number>;
 
-  // 🔥 critical for cart
+  /**
+   * Key: "size" or "color|size" composite → variantId
+   * Used for cart: pick a variant by its size+color selection
+   */
   sizeToVariantMap: Record<string, string>;
 
   lowStockThreshold: number;
@@ -31,8 +37,27 @@ export type UIProduct = {
   isNew: boolean;
   isSale: boolean;
 
-  variants: any;
-  sizes: { variantId: string; size: string; price: number; stock: number }[];
+  variants: {
+    id: string;
+    sku: string;
+    size: string;
+    color: string;
+    price: number;
+    compareAtPrice?: number;
+    images: { url: string; isPrimary: boolean }[];
+    isActive: boolean;
+  }[];
+
+  sizes: {
+    variantId: string;
+    size: string;
+    color: string;
+    price: number;
+    stock: number;
+    compareAtPrice?: number;
+    images: { url: string; isPrimary: boolean }[];
+  }[];
+
   createdAt: string;
 };
 
@@ -42,6 +67,7 @@ interface UseGetProductsProps {
   label?: string; // e.g. "men" | "women" | "kids" - used as part of query key
   categoryName?: string; // Add this
   search?: string;
+  isSale?: boolean;
 }
 
 // type UIProductBase = Pick<
@@ -59,60 +85,92 @@ const mapProduct = (p: ApiProduct): UIProduct => {
   const sizes = p.sizes ?? [];
   const variants = p.variants ?? [];
 
-  const availableSizes = Array.from(new Set(sizes.map((s) => s.size)));
+  // Distinct sizes and colors across all variants
+  const availableSizes = Array.from(new Set(sizes.map((s) => s.size).filter(Boolean)));
+  const availableColors = Array.from(new Set(sizes.map((s) => s.color).filter(Boolean)));
 
   const sizeQuantities: Record<string, number> = {};
+  /**
+   * sizeToVariantMap supports two lookup strategies:
+   *   1. By size only:         sizeToVariantMap["M"]          → variantId
+   *   2. By color+size combo:  sizeToVariantMap["Black|M"]    → variantId
+   * UI should prefer the composite key when a color is selected.
+   */
   const sizeToVariantMap: Record<string, string> = {};
 
   for (const s of sizes) {
-    sizeQuantities[s.size] = (sizeQuantities[s.size] ?? 0) + s.stock;
-    sizeToVariantMap[s.size] = s.variantId;
+    if (s.size) {
+      sizeQuantities[s.size] = (sizeQuantities[s.size] ?? 0) + s.stock;
+      // Fallback: last write wins for size-only key
+      sizeToVariantMap[s.size] = s.variantId;
+    }
+    if (s.color && s.size) {
+      sizeToVariantMap[`${s.color}|${s.size}`] = s.variantId;
+    } else if (s.color) {
+      sizeToVariantMap[s.color] = s.variantId;
+    }
   }
 
-  const priceList = sizes.map((s) => s.price);
+  const priceList = sizes.map((s) => s.price).filter((v) => v != null);
   const minPrice = priceList.length ? Math.min(...priceList) : p.minPrice;
   const maxPrice = priceList.length ? Math.max(...priceList) : p.maxPrice;
+
+  // Primary image: try variant images first (colour-specific), then product images
+  const primaryImage =
+    sizes[0]?.images?.find((img) => img.isPrimary)?.url ??
+    sizes[0]?.images?.[0]?.url ??
+    p.images?.find((img) => img.isPrimary)?.url ??
+    p.images?.[0]?.url ??
+    "";
 
   return {
     id: p._id,
     name: p.name,
 
-    price: minPrice, // UI default base price
-
+    price: minPrice ?? 0,
     minPrice,
     maxPrice,
 
     sellerId: p.sellerId,
 
     availableSizes,
+    availableColors,
     sizeQuantities,
     sizeToVariantMap,
 
-    lowStockThreshold: 5, // or from backend if available
+    lowStockThreshold: 5,
 
-    image: p.images?.find((img) => img.isPrimary)?.url ?? p.images?.[0]?.url ?? "",
-    category: p.categories?.[0]?.name || "Fashion",
+    image: primaryImage,
+    category: p.category || p.categories?.[0]?.name || "Fashion",
 
     description: p.description,
 
     bestseller: p.bestseller ?? false,
     trending: p.trending ?? false,
 
-    isNew: false, // derive from createdAt if needed
-    isSale: false, // derive from product flags if available
+    isNew: false,
+    isSale: sizes.some((s) => s.compareAtPrice && s.compareAtPrice > s.price),
 
     variants: variants.map((v) => ({
       id: v._id,
-      productId: v.productId,
-      sellerId: v.sellerId,
       sku: v.sku,
-      attributes: v.attributes,
+      size: v.size,
+      color: v.color,
       price: v.price,
-      images: v.images,
+      compareAtPrice: v.compareAtPrice,
+      images: v.images ?? [],
       isActive: v.isActive,
     })),
 
-    sizes,
+    sizes: sizes.map((s) => ({
+      variantId: s.variantId,
+      size: s.size,
+      color: s.color,
+      price: s.price,
+      stock: s.stock,
+      compareAtPrice: s.compareAtPrice,
+      images: s.images ?? [],
+    })),
 
     createdAt: p.createdAt,
   };
@@ -129,24 +187,32 @@ export const useGetProducts = ({
   label = "all",
   categoryName,
   search,
+  isSale,
 }: UseGetProductsProps = {}) => {
   return useInfiniteQuery({
-    queryKey: ["products", label, categoryId, limit, categoryName, search],
+    queryKey: ["products", label, categoryId, limit, categoryName, search, isSale],
     initialPageParam: 1,
-    queryFn: async ({ pageParam }) => {
+    queryFn: async ({ pageParam, signal }) => {
       try {
-        const apiProducts: ApiProduct[] = await productService.getAllProducts({
-          page: pageParam,
-          limit,
-          sortBy: "createdAt",
-          order: "desc",
-          categoryId: categoryId as string,
-          categoryName,
-          search,
-        });
+        const apiProducts: ApiProduct[] = await productService.getAllProducts(
+          {
+            page: pageParam,
+            limit,
+            sortBy: "createdAt",
+            order: "desc",
+            categoryId: categoryId as string,
+            categoryName,
+            search,
+            isSale,
+          },
+          { signal },
+        );
 
         return apiProducts.map(mapProduct);
       } catch (error) {
+        if (error && (error as any).name === "CanceledError") {
+          throw error;
+        }
         logError(error, "Failed to fetch products");
         return [];
       }

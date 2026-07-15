@@ -8,6 +8,8 @@ type SuggestionsProps = {
 };
 
 export const Suggestions = React.memo(({ items }: SuggestionsProps) => {
+  if (!items || items.length === 0) return null;
+
   return (
     <div className="mt-20">
       {/* Section Header */}
@@ -29,6 +31,7 @@ export const Suggestions = React.memo(({ items }: SuggestionsProps) => {
             minPrice: item.price,
             maxPrice: item.price,
             availableSizes: ["XS", "S", "M", "L", "XL"],
+            availableColors: [],
             sizeQuantities: { XS: 10, S: 10, M: 10, L: 10, XL: 10 },
             sizeToVariantMap: {
               XS: `${item.id}-xs`,
@@ -47,9 +50,9 @@ export const Suggestions = React.memo(({ items }: SuggestionsProps) => {
             isSale: false,
             variants: [],
             sizes: [
-              { variantId: `${item.id}-xs`, size: "XS", price: item.price, stock: 10 },
-              { variantId: `${item.id}-s`, size: "S", price: item.price, stock: 10 },
-              { variantId: `${item.id}-m`, size: "M", price: item.price, stock: 10 },
+              { variantId: `${item.id}-xs`, size: "XS", color: "", price: item.price, stock: 10, images: [] },
+              { variantId: `${item.id}-s`, size: "S", color: "", price: item.price, stock: 10, images: [] },
+              { variantId: `${item.id}-m`, size: "M", color: "", price: item.price, stock: 10, images: [] },
             ],
             createdAt: new Date().toISOString(),
           };

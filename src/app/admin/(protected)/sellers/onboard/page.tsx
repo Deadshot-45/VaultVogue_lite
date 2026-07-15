@@ -18,6 +18,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
+import { sellerService } from "@/lib/api/sellerService";
 
 // ── Validation schemas ────────────────────────────────────────────────────────
 const step1Schema = z.object({
@@ -149,64 +150,35 @@ export default function SellerOnboardPage() {
       return;
     }
     setSubmitting(true);
-    
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1000));
-    
-    try {
-      // 1. Save new seller profile to admin sellers list
-      let localSellers = localStorage.getItem("vault_vogue_admin_sellers");
-      let sellersList = localSellers ? JSON.parse(localSellers) : [
-        { id: 'SEL-001', businessName: 'Luxe Collections Pvt Ltd',  ownerName: 'Rohan Mehta',      email: 'rohan@luxecollections.com',  category: 'Handbags',    joinedAt: '2024-02-20', status: 'approved',  revenue: 480000,  products: 14 },
-        { id: 'SEL-002', businessName: 'Artisan Atelier',           ownerName: 'Meera Iyer',        email: 'meera@artisanatelier.in',    category: 'Jewellery',   joinedAt: '2024-04-01', status: 'approved',  revenue: 210000,  products: 8  },
-        { id: 'SEL-003', businessName: 'Heritage Craft Studio',     ownerName: 'Suresh Pillai',     email: 'suresh@heritagecraft.in',    category: 'Accessories', joinedAt: '2024-05-15', status: 'pending',   revenue: 0,       products: 0  },
-        { id: 'SEL-004', businessName: 'Couture House Mumbai',      ownerName: 'Divya Reddy',       email: 'divya@couturehouse.com',     category: 'Apparel',     joinedAt: '2024-06-22', status: 'approved',  revenue: 920000,  products: 32 },
-        { id: 'SEL-005', businessName: 'The Leather Workshop',      ownerName: 'Kabir Das',         email: 'kabir@leatherworkshop.in',   category: 'Footwear',    joinedAt: '2024-07-08', status: 'rejected',  revenue: 0,       products: 0  },
-        { id: 'SEL-006', businessName: 'Silk Route Emporium',       ownerName: 'Nandita Bose',      email: 'nandita@silkroute.in',       category: 'Accessories', joinedAt: '2024-08-14', status: 'approved',  revenue: 156000,  products: 6  },
-        { id: 'SEL-007', businessName: 'Precious Gems & Co',        ownerName: 'Vikram Singh',      email: 'vikram@preciousgems.com',    category: 'Jewellery',   joinedAt: '2024-09-01', status: 'suspended', revenue: 88000,   products: 4  },
-        { id: 'SEL-008', businessName: 'Fine Fragrance Boutique',   ownerName: 'Aisha Khan',        email: 'aisha@finefragrance.com',    category: 'Fragrances',  joinedAt: '2024-11-10', status: 'pending',   revenue: 0,       products: 0  },
-      ];
 
-      const newSellerId = `SEL-0${Math.floor(10 + Math.random() * 90)}`;
-      const newSellerRow = {
-        id: newSellerId,
+    try {
+      const payload = {
         businessName: form.businessInfo.businessName,
         ownerName: form.businessInfo.ownerName,
         email: form.businessInfo.email,
+        phone: form.businessInfo.phone,
         category: form.businessInfo.category || "General",
-        joinedAt: new Date().toISOString().split("T")[0],
-        status: "approved" as const,
-        revenue: 0,
-        products: 1,
+        description: form.businessInfo.description,
+        website: form.businessInfo.website || undefined,
+        gstNumber: form.businessInfo.gstNumber || "MOCKGST12345",
+        bankDetails: {
+          bankName: form.bankDetails.bankName,
+          accountHolder: form.bankDetails.accountHolder,
+          accountNumber: form.bankDetails.accountNumber,
+          ifscCode: form.bankDetails.ifscCode,
+          accountType: form.bankDetails.accountType,
+        },
       };
 
-      sellersList = [newSellerRow, ...sellersList];
-      localStorage.setItem("vault_vogue_admin_sellers", JSON.stringify(sellersList));
-
-      // 2. Also register the product listing item in boutique floor catalog
-      let localProducts = localStorage.getItem("vault_vogue_seller_products");
-      let productsList = localProducts ? JSON.parse(localProducts) : [];
-      
-      const newProduct = {
-        sku: form.productListing.sku || `VV-SL-${Math.floor(100 + Math.random() * 900)}`,
-        name: form.productListing.productName,
-        price: Number(form.productListing.price) || 25000,
-        category: form.productListing.category || "General",
-        stock: 10,
-        status: "active" as const,
-        image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80",
-        description: form.productListing.description,
-      };
-
-      productsList = [newProduct, ...productsList];
-      localStorage.setItem("vault_vogue_seller_products", JSON.stringify(productsList));
+      await sellerService.onboard(payload);
 
       setSubmitting(false);
       setSubmitted(true);
-      toast.success("Seller onboarding completed and catalog item published!");
-    } catch (err) {
+      toast.success("Seller onboarding application submitted successfully!");
+    } catch (err: any) {
       setSubmitting(false);
-      toast.error("Failed to onboard seller.");
+      const msg = err.response?.data?.message || "Failed to onboard seller.";
+      toast.error(msg);
     }
   };
 

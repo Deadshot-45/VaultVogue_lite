@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -8,16 +9,7 @@ import {
 } from "@tanstack/react-table";
 import type { OrderRow, OrderStatus } from "@/types/admin";
 import { motion } from "framer-motion";
-
-const orders: OrderRow[] = [
-  { id: '#VV-10041', customer: 'Ananya Sharma',    email: 'ananya@gmail.com',   date: '2024-12-14', amount: 18500, status: 'delivered',  items: 2 },
-  { id: '#VV-10040', customer: 'Rohan Mehta',      email: 'rohan@outlook.com',  date: '2024-12-13', amount: 42000, status: 'processing', items: 3 },
-  { id: '#VV-10039', customer: 'Priya Nair',       email: 'priya@yahoo.com',    date: '2024-12-13', amount: 8750,  status: 'shipped',    items: 1 },
-  { id: '#VV-10038', customer: 'Vikram Singh',     email: 'vikram@gmail.com',   date: '2024-12-12', amount: 95000, status: 'pending',    items: 5 },
-  { id: '#VV-10037', customer: 'Meera Iyer',       email: 'meera@icloud.com',   date: '2024-12-11', amount: 23000, status: 'delivered',  items: 2 },
-  { id: '#VV-10036', customer: 'Arjun Kapoor',     email: 'arjun@gmail.com',    date: '2024-12-11', amount: 6500,  status: 'cancelled',  items: 1 },
-  { id: '#VV-10035', customer: 'Divya Reddy',      email: 'divya@outlook.com',  date: '2024-12-10', amount: 55000, status: 'delivered',  items: 4 },
-];
+import { api } from "@/lib/api/apiservices";
 
 const statusConfig: Record<OrderStatus, { label: string; className: string }> = {
   pending:    { label: 'Pending',    className: 'badge badge-gold' },
@@ -80,7 +72,44 @@ const columns = [
 ];
 
 export function RecentOrdersTable() {
+  const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRecentOrders = async () => {
+      try {
+        const response = await api.get<{ success: boolean; data: any[] }>("/api/orders/admin/all");
+        if (response.data.success) {
+          const mapped = response.data.data.slice(0, 7).map((o: any) => ({
+            id: o.id || o._id,
+            customer: o.address?.fullName || o.userId?.email || "Guest Customer",
+            email: o.userId?.email || "",
+            date: o.placedAt || o.createdAt,
+            amount: o.totalAmount,
+            status: o.status || "pending",
+            items: o.totalItems || o.items?.length || 0,
+          }));
+          setOrders(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch recent orders", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecentOrders();
+  }, []);
+
   const table = useReactTable({ data: orders, columns, getCoreRowModel: getCoreRowModel() });
+
+  if (isLoading) {
+    return (
+      <div className="card py-8 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--gold)]"></div>
+      </div>
+    );
+  }
 
   return (
     <motion.div

@@ -48,33 +48,35 @@ export function Providers({ children }: Props) {
   return (
     <ThemeProvider>
       <ReduxProvider store={store}>
-        <ErrorBoundary>
-          <AuthInitializer />
-          <QueryClientProvider client={queryClient}>
-            <SidebarProvider>
-              <div>
-                <Toaster
-                  position="top-right"
-                  duration={3000}
-                  expand={true}
-                  richColors={false}
-                  closeButton={true}
-                  toastOptions={{
-                    classNames: {
-                      toast: "toast",
-                      success: "toast-success",
-                      error: "toast-error",
-                      info: "toast-info",
-                      warning: "toast-warning",
-                      loading: "toast-loading",
-                    },
-                  }}
-                />
-              </div>
-              {children}
-            </SidebarProvider>
-          </QueryClientProvider>
-        </ErrorBoundary>
+        <PersistGate loading={<Loader />} persistor={persistor}>
+          <ErrorBoundary>
+            <AuthInitializer />
+            <QueryClientProvider client={queryClient}>
+              <SidebarProvider>
+                <div>
+                  <Toaster
+                    position="top-right"
+                    duration={3000}
+                    expand={true}
+                    richColors={false}
+                    closeButton={true}
+                    toastOptions={{
+                      classNames: {
+                        toast: "toast",
+                        success: "toast-success",
+                        error: "toast-error",
+                        info: "toast-info",
+                        warning: "toast-warning",
+                        loading: "toast-loading",
+                      },
+                    }}
+                  />
+                </div>
+                {children}
+              </SidebarProvider>
+            </QueryClientProvider>
+          </ErrorBoundary>
+        </PersistGate>
       </ReduxProvider>
     </ThemeProvider>
   );

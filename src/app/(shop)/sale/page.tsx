@@ -2,38 +2,22 @@
 
 import { motion } from "framer-motion";
 import ProductCardComponent from "@/components/product-card";
-import { UIProduct } from "@/lib/query/useGetProducts";
+import { useGetProducts } from "@/lib/query/useGetProducts";
 import { useRouter } from "next/navigation";
-
-const products = [
-  {
-    id: "sale-1",
-    name: "City Layer Bomber Jacket",
-    price: 290,
-    original: 450,
-    image: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=500&h=500&fit=crop",
-    category: "Outerwear",
-  },
-  {
-    id: "sale-2",
-    name: "Weekend Flow Co-ord Set",
-    price: 190,
-    original: 280,
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&h=500&fit=crop",
-    category: "Sets",
-  },
-  {
-    id: "sale-3",
-    name: "Street Pace Everyday Sneakers",
-    price: 140,
-    original: 220,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&h=500&fit=crop",
-    category: "Footwear",
-  },
-];
+import { ProductCardSkeletonGrid } from "@/components/product-card-skeleton";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export default function Page() {
   const router = useRouter();
+
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useGetProducts({
+    isSale: true,
+    label: "sale",
+    limit: 12,
+  });
+
+  const products = data?.pages.flatMap((page) => page) || [];
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -67,51 +51,50 @@ export default function Page() {
 
       {/* Product List */}
       <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {products.map((p, i) => {
-            const uiProduct: UIProduct = {
-              id: p.id,
-              name: p.name,
-              price: p.price,
-              minPrice: p.price,
-              maxPrice: p.price,
-              availableSizes: ["XS", "S", "M", "L", "XL"],
-              sizeQuantities: { XS: 10, S: 10, M: 10, L: 10, XL: 10 },
-              sizeToVariantMap: {
-                XS: `${p.id}-xs`,
-                S: `${p.id}-s`,
-                M: `${p.id}-m`,
-                L: `${p.id}-l`,
-                XL: `${p.id}-xl`,
-              },
-              lowStockThreshold: 5,
-              image: p.image,
-              category: p.category,
-              description: "",
-              bestseller: false,
-              trending: false,
-              isNew: false,
-              isSale: true,
-              variants: [],
-              sizes: [
-                { variantId: `${p.id}-xs`, size: "XS", price: p.price, stock: 10 }
-              ],
-              createdAt: new Date().toISOString(),
-            };
+        {isLoading ? (
+          <ProductCardSkeletonGrid count={6} columns="grid-cols-2 md:grid-cols-3" />
+        ) : products.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-80 text-center space-y-4">
+            <h3 className="text-lg font-semibold">No archival creations found</h3>
+            <p className="text-xs text-muted-foreground max-w-xs">
+              Check back soon for new seasonal edits in our private archive.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+              {products.map((p, i) => (
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <ProductCardComponent product={p} />
+                </motion.div>
+              ))}
+            </div>
 
-            return (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <ProductCardComponent product={uiProduct} />
-              </motion.div>
-            );
-          })}
-        </div>
+            {hasNextPage && (
+              <div className="mt-12 text-center">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full px-8 transition-all duration-200 active:scale-95 cursor-pointer"
+                  style={{ borderColor: "var(--gold-soft)" }}
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                >
+                  {isFetchingNextPage ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : null}
+                  {isFetchingNextPage ? "Loading..." : "Load More"}
+                </Button>
+              </div>
+            )}
+          </>
+        )}
       </section>
 
       {/* Footer Banner */}

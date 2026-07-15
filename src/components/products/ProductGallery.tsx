@@ -10,10 +10,10 @@ export const ProductGallery = ({
   gallery: string[];
   productName: string;
 }) => {
-  const [active, setActive] = useState(gallery[0]);
+  const [active, setActive] = useState(gallery[0] || "/fallback.png");
 
   useEffect(() => {
-    setActive(gallery[0]);
+    setActive(gallery[0] || "/fallback.png");
   }, [gallery]);
 
   // 🔥 preload images
@@ -53,7 +53,7 @@ export const ProductGallery = ({
                   : "opacity-70 hover:opacity-100 hover:scale-105 border border-transparent"
               }`}
             >
-              <img src={img} className="h-full w-full object-cover" alt="thumbnail" />
+              <img src={img || "/fallback.png"} className="h-full w-full object-cover" alt="thumbnail" />
             </button>
           );
         })}

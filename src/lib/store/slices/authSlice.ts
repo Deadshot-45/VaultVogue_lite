@@ -15,6 +15,7 @@ const normalizeUser = (user: User | null | undefined): User | null => {
   return {
     ...user,
     id: user._id ?? user.id,
+    fullName: user.fullName ?? user.name ?? "",
   };
 };
 
@@ -41,7 +42,9 @@ const authSlice = createSlice({
       action: PayloadAction<{ token: string | null; user?: User | null }>,
     ) => {
       state.token = action.payload.token;
-      state.user = normalizeUser(action.payload.user);
+      if (action.payload.user !== undefined) {
+        state.user = normalizeUser(action.payload.user);
+      }
       state.isAuthenticated = Boolean(action.payload.token);
     },
     clearAuth: (state) => {

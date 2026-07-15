@@ -22,7 +22,7 @@ export function AdminGuard({ children }: AdminGuardProps) {
 
   if (!isAuthenticated || user?.role !== "admin") {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen w-7xl mx-auto items-center justify-center">
         <Loader />
       </div>
     );

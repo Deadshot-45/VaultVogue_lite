@@ -1,23 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import type { OrderRow, OrderStatus } from "@/types/admin";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { useState } from "react";
-
-const ORDERS: OrderRow[] = [
-  { id: '#VV-10041', customer: 'Ananya Sharma',    email: 'ananya@gmail.com',    date: '2024-12-14', amount: 18500,  status: 'delivered',  items: 2 },
-  { id: '#VV-10040', customer: 'Rohan Mehta',      email: 'rohan@outlook.com',   date: '2024-12-13', amount: 42000,  status: 'processing', items: 3 },
-  { id: '#VV-10039', customer: 'Priya Nair',       email: 'priya@yahoo.com',     date: '2024-12-13', amount: 8750,   status: 'shipped',    items: 1 },
-  { id: '#VV-10038', customer: 'Vikram Singh',     email: 'vikram@gmail.com',    date: '2024-12-12', amount: 95000,  status: 'pending',    items: 5 },
-  { id: '#VV-10037', customer: 'Meera Iyer',       email: 'meera@icloud.com',    date: '2024-12-11', amount: 23000,  status: 'delivered',  items: 2 },
-  { id: '#VV-10036', customer: 'Arjun Kapoor',     email: 'arjun@gmail.com',     date: '2024-12-11', amount: 6500,   status: 'cancelled',  items: 1 },
-  { id: '#VV-10035', customer: 'Divya Reddy',      email: 'divya@outlook.com',   date: '2024-12-10', amount: 55000,  status: 'delivered',  items: 4 },
-  { id: '#VV-10034', customer: 'Kabir Das',        email: 'kabir@yahoo.com',     date: '2024-12-09', amount: 12800,  status: 'refunded',   items: 1 },
-  { id: '#VV-10033', customer: 'Nandita Bose',     email: 'nandita@gmail.com',   date: '2024-12-08', amount: 74500,  status: 'delivered',  items: 3 },
-  { id: '#VV-10032', customer: 'Siddharth Rao',    email: 'siddharth@icloud.com',date: '2024-12-07', amount: 31000,  status: 'shipped',    items: 2 },
-];
+import { api } from "@/lib/api/apiservices";
 
 const statusCfg: Record<OrderStatus, { label: string; cls: string }> = {
   pending:    { label: 'Pending',    cls: 'badge badge-gold' },
@@ -39,15 +27,52 @@ const columns = [
 ];
 
 export default function OrdersPage() {
+  const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [globalFilter, setGlobalFilter] = useState('');
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await api.get<{ success: boolean; data: any[] }>("/api/orders/admin/all");
+        if (response.data.success) {
+          const mapped = response.data.data.map((o: any) => ({
+            id: o.id || o._id,
+            customer: o.address?.fullName || o.userId?.email || "Guest Customer",
+            email: o.userId?.email || "",
+            date: o.placedAt || o.createdAt,
+            amount: o.totalAmount,
+            status: o.status || "pending",
+            items: o.totalItems || o.items?.length || 0,
+          }));
+          setOrders(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch orders", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   const table = useReactTable({
-    data: ORDERS, columns,
+    data: orders, columns,
     state: { globalFilter },
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold)]"></div>
+      </div>
+    );
+  }
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>

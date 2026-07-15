@@ -13,7 +13,7 @@ export default function AuthLayout({
 }>) {
   return (
     <div
-      className="relative w-full min-h-screen overflow-hidden"
+      className="relative w-full mx-auto overflow-hidden"
       style={{ background: "var(--bg)" }}
     >
       {/* Subtle grid texture */}

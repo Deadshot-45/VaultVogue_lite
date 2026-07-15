@@ -38,7 +38,7 @@ export function AdminHeader() {
   }, []);
 
   const initials = mounted && user?.fullName
-    ? user.fullName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
+    ? user.fullName.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
     : 'AU';
 
   return (

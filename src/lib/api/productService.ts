@@ -6,46 +6,57 @@ export interface Category {
   slug: string;
 }
 
+export interface VariantImage {
+  url: string;
+  isPrimary: boolean;
+}
+
 export interface Product {
   _id: string;
   id?: string;
   name: string;
+  category?: string;
 
   description?: string;
 
-  images: {
-    url: string;
-    isPrimary: boolean;
-  }[];
+  images: VariantImage[];
 
-  // Pricing
+  // Pricing (derived from variants — min/max across all)
   minPrice: number;
   maxPrice: number;
 
   // Flags
   bestseller?: boolean;
   trending?: boolean;
-  sellerId: string; // Variants (detailed level - optional for UI)
+  sellerId: string;
+
+  /**
+   * Full variant data — one document per size+color combination.
+   * Each variant owns its own images, price, and stock.
+   */
   variants?: {
     _id: string;
-    productId: string;
-    sellerId: string;
     sku: string;
-    stock: string;
-    attributes: {
-      size: string;
-    };
+    size: string;
+    color: string;
     price: number;
-    images: string[];
+    compareAtPrice?: number;
+    images: VariantImage[];
     isActive: boolean;
   }[];
 
-  // Sizes (UI friendly)
+  /**
+   * Convenience flat list — same data as variants but indexed by variantId.
+   * Used by size/color pickers and cart logic.
+   */
   sizes: {
     variantId: string;
     size: string;
+    color: string;
     price: number;
     stock: number;
+    compareAtPrice?: number;
+    images: VariantImage[];
   }[];
 
   categories?: Category[];
@@ -58,8 +69,8 @@ interface ProductListResponse {
 }
 
 export const productService = {
-  getDashboardProducts: async () => {
-    const response = await api.get("/api/landing");
+  getDashboardProducts: async (options?: { signal?: AbortSignal }) => {
+    const response = await api.get("/api/landing", options);
     return response.data.data;
   },
 
@@ -77,18 +88,20 @@ export const productService = {
       categoryId?: string;
       categoryName?: string;
       search?: string;
+      isSale?: boolean;
     },
+    options?: { signal?: AbortSignal },
   ): Promise<Product[]> => {
     const response = await api.get<ProductListResponse>(
       "/api/products/getAll",
-      { params },
+      { params, ...options },
     );
     console.log(response);
     return response.data?.data ?? [];
   },
 
-  getProductById: async (id: string) => {
-    const response = await api.get(`/api/products/getById/${id}`);
+  getProductById: async (id: string, options?: { signal?: AbortSignal }) => {
+    const response = await api.get(`/api/products/getById/${id}`, options);
     console.log(response);
     return response.data;
   },

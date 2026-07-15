@@ -67,7 +67,7 @@ export function SellerGuard({ children }: SellerGuardProps) {
   // Prevent hydration flashing
   if (!mounted || status === "loading") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--background)]">
+      <div className="flex min-h-screen w-dvw mx-auto items-center justify-center bg-[var(--background)]">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--gold)" }} />
           <p className="text-xs uppercase tracking-[0.2em] text-[var(--gold)] font-medium">

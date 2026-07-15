@@ -144,7 +144,7 @@ export function Loader() {
           </svg>
         </div>
 
-        <div className="loader-scene">
+        <div className="loader-scene w-7xl mx-auto">
           <div className="corner corner-tl"></div>
           <div className="corner corner-tr"></div>
           <div className="corner corner-bl"></div>

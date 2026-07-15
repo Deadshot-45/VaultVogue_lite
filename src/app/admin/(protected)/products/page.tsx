@@ -5,19 +5,7 @@ import type { ProductRow } from "@/types/admin";
 import { motion } from "framer-motion";
 import { Plus, Search } from "lucide-react";
 import { useState } from "react";
-
-const PRODUCTS: ProductRow[] = [
-  { id: 'PRD-001', name: 'Quilted Caviar Shoulder Bag',    category: 'Handbags',    price: 185000, stock: 12,  status: 'active'  },
-  { id: 'PRD-002', name: 'Silk Twill Scarf — Floral',      category: 'Accessories', price: 24500,  stock: 45,  status: 'active'  },
-  { id: 'PRD-003', name: 'Crocodile-Embossed Belt',        category: 'Accessories', price: 18000,  stock: 0,   status: 'draft'   },
-  { id: 'PRD-004', name: 'Patent Leather Derby Shoes',     category: 'Footwear',    price: 42000,  stock: 8,   status: 'active'  },
-  { id: 'PRD-005', name: 'Merino Wool Trench Coat',        category: 'Apparel',     price: 96000,  stock: 4,   status: 'active'  },
-  { id: 'PRD-006', name: '18K Gold Leaf Drop Earrings',    category: 'Jewellery',   price: 56000,  stock: 20,  status: 'active'  },
-  { id: 'PRD-007', name: 'Suede Chelsea Boots',            category: 'Footwear',    price: 38000,  stock: 15,  status: 'active'  },
-  { id: 'PRD-008', name: 'Cashmere Wrap Coat — Camel',    category: 'Apparel',     price: 124000, stock: 0,   status: 'archived'},
-  { id: 'PRD-009', name: 'Woven Leather Tote Bag',         category: 'Handbags',    price: 72000,  stock: 6,   status: 'active'  },
-  { id: 'PRD-010', name: 'Diamond Tennis Bracelet',        category: 'Jewellery',   price: 280000, stock: 2,   status: 'active'  },
-];
+import { useGetProducts } from "@/lib/query/useGetProducts";
 
 const statusCfg: Record<string, string> = {
   active:   'badge badge-success',
@@ -59,8 +47,23 @@ const columns = [
 
 export default function ProductsPage() {
   const [globalFilter, setGlobalFilter] = useState('');
+  const { data, isLoading } = useGetProducts({ limit: 100 });
+  const rawProducts = data?.pages.flatMap((page) => page) || [];
+
+  const products: ProductRow[] = rawProducts.map((p) => {
+    const totalStock = p.sizes.reduce((sum, s) => sum + s.stock, 0);
+    return {
+      id: p.id,
+      name: p.name,
+      category: p.category,
+      price: p.price,
+      stock: totalStock,
+      status: totalStock > 0 ? "active" : "draft",
+    };
+  });
+
   const table = useReactTable({
-    data: PRODUCTS,
+    data: products,
     columns,
     state: { globalFilter },
     onGlobalFilterChange: setGlobalFilter,
@@ -68,6 +71,14 @@ export default function ProductsPage() {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold)]"></div>
+      </div>
+    );
+  }
 
   return (
     <motion.div className="" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>

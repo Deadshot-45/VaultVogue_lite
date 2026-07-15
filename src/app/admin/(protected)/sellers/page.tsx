@@ -9,17 +9,6 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { sellerService } from "@/lib/api/sellerService";
 
-const SELLERS: SellerRow[] = [
-  { id: 'SEL-001', businessName: 'Luxe Collections Pvt Ltd',  ownerName: 'Rohan Mehta',      email: 'rohan@luxecollections.com',  category: 'Handbags',    joinedAt: '2024-02-20', status: 'approved',  revenue: 480000,  products: 14 },
-  { id: 'SEL-002', businessName: 'Artisan Atelier',           ownerName: 'Meera Iyer',        email: 'meera@artisanatelier.in',    category: 'Jewellery',   joinedAt: '2024-04-01', status: 'approved',  revenue: 210000,  products: 8  },
-  { id: 'SEL-003', businessName: 'Heritage Craft Studio',     ownerName: 'Suresh Pillai',     email: 'suresh@heritagecraft.in',    category: 'Accessories', joinedAt: '2024-05-15', status: 'pending',   revenue: 0,       products: 0  },
-  { id: 'SEL-004', businessName: 'Couture House Mumbai',      ownerName: 'Divya Reddy',       email: 'divya@couturehouse.com',     category: 'Apparel',     joinedAt: '2024-06-22', status: 'approved',  revenue: 920000,  products: 32 },
-  { id: 'SEL-005', businessName: 'The Leather Workshop',      ownerName: 'Kabir Das',         email: 'kabir@leatherworkshop.in',   category: 'Footwear',    joinedAt: '2024-07-08', status: 'rejected',  revenue: 0,       products: 0  },
-  { id: 'SEL-006', businessName: 'Silk Route Emporium',       ownerName: 'Nandita Bose',      email: 'nandita@silkroute.in',       category: 'Accessories', joinedAt: '2024-08-14', status: 'approved',  revenue: 156000,  products: 6  },
-  { id: 'SEL-007', businessName: 'Precious Gems & Co',        ownerName: 'Vikram Singh',      email: 'vikram@preciousgems.com',    category: 'Jewellery',   joinedAt: '2024-09-01', status: 'suspended', revenue: 88000,   products: 4  },
-  { id: 'SEL-008', businessName: 'Fine Fragrance Boutique',   ownerName: 'Aisha Khan',        email: 'aisha@finefragrance.com',    category: 'Fragrances',  joinedAt: '2024-11-10', status: 'pending',   revenue: 0,       products: 0  },
-];
-
 const statusCfg: Record<SellerStatus, { label: string; cls: string }> = {
   approved:  { label: 'Approved',  cls: 'badge badge-success' },
   pending:   { label: 'Pending',   cls: 'badge badge-gold' },
@@ -40,7 +29,7 @@ export default function SellersPage() {
       const normalized = data.map((s: any) => ({
         id: s._id || s.id,
         businessName: s.name || s.businessName,
-        ownerName: s.ownerName || s.ownerUserId || "Owner",
+        ownerName: s.ownerName || "Owner",
         email: s.contactEmail || s.email,
         category: s.category || "Handbags",
         joinedAt: s.createdAt ? new Date(s.createdAt).toISOString().split("T")[0] : s.joinedAt,
@@ -49,18 +38,10 @@ export default function SellersPage() {
         products: s.products || 0,
       }));
       setSellers(normalized);
-      return;
     } catch (err) {
-      console.warn("Failed to load sellers from backend API, using localStorage fallback:", err);
+      console.error("Failed to load sellers", err);
+      toast.error("Failed to load sellers from database.");
     }
-
-    // Local fallback
-    let localSellers = localStorage.getItem("vault_vogue_admin_sellers");
-    if (!localSellers) {
-      localStorage.setItem("vault_vogue_admin_sellers", JSON.stringify(SELLERS));
-      localSellers = JSON.stringify(SELLERS);
-    }
-    setSellers(JSON.parse(localSellers));
   };
 
   useEffect(() => {
@@ -71,41 +52,23 @@ export default function SellersPage() {
   const handleApprove = async (id: string) => {
     try {
       await sellerService.approve(id);
-      toast.success("Seller status approved on backend.");
+      toast.success("Seller status approved!");
+      loadSellers();
     } catch (err) {
-      console.warn("Backend approval failed, applying locally:", err);
+      console.error("Failed to approve seller", err);
+      toast.error("Failed to approve seller.");
     }
-
-    // Apply to local state & localStorage fallback
-    const updated = sellers.map((s) => {
-      if (s.id === id) {
-        toast.success(`Seller ${s.businessName} approved!`);
-        return { ...s, status: "approved" as const };
-      }
-      return s;
-    });
-    setSellers(updated);
-    localStorage.setItem("vault_vogue_admin_sellers", JSON.stringify(updated));
   };
 
   const handleReject = async (id: string) => {
     try {
       await sellerService.reject(id);
-      toast.error("Seller status rejected on backend.");
+      toast.error("Seller status rejected.");
+      loadSellers();
     } catch (err) {
-      console.warn("Backend rejection failed, applying locally:", err);
+      console.error("Failed to reject seller", err);
+      toast.error("Failed to reject seller.");
     }
-
-    // Apply to local state & localStorage fallback
-    const updated = sellers.map((s) => {
-      if (s.id === id) {
-        toast.error(`Seller ${s.businessName} rejected.`);
-        return { ...s, status: "rejected" as const };
-      }
-      return s;
-    });
-    setSellers(updated);
-    localStorage.setItem("vault_vogue_admin_sellers", JSON.stringify(updated));
   };
 
   const columns = [

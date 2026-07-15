@@ -4,7 +4,12 @@ import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Bell, Menu } from "lucide-react";
 import { useAppSelector } from "@/lib/store/hooks";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { SellerSidebar } from "./SellerSidebar";
 import { useState, useEffect } from "react";
 
@@ -30,18 +35,19 @@ export function SellerHeader() {
         year: "numeric",
         month: "long",
         day: "numeric",
-      })
+      }),
     );
   }, []);
 
-  const initials = mounted && user?.fullName
-    ? user.fullName
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
-    : "SP";
+  const initials =
+    mounted && user?.name
+      ? user.name
+          .split(" ")
+          .map((n: any) => n[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase()
+      : "SP";
 
   return (
     <header
@@ -54,8 +60,12 @@ export function SellerHeader() {
       <div className="flex items-center gap-3">
         <Sheet>
           <SheetTrigger asChild>
-            <button className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
-              style={{ borderColor: "var(--gold-faint)", background: "var(--gold-glow)" }}
+            <button
+              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
+              style={{
+                borderColor: "var(--gold-faint)",
+                background: "var(--gold-glow)",
+              }}
               aria-label="Menu"
             >
               <Menu className="h-4 w-4" style={{ color: "var(--gold)" }} />
@@ -66,7 +76,7 @@ export function SellerHeader() {
             <SellerSidebar />
           </SheetContent>
         </Sheet>
-        
+
         <div>
           <h1
             className="font-cormorant text-2xl font-light"
