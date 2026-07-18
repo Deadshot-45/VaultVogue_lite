@@ -31,8 +31,7 @@ export function Loader() {
   }, [theme, mounted]);
 
   return (
-    <>
-      <div className={theme === "light" ? "light" : "dark"}>
+    <div className={`fixed inset-0 flex items-center justify-center bg-[var(--background)] z-50 ${theme === "light" ? "light" : "dark"}`}>
         {/* Mode Toggle */}
         <div
           className="mode-toggle"
@@ -287,7 +286,6 @@ export function Loader() {
             </p>
           </div>
         </div>
-      </div>
-    </>
+    </div>
   );
 }

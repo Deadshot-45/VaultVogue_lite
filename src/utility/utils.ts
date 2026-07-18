@@ -1,4 +1,6 @@
+import { api } from "@/lib/api/apiservices";
 import { CartListItem } from "@/lib/query/useCart";
+import { useMutation } from "@tanstack/react-query";
 
 export const resolveProductImage = (image: string) => {
   if (!image) return "/fallback.png";
@@ -53,25 +55,56 @@ export function updateCartCache(
   return [...prev, { ...newItem, quantity: 1 }];
 }
 
-export const classifySubcategory = (name: string, defaultCategory: string): string => {
+export const classifySubcategory = (
+  name: string,
+  defaultCategory: string,
+): string => {
   const lowerName = name.toLowerCase();
-  
-  if (lowerName.includes("knit") || lowerName.includes("sweater") || lowerName.includes("cashmere") || lowerName.includes("pullover")) {
+
+  if (
+    lowerName.includes("knit") ||
+    lowerName.includes("sweater") ||
+    lowerName.includes("cashmere") ||
+    lowerName.includes("pullover")
+  ) {
     return "Knitwear";
   }
-  if (lowerName.includes("coat") || lowerName.includes("jacket") || lowerName.includes("trench") || lowerName.includes("outerwear") || lowerName.includes("parka")) {
+  if (
+    lowerName.includes("coat") ||
+    lowerName.includes("jacket") ||
+    lowerName.includes("trench") ||
+    lowerName.includes("outerwear") ||
+    lowerName.includes("parka")
+  ) {
     return "Outerwear";
   }
   if (lowerName.includes("blazer") || lowerName.includes("suit")) {
     return "Blazers";
   }
-  if (lowerName.includes("shirt") || lowerName.includes("polo") || lowerName.includes("t-shirt") || lowerName.includes("tee")) {
+  if (
+    lowerName.includes("shirt") ||
+    lowerName.includes("polo") ||
+    lowerName.includes("t-shirt") ||
+    lowerName.includes("tee")
+  ) {
     return "Shirts";
   }
-  if (lowerName.includes("boot") || lowerName.includes("shoe") || lowerName.includes("sneaker") || lowerName.includes("loafer") || lowerName.includes("footwear")) {
+  if (
+    lowerName.includes("boot") ||
+    lowerName.includes("shoe") ||
+    lowerName.includes("sneaker") ||
+    lowerName.includes("loafer") ||
+    lowerName.includes("footwear")
+  ) {
     return "Footwear";
   }
-  if (lowerName.includes("jeans") || lowerName.includes("denim") || lowerName.includes("trousers") || lowerName.includes("pant") || lowerName.includes("chinos")) {
+  if (
+    lowerName.includes("jeans") ||
+    lowerName.includes("denim") ||
+    lowerName.includes("trousers") ||
+    lowerName.includes("pant") ||
+    lowerName.includes("chinos")
+  ) {
     return "Denim";
   }
   if (lowerName.includes("dress") || lowerName.includes("gown")) {
@@ -80,18 +113,67 @@ export const classifySubcategory = (name: string, defaultCategory: string): stri
   if (lowerName.includes("skirt")) {
     return "Skirts";
   }
-  if (lowerName.includes("accessory") || lowerName.includes("bag") || lowerName.includes("wallet") || lowerName.includes("belt")) {
+  if (
+    lowerName.includes("accessory") ||
+    lowerName.includes("bag") ||
+    lowerName.includes("wallet") ||
+    lowerName.includes("belt")
+  ) {
     return "Accessories";
   }
-  if (lowerName.includes("baby") || lowerName.includes("playsuit") || lowerName.includes("romper")) {
+  if (
+    lowerName.includes("baby") ||
+    lowerName.includes("playsuit") ||
+    lowerName.includes("romper")
+  ) {
     return "Baby";
   }
   if (lowerName.includes("outfit") || lowerName.includes("set")) {
     return "Outfits";
   }
-  if (lowerName.includes("sleep") || lowerName.includes("pyjama") || lowerName.includes("pajama") || lowerName.includes("sleepwear")) {
+  if (
+    lowerName.includes("sleep") ||
+    lowerName.includes("pyjama") ||
+    lowerName.includes("pajama") ||
+    lowerName.includes("sleepwear")
+  ) {
     return "Sleepwear";
   }
-  
+
   return defaultCategory;
+};
+
+// Upload utility
+export const uploadImageToServer = async (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const base64 = reader.result as string;
+        const res = await api.post("/api/products/upload", {
+          image: base64,
+          fileName: file.name,
+        });
+        if (res.data && res.data.success) {
+          const baseUrl = api.defaults.baseURL || "";
+          const finalUrl = res.data.url.startsWith("http")
+            ? res.data.url
+            : `${baseUrl.replace(/\/$/, "")}${res.data.url}`;
+          resolve(finalUrl);
+        } else {
+          reject(new Error(res.data?.message || "Upload failed"));
+        }
+      } catch (err: any) {
+        reject(err);
+      }
+    };
+    reader.onerror = () => reject(new Error("File reading error"));
+    reader.readAsDataURL(file);
+  });
+};
+
+export const useUploadImage = () => {
+  return useMutation({
+    mutationFn: uploadImageToServer,
+  });
 };

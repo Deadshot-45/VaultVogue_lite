@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api/apiservices";
+import { useGetSellerOrders } from "@/lib/query/sellerQuery";
 
 interface Order {
   id: string;
@@ -29,32 +30,10 @@ interface Order {
 const STATUS_FILTERS = ["All", "pending", "processing", "shipped", "delivered", "cancelled"];
 
 export default function SellerOrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchOrders = async () => {
-    try {
-      setIsLoading(true);
-      const response = await api.get<{ success: boolean; data: any[] }>("/api/orders/seller/all");
-      if (response.data.success) {
-        const mappedOrders = response.data.data.map((o: any) => ({
-          ...o,
-          id: o.id || o._id,
-        }));
-        setOrders(mappedOrders);
-      }
-    } catch (err) {
-      console.error("Failed to load seller orders", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  const { data = [], isLoading, refetch: fetchOrders } = useGetSellerOrders();
+  const orders: Order[] = data;
 
   const handleStatusChange = async (orderId: string, newStatus: Order["status"]) => {
     try {

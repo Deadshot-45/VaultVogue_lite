@@ -23,107 +23,8 @@ import {
 } from "recharts";
 import { useAppSelector } from "@/lib/store/hooks";
 import { api } from "@/lib/api/apiservices";
+import { useGetSellerDashboard } from "@/lib/query/sellerQuery";
 import Image from "next/image";
-
-// Default Seed Data
-const DEFAULT_PRODUCTS = [
-  {
-    sku: "VV-SL-001",
-    name: "Caviar Leather Double Flap Bag",
-    price: 420000,
-    category: "Handbags",
-    stock: 3,
-    status: "active",
-    image:
-      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80",
-    description:
-      "Classic double flap bag in quilted caviar leather with gold-tone hardware. The ultimate investment piece.",
-  },
-  {
-    sku: "VV-SL-002",
-    name: "Cashmere Silk Knit Shawl",
-    price: 38000,
-    category: "Accessories",
-    stock: 14,
-    status: "active",
-    image:
-      "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&auto=format&fit=crop&q=80",
-    description:
-      "Fine knit shawl blending premium cashmere and mulberry silk. Unparalleled softness and warmth.",
-  },
-  {
-    sku: "VV-SL-003",
-    name: "Atelier Gold Link Bracelet",
-    price: 125000,
-    category: "Jewellery",
-    stock: 2,
-    status: "active",
-    image:
-      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&auto=format&fit=crop&q=80",
-    description:
-      "Handcrafted 18K gold link chain bracelet with satin finish and signature clasp.",
-  },
-  {
-    sku: "VV-SL-004",
-    name: "Tailored Wool Trench Coat",
-    price: 185000,
-    category: "Apparel",
-    stock: 0,
-    status: "active",
-    image:
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&auto=format&fit=crop&q=80",
-    description:
-      "Double-breasted trench coat tailored in soft double-faced merino wool. Relaxed luxury fit.",
-  },
-];
-
-const DEFAULT_ORDERS = [
-  {
-    id: "#VV-10204",
-    customer: "Karan Johar",
-    email: "karan@dharmaprod.in",
-    date: "2026-07-12",
-    amount: 420000,
-    status: "delivered",
-    items: 1,
-  },
-  {
-    id: "#VV-10203",
-    customer: "Shreya Ghoshal",
-    email: "shreya@melody.com",
-    date: "2026-07-10",
-    amount: 38000,
-    status: "shipped",
-    items: 1,
-  },
-  {
-    id: "#VV-10202",
-    customer: "Ranbir Kapoor",
-    email: "ranbir@rkstudios.com",
-    date: "2026-07-09",
-    amount: 250000,
-    status: "processing",
-    items: 2,
-  },
-  {
-    id: "#VV-10201",
-    customer: "Alia Bhatt",
-    email: "alia@kapoorcorp.com",
-    date: "2026-07-07",
-    amount: 125000,
-    status: "pending",
-    items: 1,
-  },
-  {
-    id: "#VV-10200",
-    customer: "Deepika Padukone",
-    email: "deepika@ka.co",
-    date: "2026-07-04",
-    amount: 420000,
-    status: "delivered",
-    items: 1,
-  },
-];
 
 const CHART_DATA = [
   { day: "Mon", sales: 0, revenue: 0 },
@@ -137,58 +38,16 @@ const CHART_DATA = [
 
 export default function SellerDashboardPage() {
   const [mounted, setMounted] = useState(false);
-  const [products, setProducts] = useState<any[]>([]);
-  const [orders, setOrders] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { user } = useAppSelector((s) => s.auth);
-
-  console.log("Products : ", products);
 
   useEffect(() => {
     setMounted(true);
-    if (!user?.id) return;
+  }, []);
 
-    const fetchSellerData = async () => {
-      try {
-        const [productsRes, ordersRes] = await Promise.all([
-          api.get<{ success: boolean; data: any[] }>(
-            `/api/products/getAll?sellerId=${user.id}&limit=100`,
-          ),
-          api.get<{ success: boolean; data: any[] }>("/api/orders/seller/all"),
-        ]);
+  const { data, isLoading } = useGetSellerDashboard(user?.id);
 
-        if (productsRes.data.success) {
-          const mapped = productsRes.data.data.map((p: any) => {
-            const totalStock =
-              p.variants?.reduce((sum: number, v: any) => {
-                const variantStock =
-                  v.sizes?.reduce(
-                    (sSum: number, s: any) => sSum + (s.stock || 0),
-                    0,
-                  ) || 0;
-                return sum + variantStock;
-              }, 0) || 0;
-            return {
-              ...p,
-              stock: totalStock,
-              status: totalStock > 0 ? "active" : "draft",
-            };
-          });
-          setProducts(mapped);
-        }
-
-        if (ordersRes.data.success) {
-          setOrders(ordersRes.data.data);
-        }
-      } catch (err) {
-        console.error("Failed to load seller dashboard data", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchSellerData();
-  }, [user]);
+  const products = data?.products || [];
+  const orders = data?.orders || [];
 
   if (!mounted) return null;
 
@@ -475,7 +334,8 @@ export default function SellerDashboardPage() {
                   >
                     <Image
                       src={
-                        product.images?.find((img: any) => img.isPrimary)?.url ||
+                        product.images?.find((img: any) => img.isPrimary)
+                          ?.url ||
                         product.image ||
                         "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80"
                       }

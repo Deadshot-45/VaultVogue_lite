@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/select";
 import { api } from "@/lib/api/apiservices";
 import { useAppSelector } from "@/lib/store/hooks";
+import { useGetSellerProducts } from "@/lib/query/sellerQuery";
+import { uploadImageToServer } from "@/utility/utils";
 
 interface ProductVariant {
   _id?: string;
@@ -108,53 +110,7 @@ export default function SellerInventoryPage() {
     data: products = [],
     isLoading,
     refetch: fetchProducts,
-  } = useQuery({
-    queryKey: ["sellerProducts", user?.id],
-    queryFn: async (): Promise<Product[]> => {
-      if (!user?.id) return [];
-      const response = await api.get<{ success: boolean; data: any[] }>(
-        `/api/products/getAll?sellerId=${user.id}&limit=100&isActive=all`,
-      );
-      if (response.data.success) {
-        return response.data.data.map((p: any) => {
-          const totalStock =
-            p.sizes?.reduce((sum: number, s: any) => sum + (s.stock || 0), 0) || 0;
-          return {
-            id: p._id || p.id,
-            sku: p.variants?.[0]?.sku || p.sku || "",
-            name: p.name,
-            price: p.variants?.[0]?.price || p.minPrice || p.price || 0,
-            category:
-              typeof p.category === "object" && p.category !== null
-                ? p.category.name || ""
-                : p.category || "Fashion",
-            subCategory:
-              typeof p.subCategory === "object" && p.subCategory !== null
-                ? p.subCategory.name || ""
-                : typeof p.subcategory === "object" && p.subcategory !== null
-                ? p.subcategory.name || ""
-                : p.subCategory || p.subcategory || "",
-            stock: totalStock,
-            // ✅ Read isActive from DB — not derived from stock
-            status: (p.isActive !== false ? "active" : "draft") as "active" | "draft",
-            image: p.images?.[0]?.url || "",
-            description: p.description || "",
-            variants:
-              p.variants?.map((v: any) => ({
-                size: v.size || v.attributes?.size || "",
-                color: v.color || v.attributes?.color || "",
-                stock:
-                  p.sizes?.find((s: any) => s.variantId === (v._id || v.id))
-                    ?.stock ?? 0,
-                images: v.images || [],
-              })) || [],
-          };
-        });
-      }
-      return [];
-    },
-    enabled: !!user?.id,
-  });
+  } = useGetSellerProducts(user?.id);
 
   useEffect(() => {
     // Auto-open modal if ?add=true is in URL
@@ -316,34 +272,7 @@ export default function SellerInventoryPage() {
     setVariants((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Upload utility
-  const uploadImageToServer = async (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        try {
-          const base64 = reader.result as string;
-          const res = await api.post("/api/products/upload", {
-            image: base64,
-            fileName: file.name,
-          });
-          if (res.data && res.data.success) {
-            const baseUrl = api.defaults.baseURL || "";
-            const finalUrl = res.data.url.startsWith("http")
-              ? res.data.url
-              : `${baseUrl.replace(/\/$/, "")}${res.data.url}`;
-            resolve(finalUrl);
-          } else {
-            reject(new Error(res.data?.message || "Upload failed"));
-          }
-        } catch (err: any) {
-          reject(err);
-        }
-      };
-      reader.onerror = () => reject(new Error("File reading error"));
-      reader.readAsDataURL(file);
-    });
-  };
+  
 
   const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -414,7 +343,10 @@ export default function SellerInventoryPage() {
         stock: itemStock,
         description: formData.description,
         status: formData.status,
-        image: formData.image,
+        image: {
+          url: formData.image,
+          isPrimary: true
+        },
         sellerId: user?.id,
       };
 
@@ -592,7 +524,7 @@ export default function SellerInventoryPage() {
                         </p>
                         {product.variants && product.variants.length > 0 && (
                           <div className="flex flex-col gap-1.5 mt-2 max-w-[280px]">
-                            {product.variants.map((v) => (
+                            {product.variants.map((v:any) => (
                               <div
                                 key={v._id || `${v.color}-${v.size}`}
                                 className="flex flex-col gap-1 bg-[var(--gold-faint)]/40 p-2 rounded border border-[var(--gold-soft)]/20"

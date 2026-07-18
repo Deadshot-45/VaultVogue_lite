@@ -77,9 +77,8 @@ const CartDrawer: React.FC = () => {
   const total = subtotal + shipping + tax;
 
   const handleCheckout = () => {
-    toast.success("Proceeding to checkout", {
-      description: "Redirecting you to our secure payment gateway...",
-    });
+    setOpen(false);
+    router.push("/checkout");
   };
 
   return (

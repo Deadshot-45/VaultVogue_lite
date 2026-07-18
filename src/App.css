@@ -108,7 +108,8 @@ body .toggle-thumb {
 
 .loader-scene {
   position: relative;
-  width: 480px;
+  width: 100%;
+  max-width: 480px;
   height: 520px;
   display: flex;
   flex-direction: column;

@@ -67,7 +67,7 @@ export function SellerGuard({ children }: SellerGuardProps) {
   // Prevent hydration flashing
   if (!mounted || status === "loading") {
     return (
-      <div className="flex min-h-screen w-dvw mx-auto items-center justify-center bg-[var(--background)]">
+      <div className="flex min-h-screen w-full mx-auto items-center justify-center bg-[var(--background)]">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--gold)" }} />
           <p className="text-xs uppercase tracking-[0.2em] text-[var(--gold)] font-medium">
@@ -86,7 +86,7 @@ export function SellerGuard({ children }: SellerGuardProps) {
   // Pending status blocker page
   if (status === "pending") {
     return (
-      <div className="flex min-h-screen w-dvw items-center justify-center p-6 bg-[var(--background)]">
+      <div className="flex min-h-screen w-full items-center justify-center p-6 bg-[var(--background)]">
         <div className="card max-w-md w-full text-center p-8 space-y-6">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/30 mx-auto">
             <Clock className="h-6 w-6 text-amber-500 animate-pulse" />
