@@ -46,7 +46,10 @@ export interface CheckoutResponse {
 
 export const orderService = {
   createCheckoutSession: async (payload: CheckoutPayload) => {
-    const response = await api.post<CheckoutResponse>("/api/orders/checkout-session", payload);
+    const response = await api.post<CheckoutResponse>(
+      "/api/orders/checkout-session",
+      payload,
+    );
     return response.data;
   },
 
@@ -60,4 +63,14 @@ export const orderService = {
     );
     return response.data;
   },
+
+  getUserOrders: async () => {
+    const response = await api.get("/api/orders");
+    return response.data;
+  },
+
+  getOrderById: async (id:string) => {
+    const response = await api.get(`/api/orders/${id}`);
+    return response.data.data;
+  }
 };

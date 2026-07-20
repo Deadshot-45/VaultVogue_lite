@@ -72,7 +72,7 @@ const CartDrawer: React.FC = () => {
     (acc, item) => acc + (item.price ?? 0) * item.quantity,
     0,
   );
-  const shipping = subtotal >= 999 ? 0 : 99;
+  const shipping = subtotal > 999 ? 0 : 99;
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 
