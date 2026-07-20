@@ -1,6 +1,6 @@
-import { SellerGuard } from "@/components/seller/SellerGuard";
-import { SellerSidebar } from "@/components/seller/SellerSidebar";
-import { SellerHeader } from "@/components/seller/SellerHeader";
+import { SellerGuard } from "@/features/seller/components/SellerGuard";
+import { SellerSidebar } from "@/features/seller/components/SellerSidebar";
+import { SellerHeader } from "@/features/seller/components/SellerHeader";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

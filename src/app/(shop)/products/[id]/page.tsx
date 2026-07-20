@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ProductDetailsView from "@/components/products/ProductDetailsView";
+import ProductDetailsView from "@/features/products/components/ProductDetailsView";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Product } from "@/lib/api/productService";
-import { serverFetch } from "@/lib/api/serverApi";
+import { Product } from "@/lib/services/productService";
+import { serverFetch } from "@/lib/services/serverApi";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Suggestions } from "@/components/products/Suggestions";
+import { Suggestions } from "@/features/products/components/Suggestions";
 
 type Response = {
   success: string;
@@ -97,8 +97,6 @@ export default async function ProductPage({ params }: PageProps) {
     }
 
     const product = normalizeProduct(rawProduct);
-
-    console.log(rawProduct, "rawProduct");
 
     return (
       <div className="pb-8 max-w-7xl mx-auto bg-[var(--background)]">

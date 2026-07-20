@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SellerStepsIndicator } from "@/components/admin/seller/SellerStepsIndicator";
-import { Step1BusinessInfo } from "@/components/admin/seller/Step1BusinessInfo";
-import { Step2BankDetails } from "@/components/admin/seller/Step2BankDetails";
-import { Step3ProductListing } from "@/components/admin/seller/Step3ProductListing";
-import { Step4Review } from "@/components/admin/seller/Step4Review";
+import { SellerStepsIndicator } from "@/features/admin/components/seller/SellerStepsIndicator";
+import { Step1BusinessInfo } from "@/features/admin/components/seller/Step1BusinessInfo";
+import { Step2BankDetails } from "@/features/admin/components/seller/Step2BankDetails";
+import { Step3ProductListing } from "@/features/admin/components/seller/Step3ProductListing";
+import { Step4Review } from "@/features/admin/components/seller/Step4Review";
 import type {
   SellerOnboardingStep,
   SellerOnboardingForm,
@@ -18,7 +18,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
-import { sellerService } from "@/lib/api/sellerService";
+import { sellerService } from "@/lib/services/sellerService";
 
 // ── Validation schemas ────────────────────────────────────────────────────────
 const step1Schema = z.object({

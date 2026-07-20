@@ -1,10 +1,10 @@
 "use client";
 
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell } from "@/features/auth/components/AuthShell";
 import { useQueryClient } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { authService } from "@/lib/api/authServices";
+import { authService } from "@/lib/services/authServices";
 import { setCookieWithExpiry } from "@/lib/auth";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { setCredentials } from "@/lib/store/slices/authSlice";
@@ -15,8 +15,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { handleGoogleLogin } from "@/utility/socialAuth";
-import { backupRecovery } from "@/utility/backupRecovery";
+import { handleGoogleLogin } from "@/lib/utility/socialAuth";
+import { backupRecovery } from "@/lib/utility/backupRecovery";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),

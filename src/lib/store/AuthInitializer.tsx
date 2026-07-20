@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { authService } from "@/lib/api/authServices";
+import { authService } from "@/lib/services/authServices";
 import { getAuthCookie, isTokenExpired } from "@/lib/auth";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { hydrateAuth } from "@/lib/store/slices/authSlice";

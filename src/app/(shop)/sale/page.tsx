@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import ProductCardComponent from "@/components/product-card";
-import { useGetProducts } from "@/lib/query/useGetProducts";
+import ProductCardComponent from "@/features/products/components/product-card";
+import { useGetProducts } from "@/lib/queries/useGetProducts";
 import { useRouter } from "next/navigation";
-import { ProductCardSkeletonGrid } from "@/components/product-card-skeleton";
+import { ProductCardSkeletonGrid } from "@/features/products/components/product-card-skeleton";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 

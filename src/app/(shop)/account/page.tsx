@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
 import { useQuery } from "@tanstack/react-query";
-import { orderService } from "@/lib/api/orderService";
+import { orderService } from "@/lib/services/orderService";
 import { performAppLogout } from "@/lib/store/logout";
-import ProtectedPage from "@/components/auth/ProtectedPage";
+import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {

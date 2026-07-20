@@ -7,7 +7,7 @@ import { Search, UserPlus } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { sellerService } from "@/lib/api/sellerService";
+import { sellerService } from "@/lib/services/sellerService";
 
 const statusCfg: Record<SellerStatus, { label: string; cls: string }> = {
   approved:  { label: 'Approved',  cls: 'badge badge-success' },

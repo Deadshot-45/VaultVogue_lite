@@ -1,10 +1,10 @@
 "use client";
 
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
+import { AppSidebar } from "@/components/navigation/app-sidebar";
+import { SiteHeader } from "@/components/layout/site-header";
 import { SidebarInset } from "@/components/ui/sidebar";
-import Footer from "@/layouts/Footer";
-import PageTransition from "@/components/PageTransition";
+import Footer from "@/components/layout/footer";
+import PageTransition from "@/components/layout/page-transition";
 
 interface Props {
   readonly children: React.ReactNode;

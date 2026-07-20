@@ -1,8 +1,8 @@
 "use client";
 
-import ProtectedPage from "@/components/auth/ProtectedPage";
+import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Badge } from "@/components/ui/badge";
-import { orderService } from "@/lib/api/orderService";
+import { orderService } from "@/lib/services/orderService";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowUpRight, Loader2, PackageCheck } from "lucide-react";
 import Image from "next/image";

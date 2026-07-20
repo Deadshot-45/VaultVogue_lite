@@ -1,6 +1,6 @@
-import { AdminGuard } from "@/components/admin/AdminGuard";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { AdminHeader } from "@/components/admin/AdminHeader";
+import { AdminGuard } from "@/features/admin/components/AdminGuard";
+import { AdminSidebar } from "@/features/admin/components/AdminSidebar";
+import { AdminHeader } from "@/features/admin/components/AdminHeader";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

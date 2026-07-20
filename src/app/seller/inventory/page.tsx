@@ -27,10 +27,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { api } from "@/lib/api/apiservices";
+import { api } from "@/lib/services/apiservices";
 import { useAppSelector } from "@/lib/store/hooks";
-import { useGetSellerProducts } from "@/lib/query/sellerQuery";
-import { uploadImageToServer } from "@/utility/utils";
+import { useGetSellerProducts } from "@/lib/queries/sellerQuery";
+import { uploadImageToServer } from "@/lib/utility/utils";
 
 interface ProductVariant {
   _id?: string;

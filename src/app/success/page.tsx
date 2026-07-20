@@ -13,9 +13,9 @@ import {
   ShoppingBag,
   Truck,
 } from "lucide-react";
-import { api } from "@/lib/api/apiservices";
+import { api } from "@/lib/services/apiservices";
 import { toast } from "sonner";
-import ProtectedPage from "@/components/auth/ProtectedPage";
+import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 

@@ -14,8 +14,8 @@ import {
   XCircle,
 } from "lucide-react";
 import { toast } from "sonner";
-import { api } from "@/lib/api/apiservices";
-import { useGetSellerOrders } from "@/lib/query/sellerQuery";
+import { api } from "@/lib/services/apiservices";
+import { useGetSellerOrders } from "@/lib/queries/sellerQuery";
 
 interface Order {
   id: string;

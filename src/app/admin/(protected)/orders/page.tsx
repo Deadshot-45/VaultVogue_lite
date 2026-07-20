@@ -5,7 +5,7 @@ import { useReactTable, getCoreRowModel, flexRender, createColumnHelper, getFilt
 import type { OrderRow, OrderStatus } from "@/types/admin";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { api } from "@/lib/api/apiservices";
+import { api } from "@/lib/services/apiservices";
 
 const statusCfg: Record<OrderStatus, { label: string; cls: string }> = {
   pending:    { label: 'Pending',    cls: 'badge badge-gold' },

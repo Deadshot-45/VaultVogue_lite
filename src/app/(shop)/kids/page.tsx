@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import ProductCard from "@/components/product-card";
-import { useGetProducts } from "@/lib/query/useGetProducts";
-import { classifySubcategory } from "@/utility/utils";
-import { ProductCardSkeletonGrid } from "@/components/product-card-skeleton";
+import ProductCard from "@/features/products/components/product-card";
+import { useGetProducts } from "@/lib/queries/useGetProducts";
+import { classifySubcategory } from "@/lib/utility/utils";
+import { ProductCardSkeletonGrid } from "@/features/products/components/product-card-skeleton";
 
 const categories = ["All", "Baby", "Knitwear", "Outfits", "Footwear", "Trousers", "Sleepwear", "Outerwear"];
 

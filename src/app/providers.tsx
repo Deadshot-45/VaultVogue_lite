@@ -1,9 +1,9 @@
 "use client";
 
-import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorBoundary } from "@/components/feedback/error-boundary";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/context/theme-context";
+import { ThemeProvider } from "@/components/theme-context";
 import { AuthInitializer } from "@/lib/store/AuthInitializer";
 import { getAuthCookie } from "@/lib/auth";
 import { makePersistor, makeStore } from "@/lib/store/store";
@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { Loader } from "@/components/global/Loader";
+import { Loader } from "@/components/feedback/Loader";
 
 // Suppress the React 19 warning for next-themes script tag in development
 if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {

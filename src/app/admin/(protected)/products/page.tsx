@@ -5,7 +5,7 @@ import type { ProductRow } from "@/types/admin";
 import { motion } from "framer-motion";
 import { Plus, Search } from "lucide-react";
 import { useState } from "react";
-import { useGetProducts } from "@/lib/query/useGetProducts";
+import { useGetProducts } from "@/lib/queries/useGetProducts";
 
 const statusCfg: Record<string, string> = {
   active:   'badge badge-success',

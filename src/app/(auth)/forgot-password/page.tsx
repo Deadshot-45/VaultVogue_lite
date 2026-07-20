@@ -1,13 +1,13 @@
 "use client";
 
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell } from "@/features/auth/components/AuthShell";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, KeyRound, ArrowRight, ArrowLeft, Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { api } from "@/lib/api/apiservices";
+import { api } from "@/lib/services/apiservices";
 
 type ApiResponse = {
   success: boolean;

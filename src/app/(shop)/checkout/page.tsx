@@ -6,23 +6,23 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ArrowLeft, Lock, ShoppingBag, Loader2 } from "lucide-react";
 
-import ProtectedPage from "@/components/auth/ProtectedPage";
+import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
-import { useCart } from "@/lib/query/useCart";
+import { useCart } from "@/lib/queries/useCart";
 import { useAppSelector } from "@/lib/store/hooks";
-import { usePlaceOrderMutation } from "@/lib/query/useCheckout";
+import { usePlaceOrderMutation } from "@/lib/queries/useCheckout";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 // Import modular components
-import { AddressSelector, Address } from "@/components/checkout/AddressSelector";
-import { ShippingMethodSelector } from "@/components/checkout/ShippingMethodSelector";
-import { PaymentSelector } from "@/components/checkout/PaymentSelector";
-import { CouponBox } from "@/components/checkout/CouponBox";
-import { OrderSummary } from "@/components/checkout/OrderSummary";
-import { SuccessModal } from "@/components/checkout/SuccessModal";
+import { AddressSelector, Address } from "@/features/checkout/components/AddressSelector";
+import { ShippingMethodSelector } from "@/features/checkout/components/ShippingMethodSelector";
+import { PaymentSelector } from "@/features/checkout/components/PaymentSelector";
+import { CouponBox } from "@/features/checkout/components/CouponBox";
+import { OrderSummary } from "@/features/checkout/components/OrderSummary";
+import { SuccessModal } from "@/features/checkout/components/SuccessModal";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",

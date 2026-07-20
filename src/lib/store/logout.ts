@@ -1,4 +1,4 @@
-import { authService } from "@/lib/api/authServices";
+import { authService } from "@/lib/services/authServices";
 import { clearAuthCookie } from "@/lib/auth";
 import { logOut } from "@/lib/store/slices/appSlice";
 import { clearPersistedStore } from "@/lib/store/store";

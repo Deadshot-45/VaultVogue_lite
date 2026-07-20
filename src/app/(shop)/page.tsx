@@ -2,12 +2,12 @@ import {
   productService,
   type Category,
   type Product,
-} from "@/lib/api/productService";
-import HeroSection from "@/components/hero-section";
-import CategoryShowcase from "@/components/category-showcase";
-import FeaturedProducts from "@/components/featured-products";
-import Features from "@/components/features";
-import Newsletter from "@/components/newsletter";
+} from "@/lib/services/productService";
+import HeroSection from "@/features/storefront/components/hero-section";
+import CategoryShowcase from "@/features/storefront/components/category-showcase";
+import FeaturedProducts from "@/features/storefront/components/featured-products";
+import Features from "@/features/storefront/components/features";
+import Newsletter from "@/features/storefront/components/newsletter";
 
 type DashboardSections = {
   featured?: Product[];

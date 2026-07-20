@@ -1,0 +1,18 @@
+"use client";
+
+import { Moon, Sun } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { useTheme } from "@/components/theme-context";
+
+export function ModeToggle() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <Button variant="outline" size="icon" className="sm:p-1.5!" onClick={toggleTheme}>
+      <Sun className="md:size-[1.2rem] size-[1.0rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute md:size-[1.2rem] size-[1.0rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <span className="sr-only">Toggle theme</span>
+    </Button>
+  );
+}

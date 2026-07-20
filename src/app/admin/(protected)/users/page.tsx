@@ -5,7 +5,7 @@ import { useReactTable, getCoreRowModel, flexRender, createColumnHelper, getFilt
 import type { UserRow } from "@/types/admin";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { api } from "@/lib/api/apiservices";
+import { api } from "@/lib/services/apiservices";
 
 const roleCfg: Record<string, string> = {
   admin:  'badge badge-sale',

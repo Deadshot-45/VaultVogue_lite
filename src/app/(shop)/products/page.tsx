@@ -1,8 +1,8 @@
 "use client";
 
-import ProductGrid from "@/components/ProductGrid";
+import ProductGrid from "@/features/products/components/product-grid";
 import { Button } from "@/components/ui/button";
-import { useGetProducts } from "@/lib/query/useGetProducts";
+import { useGetProducts } from "@/lib/queries/useGetProducts";
 import { Loader2 } from "lucide-react";
 import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";

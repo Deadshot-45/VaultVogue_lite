@@ -1,16 +1,16 @@
 "use client";
 
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell } from "@/features/auth/components/AuthShell";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { authService } from "@/lib/api/authServices";
+import { authService } from "@/lib/services/authServices";
 import { Eye, EyeOff, User, Mail, Phone, Lock } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { handleGoogleLogin } from "@/utility/socialAuth";
+import { handleGoogleLogin } from "@/lib/utility/socialAuth";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { setCredentials } from "@/lib/store/slices/authSlice";
 import { setCookieWithExpiry } from "@/lib/auth";

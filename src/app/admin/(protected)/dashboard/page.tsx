@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { StatsCard } from "@/components/admin/StatsCard";
-import { RevenueChart } from "@/components/admin/RevenueChart";
-import { CategoryDonutChart } from "@/components/admin/CategoryDonutChart";
-import { RecentOrdersTable } from "@/components/admin/RecentOrdersTable";
+import { StatsCard } from "@/features/admin/components/StatsCard";
+import { RevenueChart } from "@/features/admin/components/RevenueChart";
+import { CategoryDonutChart } from "@/features/admin/components/CategoryDonutChart";
+import { RecentOrdersTable } from "@/features/admin/components/RecentOrdersTable";
 import type { StatsCardData } from "@/types/admin";
-import { api } from "@/lib/api/apiservices";
+import { api } from "@/lib/services/apiservices";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<StatsCardData[]>([]);

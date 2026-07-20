@@ -16,7 +16,7 @@ import {
   Clock,
   Sparkles,
 } from "lucide-react";
-import { sellerService } from "@/lib/api/sellerService";
+import { sellerService } from "@/lib/services/sellerService";
 import {
   Select,
   SelectContent,
