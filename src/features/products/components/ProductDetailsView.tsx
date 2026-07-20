@@ -33,10 +33,8 @@ export default function ProductDetailsView({
       (variant) => !variant.isOutOfStock && variant.availableStock > 0,
     );
 
-    return mediumVariant?.attributes.size ?? firstAvailableVariant?.attributes.size ?? null;
+    return mediumVariant?.attributes.size ?? firstAvailableVariant?.attributes.size ?? "M";
   });
-
-  console.log("Single Product : ", product);
 
   // O(1) variant lookup
   const variantMap = useMemo(() => {

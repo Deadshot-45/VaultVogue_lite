@@ -2,6 +2,63 @@ import axios, { AxiosRequestConfig } from "axios";
 import { logError } from "../log-error";
 import { getAuthCookie } from "../auth";
 
+export class ApiError extends Error {
+  status: number;
+  payload: any;
+  isNetworkError: boolean;
+
+  constructor(
+    message: string,
+    status: number,
+    payload: any = null,
+    isNetworkError: boolean = false
+  ) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.payload = payload;
+    this.isNetworkError = isNetworkError;
+    Object.setPrototypeOf(this, ApiError.prototype);
+  }
+}
+
+/**
+ * Normalizes any API or Axios error into a consistent ApiError instance.
+ */
+export function normalizeApiError(error: unknown): ApiError {
+  if (error instanceof ApiError) {
+    return error;
+  }
+
+  if (axios.isAxiosError(error)) {
+    const status = error.response?.status || 0;
+    const data = error.response?.data;
+
+    let message = "An unexpected error occurred. Please try again.";
+
+    if (data && typeof data === "object") {
+      message = data.error || data.message || data.detail || message;
+    } else if (typeof data === "string" && data.trim().length > 0) {
+      message = data;
+    } else if (error.message) {
+      message = error.message;
+    }
+
+    if (status === 0 || error.code === "ERR_NETWORK" || error.code === "ECONNABORTED") {
+      message = "Network connection issue. Please check backend server status.";
+      return new ApiError(message, 0, data, true);
+    }
+
+    return new ApiError(message, status, data, false);
+  }
+
+  if (error instanceof Error) {
+    return new ApiError(error.message, 500, null, false);
+  }
+
+  return new ApiError("An unknown error occurred", 500, error, false);
+}
+
 const getBaseUrl = () => {
   const envUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
 
@@ -9,8 +66,7 @@ const getBaseUrl = () => {
     return process.env.API_URL || envUrl || "http://localhost:5000";
   }
 
-  // On client-side, use the public API URL when provided; otherwise use relative paths.
-  return envUrl ?? "";
+  return envUrl ?? "http://localhost:5000";
 };
 
 const BASE_URL = getBaseUrl();
@@ -26,12 +82,9 @@ export const api = axios.create({
   timeout: 10000, // 10 seconds
 });
 
-// Request Interceptor: Attach Token (if needed)
+// Request Interceptor: Attach Auth Token
 api.interceptors.request.use(
   (config) => {
-    // You can retrieve the auth token from localStorage, cookie, or store here
-    // Example:
-
     const token = typeof window !== "undefined" ? getAuthCookie() : null;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -40,11 +93,11 @@ api.interceptors.request.use(
   },
   (error) => {
     logError(error, "Axios Request Interceptor");
-    return Promise.reject(error);
-  },
+    return Promise.reject(normalizeApiError(error));
+  }
 );
 
-// Response Interceptor: Handle Global Errors
+// Response Interceptor: Catch and log non-2XX responses without crashing
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -53,52 +106,72 @@ api.interceptors.response.use(
     }
     const status = error.response?.status;
 
-    // Handle unauthorized (401), forbidden (403), etc.
     if (status === 401) {
-      // Logic for logout or re-auth can go here
       console.warn("Unauthorized API call. Token may be missing or expired.");
-      return Promise.reject(error);
     }
 
     const errorContext = status
-      ? `API Error: ${status}`
+      ? `API Response Error: ${status}`
       : `API Network Error: ${error.message || "Unknown"}`;
 
     logError(error, errorContext);
-    return Promise.reject(error);
-  },
+
+    return Promise.reject(normalizeApiError(error));
+  }
 );
 
 /**
- * Example Service Methods (Optional)
+ * Production-Grade ApiService Wrapper
  */
 export const ApiService = {
   get: async <T>(
     url: string,
     params?: object,
-    headers?: AxiosRequestConfig["headers"],
-  ) => {
-    const response = await api.get<T>(url, { params, headers });
-    return response.data;
+    headers?: AxiosRequestConfig["headers"]
+  ): Promise<T> => {
+    try {
+      const response = await api.get<T>(url, { params, headers });
+      return response.data;
+    } catch (error) {
+      throw normalizeApiError(error);
+    }
   },
+
   post: async <T>(
     url: string,
     data?: object,
-    headers?: AxiosRequestConfig["headers"],
-  ) => {
-    const response = await api.post<T>(url, data, { headers });
-    return response.data;
+    headers?: AxiosRequestConfig["headers"]
+  ): Promise<T> => {
+    try {
+      const response = await api.post<T>(url, data, { headers });
+      return response.data;
+    } catch (error) {
+      throw normalizeApiError(error);
+    }
   },
+
   put: async <T>(
     url: string,
     data?: object,
-    headers?: AxiosRequestConfig["headers"],
-  ) => {
-    const response = await api.put<T>(url, data, { headers });
-    return response.data;
+    headers?: AxiosRequestConfig["headers"]
+  ): Promise<T> => {
+    try {
+      const response = await api.put<T>(url, data, { headers });
+      return response.data;
+    } catch (error) {
+      throw normalizeApiError(error);
+    }
   },
-  delete: async <T>(url: string, headers?: AxiosRequestConfig["headers"]) => {
-    const response = await api.delete<T>(url, { headers });
-    return response.data;
+
+  delete: async <T>(
+    url: string,
+    headers?: AxiosRequestConfig["headers"]
+  ): Promise<T> => {
+    try {
+      const response = await api.delete<T>(url, { headers });
+      return response.data;
+    } catch (error) {
+      throw normalizeApiError(error);
+    }
   },
 };

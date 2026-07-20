@@ -17,12 +17,17 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 // Import modular components
-import { AddressSelector, Address } from "@/features/checkout/components/AddressSelector";
+import {
+  AddressSelector,
+  Address,
+} from "@/features/checkout/components/AddressSelector";
 import { ShippingMethodSelector } from "@/features/checkout/components/ShippingMethodSelector";
 import { PaymentSelector } from "@/features/checkout/components/PaymentSelector";
 import { CouponBox } from "@/features/checkout/components/CouponBox";
 import { OrderSummary } from "@/features/checkout/components/OrderSummary";
 import { SuccessModal } from "@/features/checkout/components/SuccessModal";
+import { openRazorpayCheckout } from "@/lib/services/razorpay";
+import { ApiService } from "@/lib/services/apiservices";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
@@ -48,7 +53,9 @@ function CheckoutPage() {
   const { data: cartItems = [], isLoading: isCartLoading } = useCart(true);
 
   // Stepper State
-  const [activeStep, setActiveStep] = useState<"cart" | "shipping" | "payment" | "review">("shipping");
+  const [activeStep, setActiveStep] = useState<
+    "cart" | "shipping" | "payment" | "review"
+  >("shipping");
 
   // Multi-Addresses Mock Data
   const [addresses, setAddresses] = useState<Address[]>([
@@ -81,11 +88,14 @@ function CheckoutPage() {
   // Mandatory states from guidelines
   const [selectedAddressId, setSelectedAddressId] = useState<string>("addr-1");
   const [shippingMethod, setShippingMethod] = useState<string>("standard");
-  const [selectedPayment, setSelectedPayment] = useState<"stripe" | "razorpay" | "cod">("stripe");
+  const [selectedPayment, setSelectedPayment] = useState<
+    "stripe" | "razorpay" | "cod"
+  >("stripe");
   const [coupon, setCoupon] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [isAddressCompleted, setIsAddressCompleted] = useState<boolean>(true);
-  const [isShippingCompleted, setIsShippingCompleted] = useState<boolean>(false);
+  const [isShippingCompleted, setIsShippingCompleted] =
+    useState<boolean>(false);
 
   // Promo Code Applied State
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
@@ -154,7 +164,7 @@ function CheckoutPage() {
 
   const handleUpdateAddress = (updatedAddr: Address) => {
     setAddresses((prev) =>
-      prev.map((addr) => (addr.id === updatedAddr.id ? updatedAddr : addr))
+      prev.map((addr) => (addr.id === updatedAddr.id ? updatedAddr : addr)),
     );
     toast.success("Address details updated.");
   };
@@ -181,7 +191,7 @@ function CheckoutPage() {
       const response = await placeOrderMutation.mutateAsync({
         address: addressData,
         shippingMethod: shippingMethod as any,
-        paymentMethod: selectedPayment === "stripe" ? "card": selectedPayment as any,
+        paymentMethod: selectedPayment === "stripe" ? "card" : ("upi" as any),
         tax: taxAmount,
         subtotal,
         shippingFee: shippingCost,
@@ -193,19 +203,59 @@ function CheckoutPage() {
         toast.info("Redirecting to Stripe checkout portal...");
         window.location.href = response.url;
         return;
+      } else if (selectedPayment === "razorpay" && response?.razorpay) {
+        // Razorpay Checkout Modal handling
+        toast.info("Opening Razorpay payment gateway...");
+        const rzpData = response.razorpay;
+
+        await openRazorpayCheckout({
+          keyId: rzpData.key || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          orderId: rzpData.orderId,
+          amount: rzpData.amount,
+          currency: rzpData.currency || "INR",
+          customerName: activeAddress.fullName,
+          customerPhone: activeAddress.phone,
+          onSuccess: async (paymentRes) => {
+            try {
+              // 1. Verify Payment signature on backend
+              await ApiService.post("/api/payments/verify", {
+                razorpay_order_id: paymentRes.razorpay_order_id,
+                razorpay_payment_id: paymentRes.razorpay_payment_id,
+                razorpay_signature: paymentRes.razorpay_signature,
+              });
+
+              const realOrderId = response?.data?._id || rzpData.orderId;
+              setPlacedOrderId(realOrderId);
+              setOrderPlaced(true);
+              setActiveStep("review");
+              toast.success("Payment verified and order placed successfully!");
+              router.push(
+                `/success?order_id=${realOrderId}&payment_intent=${paymentRes.razorpay_payment_id}`,
+              );
+            } catch (verErr: any) {
+              console.error("Razorpay verification failed:", verErr);
+              toast.error(verErr?.message || "Payment verification failed.");
+            }
+          },
+          onDismiss: () => {
+            toast.warning("Payment cancelled. You can retry checkout anytime.");
+          },
+        });
+        return;
+      } else {
+        const orderId =
+          response?.data?._id || response?.razorpay?.orderId || generatedId;
+        setPlacedOrderId(orderId);
+        setOrderPlaced(true);
       }
 
-      const orderId = response?.data?._id || response?.razorpay?.orderId || generatedId;
-      setPlacedOrderId(orderId);
-      setOrderPlaced(true);
-      
       // Update step status to review
       setActiveStep("review");
-      
+
       toast.success("Checkout Authorized Successfully!");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to complete transaction.");
+    } catch (err: any) {
+      console.error("Checkout error:", err);
+      toast.error(err?.message || "Failed to complete transaction.");
     } finally {
       setLoading(false);
     }
@@ -226,12 +276,13 @@ function CheckoutPage() {
   return (
     <>
       <div className="mx-auto max-w-7xl w-full px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
-        
         {/* Amazon-Inspired Stepper/Breadcrumb Header */}
         <div className="mb-12 border-b border-border/40 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[9px] font-bold text-[var(--gold)] uppercase tracking-[0.25em]">Secure Dispatch Zone</span>
+              <span className="text-[9px] font-bold text-[var(--gold)] uppercase tracking-[0.25em]">
+                Secure Dispatch Zone
+              </span>
               <Lock className="h-3 w-3 text-[var(--gold)]" />
             </div>
             <h1 className="mt-2 font-cormorant text-4xl font-light text-[var(--brand-text)] lg:text-5xl">
@@ -243,11 +294,33 @@ function CheckoutPage() {
           <div className="flex items-center gap-2.5 text-[11px] font-semibold text-slate-400">
             <span className="text-[var(--gold)] font-bold">Cart</span>
             <span className="h-[1px] w-6 bg-slate-200"></span>
-            <span className={activeStep === "shipping" ? "text-blue-600 font-bold" : isAddressCompleted ? "text-[var(--gold)]" : ""}>Shipping</span>
+            <span
+              className={
+                activeStep === "shipping"
+                  ? "text-blue-600 font-bold"
+                  : isAddressCompleted
+                    ? "text-[var(--gold)]"
+                    : ""
+              }
+            >
+              Shipping
+            </span>
             <span className="h-[1px] w-6 bg-slate-200"></span>
-            <span className={activeStep === "payment" ? "text-blue-600 font-bold" : ""}>Payment</span>
+            <span
+              className={
+                activeStep === "payment" ? "text-blue-600 font-bold" : ""
+              }
+            >
+              Payment
+            </span>
             <span className="h-[1px] w-6 bg-slate-200"></span>
-            <span className={activeStep === "review" ? "text-green-600 font-bold" : ""}>Review</span>
+            <span
+              className={
+                activeStep === "review" ? "text-green-600 font-bold" : ""
+              }
+            >
+              Review
+            </span>
           </div>
         </div>
 
@@ -275,10 +348,8 @@ function CheckoutPage() {
           </div>
         ) : (
           <div className="grid gap-10 lg:grid-cols-[1fr_420px] items-start">
-            
             {/* Left Section: Modular Accordion Stepper */}
             <div className="space-y-10">
-              
               {/* Stepper Page Navigation */}
               <div className="flex gap-2">
                 <Button
@@ -286,7 +357,9 @@ function CheckoutPage() {
                   variant="outline"
                   onClick={() => setActiveStep("shipping")}
                   className={`h-9 px-4 rounded-lg text-xs font-semibold ${
-                    activeStep === "shipping" ? "border-blue-500 bg-blue-500/5 text-blue-700" : "border-slate-200"
+                    activeStep === "shipping"
+                      ? "border-blue-500 bg-blue-500/5 text-blue-700"
+                      : "border-slate-200"
                   }`}
                 >
                   1. Shipping Setup
@@ -296,7 +369,9 @@ function CheckoutPage() {
                   disabled={!isAddressCompleted}
                   onClick={() => setActiveStep("payment")}
                   className={`h-9 px-4 rounded-lg text-xs font-semibold ${
-                    activeStep === "payment" ? "border-blue-500 bg-blue-500/5 text-blue-700" : "border-slate-200"
+                    activeStep === "payment"
+                      ? "border-blue-500 bg-blue-500/5 text-blue-700"
+                      : "border-slate-200"
                   }`}
                   variant="outline"
                 >
@@ -366,7 +441,6 @@ function CheckoutPage() {
 
             {/* Right Column: Sticky order summary */}
             <div className="space-y-6 lg:sticky lg:top-24">
-              
               {/* Order Summary Component */}
               <OrderSummary
                 cartItems={cartItems}
@@ -389,7 +463,6 @@ function CheckoutPage() {
                 }
               />
             </div>
-
           </div>
         )}
       </div>
@@ -404,7 +477,11 @@ function CheckoutPage() {
         }}
         onViewOrders={() => {
           setOrderPlaced(false);
-          router.push("/orders");
+          if (placedOrderId) {
+            router.push(`/orders/${placedOrderId}/track`);
+          } else {
+            router.push("/orders");
+          }
         }}
       />
     </>

@@ -51,7 +51,7 @@ export function SuccessModal({
             onClick={onViewOrders}
             className="btn-primary w-full h-11 text-xs font-semibold uppercase tracking-widest active:scale-95 transition-all text-slate-100"
           >
-            View Orders
+            Track Live Package & Orders
           </Button>
           <Button
             onClick={onContinueShopping}

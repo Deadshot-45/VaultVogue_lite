@@ -61,7 +61,7 @@ export function SellerHeader() {
         <Sheet>
           <SheetTrigger asChild>
             <button
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
+              className="lg:hidden flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
               style={{
                 borderColor: "var(--gold-faint)",
                 background: "var(--gold-glow)",
@@ -71,7 +71,7 @@ export function SellerHeader() {
               <Menu className="h-4 w-4" style={{ color: "var(--gold)" }} />
             </button>
           </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-[248px] border-r-0">
+          <SheetContent side="left" className="p-0 w-62 border-r-0">
             <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
             <SellerSidebar />
           </SheetContent>

@@ -4,7 +4,7 @@ import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Badge } from "@/components/ui/badge";
 import { orderService } from "@/lib/services/orderService";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowUpRight, Loader2, PackageCheck } from "lucide-react";
+import { ArrowUpRight, Loader2, PackageCheck, Truck } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -156,12 +156,22 @@ export default function OrdersPage() {
                         {order.status}
                       </Badge>
                     </div>
-                    <button
-                      onClick={() => router.push(`/orders/${order.id}`)}
-                      className="btn-secondary py-2.5 px-6 text-xs font-semibold uppercase tracking-wider border-[var(--gold-soft)] text-[var(--gold)]"
-                    >
-                      Track Order
-                    </button>
+                    {order.status?.toLowerCase() === "shipped" ? (
+                      <button
+                        onClick={() => router.push(`/orders/${order.id}/track`)}
+                        className="btn-primary py-2.5 px-5 text-xs font-semibold uppercase tracking-wider text-white flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                      >
+                        <Truck className="h-3.5 w-3.5" />
+                        Track Package
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => router.push(`/orders/${order.id}`)}
+                        className="btn-secondary py-2.5 px-6 text-xs font-semibold uppercase tracking-wider border-[var(--gold-soft)] text-[var(--gold)]"
+                      >
+                        View Receipt
+                      </button>
+                    )}
                   </div>
                 </div>
 

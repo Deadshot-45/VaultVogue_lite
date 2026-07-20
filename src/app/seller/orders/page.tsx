@@ -16,6 +16,14 @@ import {
 import { toast } from "sonner";
 import { api } from "@/lib/services/apiservices";
 import { useGetSellerOrders } from "@/lib/queries/sellerQuery";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 interface Order {
   id: string;
@@ -27,7 +35,14 @@ interface Order {
   items: number;
 }
 
-const STATUS_FILTERS = ["All", "pending", "processing", "shipped", "delivered", "cancelled"];
+const STATUS_FILTERS = [
+  "All",
+  "pending",
+  "processing",
+  "shipped",
+  "delivered",
+  "cancelled",
+];
 
 export default function SellerOrdersPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,18 +50,26 @@ export default function SellerOrdersPage() {
   const { data = [], isLoading, refetch: fetchOrders } = useGetSellerOrders();
   const orders: Order[] = data;
 
-  const handleStatusChange = async (orderId: string, newStatus: Order["status"]) => {
+  const handleStatusChange = async (
+    orderId: string,
+    newStatus: Order["status"],
+  ) => {
     try {
-      const res = await api.patch<{ success: boolean }>(`/api/orders/${orderId}/status`, {
-        status: newStatus,
-      });
+      const res = await api.patch<{ success: boolean }>(
+        `/api/orders/${orderId}/status`,
+        {
+          status: newStatus,
+        },
+      );
       if (res.data.success) {
         toast.success(`Order status updated to ${newStatus.toUpperCase()}`);
         fetchOrders();
       }
     } catch (err: any) {
       console.error("Failed to update status", err);
-      toast.error(err.response?.data?.message || "Failed to update order status");
+      toast.error(
+        err.response?.data?.message || "Failed to update order status",
+      );
     }
   };
 
@@ -56,16 +79,23 @@ export default function SellerOrdersPage() {
       order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.email.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchStatus = activeFilter === "All" || order.status === activeFilter;
     return matchSearch && matchStatus;
   });
 
-  const statusCfg: Record<Order["status"], { label: string; cls: string; icon: any }> = {
+  const statusCfg: Record<
+    Order["status"],
+    { label: string; cls: string; icon: any }
+  > = {
     pending: { label: "Pending", cls: "badge badge-gold", icon: Calendar },
     processing: { label: "Processing", cls: "badge badge-new", icon: Loader2 },
     shipped: { label: "Shipped", cls: "badge badge-gold", icon: Truck },
-    delivered: { label: "Delivered", cls: "badge badge-success", icon: CheckCircle },
+    delivered: {
+      label: "Delivered",
+      cls: "badge badge-success",
+      icon: CheckCircle,
+    },
     cancelled: { label: "Cancelled", cls: "badge badge-sale", icon: XCircle },
   };
 
@@ -121,7 +151,9 @@ export default function SellerOrdersPage() {
           <div className="card text-center py-16 flex flex-col items-center justify-center space-y-3">
             <ShoppingCart className="h-12 w-12 text-muted-foreground/30" />
             <div>
-              <p className="text-sm font-semibold text-[var(--brand-text)]">No Atelier Orders Found</p>
+              <p className="text-sm font-semibold text-[var(--brand-text)]">
+                No Atelier Orders Found
+              </p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 No orders match your current filter selection.
               </p>
@@ -136,7 +168,7 @@ export default function SellerOrdersPage() {
               <motion.div
                 key={order.id}
                 layout
-                className="card flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 hover:border-[var(--gold-soft)] transition-all duration-300"
+                className="card flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 hover:border-[var(--gold-soft)] transition-all duration-300 overflow-auto"
               >
                 {/* Details Section */}
                 <div className="space-y-3 md:space-y-0 md:flex md:items-center md:gap-8 flex-1">
@@ -172,7 +204,8 @@ export default function SellerOrdersPage() {
                       ₹{order.amount.toLocaleString("en-IN")}
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-0.5">
-                      {order.items} {order.items === 1 ? "listing item" : "listing items"}
+                      {order.items}{" "}
+                      {order.items === 1 ? "listing item" : "listing items"}
                     </p>
                   </div>
 
@@ -191,29 +224,46 @@ export default function SellerOrdersPage() {
                 <div className="flex flex-row items-center justify-between md:justify-end gap-4 border-t border-border/10 pt-3 md:border-t-0 md:pt-0">
                   {/* Status Badge */}
                   <div className="flex items-center gap-1">
-                    <span className={`${config?.cls ?? "badge"} flex items-center gap-1`}>
-                      <StatusIcon className={`h-3 w-3 ${order.status === "processing" ? "animate-spin" : ""}`} />
+                    <span
+                      className={`${config?.cls ?? "badge"} flex items-center gap-1`}
+                    >
+                      <StatusIcon
+                        className={`h-3 w-3 ${order.status === "processing" ? "animate-spin" : ""}`}
+                      />
                       {config?.label ?? order.status}
                     </span>
                   </div>
 
                   {/* Status Actions Dropdown */}
-                  <div className="flex items-center gap-2">
-                    <label htmlFor={`status-${order.id}`} className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground hidden sm:block">
-                      Fulfilment:
-                    </label>
-                    <select
-                      id={`status-${order.id}`}
-                      value={order.status}
-                      onChange={(e) => handleStatusChange(order.id, e.target.value as Order["status"])}
-                      className="input-field py-1 px-2.5 h-8 text-[11px] w-32 border-[var(--gold-faint)] focus:border-[var(--gold)] bg-transparent rounded-lg"
+                  <div className="flex flex-col items-center gap-2">
+                    <Label
+                      htmlFor={`status-${order.id}`}
+                      className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground hidden sm:block"
                     >
-                      <option value="pending">Pending</option>
-                      <option value="processing">Processing</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
+                      Fulfilment:
+                    </Label>
+
+                    <Select
+                      value={order.status}
+                      onValueChange={(val) =>
+                        handleStatusChange(order.id, val as Order["status"])
+                      }
+                    >
+                      <SelectTrigger className="h-9 text-xs w-full">
+                        <SelectValue placeholder="Update status" />
+                      </SelectTrigger>
+                      <SelectContent className="w-30">
+                        {STATUS_FILTERS.map((cat, index) => {
+                          const capitalized =
+                            cat.charAt(0).toUpperCase() + cat.slice(1);
+                          return (
+                            <SelectItem key={index} value={cat}>
+                              {capitalized}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </motion.div>
