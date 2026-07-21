@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -97,9 +98,11 @@ interface OrderDetails {
 function SuccessPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const orderId = searchParams ? (searchParams.get("order_id") || searchParams.get("orderId")) : null;
   const sessionId = searchParams ? searchParams.get("session_id") : null;
   const paymentIntentId = searchParams ? (searchParams.get("payment_intent") || searchParams.get("payment_intent_id")) : null;
+  const paymentGateway = searchParams ? (searchParams.get("gateway") || "Payment Gateway") : "Payment Gateway";
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -145,6 +148,8 @@ function SuccessPageContent() {
         if (orderData) {
           setOrder(orderData);
           setItems(orderData.items || []);
+          // Clear the cart now that payment is confirmed
+          queryClient.invalidateQueries({ queryKey: ["cart"] });
           toast.success("Payment verified and order confirmed!");
         } else {
           // Display success fallback receipt state

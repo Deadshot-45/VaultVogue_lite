@@ -15,9 +15,14 @@ export const usePlaceOrderMutation = () => {
 
       return response;
     },
-    onSuccess: () => {
-      // Invalidate queries so cart drawer updates instantly
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    onSuccess: (response) => {
+      // Only invalidate cart immediately for COD (no external gateway redirect).
+      // For Stripe: cart cleared by webhook after payment confirmation on /success.
+      // For Razorpay: cart cleared after signature verification in onSuccess callback.
+      const isGatewayRedirect = !!response?.url || !!response?.razorpay;
+      if (!isGatewayRedirect) {
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+      }
     },
   });
 };

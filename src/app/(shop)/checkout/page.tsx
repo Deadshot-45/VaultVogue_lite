@@ -93,6 +93,10 @@ function CheckoutPage() {
   >("stripe");
   const [coupon, setCoupon] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  // Prevents cart-empty redirect while Razorpay modal is open
+  const [isRazorpayOpen, setIsRazorpayOpen] = useState<boolean>(false);
+  // Prevents cart-empty redirect while browser is navigating to Stripe
+  const [isStripeRedirecting, setIsStripeRedirecting] = useState<boolean>(false);
   const [isAddressCompleted, setIsAddressCompleted] = useState<boolean>(true);
   const [isShippingCompleted, setIsShippingCompleted] =
     useState<boolean>(false);
@@ -201,46 +205,56 @@ function CheckoutPage() {
       // Stripe redirect check
       if (selectedPayment === "stripe" && response?.url) {
         toast.info("Redirecting to Stripe checkout portal...");
+        setIsStripeRedirecting(true); // Guard: prevent cart-empty redirect from firing
         window.location.href = response.url;
-        return;
+        return; // setLoading stays true — page is navigating away
       } else if (selectedPayment === "razorpay" && response?.razorpay) {
         // Razorpay Checkout Modal handling
         toast.info("Opening Razorpay payment gateway...");
         const rzpData = response.razorpay;
 
-        await openRazorpayCheckout({
-          keyId: rzpData.key || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-          orderId: rzpData.orderId,
-          amount: rzpData.amount,
-          currency: rzpData.currency || "INR",
-          customerName: activeAddress.fullName,
-          customerPhone: activeAddress.phone,
-          onSuccess: async (paymentRes) => {
-            try {
-              // 1. Verify Payment signature on backend
-              await ApiService.post("/api/payments/verify", {
-                razorpay_order_id: paymentRes.razorpay_order_id,
-                razorpay_payment_id: paymentRes.razorpay_payment_id,
-                razorpay_signature: paymentRes.razorpay_signature,
-              });
+        // Mark gateway as open — prevents cart-empty redirect
+        setIsRazorpayOpen(true);
+        try {
+          await openRazorpayCheckout({
+            keyId: rzpData.key || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+            orderId: rzpData.orderId,
+            amount: rzpData.amount,
+            currency: rzpData.currency || "INR",
+            customerName: activeAddress.fullName,
+            customerPhone: activeAddress.phone,
+            onSuccess: async (paymentRes) => {
+              try {
+                // 1. Verify Payment signature on backend
+                await ApiService.post("/api/payments/verify", {
+                  razorpay_order_id: paymentRes.razorpay_order_id,
+                  razorpay_payment_id: paymentRes.razorpay_payment_id,
+                  razorpay_signature: paymentRes.razorpay_signature,
+                });
 
-              const realOrderId = response?.data?._id || rzpData.orderId;
-              setPlacedOrderId(realOrderId);
-              setOrderPlaced(true);
-              setActiveStep("review");
-              toast.success("Payment verified and order placed successfully!");
-              router.push(
-                `/success?order_id=${realOrderId}&payment_intent=${paymentRes.razorpay_payment_id}`,
-              );
-            } catch (verErr: any) {
-              console.error("Razorpay verification failed:", verErr);
-              toast.error(verErr?.message || "Payment verification failed.");
-            }
-          },
-          onDismiss: () => {
-            toast.warning("Payment cancelled. You can retry checkout anytime.");
-          },
-        });
+                const realOrderId = response?.data?._id || rzpData.orderId;
+                setPlacedOrderId(realOrderId);
+                setOrderPlaced(true);
+                setActiveStep("review");
+                toast.success("Payment verified and order placed successfully!");
+                // Navigate to success page with order and payment IDs
+                router.push(
+                  `/success?order_id=${realOrderId}&payment_intent=${paymentRes.razorpay_payment_id}`,
+                );
+              } catch (verErr: any) {
+                console.error("Razorpay verification failed:", verErr);
+                toast.error(verErr?.message || "Payment verification failed.");
+              }
+            },
+            onDismiss: () => {
+              toast.warning("Payment cancelled. You can retry checkout anytime.");
+            },
+          });
+        } finally {
+          // Always clear the guard so the cart-empty redirect can work normally
+          setIsRazorpayOpen(false);
+          setLoading(false);
+        } 
         return;
       } else {
         const orderId =
@@ -261,17 +275,17 @@ function CheckoutPage() {
     }
   };
 
-  // Redirect if bag is empty
+  // Redirect if bag is empty — but NOT while Razorpay gateway or Stripe redirect is active
   useEffect(() => {
-    if (!isCartLoading && cartItems.length === 0 && !orderPlaced) {
+    if (!isCartLoading && cartItems.length === 0 && !orderPlaced && !isRazorpayOpen && !isStripeRedirecting) {
       const timer = setTimeout(() => {
-        if (cartItems.length === 0 && !orderPlaced) {
+        if (cartItems.length === 0 && !orderPlaced && !isRazorpayOpen && !isStripeRedirecting) {
           router.replace("/");
         }
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [cartItems, isCartLoading, orderPlaced, router]);
+  }, [cartItems, isCartLoading, orderPlaced, isRazorpayOpen, isStripeRedirecting, router]);
 
   return (
     <>

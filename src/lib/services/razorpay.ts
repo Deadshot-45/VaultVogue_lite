@@ -52,46 +52,55 @@ export interface RazorpayOptions {
   onDismiss?: () => void;
 }
 
-export const openRazorpayCheckout = async (options: RazorpayOptions) => {
-  const loaded = await loadRazorpayScript();
+export const openRazorpayCheckout = (options: RazorpayOptions): Promise<void> => {
+  return new Promise(async (resolve, reject) => {
+    const loaded = await loadRazorpayScript();
 
-  if (!loaded || !window.Razorpay) {
-    throw new Error("Razorpay SDK failed to load. Please check your internet connection.");
-  }
+    if (!loaded || !window.Razorpay) {
+      reject(new Error("Razorpay SDK failed to load. Please check your internet connection."));
+      return;
+    }
 
-  const razorpayKey =
-    options.keyId ||
-    process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-    "rzp_test_TFnjdkFu74wVJr";
+    const razorpayKey =
+      options.keyId ||
+      process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
+      "rzp_test_TFnjdkFu74wVJr";
 
-  const razorpayInstance = new window.Razorpay({
-    key: razorpayKey,
-    amount: options.amount,
-    currency: options.currency || "INR",
-    name: options.name || "Vault Vogue Lite",
-    description: options.description || "Luxury Purchase Checkout",
-    order_id: options.orderId,
-    handler: async (response: {
-      razorpay_order_id: string;
-      razorpay_payment_id: string;
-      razorpay_signature: string;
-    }) => {
-      await options.onSuccess(response);
-    },
-    prefill: {
-      name: options.customerName || "",
-      email: options.customerEmail || "",
-      contact: options.customerPhone || "",
-    },
-    theme: {
-      color: "#C5A880", // Gold theme accent
-    },
-    modal: {
-      ondismiss: () => {
-        options.onDismiss?.();
+    const razorpayInstance = new window.Razorpay({
+      key: razorpayKey,
+      amount: options.amount,
+      currency: options.currency || "INR",
+      name: options.name || "Vault Vogue Lite",
+      description: options.description || "Luxury Purchase Checkout",
+      order_id: options.orderId,
+      handler: async (response: {
+        razorpay_order_id: string;
+        razorpay_payment_id: string;
+        razorpay_signature: string;
+      }) => {
+        try {
+          await options.onSuccess(response);
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
       },
-    },
-  });
+      prefill: {
+        name: options.customerName || "",
+        email: options.customerEmail || "",
+        contact: options.customerPhone || "",
+      },
+      theme: {
+        color: "#C5A880", // Gold theme accent
+      },
+      modal: {
+        ondismiss: () => {
+          options.onDismiss?.();
+          resolve(); // Resolve (not reject) on dismiss so finally still runs cleanly
+        },
+      },
+    });
 
-  razorpayInstance.open();
+    razorpayInstance.open();
+  });
 };
