@@ -3,6 +3,8 @@ import type {
   PaymentDetails,
   InitializePaymentPayload,
   SimulateWebhookPayload,
+  RetryPaymentPayload,
+  RetryPaymentResponse,
 } from '../types/payment';
 
 export const paymentTrackingApi = {
@@ -28,4 +30,19 @@ export const paymentTrackingApi = {
       payload
     );
   },
+
+  /**
+   * Retry a failed/pending payment. The backend re-creates the gateway
+   * session for an existing order (no new order created).
+   */
+  async retryPayment(payload: RetryPaymentPayload): Promise<RetryPaymentResponse> {
+    return ApiService.post<RetryPaymentResponse>(
+      `/api/orders/retry-payment`,
+      payload,
+      {
+        'Idempotency-Key': payload.idempotencyKey,
+      }
+    );
+  },
 };
+

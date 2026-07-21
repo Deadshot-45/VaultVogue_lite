@@ -4,6 +4,7 @@ import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { orderService } from "@/lib/services/orderService";
+import { PaymentRetryBanner } from "@/features/payment-tracking/components/PaymentRetryBanner";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
@@ -466,6 +467,21 @@ export default function OrderDetailsPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Payment Retry Banner — shown when payment is not yet paid */}
+              {order.paymentStatus !== "paid" && (
+                <PaymentRetryBanner
+                  orderId={order._id}
+                  paymentStatus={order.paymentStatus}
+                  customerName={order.shippingAddress?.fullName}
+                  customerPhone={order.shippingAddress?.phone}
+                  defaultGateway={
+                    order.paymentMethod === "card" ? "stripe" :
+                    order.paymentMethod === "cod" ? "cod" :
+                    "razorpay"
+                  }
+                />
+              )}
             </div>
           </div>
         </motion.div>

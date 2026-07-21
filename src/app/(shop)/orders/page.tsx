@@ -4,7 +4,7 @@ import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Badge } from "@/components/ui/badge";
 import { orderService } from "@/lib/services/orderService";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowUpRight, Loader2, PackageCheck, Truck } from "lucide-react";
+import { ArrowUpRight, Loader2, PackageCheck, RefreshCw, Truck } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -84,7 +84,14 @@ export default function OrdersPage() {
           year: "numeric",
         })
       : "Date Unknown",
+    paymentStatus: order.paymentStatus || "pending",
   }));
+
+  /** Returns true when the order needs a payment retry CTA */
+  const needsRetry = (paymentStatus: string) => {
+    const s = paymentStatus?.toLowerCase();
+    return s === "unpaid" || s === "failed" || s === "pending" || s === "initiated";
+  };
 
   return (
     <ProtectedPage>
@@ -163,6 +170,14 @@ export default function OrdersPage() {
                       >
                         <Truck className="h-3.5 w-3.5" />
                         Track Package
+                      </button>
+                    ) : needsRetry(order.paymentStatus) ? (
+                      <button
+                        onClick={() => router.push(`/orders/${order.id}`)}
+                        className="btn-primary py-2.5 px-5 text-xs font-semibold uppercase tracking-wider text-white flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer bg-rose-600 hover:bg-rose-700 border-rose-600"
+                      >
+                        <RefreshCw className="h-3.5 w-3.5" />
+                        Retry Payment
                       </button>
                     ) : (
                       <button

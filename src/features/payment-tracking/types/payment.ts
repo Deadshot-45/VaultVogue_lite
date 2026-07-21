@@ -40,3 +40,30 @@ export interface SimulateWebhookPayload {
     error?: string;
   };
 }
+
+/** Payload sent to POST /api/orders/retry-payment */
+export interface RetryPaymentPayload {
+  orderId: string;
+  paymentMethod: 'card' | 'upi' | 'cod';
+  idempotencyKey: string;
+}
+
+/** Response shape — same as checkout-session response */
+export interface RetryPaymentResponse {
+  success: boolean;
+  message?: string;
+  /** Stripe hosted checkout URL */
+  url?: string;
+  /** Razorpay order data */
+  razorpay?: {
+    orderId: string;
+    amount: number;
+    currency: string;
+    key: string;
+  };
+  data?: {
+    _id: string;
+    paymentStatus: string;
+    status: string;
+  };
+}

@@ -53,6 +53,28 @@ export const orderService = {
     return response.data;
   },
 
+  /**
+   * Retry a failed/pending payment for an existing order.
+   * Backend re-creates the gateway session without creating a new order.
+   * Returns the same shape as createCheckoutSession.
+   */
+  retryPayment: async (
+    orderId: string,
+    paymentMethod: "card" | "upi" | "cod",
+    idempotencyKey: string,
+  ): Promise<CheckoutResponse> => {
+    const response = await api.post<CheckoutResponse>(
+      "/api/orders/retry-payment",
+      { orderId, paymentMethod, idempotencyKey },
+      {
+        headers: {
+          "Idempotency-Key": idempotencyKey,
+        },
+      } as any,
+    );
+    return response.data;
+  },
+
   confirmOrder: async (orderId: string, paymentIntentId?: string) => {
     const response = await api.post<{ success: boolean }>(
       "/api/orders/confirm",
@@ -74,3 +96,4 @@ export const orderService = {
     return response.data.data;
   }
 };
+
