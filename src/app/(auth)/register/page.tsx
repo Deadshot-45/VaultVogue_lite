@@ -15,6 +15,7 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { setCredentials } from "@/lib/store/slices/authSlice";
 import { setCookieWithExpiry } from "@/lib/auth";
 import { useQueryClient } from "@tanstack/react-query";
+import { FcGoogle } from "react-icons/fc";
 
 const stringField = (schema: z.ZodString) =>
   z.preprocess((value) => (typeof value === "string" ? value : ""), schema);
@@ -156,12 +157,15 @@ export default function CreateAccountPage() {
       setError("");
       try {
         const loginPromise = handleGoogleLogin();
-        
+
         toast.promise(loginPromise, {
           loading: "Signing you up with Google...",
           success: "Welcome back to Vault-Vogue Maison",
           error: (err: any) => {
-            if (err?.code === "auth/popup-closed-by-user" || err?.code === "auth/cancelled-popup-request") {
+            if (
+              err?.code === "auth/popup-closed-by-user" ||
+              err?.code === "auth/cancelled-popup-request"
+            ) {
               return "Google sign-in was cancelled.";
             }
             return "Google registration failed.";
@@ -193,7 +197,10 @@ export default function CreateAccountPage() {
           setError("OAuth payload format is incorrect or incomplete.");
         }
       } catch (err: any) {
-        if (err?.code === "auth/popup-closed-by-user" || err?.code === "auth/cancelled-popup-request") {
+        if (
+          err?.code === "auth/popup-closed-by-user" ||
+          err?.code === "auth/cancelled-popup-request"
+        ) {
           // Do not display hard page error for user cancellation
           console.log("Google sign-in cancelled by user.");
         } else {
@@ -216,10 +223,12 @@ export default function CreateAccountPage() {
       footerLinkLabel="Sign in"
     >
       <form className="space-y-5" onSubmit={handleSignup}>
-        
         {/* Full Name */}
         <div className="space-y-1.5">
-          <Label htmlFor="fullName" className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]">
+          <Label
+            htmlFor="fullName"
+            className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+          >
             Full Name
           </Label>
           <div className="relative">
@@ -235,13 +244,18 @@ export default function CreateAccountPage() {
             />
           </div>
           {fieldErrors.fullName && (
-            <p className="text-xs text-red-500 font-medium">{fieldErrors.fullName}</p>
+            <p className="text-xs text-red-500 font-medium">
+              {fieldErrors.fullName}
+            </p>
           )}
         </div>
 
         {/* Email */}
         <div className="space-y-1.5">
-          <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]">
+          <Label
+            htmlFor="email"
+            className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+          >
             Email Address
           </Label>
           <div className="relative">
@@ -257,13 +271,18 @@ export default function CreateAccountPage() {
             />
           </div>
           {fieldErrors.email && (
-            <p className="text-xs text-red-500 font-medium">{fieldErrors.email}</p>
+            <p className="text-xs text-red-500 font-medium">
+              {fieldErrors.email}
+            </p>
           )}
         </div>
 
         {/* Phone Number */}
         <div className="space-y-1.5">
-          <Label htmlFor="phoneNumber" className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]">
+          <Label
+            htmlFor="phoneNumber"
+            className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+          >
             Phone Number
           </Label>
           <div className="relative">
@@ -279,13 +298,18 @@ export default function CreateAccountPage() {
             />
           </div>
           {fieldErrors.phoneNumber && (
-            <p className="text-xs text-red-500 font-medium">{fieldErrors.phoneNumber}</p>
+            <p className="text-xs text-red-500 font-medium">
+              {fieldErrors.phoneNumber}
+            </p>
           )}
         </div>
 
         {/* Password */}
         <div className="space-y-1.5">
-          <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]">
+          <Label
+            htmlFor="password"
+            className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+          >
             Create Password
           </Label>
           <div className="relative">
@@ -312,13 +336,18 @@ export default function CreateAccountPage() {
             </button>
           </div>
           {fieldErrors.password && (
-            <p className="text-xs text-red-500 font-medium">{fieldErrors.password}</p>
+            <p className="text-xs text-red-500 font-medium">
+              {fieldErrors.password}
+            </p>
           )}
         </div>
 
         {/* Confirm Password */}
         <div className="space-y-1.5">
-          <Label htmlFor="confirmPassword" className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]">
+          <Label
+            htmlFor="confirmPassword"
+            className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+          >
             Confirm Password
           </Label>
           <div className="relative">
@@ -334,7 +363,9 @@ export default function CreateAccountPage() {
             />
           </div>
           {fieldErrors.confirmPassword && (
-            <p className="text-xs text-red-500 font-medium">{fieldErrors.confirmPassword}</p>
+            <p className="text-xs text-red-500 font-medium">
+              {fieldErrors.confirmPassword}
+            </p>
           )}
         </div>
 
@@ -358,10 +389,16 @@ export default function CreateAccountPage() {
           </span>
         </label>
         {fieldErrors.termsAccepted && (
-          <p className="text-xs text-red-500 font-medium">{fieldErrors.termsAccepted}</p>
+          <p className="text-xs text-red-500 font-medium">
+            {fieldErrors.termsAccepted}
+          </p>
         )}
 
-        {error && <p className="text-xs text-red-500 font-medium text-center">{error}</p>}
+        {error && (
+          <p className="text-xs text-red-500 font-medium text-center">
+            {error}
+          </p>
+        )}
 
         {/* Buttons */}
         <div className="flex flex-col gap-3 pt-2">
@@ -399,14 +436,9 @@ export default function CreateAccountPage() {
             <button
               type="button"
               onClick={() => handleSocialLogin("Google")}
-              className="flex items-center px-2 justify-center gap-2 rounded-xl border border-border/40 bg-background/40 hover:bg-muted py-3 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-colors cursor-pointer"
+              className="flex items-center justify-center gap-2 w-full rounded-xl border border-border/40 bg-background/40 hover:bg-muted py-3 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-colors cursor-pointer"
             >
-              <svg className="size-4" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-6.887 4.114-4.664 0-8.384-3.666-8.384-8.299 0-4.632 3.72-8.3 8.384-8.3 2.215 0 4.115.82 5.602 2.225l3.14-3.14A12.44 12.44 0 0012.24 0C5.556 0 0 5.4 0 12.083 0 18.767 5.556 24 12.24 24c6.72 0 11.238-4.7 11.238-11.4 0-.766-.08-1.503-.228-2.315H12.24z"
-                />
-              </svg>
+              <FcGoogle className="size-5" />
               Google
             </button>
             {/* <button
@@ -424,7 +456,6 @@ export default function CreateAccountPage() {
             </button> */}
           </div>
         </div>
-
       </form>
     </AuthShell>
   );

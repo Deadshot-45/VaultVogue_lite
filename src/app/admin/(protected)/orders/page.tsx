@@ -34,7 +34,7 @@ export default function OrdersPage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await api.get<{ success: boolean; data: any[] }>("/api/orders/admin/all");
+        const response = await api.get<{ success: boolean; data: any[] }>("/api/admin/orders/all");
         if (response.data.success) {
           const mapped = response.data.data.map((o: any) => ({
             id: o.id || o._id,

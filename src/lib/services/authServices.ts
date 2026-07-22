@@ -53,6 +53,24 @@ export const authService = {
     return data;
   },
 
+  adminSignIn: async (email: string, password: string): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>("/api/admin/login", {
+      email,
+      password,
+    });
+
+    const data = response.data;
+    authService.token = data?.data?.token ?? "";
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("authToken", data?.data?.token ?? "");
+    }
+
+    authService.notifyAuthChange();
+
+    return data;
+  },
+
   signUp: async (payload: SignUpPayload): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>(
       "/api/authcontroller/register",

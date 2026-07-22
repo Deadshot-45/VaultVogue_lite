@@ -31,7 +31,7 @@ export default function UsersPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get<{ success: boolean; data: any[] }>("/api/userController/admin/all");
+        const response = await api.get<{ success: boolean; data: any[] }>("/api/admin/users/all");
         if (response.data.success) {
           const mapped = response.data.data.map((u: any) => ({
             id: u._id || u.id,
