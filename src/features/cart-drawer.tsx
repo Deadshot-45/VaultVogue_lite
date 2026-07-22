@@ -12,7 +12,7 @@ import {
 import { ShoppingBag, X, Plus, Minus, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   useAddToCart,
   useCart,
@@ -36,6 +36,7 @@ const CartDrawer: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
@@ -131,7 +132,7 @@ const CartDrawer: React.FC = () => {
               <button
                 onClick={() => {
                   setOpen(false);
-                  router.push("/login");
+                  router.push(`/login?redirect=${pathname}`);
                 }}
                 className="btn-primary"
               >

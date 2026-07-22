@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/lib/store/hooks";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2, Clock, ShieldAlert, ArrowLeft, Store, ShieldCheck } from "lucide-react";
 import Link from "next/link";
@@ -13,6 +13,7 @@ interface SellerGuardProps {
 
 export function SellerGuard({ children }: SellerGuardProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { isAuthenticated, user } = useAppSelector((s) => s.auth);
   
   const [mounted, setMounted] = useState(false);
@@ -23,7 +24,7 @@ export function SellerGuard({ children }: SellerGuardProps) {
     setMounted(true);
 
     if (!isAuthenticated || !user) {
-      router.replace("/login");
+      router.replace(`/login?redirect=${pathname}`);
       return;
     }
 

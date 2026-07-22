@@ -8,11 +8,11 @@ import { authService } from "@/lib/services/authServices";
 import { setCookieWithExpiry } from "@/lib/auth";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { setCredentials } from "@/lib/store/slices/authSlice";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, Suspense } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { handleGoogleLogin } from "@/lib/utility/socialAuth";
@@ -36,8 +36,22 @@ const initialState: LoginFormState = {
   rememberMe: false,
 };
 
-export default function LoginPage() {
+const getSafeRedirect = (redirectParam: string | null) => {
+  if (!redirectParam) return null;
+  const decoded = decodeURIComponent(redirectParam);
+  if (decoded.startsWith("/") && !decoded.startsWith("//")) {
+    return decoded;
+  }
+  if (!decoded.startsWith("/") && !decoded.includes(":") && !decoded.startsWith("//")) {
+    return `/${decoded}`;
+  }
+  return null;
+};
+
+function LoginPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams ? searchParams.get("redirect") : null;
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const [form, setForm] = useState<LoginFormState>(initialState);
@@ -116,7 +130,10 @@ export default function LoginPage() {
         "hours",
       );
 
-      if (loggedInUser?.role === "seller") {
+      const targetPath = getSafeRedirect(redirect);
+      if (targetPath) {
+        router.push(targetPath);
+      } else if (loggedInUser?.role === "seller") {
         router.push("/seller/dashboard");
       } else {
         router.push("/");
@@ -171,7 +188,10 @@ export default function LoginPage() {
             "hours",
           );
 
-          if (user.role === "seller") {
+          const targetPath = getSafeRedirect(redirect);
+          if (targetPath) {
+            router.push(targetPath);
+          } else if (user.role === "seller") {
             router.push("/seller/dashboard");
           } else {
             router.push("/");
@@ -329,5 +349,19 @@ export default function LoginPage() {
 
       </form>
     </AuthShell>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
+          <Loader2 className="h-10 w-10 animate-spin text-[var(--gold)]" />
+        </div>
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
   );
 }

@@ -298,7 +298,7 @@ export function SiteHeader() {
                         asChild
                         className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-foreground"
                       >
-                        <Link href="/login" className="flex items-center gap-2">
+                        <Link href={`/login?redirect=${pathname}`} className="flex items-center gap-2">
                           <User className="h-4 w-4 text-[var(--gold)]" />
                           <span>Login</span>
                         </Link>

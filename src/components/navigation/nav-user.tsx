@@ -9,7 +9,7 @@ import {
   IconUserPlus,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LogoutDialog } from "@/features/auth/components/LogoutDialog";
 
@@ -47,6 +47,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const router = useRouter();
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
@@ -143,7 +144,7 @@ export function NavUser({
               <>
                 <DropdownMenuGroup>
                   <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href="/login" className="flex items-center gap-2">
+                    <Link href={`/login?redirect=${pathname}`} className="flex items-center gap-2">
                       <IconLogin className="size-4" />
                       <span>Login</span>
                     </Link>

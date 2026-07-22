@@ -53,7 +53,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       toast.error("Authentication required", {
         description: "Please sign in to add items to your cart.",
       });
-      router.push("/login");
+      if (!token) {
+        toast.error("Authentication required", {
+          description: "Please sign in to add items to your bag.",
+        });
+        router.push(`/login?redirect=products`);
+        return;
+      }
       return;
     }
 

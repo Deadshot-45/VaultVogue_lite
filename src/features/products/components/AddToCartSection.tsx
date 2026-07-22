@@ -5,7 +5,7 @@ import { ProductDetail, ProductVariant } from "@/lib/utility/productVariant";
 import { AddToCartButton } from "./AddtoCart";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useCartQueue } from "@/hooks/useCartQueue";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   useAddToCart,
   useCart,
@@ -25,6 +25,7 @@ export const AddToCartSection = ({
   selectedVariant?: ProductVariant;
 }) => {
   const router = useRouter();
+  const pathName = usePathname();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const [mounted, setMounted] = useState(false);
 
@@ -71,7 +72,14 @@ export const AddToCartSection = ({
       toast.error("Authentication required", {
         description: "Please sign in to add items to your bag.",
       });
-      router.push("/login");
+      router.push(`/login?redirect=${pathName}`);
+      return;
+    }
+
+    if (!showAuthenticated) {
+      toast.error("Authentication required", {
+        description: "Please sign in to add items to your bag.",
+      });
       return;
     }
 
@@ -98,9 +106,16 @@ export const AddToCartSection = ({
     const token = getAuthCookie();
     if (!token) {
       toast.error("Authentication required", {
-        description: "Please sign in to buy items.",
+        description: "Please sign in to add items to your bag.",
       });
-      router.push("/login");
+      router.push(`/login?redirect=${pathName}`);
+      return;
+    }
+
+    if (!showAuthenticated) {
+      toast.error("Authentication required", {
+        description: "Please sign in to add items to your bag.",
+      });
       return;
     }
 
@@ -127,7 +142,9 @@ export const AddToCartSection = ({
             <Minus size={14} />
           </button>
 
-          <span className="text-sm font-semibold text-[var(--brand-text)]">{cartItem.quantity}</span>
+          <span className="text-sm font-semibold text-[var(--brand-text)]">
+            {cartItem.quantity}
+          </span>
 
           <button
             className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors cursor-pointer active:scale-90"
@@ -140,8 +157,7 @@ export const AddToCartSection = ({
         <AddToCartButton
           onAdd={handleAdd}
           disabled={
-            !selectedVariant ||
-            selectedVariant.isOutOfStock
+            !selectedVariant || selectedVariant.isOutOfStock || !isAuthenticated
           }
           isLoading={addToCart.isPending}
           isError={addToCart.isError}
@@ -151,6 +167,9 @@ export const AddToCartSection = ({
 
       <button
         onClick={handleBuyNow}
+        disabled={
+          !selectedVariant || selectedVariant.isOutOfStock || !isAuthenticated
+        }
         className="btn-secondary w-full py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] border-[var(--gold-soft)] text-[var(--gold)]"
       >
         Buy Now
