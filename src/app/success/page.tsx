@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { api, ApiService } from "@/lib/services/apiservices";
 import { orderService } from "@/lib/services/orderService";
+import { verifyAndPollPaymentStatus } from "@/features/payment-tracking";
 import { toast } from "sonner";
 import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Button } from "@/components/ui/button";
@@ -130,18 +131,25 @@ function SuccessPageContent() {
           console.warn("Payment confirmation warning:", confirmErr);
         }
 
-        // 2. Query verified Order Details from API
+        // 2. Poll & verify payment status using user's polling helper
+        const pollResult = await verifyAndPollPaymentStatus(targetOrderId, 5, 2000);
+
+        // 3. Query verified Order Details from API
         let orderData: any = null;
         try {
           orderData = await orderService.getOrderById(targetOrderId);
         } catch (_) {
-          // Fallback to tracking or payments status endpoint if needed
-          const fallbackRes = await ApiService.get<{ success: boolean; payment: any }>(
-            `/api/payments/${encodeURIComponent(targetOrderId)}/status`
-          ).catch(() => null);
+          if (pollResult.success && pollResult.payment) {
+            orderData = pollResult.payment;
+          } else {
+            // Fallback to tracking or payments status endpoint if needed
+            const fallbackRes = await ApiService.get<{ success: boolean; payment: any }>(
+              `/api/payments/${encodeURIComponent(targetOrderId)}/status`
+            ).catch(() => null);
 
-          if (fallbackRes?.payment) {
-            orderData = fallbackRes.payment;
+            if (fallbackRes?.payment) {
+              orderData = fallbackRes.payment;
+            }
           }
         }
 
@@ -151,11 +159,12 @@ function SuccessPageContent() {
           // Clear the cart now that payment is confirmed
           queryClient.invalidateQueries({ queryKey: ["cart"] });
           toast.success("Payment verified and order confirmed!");
+        } else if (pollResult.status === 'failed') {
+          setError(pollResult.message || "Payment was declined by payment gateway.");
         } else {
           // Display success fallback receipt state
           setOrder({
             _id: targetOrderId,
-            
             orderId: targetOrderId,
             items: [],
             shippingAddress: {
@@ -180,6 +189,7 @@ function SuccessPageContent() {
           });
           toast.success("Payment confirmed!");
         }
+
       } catch (err: any) {
         console.error("Error in success checkout confirmation:", err);
         setError("Error confirming payment details. Please check your tracking page.");
