@@ -28,6 +28,7 @@ import { OrderSummary } from "@/features/checkout/components/OrderSummary";
 import { SuccessModal } from "@/features/checkout/components/SuccessModal";
 import { openRazorpayCheckout } from "@/lib/services/razorpay";
 import { ApiService } from "@/lib/services/apiservices";
+import { paymentTrackingApi } from "@/features/payment-tracking";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",

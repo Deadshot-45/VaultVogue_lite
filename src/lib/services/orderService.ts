@@ -75,12 +75,12 @@ export const orderService = {
     return response.data;
   },
 
-  confirmOrder: async (orderId: string, paymentIntentId?: string) => {
+  confirmOrder: async (orderId: string, sessionId?: string) => {
     const response = await api.post<{ success: boolean }>(
       "/api/orders/confirm",
       {
         orderId,
-        paymentIntentId,
+        sessionId,
       },
     );
     return response.data;
@@ -91,9 +91,9 @@ export const orderService = {
     return response.data;
   },
 
-  getOrderById: async (id:string) => {
+  getOrderById: async (id: string) => {
     const response = await api.get(`/api/orders/${id}`);
     return response.data.data;
-  }
+  },
 };
 

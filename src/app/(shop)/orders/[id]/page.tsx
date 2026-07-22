@@ -182,7 +182,7 @@ export default function OrderDetailsPage() {
 
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <h1 className="font-cormorant text-3xl font-light text-[var(--brand-text)] md:text-4xl">
-                  Receipt #{order._id}
+                  Receipt #{order?._id}
                 </h1>
                 <button
                   onClick={handleCopyId}

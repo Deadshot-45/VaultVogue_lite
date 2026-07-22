@@ -87,6 +87,7 @@ const normalizeSuggestion = (product: Product) => ({
 
 export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
+  const clientUrl = process.env.NEXT_PUBLIC_API;
 
   try {
     const response = await serverFetch<ResponseById>(`/products/getById/${id}`);
@@ -98,36 +99,63 @@ export default async function ProductPage({ params }: PageProps) {
 
     const product = normalizeProduct(rawProduct);
 
-    return (
-      <div className="pb-8 max-w-7xl mx-auto bg-[var(--background)]">
-        <div className="border-b border-border/10 bg-card/10">
-          <div className="mx-auto flex w-full flex-wrap items-center gap-3 px-4 py-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground sm:px-6 lg:px-8">
-            <Link href="/" className="hover:text-foreground">
-              Home
-            </Link>
-            <span>/</span>
-            <span>{product.category}</span>
-            <span>/</span>
-            <span className="text-foreground">{product.name}</span>
-            <Badge className="ml-auto rounded-full px-3 py-1 badge-gold">
-              Maison Piece
-            </Badge>
-          </div>
-        </div>
+    const productSchema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "image": product.images,
+      "description": product.description,
+      "category": product.category,
+      "offers": {
+        "@type": "Offer",
+        "price": product.price.toString(),
+        "priceCurrency": "INR",
+        "priceValidUntil": "2027-12-31",
+        "availability": product.availableSizes.length > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "url": `${clientUrl}/products/${product.id}`,
+        "seller": {
+          "@type": "Organization",
+          "name": product.sellerName,
+        },
+      },
+    };
 
-        <ProductDetailsView
-          product={product}
-          suggestionsSection={
-            <Suspense
-              fallback={
-                <div className="mt-16 animate-pulse h-40 bg-muted/20 rounded-xl"></div>
-              }
-            >
-              <ProductSuggestionsServer currentProductId={product.id} />
-            </Suspense>
-          }
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
         />
-      </div>
+        <div className="pb-8 max-w-7xl mx-auto bg-[var(--background)]">
+          <div className="border-b border-border/10 bg-card/10">
+            <div className="mx-auto flex w-full flex-wrap items-center gap-3 px-4 py-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground sm:px-6 lg:px-8">
+              <Link href="/" className="hover:text-foreground">
+                Home
+              </Link>
+              <span>/</span>
+              <span>{product.category}</span>
+              <span>/</span>
+              <span className="text-foreground">{product.name}</span>
+              <Badge className="ml-auto rounded-full px-3 py-1 badge-gold">
+                Maison Piece
+              </Badge>
+            </div>
+          </div>
+
+          <ProductDetailsView
+            product={product}
+            suggestionsSection={
+              <Suspense
+                fallback={
+                  <div className="mt-16 animate-pulse h-40 bg-muted/20 rounded-xl"></div>
+                }
+              >
+                <ProductSuggestionsServer currentProductId={product.id} />
+              </Suspense>
+            }
+          />
+        </div>
+      </>
     );
   } catch (error) {
     console.error("Product detail fetch failed", error);

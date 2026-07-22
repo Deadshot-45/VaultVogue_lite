@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { api, ApiService } from "@/lib/services/apiservices";
 import { orderService } from "@/lib/services/orderService";
-import { verifyAndPollPaymentStatus } from "@/features/payment-tracking";
+import { useConfirmPayment, useOrderDetails, verifyAndPollPaymentStatus } from "@/features/payment-tracking";
 import { toast } from "sonner";
 import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Button } from "@/components/ui/button";
@@ -29,9 +29,13 @@ function resolveProductImage(imageField: string | undefined): string {
   if (!imageField) return FALLBACK_IMAGE;
 
   const imgStr = imageField.trim();
-  
+
   // If it's a direct URL
-  if (imgStr.startsWith("http://") || imgStr.startsWith("https://") || imgStr.startsWith("/")) {
+  if (
+    imgStr.startsWith("http://") ||
+    imgStr.startsWith("https://") ||
+    imgStr.startsWith("/")
+  ) {
     return imgStr;
   }
 
@@ -100,106 +104,49 @@ function SuccessPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const orderId = searchParams ? (searchParams.get("order_id") || searchParams.get("orderId")) : null;
+  const orderId = searchParams
+  ? searchParams.get("order_id") || searchParams.get("orderId")
+  : null;
   const sessionId = searchParams ? searchParams.get("session_id") : null;
-  const paymentIntentId = searchParams ? (searchParams.get("payment_intent") || searchParams.get("payment_intent_id")) : null;
-  const paymentGateway = searchParams ? (searchParams.get("gateway") || "Payment Gateway") : "Payment Gateway";
+  const paymentIntentId = searchParams
+  ? searchParams.get("payment_intent") ||
+  searchParams.get("payment_intent_id")
+  : null;
+  const targetOrderId = orderId || sessionId;
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [order, setOrder] = useState<OrderDetails | null>(null);
+  const {
+    data: confirmData,
+    isLoading: isConfirming,
+    error: confirmError,
+  } = useConfirmPayment({
+    targetOrderId: targetOrderId || "",
+    sessionId: sessionId || "",
+    paymentIntentId: paymentIntentId || "",
+  });
 
-  const [items, setItems] = useState<OrderItem[]>([]);
+  const {
+    data: order,
+    isLoading: isOrderLoading,
+    error: orderError,
+  } = useOrderDetails(targetOrderId, !!confirmData);
 
   useEffect(() => {
-    const targetOrderId = orderId || sessionId;
-    if (!targetOrderId) {
-      setError("Missing Order Reference ID.");
-      setLoading(false);
-      return;
+    if (confirmData) {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      toast.success("Payment verified and order confirmed!");
     }
+  }, [confirmData, queryClient]);
 
-    const confirmPaymentAndFetchOrder = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  const loading = !targetOrderId || isConfirming || (!!confirmData && isOrderLoading);
+  const error = confirmError
+    ? "Payment confirmation failed."
+    : orderError
+      ? "Error fetching order details. Please check your tracking page."
+      : !targetOrderId
+        ? "Missing Order Reference ID."
+        : null;
 
-        // 1. Confirm payment on backend
-        try {
-          await orderService.confirmOrder(targetOrderId, paymentIntentId || undefined);
-        } catch (confirmErr) {
-          console.warn("Payment confirmation warning:", confirmErr);
-        }
-
-        // 2. Poll & verify payment status using user's polling helper
-        const pollResult = await verifyAndPollPaymentStatus(targetOrderId, 5, 2000);
-
-        // 3. Query verified Order Details from API
-        let orderData: any = null;
-        try {
-          orderData = await orderService.getOrderById(targetOrderId);
-        } catch (_) {
-          if (pollResult.success && pollResult.payment) {
-            orderData = pollResult.payment;
-          } else {
-            // Fallback to tracking or payments status endpoint if needed
-            const fallbackRes = await ApiService.get<{ success: boolean; payment: any }>(
-              `/api/payments/${encodeURIComponent(targetOrderId)}/status`
-            ).catch(() => null);
-
-            if (fallbackRes?.payment) {
-              orderData = fallbackRes.payment;
-            }
-          }
-        }
-
-        if (orderData) {
-          setOrder(orderData);
-          setItems(orderData.items || []);
-          // Clear the cart now that payment is confirmed
-          queryClient.invalidateQueries({ queryKey: ["cart"] });
-          toast.success("Payment verified and order confirmed!");
-        } else if (pollResult.status === 'failed') {
-          setError(pollResult.message || "Payment was declined by payment gateway.");
-        } else {
-          // Display success fallback receipt state
-          setOrder({
-            _id: targetOrderId,
-            orderId: targetOrderId,
-            items: [],
-            shippingAddress: {
-              fullName: "Valued Customer",
-              phone: "N/A",
-              addressLine1: "Standard Delivery Address",
-              city: "City",
-              state: "State",
-              zipCode: "00000",
-              country: "USA",
-            },
-            shippingMethod: "express",
-            shippingFee: 0,
-            subtotal: 0,
-            tax: 0,
-            discount: 0,
-            totalAmount: 0,
-            paymentMethod: "card",
-            paymentStatus: "paid",
-            status: "PROCESSING",
-            createdAt: new Date().toISOString(),
-          });
-          toast.success("Payment confirmed!");
-        }
-
-      } catch (err: any) {
-        console.error("Error in success checkout confirmation:", err);
-        setError("Error confirming payment details. Please check your tracking page.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    confirmPaymentAndFetchOrder();
-  }, [orderId, sessionId, paymentIntentId]);
+  const items: OrderItem[] = order?.items || [];
 
   if (loading) {
     return (
