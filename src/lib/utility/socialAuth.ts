@@ -1,6 +1,6 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "./firebase";
-import { api } from "@/lib/services/apiservices";
+import { authService } from "@/lib/services/authServices";
 
 export const handleGoogleLogin = async () => {
   try {
@@ -8,26 +8,16 @@ export const handleGoogleLogin = async () => {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
 
-    console.log("Userdat : ", user)
-
-    // const { displayName , photoURL, email} = user;
+    console.log("UserData: ", user);
 
     // 2. Fetch the ID token from Firebase
     const token = await user.getIdToken();
 
-    // 3. Send the token to your Express backend
-    const response = await api.post(
-      "/api/auth/google",
-      {}, // Request body (optional data here)
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    // 3. Send the token to your Express backend via authService
+    const data = await authService.googleLogin(token);
 
-    console.log("Backend Session Active:", response.data);
-    return response.data;
+    console.log("Backend Session Active:", data);
+    return data;
   } catch (error) {
     console.error("Authentication mapping failed:", error);
     throw error;

@@ -1,4 +1,4 @@
-import { api } from "./apiservices";
+import { ApiService } from "./apiservices";
 
 export interface Category {
   _id: string;
@@ -69,9 +69,9 @@ interface ProductListResponse {
 }
 
 export const productService = {
-  getDashboardProducts: async (options?: { signal?: AbortSignal }) => {
-    const response = await api.get("/api/landing", options);
-    return response.data.data;
+  getDashboardProducts: async (options?: { signal?: AbortSignal }): Promise<any> => {
+    const res = await ApiService.get<any>("/api/landing");
+    return res.data;
   },
 
   getAllProducts: async (
@@ -89,20 +89,39 @@ export const productService = {
       categoryName?: string;
       search?: string;
       isSale?: boolean;
+      sellerId?: string;
+      isActive?: string;
     },
     options?: { signal?: AbortSignal },
   ): Promise<Product[]> => {
-    const response = await api.get<ProductListResponse>(
+    const data = await ApiService.get<ProductListResponse>(
       "/api/products/getAll",
-      { params, ...options },
+      params,
     );
-    console.log(response);
-    return response.data?.data ?? [];
+    return data?.data ?? [];
   },
 
   getProductById: async (id: string, options?: { signal?: AbortSignal }) => {
-    const response = await api.get(`/api/products/getById/${id}`, options);
-    console.log(response);
-    return response.data;
+    return ApiService.get(`/api/products/getById/${id}`);
+  },
+
+  createProduct: async (payload: any): Promise<{ success: boolean }> => {
+    return ApiService.post<{ success: boolean }>("/api/products/create", payload);
+  },
+
+  deleteProduct: async (id: string): Promise<{ success: boolean }> => {
+    return ApiService.delete<{ success: boolean }>(`/api/products/${id}`);
+  },
+
+  updateProductStatus: async (id: string, isActive: boolean): Promise<{ success: boolean }> => {
+    return ApiService.patch<{ success: boolean }>(`/api/products/${id}/status`, { isActive });
+  },
+
+  uploadImage: async (base64: string, fileName: string): Promise<{ success: boolean; url: string; message?: string }> => {
+    return ApiService.post<{ success: boolean; url: string; message?: string }>("/api/products/upload", {
+      image: base64,
+      fileName,
+    });
   },
 };
+

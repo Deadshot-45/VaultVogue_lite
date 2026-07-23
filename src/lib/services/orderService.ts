@@ -1,5 +1,5 @@
-// src/lib/api/orderService.ts
-import { api } from "./apiservices";
+// src/lib/services/orderService.ts
+import { ApiService } from "./apiservices";
 
 export interface AddressPayload {
   fullName: string;
@@ -45,12 +45,11 @@ export interface CheckoutResponse {
 }
 
 export const orderService = {
-  createCheckoutSession: async (payload: CheckoutPayload) => {
-    const response = await api.post<CheckoutResponse>(
+  createCheckoutSession: async (payload: CheckoutPayload): Promise<CheckoutResponse> => {
+    return ApiService.post<CheckoutResponse>(
       "/api/orders/checkout-session",
       payload,
     );
-    return response.data;
   },
 
   /**
@@ -63,37 +62,43 @@ export const orderService = {
     paymentMethod: "card" | "upi" | "cod",
     idempotencyKey: string,
   ): Promise<CheckoutResponse> => {
-    const response = await api.post<CheckoutResponse>(
+    return ApiService.post<CheckoutResponse>(
       "/api/orders/retry-payment",
       { orderId, paymentMethod, idempotencyKey },
       {
-        headers: {
-          "Idempotency-Key": idempotencyKey,
-        },
-      } as any,
+        "Idempotency-Key": idempotencyKey,
+      },
     );
-    return response.data;
   },
 
-  confirmOrder: async (orderId: string, sessionId?: string) => {
-    const response = await api.post<{ success: boolean }>(
+  confirmOrder: async (orderId: string, sessionId?: string): Promise<{ success: boolean }> => {
+    return ApiService.post<{ success: boolean }>(
       "/api/orders/confirm",
       {
         orderId,
         sessionId,
       },
     );
-    return response.data;
   },
 
-  getUserOrders: async () => {
-    const response = await api.get("/api/orders");
-    return response.data;
+  getUserOrders: async (): Promise<any> => {
+    return ApiService.get("/api/orders");
   },
 
-  getOrderById: async (id: string) => {
-    const response = await api.get(`/api/orders/${id}`);
-    return response.data.data;
+  getOrderById: async (id: string): Promise<any> => {
+    const data = await ApiService.get<{ success: boolean; data: any }>(`/api/orders/${id}`);
+    return data.data;
+  },
+
+  getAdminOrders: async (): Promise<{ success: boolean; data: any[] }> => {
+    return ApiService.get<{ success: boolean; data: any[] }>("/api/admin/orders/all");
+  },
+
+  getRecentAdminOrders: async (): Promise<{ success: boolean; data: any[] }> => {
+    return ApiService.get<{ success: boolean; data: any[] }>("/api/orders/admin/all");
+  },
+
+  updateOrderStatus: async (orderId: string, status: string): Promise<{ success: boolean }> => {
+    return ApiService.patch<{ success: boolean }>(`/api/orders/${orderId}/status`, { status });
   },
 };
-

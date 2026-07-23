@@ -1,5 +1,5 @@
 import { getAuthCookie } from "../auth";
-import { api } from "./apiservices";
+import { ApiService } from "./apiservices";
 
 export interface CartProduct {
   _id?: string;
@@ -77,47 +77,38 @@ export const cartService = {
   getCartDetails: async (): Promise<CartResponse> => {
     const token = getAuthCookie();
     if (!token) return { success: false, code: "UNAUTHORIZED", data: [] };
-    const response = await api.get<CartResponse>("/api/cartController/getCart");
-    return response.data;
+    return ApiService.get<CartResponse>("/api/cartController/getCart");
   },
 
   addToCart: async (payload: AddToCartPayload): Promise<CartResponse> => {
-    const response = await api.post<CartResponse>(
+    return ApiService.post<CartResponse>(
       "/api/cartController/addToCart",
       payload,
       {
-        headers: {
-          Authorization: `Bearer ${getAuthCookie()}`,
-        },
+        Authorization: `Bearer ${getAuthCookie()}`,
       },
     );
-
-    console.log(response);
-    return response.data;
   },
 
   decrementFromCart: async (
     payload: UpdateCartPayload,
   ): Promise<CartResponse> => {
-    const response = await api.post<CartResponse>(
+    return ApiService.post<CartResponse>(
       "/api/cartController/decrementFromCart",
       payload,
     );
-    return response.data;
   },
 
   removeCartItem: async (variantId: string): Promise<CartResponse> => {
-    const response = await api.post<CartResponse>(
+    return ApiService.post<CartResponse>(
       "/api/cartController/removeFromCart",
       { variantId },
     );
-    return response.data;
   },
 
   clearCart: async (): Promise<CartResponse> => {
-    const response = await api.delete<CartResponse>(
+    return ApiService.delete<CartResponse>(
       "/api/cartController/clearCart",
     );
-    return response.data;
   },
 };

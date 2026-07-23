@@ -1,4 +1,4 @@
-import { api } from "./apiservices";
+import { ApiService } from "./apiservices";
 
 export interface User {
   id: string;
@@ -36,12 +36,11 @@ export const authService = {
   },
 
   signIn: async (email: string, password: string): Promise<AuthResponse> => {
-    const response = await api.post<AuthResponse>("/api/authcontroller/login", {
+    const data = await ApiService.post<AuthResponse>("/api/authcontroller/login", {
       identifier: email,
       password,
     });
 
-    const data = response.data;
     authService.token = data?.data?.token ?? "";
 
     if (typeof window !== "undefined") {
@@ -54,12 +53,11 @@ export const authService = {
   },
 
   adminSignIn: async (email: string, password: string): Promise<AuthResponse> => {
-    const response = await api.post<AuthResponse>("/api/admin/login", {
+    const data = await ApiService.post<AuthResponse>("/api/admin/login", {
       email,
       password,
     });
 
-    const data = response.data;
     authService.token = data?.data?.token ?? "";
 
     if (typeof window !== "undefined") {
@@ -72,12 +70,11 @@ export const authService = {
   },
 
   signUp: async (payload: SignUpPayload): Promise<AuthResponse> => {
-    const response = await api.post<AuthResponse>(
+    const data = await ApiService.post<AuthResponse>(
       "/api/authcontroller/register",
       payload,
     );
 
-    const data = response.data;
     authService.token = data?.data?.token ?? "";
 
     if (typeof window !== "undefined") {
@@ -106,4 +103,41 @@ export const authService = {
   },
 
   isAuthenticated: () => !!authService.getToken(),
+
+  googleLogin: async (firebaseToken: string): Promise<any> => {
+    return ApiService.post(
+      "/api/auth/google",
+      {},
+      {
+        Authorization: `Bearer ${firebaseToken}`,
+      },
+    );
+  },
+
+  sendOtp: async (email: string): Promise<any> => {
+    return ApiService.post("/api/authController/forgot-password", { email });
+  },
+
+  verifyOtp: async (email: string, otp: string): Promise<any> => {
+    return ApiService.post("/api/ekycController/verify-otp", {
+      identifier: email,
+      otp,
+    });
+  },
+
+  resetPassword: async (password: string, confirmPassword: string, email: string, token: string): Promise<any> => {
+    return ApiService.post(
+      "/api/authController/reset-password",
+      {
+        confirmPassword,
+        password,
+        identifier: email,
+      },
+      {
+        Authorization: `Bearer ${token}`,
+      },
+    );
+  },
 };
+
+

@@ -14,8 +14,9 @@ import {
   XCircle,
 } from "lucide-react";
 import { toast } from "sonner";
-import { api } from "@/lib/services/apiservices";
+import { orderService } from "@/lib/services/orderService";
 import { useGetSellerOrders } from "@/lib/queries/sellerQuery";
+import { useMutation } from "@tanstack/react-query";
 import {
   Select,
   SelectContent,
@@ -50,27 +51,28 @@ export default function SellerOrdersPage() {
   const { data = [], isLoading, refetch: fetchOrders } = useGetSellerOrders();
   const orders: Order[] = data;
 
-  const handleStatusChange = async (
-    orderId: string,
-    newStatus: Order["status"],
-  ) => {
-    try {
-      const res = await api.patch<{ success: boolean }>(
-        `/api/orders/${orderId}/status`,
-        {
-          status: newStatus,
-        },
-      );
-      if (res.data.success) {
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ orderId, newStatus }: { orderId: string; newStatus: Order["status"] }) =>
+      orderService.updateOrderStatus(orderId, newStatus),
+    onSuccess: (data, { newStatus }) => {
+      if (data.success) {
         toast.success(`Order status updated to ${newStatus.toUpperCase()}`);
         fetchOrders();
       }
-    } catch (err: any) {
+    },
+    onError: (err: any) => {
       console.error("Failed to update status", err);
       toast.error(
-        err.response?.data?.message || "Failed to update order status",
+        err.response?.data?.message || err.message || "Failed to update order status",
       );
-    }
+    },
+  });
+
+  const handleStatusChange = (
+    orderId: string,
+    newStatus: Order["status"],
+  ) => {
+    updateStatusMutation.mutate({ orderId, newStatus });
   };
 
   // Filter orders

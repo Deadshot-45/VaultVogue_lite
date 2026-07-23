@@ -1,6 +1,4 @@
-// lib/api/searchService.ts
-
-import { api } from "./apiservices";
+import { ApiService } from "./apiservices";
 
 type Images = {
   url: string;
@@ -27,18 +25,18 @@ export type SuggestionsResponse = {
 
 export const searchService = {
   search: async (query: string): Promise<SearchResult[]> => {
-    const res = await api.get("/api/products/getAll", {
-      params: { search: query },
+    const res = await ApiService.get<{ success: boolean; data: SearchResult[] }>("/api/products/getAll", {
+      search: query,
     });
 
-    return res.data.data;
+    return res.data;
   },
 
   getSuggestions: async (query: string): Promise<SuggestionsResponse> => {
-    const res = await api.get("/api/products/search-suggestions", {
-      params: { search: query },
+    const res = await ApiService.get<{ success: boolean; data: SuggestionsResponse }>("/api/products/search-suggestions", {
+      search: query,
     });
 
-    return res.data.data;
+    return res.data;
   },
 };

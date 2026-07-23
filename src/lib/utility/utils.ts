@@ -1,4 +1,4 @@
-import { api } from "@/lib/services/apiservices";
+import { productService } from "@/lib/services/productService";
 import { CartListItem } from "@/lib/queries/useCart";
 import { useMutation } from "@tanstack/react-query";
 
@@ -150,18 +150,15 @@ export const uploadImageToServer = async (file: File): Promise<string> => {
     reader.onload = async () => {
       try {
         const base64 = reader.result as string;
-        const res = await api.post("/api/products/upload", {
-          image: base64,
-          fileName: file.name,
-        });
-        if (res.data && res.data.success) {
-          const baseUrl = api.defaults.baseURL || "";
-          const finalUrl = res.data.url.startsWith("http")
-            ? res.data.url
-            : `${baseUrl.replace(/\/$/, "")}${res.data.url}`;
+        const res = await productService.uploadImage(base64, file.name);
+        if (res && res.success) {
+          const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+          const finalUrl = res.url.startsWith("http")
+            ? res.url
+            : `${baseUrl.replace(/\/$/, "")}${res.url}`;
           resolve(finalUrl);
         } else {
-          reject(new Error(res.data?.message || "Upload failed"));
+          reject(new Error(res?.message || "Upload failed"));
         }
       } catch (err: any) {
         reject(err);

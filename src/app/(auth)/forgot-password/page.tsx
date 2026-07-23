@@ -7,7 +7,8 @@ import { Mail, KeyRound, ArrowRight, ArrowLeft, Lock, Eye, EyeOff } from "lucide
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { api } from "@/lib/services/apiservices";
+import { authService } from "@/lib/services/authServices";
+import { useMutation } from "@tanstack/react-query";
 
 type ApiResponse = {
   success: boolean;
@@ -24,87 +25,72 @@ export default function ForgotPasswordPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSendOtp = async (e: React.FormEvent) => {
+  const sendOtpMutation = useMutation({
+    mutationFn: () => authService.sendOtp(email),
+    onSuccess: (data) => {
+      if (data?.success) {
+        toast.success("Verification code sent successfully.");
+        setStep(2);
+      } else {
+        toast.error(data?.message || "Failed to send code.");
+      }
+    },
+    onError: (err: any) => {
+      setError(err.message || "Failed to send code.");
+    },
+  });
+
+  const verifyOtpMutation = useMutation({
+    mutationFn: () => authService.verifyOtp(email, otp),
+    onSuccess: (data) => {
+      if (data.token) {
+        localStorage.setItem("authToken", data.token);
+      }
+      toast.success(data.message || "Code verified successfully.");
+      setStep(3);
+    },
+    onError: (err: any) => {
+      setError(err.message || "Invalid verification code.");
+    },
+  });
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: () => {
+      const token = localStorage.getItem("authToken") || "";
+      return authService.resetPassword(password, confirmPassword, email, token);
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Password changed successfully.");
+      router.push("/login");
+    },
+    onError: (err: any) => {
+      setError(err.message || "Failed to reset password.");
+    },
+  });
+
+  const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       setError("Please enter your email or phone number.");
       return;
     }
-
-    setIsSubmitting(true);
     setError("");
-
-    try {
-      console.log("email : ", email);
-      const response = await api.post<ApiResponse>(
-        "/api/authController/forgot-password",
-        {
-          email: email,
-        },
-      );
-
-      console.log("response : ", response);
-      if (response.data?.success) {
-        toast.success("Verification code sent successfully.");
-        setStep(2);
-      } else {
-        toast.error(response.data?.message || "Failed to send code.");
-      }
-    } catch (err: any) {
-      setError(
-        err?.response?.data?.message || err.message || "Failed to send code.",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    sendOtpMutation.mutate();
   };
 
-  const handleVerifyOtp = async (e: React.FormEvent) => {
+  const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
     if (otp.length !== 6) {
       setError("Please enter a valid 6-digit code.");
       return;
     }
-
-    setIsSubmitting(true);
     setError("");
-
-    try {
-      // NOTE: Depending on your backend API, you would verify the OTP here
-      // or redirect to a reset password page passing the email/OTP along.
-      // Example: await ApiService.post("/authController/verify-otp", { email, otp });
-
-      const response = await api.post<ApiResponse>(
-        "/api/ekycController/verify-otp",
-        {
-          identifier: email,
-          otp: otp,
-        },
-      );
-
-      console.log("response : ", response.data.token);
-
-      if (response.data.token) {
-        localStorage.setItem("authToken", response.data.token);
-      }
-
-      toast.success(response.data.message || "Code verified successfully.");
-      setStep(3);
-    } catch (err: any) {
-      setError(
-        err?.response?.data?.message ||
-          err.message ||
-          "Invalid verification code.",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    verifyOtpMutation.mutate();
   };
 
-  const handleResetPassword = async (e: React.FormEvent) => {
+  const handleResetPassword = (e: React.FormEvent) => {
     e.preventDefault();
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
@@ -114,35 +100,10 @@ export default function ForgotPasswordPage() {
       setError("Passwords do not match.");
       return;
     }
-
-    setIsSubmitting(true);
     setError("");
-
-    try {
-      const response = await api.post<ApiResponse>(
-        "/api/authController/reset-password",
-        {
-          confirmPassword: confirmPassword,
-          password: password,
-          identifier:email
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
-      );
-
-      toast.success(response.data.message || "Password changed successfully.");
-      router.push("/login");
-    } catch (err: any) {
-      setError(
-        err?.response?.data?.message || err.message || "Failed to reset password."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    resetPasswordMutation.mutate();
   };
+
 
   return (
     <AuthShell
@@ -189,10 +150,10 @@ export default function ForgotPasswordPage() {
           <button
             className="btn-primary w-full py-3.5 text-xs font-semibold uppercase tracking-wider mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
             type="submit"
-            disabled={isSubmitting}
+            disabled={sendOtpMutation.isPending}
           >
-            {isSubmitting ? "Sending Code..." : "Send Verification Code"}
-            {!isSubmitting && <ArrowRight className="h-4 w-4" />}
+            {sendOtpMutation.isPending ? "Sending Code..." : "Send Verification Code"}
+            {!sendOtpMutation.isPending && <ArrowRight className="h-4 w-4" />}
           </button>
         </form>
       )}
@@ -229,9 +190,9 @@ export default function ForgotPasswordPage() {
           <button
             className="btn-primary w-full py-3.5 text-xs font-semibold uppercase tracking-wider mt-2 disabled:opacity-50"
             type="submit"
-            disabled={isSubmitting}
+            disabled={verifyOtpMutation.isPending}
           >
-            {isSubmitting ? "Verifying..." : "Verify Code"}
+            {verifyOtpMutation.isPending ? "Verifying..." : "Verify Code"}
           </button>
 
           <div className="text-center mt-4">
@@ -317,10 +278,10 @@ export default function ForgotPasswordPage() {
           <button
             className="btn-primary w-full py-3.5 text-xs font-semibold uppercase tracking-wider mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
             type="submit"
-            disabled={isSubmitting}
+            disabled={resetPasswordMutation.isPending}
           >
-            {isSubmitting ? "Updating..." : "Update Security Key"}
-            {!isSubmitting && <ArrowRight className="h-4 w-4" />}
+            {resetPasswordMutation.isPending ? "Updating..." : "Update Security Key"}
+            {!resetPasswordMutation.isPending && <ArrowRight className="h-4 w-4" />}
           </button>
         </form>
       )}

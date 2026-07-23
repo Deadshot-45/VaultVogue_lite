@@ -27,10 +27,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { api } from "@/lib/services/apiservices";
+import { productService } from "@/lib/services/productService";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useGetSellerProducts } from "@/lib/queries/sellerQuery";
 import { uploadImageToServer } from "@/lib/utility/utils";
+import { useMutation } from "@tanstack/react-query";
 
 interface ProductVariant {
   _id?: string;
@@ -104,7 +105,6 @@ export default function SellerInventoryPage() {
 
   const { user } = useAppSelector((s) => s.auth);
   const [mounted, setMounted] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
   const {
     data: products = [],
@@ -168,23 +168,25 @@ export default function SellerInventoryPage() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
+  const deleteProductMutation = useMutation({
+    mutationFn: (id: string) => productService.deleteProduct(id),
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success("Listing moved to draft and hidden from customers");
+        fetchProducts();
+      }
+    },
+    onError: (err) => {
+      console.error("Failed to delete product", err);
+      toast.error("Failed to delete product");
+    },
+  });
+
+  const handleDelete = (id: string) => {
     if (
       confirm("Are you sure you want to remove this item from your boutique catalog?")
     ) {
-      try {
-        // Move to draft (isActive: false) — acts as a soft delete
-        const res = await api.delete<{ success: boolean }>(
-          `/api/products/${id}`,
-        );
-        if (res.data.success) {
-          toast.success("Listing moved to draft and hidden from customers");
-          fetchProducts();
-        }
-      } catch (err) {
-        console.error("Failed to delete product", err);
-        toast.error("Failed to delete product");
-      }
+      deleteProductMutation.mutate(id);
     }
   };
 
@@ -193,16 +195,12 @@ export default function SellerInventoryPage() {
    * active  → product is live and visible to customers
    * draft   → product is hidden (isActive: false in DB)
    */
-  const toggleStatus = async (id: string, currentStatus: string) => {
-    const nextIsActive = currentStatus !== "active"; // flip
-    const nextStatus = nextIsActive ? "active" : "draft";
-    try {
-      const res = await api.patch<{ success: boolean }>(
-        `/api/products/${id}/status`,
-        { isActive: nextIsActive },
-      );
-      if (res.data.success) {
-        // Optimistic local update — no full reload needed
+  const toggleStatusMutation = useMutation({
+    mutationFn: ({ id, nextIsActive }: { id: string; nextIsActive: boolean }) =>
+      productService.updateProductStatus(id, nextIsActive),
+    onSuccess: (data, { id, nextIsActive }) => {
+      if (data.success) {
+        const nextStatus = nextIsActive ? "active" : "draft";
         queryClient.setQueryData<Product[]>(["sellerProducts", user?.id], (old) =>
           old ? old.map((p) =>
             p.id === id ? { ...p, status: nextStatus as "active" | "draft" } : p,
@@ -214,10 +212,16 @@ export default function SellerInventoryPage() {
             : "Product moved to draft — hidden from customers",
         );
       }
-    } catch (err) {
+    },
+    onError: (err) => {
       console.error("Failed to toggle status", err);
       toast.error("Failed to update product status");
-    }
+    },
+  });
+
+  const toggleStatus = (id: string, currentStatus: string) => {
+    const nextIsActive = currentStatus !== "active"; // flip
+    toggleStatusMutation.mutate({ id, nextIsActive });
   };
 
   const validateForm = () => {
@@ -324,52 +328,53 @@ export default function SellerInventoryPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const saveProductMutation = useMutation({
+    mutationFn: (payload: any) => productService.createProduct(payload),
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success(editingProduct ? "Catalog listing updated" : "New product added to catalog");
+        setIsModalOpen(false);
+        fetchProducts();
+      }
+    },
+    onError: (err: any) => {
+      console.error("Failed to save product", err);
+      toast.error(err.response?.data?.message || err.message || "Failed to save product");
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const itemPrice = Number(formData.price);
     const isVariantCategory = CATEGORIES.includes(formData.category);
-    
     let itemStock = Number(formData.stock);
 
-    try {
-      setIsSaving(true);
-      const payload: any = {
-        name: formData.name,
-        price: itemPrice,
-        category: formData.category,
-        subCategory: formData.subCategory,
-        stock: itemStock,
-        description: formData.description,
-        status: formData.status,
-        image: {
-          url: formData.image,
-          isPrimary: true
-        },
-        sellerId: user?.id,
-      };
+    const payload: any = {
+      name: formData.name,
+      price: itemPrice,
+      category: formData.category,
+      subCategory: formData.subCategory,
+      stock: itemStock,
+      description: formData.description,
+      status: formData.status,
+      image: {
+        url: formData.image,
+        isPrimary: true
+      },
+      sellerId: user?.id,
+    };
 
-      if (editingProduct) {
-        payload.id = editingProduct.id;
-      }
-
-      if (isVariantCategory && variants.length > 0) {
-        payload.variants = variants;
-      }
-
-      const res = await api.post<{ success: boolean }>("/api/products/create", payload);
-      if (res.data.success) {
-        toast.success(editingProduct ? "Catalog listing updated" : "New product added to catalog");
-        setIsModalOpen(false);
-        fetchProducts();
-      }
-    } catch (err: any) {
-      console.error("Failed to save product", err);
-      toast.error(err.response?.data?.message || "Failed to save product");
-    } finally {
-      setIsSaving(false);
+    if (editingProduct) {
+      payload.id = editingProduct.id;
     }
+
+    if (isVariantCategory && variants.length > 0) {
+      payload.variants = variants;
+    }
+
+    saveProductMutation.mutate(payload);
   };
 
   // Filter products
@@ -1177,10 +1182,19 @@ export default function SellerInventoryPage() {
                 </Button>
                 <Button
                   onClick={handleSubmit}
-                  className="btn-primary py-2.5 px-5 text-xs flex items-center gap-1.5 border-0 hover:opacity-90"
+                  disabled={saveProductMutation.isPending}
+                  className="btn-primary py-2.5 px-5 text-xs flex items-center gap-1.5 border-0 hover:opacity-90 disabled:opacity-50"
                 >
-                  <CheckCircle className="h-3.5 w-3.5 text-white" />
-                  {editingProduct ? "Save Changes" : "Publish Listing"}
+                  {saveProductMutation.isPending ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <CheckCircle className="h-3.5 w-3.5 text-white" />
+                  )}
+                  {saveProductMutation.isPending
+                    ? "Saving..."
+                    : editingProduct
+                    ? "Save Changes"
+                    : "Publish Listing"}
                 </Button>
               </div>
             </motion.div>

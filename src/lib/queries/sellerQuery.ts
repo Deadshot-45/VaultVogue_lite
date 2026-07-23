@@ -1,22 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/services/apiservices";
+import { sellerService } from "@/lib/services/sellerService";
 
 export const useGetSellerDashboard = (userId: string | undefined) => {
   return useQuery({
     queryKey: ["sellerDashboard", userId],
     queryFn: async () => {
+      if (!userId) return { products: [], orders: [] };
+
       const [productsRes, ordersRes] = await Promise.all([
-        api.get<{ success: boolean; data: any[] }>(
-          `/api/products/getAll?sellerId=${userId}&limit=100`,
-        ),
-        api.get<{ success: boolean; data: any[] }>("/api/orders/seller/all"),
+        sellerService.getSellerDashboardProducts(userId),
+        sellerService.getSellerOrders(),
       ]);
 
       let products: any[] = [];
       let orders: any[] = [];
 
-      if (productsRes.data.success) {
-        products = productsRes.data.data.map((p: any) => {
+      if (productsRes.success && productsRes.data) {
+        products = productsRes.data.map((p: any) => {
           const totalStock =
             p.variants?.reduce((sum: number, v: any) => {
               const variantStock =
@@ -34,8 +34,8 @@ export const useGetSellerDashboard = (userId: string | undefined) => {
         });
       }
 
-      if (ordersRes.data.success) {
-        orders = ordersRes.data.data;
+      if (ordersRes.success && ordersRes.data) {
+        orders = ordersRes.data;
       }
 
       return { products, orders };
@@ -50,11 +50,9 @@ export const useGetSellerProducts = (userId: string | undefined) => {
     queryKey: ["sellerProducts", userId],
     queryFn: async () => {
       if (!userId) return [];
-      const response = await api.get<{ success: boolean; data: any[] }>(
-        `/api/products/getAll?sellerId=${userId}&limit=100&isActive=all`,
-      );
-      if (response.data.success) {
-        return response.data.data.map((p: any) => {
+      const response = await sellerService.getSellerProducts(userId);
+      if (response.success && response.data) {
+        return response.data.map((p: any) => {
           const totalStock =
             p.sizes?.reduce((sum: number, s: any) => sum + (s.stock || 0), 0) || 0;
           return {
@@ -100,9 +98,9 @@ export const useGetSellerOrders = () => {
   return useQuery({
     queryKey: ["sellerOrders"],
     queryFn: async () => {
-      const response = await api.get<{ success: boolean; data: any[] }>("/api/orders/seller/all");
-      if (response.data.success) {
-        return response.data.data.map((o: any) => ({
+      const response = await sellerService.getSellerOrders();
+      if (response.success && response.data) {
+        return response.data.map((o: any) => ({
           ...o,
           id: o.id || o._id,
         }));

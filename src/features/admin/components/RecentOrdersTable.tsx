@@ -9,7 +9,8 @@ import {
 } from "@tanstack/react-table";
 import type { OrderRow, OrderStatus } from "@/types/admin";
 import { motion } from "framer-motion";
-import { api } from "@/lib/services/apiservices";
+import { orderService } from "@/lib/services/orderService";
+import { useQuery } from "@tanstack/react-query";
 
 const statusConfig: Record<OrderStatus, { label: string; className: string }> = {
   pending:    { label: 'Pending',    className: 'badge badge-gold' },
@@ -72,34 +73,25 @@ const columns = [
 ];
 
 export function RecentOrdersTable() {
-  const [orders, setOrders] = useState<OrderRow[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchRecentOrders = async () => {
-      try {
-        const response = await api.get<{ success: boolean; data: any[] }>("/api/orders/admin/all");
-        if (response.data.success) {
-          const mapped = response.data.data.slice(0, 7).map((o: any) => ({
-            id: o.id || o._id,
-            customer: o.address?.fullName || o.userId?.email || "Guest Customer",
-            email: o.userId?.email || "",
-            date: o.placedAt || o.createdAt,
-            amount: o.totalAmount,
-            status: o.status || "pending",
-            items: o.totalItems || o.items?.length || 0,
-          }));
-          setOrders(mapped);
-        }
-      } catch (err) {
-        console.error("Failed to fetch recent orders", err);
-      } finally {
-        setIsLoading(false);
+  const { data: orders = [], isLoading } = useQuery({
+    queryKey: ["adminRecentOrders"],
+    queryFn: async () => {
+      const response = await orderService.getRecentAdminOrders();
+      if (response.success && response.data) {
+        return response.data.slice(0, 7).map((o: any) => ({
+          id: o.id || o._id,
+          customer: o.address?.fullName || o.userId?.email || "Guest Customer",
+          email: o.userId?.email || "",
+          date: o.placedAt || o.createdAt,
+          amount: o.totalAmount,
+          status: o.status || "pending",
+          items: o.totalItems || o.items?.length || 0,
+        }));
       }
-    };
+      return [];
+    },
+  });
 
-    fetchRecentOrders();
-  }, []);
 
   const table = useReactTable({ data: orders, columns, getCoreRowModel: getCoreRowModel() });
 

@@ -19,7 +19,14 @@ interface DataTableProps<TData> {
   isLoading?: boolean;
   searchPlaceholder?: string;
   rightHeaderAction?: React.ReactNode;
+  globalFilter?: string;
+  setGlobalFilter?: React.Dispatch<React.SetStateAction<string>>;
   emptyState?: React.ReactNode;
+  pageIndex?: number;
+  pageCount?: number;
+  onPageChange?: (index: number) => void;
+  totalRecords?: number;
+  pageSize?: number;
 }
 
 export function DataTable<TData>({
@@ -28,27 +35,44 @@ export function DataTable<TData>({
   isLoading = false,
   searchPlaceholder = "Search...",
   rightHeaderAction,
+  globalFilter = "",
+  setGlobalFilter = () => {},
   emptyState,
+  pageIndex,
+  pageCount,
+  onPageChange,
+  totalRecords,
+  pageSize = 10,
 }: DataTableProps<TData>) {
-  const [globalFilter, setGlobalFilter] = useState("");
-
   const table = useReactTable({
     data,
     columns,
     state: {
       globalFilter,
+      ...(pageIndex !== undefined && {
+        pagination: {
+          pageIndex,
+          pageSize,
+        },
+      }),
     },
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: pageCount !== undefined,
+    pageCount: pageCount,
   });
 
   const tablePageIndex = table.getState().pagination.pageIndex;
   const tablePageCount = table.getPageCount();
-  
-  const canPrev = table.getCanPreviousPage();
-  const canNext = table.getCanNextPage();
+
+  const canPrev =
+    pageIndex !== undefined ? pageIndex > 0 : table.getCanPreviousPage();
+  const canNext =
+    pageIndex !== undefined && pageCount !== undefined
+      ? pageIndex < pageCount - 1
+      : table.getCanNextPage();
 
   const handlePrevPage = () => {
     table.previousPage();
@@ -60,7 +84,11 @@ export function DataTable<TData>({
 
   const itemVariants = {
     hidden: { opacity: 0, y: 8 },
-    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100, damping: 20 } },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring" as const, stiffness: 100, damping: 20 },
+    },
   };
 
   return (
@@ -78,9 +106,7 @@ export function DataTable<TData>({
           />
         </div>
         {rightHeaderAction && (
-          <div className="flex items-center gap-2">
-            {rightHeaderAction}
-          </div>
+          <div className="flex items-center gap-2">{rightHeaderAction}</div>
         )}
       </div>
 
@@ -103,7 +129,7 @@ export function DataTable<TData>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </th>
                   ))}
@@ -126,7 +152,10 @@ export function DataTable<TData>({
                 ) : table.getRowModel().rows.length === 0 ? (
                   // Empty State
                   <tr>
-                    <td colSpan={columns.length} className="py-16 px-6 text-center">
+                    <td
+                      colSpan={columns.length}
+                      className="py-16 px-6 text-center"
+                    >
                       {emptyState || (
                         <div className="flex flex-col items-center justify-center space-y-3 max-w-sm mx-auto">
                           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-50 dark:bg-zinc-900/50 text-muted-foreground">
@@ -137,7 +166,8 @@ export function DataTable<TData>({
                               No records found
                             </h3>
                             <p className="text-xs text-muted-foreground">
-                              We couldn't find any items matching your request. Try adjusting your filter or search.
+                              We couldn't find any items matching your request.
+                              Try adjusting your filter or search.
                             </p>
                           </div>
                         </div>
@@ -162,7 +192,7 @@ export function DataTable<TData>({
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </td>
                       ))}
@@ -180,7 +210,9 @@ export function DataTable<TData>({
             <p className="text-xs text-muted-foreground font-medium">
               Showing{" "}
               <span className="font-mono text-gray-900 dark:text-zinc-100">
-                {table.getFilteredRowModel().rows.length}
+                {totalRecords !== undefined
+                  ? totalRecords
+                  : table.getFilteredRowModel().rows.length}
               </span>{" "}
               records
             </p>
@@ -188,17 +220,21 @@ export function DataTable<TData>({
               <span className="text-xs text-muted-foreground font-medium">
                 Page{" "}
                 <span className="font-mono text-gray-900 dark:text-zinc-100">
-                  {tablePageIndex + 1}
+                  {pageIndex !== undefined ? pageIndex + 1 : tablePageIndex + 1}
                 </span>{" "}
                 of{" "}
                 <span className="font-mono text-gray-900 dark:text-zinc-100">
-                  {tablePageCount}
+                  {pageCount !== undefined ? pageCount : tablePageCount}
                 </span>
               </span>
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"
-                  onClick={handlePrevPage}
+                  onClick={
+                    pageIndex !== undefined && onPageChange
+                      ? () => onPageChange(pageIndex - 1)
+                      : handlePrevPage
+                  }
                   disabled={!canPrev}
                   className="flex items-center justify-center h-8 w-8 rounded-lg border border-border/40 hover:bg-muted-foreground/5 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:hover:bg-transparent transition-colors cursor-pointer"
                 >
@@ -206,7 +242,11 @@ export function DataTable<TData>({
                 </button>
                 <button
                   type="button"
-                  onClick={handleNextPage}
+                  onClick={
+                    pageIndex !== undefined && onPageChange
+                      ? () => onPageChange(pageIndex + 1)
+                      : handleNextPage
+                  }
                   disabled={!canNext}
                   className="flex items-center justify-center h-8 w-8 rounded-lg border border-border/40 hover:bg-muted-foreground/5 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:hover:bg-transparent transition-colors cursor-pointer"
                 >

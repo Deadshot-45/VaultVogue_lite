@@ -174,4 +174,18 @@ export const ApiService = {
       throw normalizeApiError(error);
     }
   },
+
+  patch: async <T>(
+    url: string,
+    data?: object,
+    headers?: AxiosRequestConfig["headers"]
+  ): Promise<T> => {
+    try {
+      const response = await api.patch<T>(url, data, { headers });
+      return response.data;
+    } catch (error) {
+      throw normalizeApiError(error);
+    }
+  },
 };
+
