@@ -207,7 +207,7 @@ export default function PublicSellerOnboardPage() {
       );
 
       // 2. Fallback to LocalStorage
-      let localSellers = localStorage.getItem("vault_vogue_admin_sellers");
+      const localSellers = localStorage.getItem("vault_vogue_admin_sellers");
       let sellersList = localSellers
         ? JSON.parse(localSellers)
         : [

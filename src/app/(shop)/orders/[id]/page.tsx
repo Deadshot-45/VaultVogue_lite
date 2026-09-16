@@ -49,7 +49,9 @@ function resolveProductImage(imageField: string | undefined): string {
         if (Array.isArray(parsed) && parsed[0]?.url) return parsed[0].url;
       }
     }
-  } catch {}
+  } catch {
+    // Ignore JSON parsing error and fallback to regex/default
+  }
 
   const match = imgStr.match(/url\s*:\s*['"]([^'"]+)['"]/i);
   if (match && match[1]) {

@@ -1,5 +1,3 @@
-import { ApiService } from "./apiservices";
-
 declare global {
   interface Window {
     Razorpay?: any;
@@ -52,14 +50,14 @@ export interface RazorpayOptions {
   onDismiss?: () => void;
 }
 
-export const openRazorpayCheckout = (options: RazorpayOptions): Promise<void> => {
-  return new Promise(async (resolve, reject) => {
-    const loaded = await loadRazorpayScript();
+export const openRazorpayCheckout = async (options: RazorpayOptions): Promise<void> => {
+  const loaded = await loadRazorpayScript();
 
-    if (!loaded || !window.Razorpay) {
-      reject(new Error("Razorpay SDK failed to load. Please check your internet connection."));
-      return;
-    }
+  if (!loaded || !window.Razorpay) {
+    throw new Error("Razorpay SDK failed to load. Please check your internet connection.");
+  }
+
+  return new Promise((resolve, reject) => {
 
     const razorpayKey =
       options.keyId ||

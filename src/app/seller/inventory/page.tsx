@@ -349,7 +349,7 @@ export default function SellerInventoryPage() {
 
     const itemPrice = Number(formData.price);
     const isVariantCategory = CATEGORIES.includes(formData.category);
-    let itemStock = Number(formData.stock);
+    const itemStock = Number(formData.stock);
 
     const payload: any = {
       name: formData.name,
