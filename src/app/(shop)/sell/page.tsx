@@ -324,56 +324,48 @@ export default function PublicSellerOnboardPage() {
 
   if (submitted) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto w-full max-w-2xl px-4 py-16 sm:px-6 sm:py-24 text-[var(--vault-ink)]">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="card text-center p-8 md:p-12 flex flex-col items-center space-y-6"
+          className="border border-[var(--vault-line)] bg-[var(--vault-panel)] text-center p-8 sm:p-12 flex flex-col items-center space-y-6 backdrop-blur-md shadow-2xl"
         >
-          <div
-            className="flex h-16 w-16 items-center justify-center rounded-full border shadow-sm"
-            style={{
-              background: "var(--gold-faint)",
-              borderColor: "var(--gold-soft)",
-            }}
-          >
-            <Clock
-              className="h-7 w-7 animate-pulse"
-              style={{ color: "var(--gold)" }}
-            />
+          <div className="flex h-16 w-16 items-center justify-center border border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)]">
+            <Clock className="h-7 w-7 animate-pulse text-[var(--gold)]" />
           </div>
 
           <div className="space-y-2">
-            <h2 className="font-cormorant text-3xl font-light text-[var(--brand-text)]">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] block">
+              // JURY VALIDATION QUEUE
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
               Application Under Curation Review
             </h2>
-            <p className="text-xs text-muted-foreground max-w-md mx-auto">
-              Thank you for applying to Vault Vogue. Your boutique profile is
-              currently pending validation by our curation officers.
+            <p className="text-xs text-[var(--vault-muted)] max-w-md mx-auto font-mono">
+              Thank you for applying to Vault Vogue. Your boutique label profile is
+              currently pending credentials verification by our curation board.
             </p>
           </div>
 
-          <div className="w-full max-w-sm rounded-xl p-4 border border-[var(--gold-faint)] bg-[var(--gold-glow)] text-left text-xs space-y-2 text-muted-foreground">
-            <p className="font-semibold text-[var(--brand-text)] flex items-center gap-1.5">
+          <div className="w-full max-w-md p-5 border border-[var(--vault-line)] bg-[var(--vault-canvas)] text-left text-xs space-y-2 text-[var(--vault-muted)] font-mono">
+            <p className="font-bold text-[var(--vault-ink)] flex items-center gap-1.5 uppercase text-[10px] tracking-wider border-b border-[var(--vault-line)] pb-2">
               <Shield className="h-3.5 w-3.5 text-[var(--gold)]" />
               What happens next?
             </p>
-            <p>
-              1. Curation team checks brand eligibility and GST credentials.
+            <p className="pt-1">
+              1. Curation team verifies label eligibility, catalog artistry, and GST credentials.
             </p>
             <p>
-              2. Once verified, account status will be changed to{" "}
-              <strong>Approved</strong>.
+              2. Once validated, status transitions to <strong>Approved</strong>.
             </p>
             <p>
-              3. You can then log into your <strong>Seller Atelier</strong> to
-              manage inventory and list items.
+              3. You receive direct access to your <strong>Seller Atelier</strong> to manage inventory, drops, and waybills.
             </p>
           </div>
 
           <button
             onClick={() => router.push("/")}
-            className="btn-primary py-2.5 px-6 text-xs uppercase tracking-wider font-semibold"
+            className="border border-[var(--gold)] bg-[var(--gold)] text-white py-3 px-8 font-mono text-[11px] uppercase tracking-wider font-bold transition hover:opacity-90"
           >
             Return to Boutique
           </button>
@@ -383,59 +375,98 @@ export default function PublicSellerOnboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
-      {/* Intro Header */}
-      <div className="text-center mb-8 space-y-2">
-        <h2 className="font-cormorant text-4xl font-light text-[var(--brand-text)]">
-          Partner with Vault Vogue
-        </h2>
-        <p className="text-xs text-muted-foreground max-w-md mx-auto">
-          Expand your luxury brand reach. Onboard your label and start listing
-          items on the boutique floor.
-        </p>
+    <div className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 sm:py-20 text-[var(--vault-ink)]">
+      {/* Editorial Header Block */}
+      <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 backdrop-blur-md mb-8">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-[var(--gold)]" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--gold)]">
+              Atelier Partnership &amp; Label Curation
+            </span>
+          </div>
+          <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            APPLICATION PORTAL // STEP 0{step} OF 03
+          </span>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+          <div className="lg:col-span-8 space-y-4">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+              Partner with <span className="font-serif italic text-[var(--gold)]">Vault Vogue.</span>
+              <br />
+              Onboard Your Label.
+            </h1>
+            <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+              Join an exclusive curation of independent luxury designers, heritage textile ateliers, and avant-garde creators.
+              Reach discerning global collectors across our digital and physical showrooms.
+            </p>
+          </div>
+
+          <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
+            <div className="flex justify-between text-[11px]">
+              <span className="text-[var(--vault-muted)]">CURATION REVIEW:</span>
+              <span className="font-bold text-[var(--gold)]">48-HOUR JURY</span>
+            </div>
+            <div className="flex justify-between text-[11px]">
+              <span className="text-[var(--vault-muted)]">COMMISSION MARGIN:</span>
+              <span className="text-emerald-500 font-bold">15% PLATFORM CUT</span>
+            </div>
+            <div className="flex justify-between text-[11px]">
+              <span className="text-[var(--vault-muted)]">LOGISTICS ASSIST:</span>
+              <span className="font-bold">INCLUDED (AIR DDP)</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Stepper Steps Header */}
-      <div className="flex items-center justify-center gap-2 mb-10 text-xs">
+      <div className="flex items-center justify-center gap-2 sm:gap-4 mb-10 text-xs font-mono">
         <button
           onClick={() => step > 1 && handleGoStep(1)}
-          className={`flex items-center gap-1.5 font-semibold transition-all ${
-            step >= 1 ? "text-[var(--gold)]" : "text-muted-foreground"
+          className={`flex items-center gap-2 px-3 py-1.5 border transition-all ${
+            step >= 1
+              ? "border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)] font-bold"
+              : "border-[var(--vault-line)] text-[var(--vault-muted)]"
           }`}
         >
-          <span className="flex h-5 w-5 items-center justify-center rounded-full border text-[10px] border-[var(--gold)]">
+          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--gold)] text-white text-[9px]">
             1
           </span>
-          Business Details
+          <span className="uppercase tracking-wider">Business Details</span>
         </button>
-        <div className="w-8 border-t border-[var(--gold-faint)]" />
+        <div className="w-6 sm:w-12 border-t border-[var(--vault-line)]" />
         <button
           onClick={() => step > 2 && handleGoStep(2)}
-          className={`flex items-center gap-1.5 font-semibold transition-all ${
-            step >= 2 ? "text-[var(--gold)]" : "text-muted-foreground"
+          className={`flex items-center gap-2 px-3 py-1.5 border transition-all ${
+            step >= 2
+              ? "border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)] font-bold"
+              : "border-[var(--vault-line)] text-[var(--vault-muted)]"
           }`}
           disabled={step < 2}
         >
-          <span className="flex h-5 w-5 items-center justify-center rounded-full border text-[10px] border-border">
+          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--vault-line)] text-[var(--vault-ink)] text-[9px]">
             2
           </span>
-          Payout Bank
+          <span className="uppercase tracking-wider">Payout Bank</span>
         </button>
-        <div className="w-8 border-t border-[var(--gold-faint)]" />
+        <div className="w-6 sm:w-12 border-t border-[var(--vault-line)]" />
         <span
-          className={`flex items-center gap-1.5 font-semibold transition-all ${
-            step === 3 ? "text-[var(--gold)]" : "text-muted-foreground"
+          className={`flex items-center gap-2 px-3 py-1.5 border transition-all ${
+            step === 3
+              ? "border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)] font-bold"
+              : "border-[var(--vault-line)] text-[var(--vault-muted)]"
           }`}
         >
-          <span className="flex h-5 w-5 items-center justify-center rounded-full border text-[10px] border-border">
+          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--vault-line)] text-[var(--vault-ink)] text-[9px]">
             3
           </span>
-          Review Apply
+          <span className="uppercase tracking-wider">Review Apply</span>
         </span>
       </div>
 
       {/* Main Form container */}
-      <div className="card overflow-hidden min-h-[380px] flex flex-col justify-between p-6 md:p-8">
+      <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-10 backdrop-blur-md overflow-hidden min-h-[380px] flex flex-col justify-between shadow-xl">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.div
             key={step}

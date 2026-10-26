@@ -2,29 +2,35 @@
 
 ## Color System
 
-### Primary Palette
+### Vault-Vogue Dual Theme Architecture
 
 ```
-Slate (Text & Backgrounds)
-├── 50:   #f8fafc   (Lightest backgrounds)
-├── 100:  #f1f5f9   (Hover states)
-├── 200:  #e2e8f0   (Borders)
-├── 600:  #475569   (Secondary text)
-├── 700:  #334155   (Body text)
-├── 900:  #0f172a   (Primary text & headings)
-└── 950:  #020617   (Darkest)
+Dark Theme ("Obsidian")
+├── Canvas:         #0a0a0c  (--vault-canvas / deep cosmic dark)
+├── Panel:          #121216  (--vault-panel / glass cards)
+├── Border/Line:    #24242c  (--vault-line / hairline boundaries)
+├── Muted Text:     #8e8e98  (--vault-muted / secondary copy)
+├── Primary Ink:    #f3f2ee  (--vault-ink / warm white headings)
+└── Accent / Brand: #0891b2  (--vault-accent / --gold / Green)
+    ├── Hover:      #0e7490  (Darker green/cyan state)
+    ├── Faint:      rgba(8, 145, 178, 0.15) (Tints & glow)
+    └── Contrast:   #ffffff  (--vault-accent-ink)
 
-Orange (Accent & CTAs)
-├── 100:  #ffedd5   (Light backgrounds)
-├── 500:  #f97316   (Primary accent)
-├── 600:  #ea580c   (Hover state)
-└── 700:  #c2410c   (Active state)
+Light Theme ("Alabaster")
+├── Canvas:         #f6f5f0  (--vault-canvas / warm alabaster)
+├── Panel:          #eeede8  (--vault-panel / soft tactile stone)
+├── Border/Line:    #d5d2c8  (--vault-line / architectural stone edge)
+├── Muted Text:     #5a5955  (--vault-muted / secondary copy)
+├── Primary Ink:    #0a0a0c  (--vault-ink / near black text)
+└── Accent / Brand: #B76E79  (--vault-accent / --gold / Rose Gold)
+    ├── Hover:      #9e5963  (Rich deep rose gold state)
+    ├── Faint:      rgba(183, 110, 121, 0.12) (Tints & glow)
+    └── Contrast:   #ffffff  (--vault-accent-ink)
 
 Semantic Colors
-├── Green 600: #16a34a (Success messages)
-├── Red 600:   #dc2626 (Error/delete)
-├── Yellow 400: #facc15 (Star ratings)
-└── Blue:      Used in category gradients
+├── Success:   oklch(0.72 0.19 150) (Authenticity verified)
+├── Danger:    oklch(0.637 0.237 25.331) (Sale / Destructive)
+└── Archive:   #c59b27 (Limited editions)
 ```
 
 ## Typography
@@ -93,7 +99,7 @@ Full:    w-full
 
 ```
 Section padding:     py-16 sm:py-24
-Container max-width: max-w-7xl
+Container max-width: max-
 Card padding:        p-6
 Input height:        py-3
 Icon size:           h-5 w-5 (default)
@@ -131,6 +137,7 @@ Wide:       1536px+   (2xl:)
 ```
 
 ### Common Patterns
+
 
 ```jsx
 // Two columns on mobile, three on tablet, four on desktop
@@ -202,7 +209,7 @@ color: transparent
 
 ```jsx
 <section className="py-16 sm:py-24 bg-white">
-  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{/* Content */}</div>
+  <div className="mx-auto max- px-4 sm:px-6 lg:px-8">{/* Content */}</div>
 </section>
 ```
 

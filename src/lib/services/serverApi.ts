@@ -9,8 +9,6 @@ export async function serverFetch<T>(
     next: { revalidate: 60 }, // 🔥 caching
   });
 
-  console.log(res);
-
   if (!res.ok) {
     throw new Error("API Error");
   }

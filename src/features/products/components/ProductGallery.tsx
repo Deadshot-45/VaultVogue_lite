@@ -45,7 +45,7 @@ export const ProductGallery = ({
           const isActive = active === img;
           return (
             <button
-              key={i}
+              key={`${img}-${i}`}
               onClick={() => setActive(img)}
               className={`relative h-20 w-16 shrink-0 rounded-xl overflow-hidden transition-all duration-200 ease-out ${
                 isActive

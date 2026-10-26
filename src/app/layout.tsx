@@ -23,19 +23,23 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${cormorant.variable} ${montserrat.variable}`}
+      data-vault-theme="obsidian"
+      className={`${cormorant.variable} ${montserrat.variable} vault-storefront dark`}
     >
-      <body className="sale-theme">
+      <body className="vault-storefront antialiased selection:bg-[var(--vault-accent)] selection:text-[var(--vault-accent-ink)]">
         <Analytics />
         {/* <SpeedInsights /> */}
         <Providers>{children}</Providers>

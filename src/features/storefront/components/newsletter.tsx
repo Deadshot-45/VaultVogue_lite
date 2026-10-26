@@ -1,85 +1,99 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { Mail } from "lucide-react";
+import { Mail, ArrowRight, ShieldCheck } from "lucide-react";
 
-export default function Newsletter() {
+export function Newsletter() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     setLoading(true);
-    setTimeout(() => {
+    window.setTimeout(() => {
       setLoading(false);
-      toast.success("Welcome to the Maison", {
-        description: "You have successfully subscribed to the Vault-Vogue newsletter.",
+      setSubscribed(true);
+      toast.success("Welcome to the Atelier", {
+        description: "You have been registered for private seasonal drop dispatches.",
       });
       setEmail("");
-    }, 1000);
+    }, 700);
   };
 
   return (
-    <section className="py-20 bg-[var(--background)]">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        
-        {/* Gradient Container */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-tr from-[var(--gold)] via-[var(--brand-text)] to-[var(--brand-text)] px-8 py-16 text-center text-white shadow-2xl"
-        >
-          {/* Subtle light orb */}
-          <div className="absolute -left-20 -top-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
-          <div className="absolute -right-20 -bottom-20 h-60 w-60 rounded-full bg-[var(--gold)]/20 blur-3xl" />
+    <section className="border-t border-[var(--vault-line)] bg-[var(--vault-canvas)] text-[var(--vault-ink)] px-4 py-16 sm:px-8 sm:py-24 transition-colors duration-300">
+      <div className="mx-auto max-w-[1440px]">
+        <div className="relative overflow-hidden border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-14 lg:p-16">
+          {/* Subtle Ambient Glow */}
+          <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-[var(--vault-accent)]/8 blur-3xl" />
+          <div className="pointer-events-none absolute -left-24 -bottom-24 h-96 w-96 rounded-full bg-[var(--vault-line)]/20 blur-3xl" />
 
-          <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--gold)]">
-              Newsletter Subscription
-            </span>
-
-            <h2 className="font-cormorant text-4xl font-light tracking-wide text-white md:text-5xl">
-              Join the Maison
-            </h2>
-
-            <div className="gold-divider mx-auto" />
-
-            <p className="text-sm text-white/75 leading-relaxed max-w-md mx-auto">
-              Subscribe to receive early access to new collections, exclusive private sale invitations, and editorial styling guides.
-            </p>
-
-            {/* Email Form */}
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto pt-4">
-              <div className="relative flex-1">
-                <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full pl-11 pr-4 py-3.5 rounded-full border border-white/20 bg-white/10 text-sm text-white placeholder-white/50 focus:outline-none focus:border-white focus:bg-white/15 backdrop-blur-md transition-all"
-                />
+          <div className="relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
+            {/* Left Content */}
+            <div className="space-y-4 lg:col-span-7">
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)]">
+                Private Archive Access
+              </span>
+              <h2 className="text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)] sm:text-5xl lg:text-6xl">
+                Join the Atelier
+              </h2>
+              <p className="max-w-xl text-xs leading-relaxed text-[var(--vault-muted)] sm:text-sm">
+                Receive private dispatches on limited-run drops, advance invitations to seasonal
+                vault sales, and architectural styling guides curated by our Paris &amp; Tokyo ateliers.
+              </p>
+              <div className="flex items-center gap-2 pt-2 text-[10px] font-mono uppercase tracking-wider text-[var(--vault-muted)]">
+                <ShieldCheck size={14} className="text-[var(--vault-accent)]" />
+                <span>Strict privacy · No solicitations · Instant unsubscription</span>
               </div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="rounded-full bg-white px-8 py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)] transition-transform hover:scale-[1.02] active:scale-98 disabled:opacity-75 shadow-lg hover:shadow-xl shrink-0"
-              >
-                {loading ? "Joining..." : "Subscribe"}
-              </button>
-            </form>
+            </div>
+
+            {/* Right Form */}
+            <div className="lg:col-span-5">
+              {subscribed ? (
+                <div className="border border-[var(--vault-line)] bg-[var(--vault-canvas)] p-6 text-center space-y-2">
+                  <p className="font-mono text-xs uppercase font-bold text-[var(--vault-accent)]">
+                    Access Granted
+                  </p>
+                  <p className="text-xs text-[var(--vault-muted)]">
+                    Your invitation has been dispatched. Watch your inbox before the next archive release.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
+                  <div className="relative flex-1">
+                    <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--vault-muted)]" />
+                    <input
+                      type="email"
+                      placeholder="ENTER EMAIL FOR ACCESS"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="h-12 w-full border border-[var(--vault-line)] bg-[var(--vault-canvas)] pl-11 pr-4 font-mono text-xs uppercase tracking-wider text-[var(--vault-ink)] placeholder:text-[var(--vault-muted)] focus:border-[var(--vault-accent)] focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="btn-primary flex h-12 items-center justify-center gap-2 px-6 font-mono text-[10px] uppercase font-bold tracking-[0.16em] text-[var(--vault-accent-ink)] bg-[var(--vault-accent)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 shrink-0"
+                  >
+                    {loading ? "Registering..." : (
+                      <>
+                        Subscribe <ArrowRight size={13} />
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
-
-        </motion.div>
-
+        </div>
       </div>
     </section>
   );
 }
+
+export default Newsletter;

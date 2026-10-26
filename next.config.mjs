@@ -36,13 +36,19 @@ if (apiUrl) {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  cacheComponents: true,
+  partialPrefetching: true,
   images: {
     remotePatterns,
     unoptimized: true,
   },
   allowedDevOrigins: ["192.168.6.167", "192.168.6.151"],
   experimental: {
-    optimizePackageImports: ["lucide-react", "@tabler/icons-react", "react-icons"],
+    optimizePackageImports: [
+      "lucide-react",
+      "@tabler/icons-react",
+      "react-icons",
+    ],
   },
 };
 

@@ -1,46 +1,58 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Truck, Scissors, ShieldCheck, Gift, RefreshCw, Sparkles } from "lucide-react";
+import {
+  Truck,
+  Scissors,
+  ShieldCheck,
+  Gift,
+  RefreshCw,
+  Sparkles,
+} from "lucide-react";
 
 const signals = [
   {
     icon: Truck,
     title: "Complimentary Shipping",
-    description: "Enjoy complimentary premium courier service on all orders exceeding $150.",
+    description:
+      "Enjoy complimentary premium courier service on all orders exceeding $150.",
   },
   {
     icon: Scissors,
     title: "Atelier Customization",
-    description: "Book custom tailoring consultations online at any of our heritage locations.",
+    description:
+      "Book custom tailoring consultations online at any of our heritage locations.",
   },
   {
     icon: ShieldCheck,
     title: "Secure Checkouts",
-    description: "Your financial security is guaranteed via our double-encrypted payment gate.",
+    description:
+      "Your financial security is guaranteed via our double-encrypted payment gate.",
   },
   {
     icon: Gift,
     title: "Maison Presentation",
-    description: "Each item arrives beautifully enclosed in our signature gold-embossed boxes.",
+    description:
+      "Each item arrives beautifully enclosed in our signature gold-embossed boxes.",
   },
   {
     icon: RefreshCw,
     title: "Atelier Returns",
-    description: "Initiate smooth returns or alterations within 30 days of receiving your order.",
+    description:
+      "Initiate smooth returns or alterations within 30 days of receiving your order.",
   },
   {
     icon: Sparkles,
     title: "Pure Sourcing",
-    description: "Only certified organic silk, extra-fine merino, and long-staple cashmere fibers.",
+    description:
+      "Only certified organic silk, extra-fine merino, and long-staple cashmere fibers.",
   },
 ];
 
 export default function Features() {
   return (
     <section className="py-20 bg-[var(--bg)] border-t border-b border-border/10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+      <div className="mx-auto max- px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <div className="mb-14 text-center">
           <span className="section-label">Maison Services</span>
@@ -66,7 +78,7 @@ export default function Features() {
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[var(--gold-soft)] bg-[var(--gold-glow)] text-[var(--gold)] transition-all duration-300 group-hover:bg-[var(--gold)] group-hover:text-white group-hover:scale-105">
                   <sig.icon className="h-5 w-5" />
                 </div>
-                
+
                 <div className="space-y-1.5">
                   <h3 className="font-montserrat text-sm font-semibold tracking-wide text-[var(--brand-text)]">
                     {sig.title}
@@ -79,7 +91,6 @@ export default function Features() {
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );

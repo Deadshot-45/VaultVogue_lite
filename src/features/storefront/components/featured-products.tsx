@@ -104,7 +104,7 @@ export default function FeaturedProducts({
 
   return (
     <section className="py-20 bg-[var(--background)]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max- px-4 sm:px-6 lg:px-8">
         {/* Editorial Title */}
         <div className="mb-14 text-center">
           <span className="section-label">Selected Pieces</span>

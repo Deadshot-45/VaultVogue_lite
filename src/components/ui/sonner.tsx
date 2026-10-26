@@ -9,11 +9,11 @@ import { useTheme } from "@/components/theme-context"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme } = useTheme()
+  const { colorMode } = useTheme()
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={colorMode as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
         unstyled: true,

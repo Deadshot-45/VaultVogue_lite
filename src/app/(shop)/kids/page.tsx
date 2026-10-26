@@ -6,12 +6,25 @@ import { useGetProducts } from "@/lib/queries/useGetProducts";
 import { classifySubcategory } from "@/lib/utility/utils";
 import { ProductCardSkeletonGrid } from "@/features/products/components/product-card-skeleton";
 
-const categories = ["All", "Baby", "Knitwear", "Outfits", "Footwear", "Trousers", "Sleepwear", "Outerwear"];
+const categories = [
+  "All",
+  "Baby",
+  "Knitwear",
+  "Outfits",
+  "Footwear",
+  "Trousers",
+  "Sleepwear",
+  "Outerwear",
+];
 
 export default function KidsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  const { data, isLoading } = useGetProducts({ categoryName: "kids", label: "kids", limit: 20 });
+  const { data, isLoading } = useGetProducts({
+    categoryName: "kids",
+    label: "kids",
+    limit: 20,
+  });
   const allProducts = data?.pages.flatMap((page) => page) || [];
 
   const classifiedProducts = allProducts.map((p) => ({
@@ -26,8 +39,7 @@ export default function KidsPage() {
 
   return (
     <section className="w-full py-16 bg-[var(--background)]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+      <div className="mx-auto max- px-4 sm:px-6 lg:px-8">
         {/* Editorial Heading */}
         <div className="mb-12">
           <p className="section-label">Little Ones</p>
@@ -36,7 +48,8 @@ export default function KidsPage() {
             Kid's Collection
           </h1>
           <p className="mt-3 text-xs text-muted-foreground max-w-md leading-relaxed">
-            Miniature edits of extra-fine knitwear and soft organic playsuits designed with extreme care for delicate skin.
+            Miniature edits of extra-fine knitwear and soft organic playsuits
+            designed with extreme care for delicate skin.
           </p>
         </div>
 
@@ -50,7 +63,7 @@ export default function KidsPage() {
                 onClick={() => setSelectedCategory(cat)}
                 className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-98 cursor-pointer ${
                   isActive
-                    ? "bg-[var(--gold)] text-white shadow-md"
+                    ? "bg-[var(--gold)] text-background shadow-md"
                     : "border border-border/40 text-muted-foreground hover:text-foreground hover:border-border"
                 }`}
               >
@@ -62,7 +75,10 @@ export default function KidsPage() {
 
         {/* Product Grid */}
         {isLoading ? (
-          <ProductCardSkeletonGrid count={8} columns="grid-cols-2 md:grid-cols-3 lg:grid-cols-4" />
+          <ProductCardSkeletonGrid
+            count={8}
+            columns="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          />
         ) : filteredProducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-80 text-center space-y-4">
             <h3 className="text-lg font-semibold">No creations found</h3>
@@ -77,7 +93,6 @@ export default function KidsPage() {
             ))}
           </div>
         )}
-
       </div>
     </section>
   );

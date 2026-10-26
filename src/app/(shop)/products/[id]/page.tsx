@@ -1,12 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ProductDetailsView from "@/features/products/components/ProductDetailsView";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Product } from "@/lib/services/productService";
 import { serverFetch } from "@/lib/services/serverApi";
-import Link from "next/link";
-import { Suspense } from "react";
+import ProductDetailsView from "@/features/products/components/ProductDetailsView";
 import { Suggestions } from "@/features/products/components/Suggestions";
+import { ProductDetailClient } from "@/features/storefront/components/product-detail-client";
+import {
+  getVariantProduct,
+  VARIANT_PRODUCTS,
+} from "@/features/storefront/data/catalog";
+
+type PageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
 type Response = {
   success: string;
@@ -14,6 +27,7 @@ type Response = {
   code?: number;
   data: Product[];
 };
+
 type ResponseById = {
   success: string;
   message: string;
@@ -21,14 +35,30 @@ type ResponseById = {
   data: Product;
 };
 
-type PageProps = {
-  params: Promise<{
-    id: string;
-  }>;
+export function generateStaticParams() {
+  return VARIANT_PRODUCTS.flatMap(({ id, slug }) => [{ id }, { id: slug }]);
+}
+
+export const unstable_instant = false;
+
+export const metadata: Metadata = {
+  title: "Archival Product | Vault Vogue",
+  description:
+    "Curated collection piece designed for versatile, elegant everyday styling.",
 };
 
 const normalizeProduct = (product: any) => {
-  const variants = product.variants || [];
+  const rawVariants = product.variants || [];
+  const variants = rawVariants.map((v: any, index: number) => ({
+    ...v,
+    variantId: v.variantId || v._id || v.id || `variant-${index}`,
+    availableStock: v.availableStock ?? v.stock ?? 0,
+    isOutOfStock: (v.availableStock ?? v.stock ?? 0) <= 0,
+    attributes: {
+      ...v.attributes,
+      size: v.attributes?.size || "M",
+    },
+  }));
 
   // fallback image
   const gallery = product.images?.length
@@ -44,7 +74,7 @@ const normalizeProduct = (product: any) => {
     const size = v.attributes?.size;
     if (!size) return;
 
-    sizeQuantities[size] = v.stock ?? 0;
+    sizeQuantities[size] = v.availableStock ?? v.stock ?? 0;
   });
 
   const availableSizes = Object.keys(sizeQuantities).filter(
@@ -52,7 +82,9 @@ const normalizeProduct = (product: any) => {
   );
 
   const price =
-    variants.length > 0 ? Math.min(...variants.map((v: any) => v.price)) : 0;
+    variants.length > 0
+      ? Math.min(...variants.map((v: any) => v.price))
+      : 0;
 
   return {
     id: product._id,
@@ -70,7 +102,7 @@ const normalizeProduct = (product: any) => {
     availableSizes,
     sizeQuantities,
     lowStockThreshold: 5,
-    variants: product.variants || [],
+    variants,
   };
 };
 
@@ -85,8 +117,51 @@ const normalizeSuggestion = (product: Product) => ({
   category: product.categories?.[0]?.name || "Fashion",
 });
 
-export default async function ProductPage({ params }: PageProps) {
-  const { id } = await params;
+async function ProductSuggestionsServer({
+  currentProductId,
+}: {
+  currentProductId: string;
+}) {
+  try {
+    const suggestionResponse = await serverFetch<Response>(
+      `/products/getAll?limit=5`,
+    );
+
+    const suggestions = Array.isArray(suggestionResponse?.data)
+      ? (suggestionResponse.data as Product[])
+          .filter((item: Product) => (item._id || item.id) !== currentProductId)
+          .slice(0, 4)
+          .map(normalizeSuggestion)
+      : [];
+
+    return <Suggestions items={suggestions} />;
+  } catch (error) {
+    console.error("Failed to fetch suggestions", error);
+    return <Suggestions items={[]} />;
+  }
+}
+
+export default async function ProductPage(props: PageProps) {
+  const { id } = await props.params;
+  if (props.searchParams) {
+    await props.searchParams;
+  }
+  const variantProduct = getVariantProduct(id);
+
+  if (variantProduct) {
+    return (
+      <Suspense
+        fallback={
+          <div className="mx-auto min-h-[70vh] max- animate-pulse px-4 py-12 sm:px-8">
+            <div className="h-96 bg-[var(--vault-panel)]" />
+          </div>
+        }
+      >
+        <ProductDetailClient product={variantProduct} />
+      </Suspense>
+    );
+  }
+
   const clientUrl = process.env.NEXT_PUBLIC_API;
 
   try {
@@ -102,20 +177,23 @@ export default async function ProductPage({ params }: PageProps) {
     const productSchema = {
       "@context": "https://schema.org",
       "@type": "Product",
-      "name": product.name,
-      "image": product.images,
-      "description": product.description,
-      "category": product.category,
-      "offers": {
+      name: product.name,
+      image: product.images,
+      description: product.description,
+      category: product.category,
+      offers: {
         "@type": "Offer",
-        "price": product.price.toString(),
-        "priceCurrency": "INR",
-        "priceValidUntil": "2027-12-31",
-        "availability": product.availableSizes.length > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        "url": `${clientUrl}/products/${product.id}`,
-        "seller": {
+        price: product.price.toString(),
+        priceCurrency: "INR",
+        priceValidUntil: "2027-12-31",
+        availability:
+          product.availableSizes.length > 0
+            ? "https://schema.org/InStock"
+            : "https://schema.org/OutOfStock",
+        url: `${clientUrl}/products/${product.id}`,
+        seller: {
           "@type": "Organization",
-          "name": product.sellerName,
+          name: product.sellerName,
         },
       },
     };
@@ -126,7 +204,7 @@ export default async function ProductPage({ params }: PageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
         />
-        <div className="pb-8 max-w-7xl mx-auto bg-[var(--background)]">
+        <div className="pb-8 mx-auto bg-[var(--background)]">
           <div className="border-b border-border/10 bg-card/10">
             <div className="mx-auto flex w-full flex-wrap items-center gap-3 px-4 py-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground sm:px-6 lg:px-8">
               <Link href="/" className="hover:text-foreground">
@@ -183,29 +261,5 @@ export default async function ProductPage({ params }: PageProps) {
         </Card>
       </section>
     );
-  }
-}
-
-async function ProductSuggestionsServer({
-  currentProductId,
-}: {
-  currentProductId: string;
-}) {
-  try {
-    const suggestionResponse = await serverFetch<Response>(
-      `/products/getAll?limit=5`,
-    );
-
-    const suggestions = Array.isArray(suggestionResponse?.data)
-      ? (suggestionResponse.data as Product[])
-          .filter((item: Product) => (item._id || item.id) !== currentProductId)
-          .slice(0, 4)
-          .map(normalizeSuggestion)
-      : [];
-
-    return <Suggestions items={suggestions} />;
-  } catch (error) {
-    console.error("Failed to fetch suggestions", error);
-    return <Suggestions items={[]} />;
   }
 }

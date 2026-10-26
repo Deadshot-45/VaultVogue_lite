@@ -27,13 +27,13 @@ export const SizeSelector = React.memo(
         </div>
 
         <div className="flex flex-wrap gap-2.5">
-          {sizes.map((item) => {
+          {sizes.map((item, idx) => {
             const disabled = (stockMap[item.size] ?? 0) <= 0;
             const isSelected = selectedSize === item.size;
 
             return (
               <button
-                key={item.variantId}
+                key={item.variantId || `${item.size}-${idx}`}
                 disabled={disabled}
                 onClick={() => onSelect(item.size)}
                 className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider cursor-pointer border transition-all duration-300 active:scale-95 ${

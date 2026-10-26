@@ -1,53 +1,65 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { isReducedMotion } from "@/lib/animations/gsap-utils";
 
 interface PageTransitionProps {
   children: ReactNode;
 }
 
-const pageVariants = {
-  initial: {
-    opacity: 0,
-    y: 20,
-    scale: 0.98,
-  },
-  in: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-  },
-  out: {
-    opacity: 0,
-    y: -20,
-    scale: 1.02,
-  },
-};
-
-const pageTransition = {
-  type: "tween" as const,
-  ease: "anticipate" as const,
-  duration: 0.4,
-};
-
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    if (isReducedMotion()) {
+      gsap.set(containerRef.current, { opacity: 1, y: 0 });
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      // Main page container entrance animation
+      gsap.fromTo(
+        containerRef.current,
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power3.out",
+        },
+      );
+
+      // Stagger for sections and cards inside the page
+      const contentBlocks = containerRef.current?.querySelectorAll(
+        "section, article, .gsap-reveal",
+      );
+      if (contentBlocks && contentBlocks.length > 0) {
+        gsap.fromTo(
+          contentBlocks,
+          { opacity: 0, y: 12 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            stagger: 0.06,
+            ease: "power2.out",
+            delay: 0.04,
+          },
+        );
+      }
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [pathname]);
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={pathname}
-        initial="initial"
-        animate="in"
-        exit="out"
-        variants={pageVariants}
-        transition={pageTransition}
-        className="flex-1 flex flex-col min-h-0 w-full"
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div ref={containerRef} className="flex-1 flex flex-col min-h-0 w-full">
+      {children}
+    </div>
   );
 }

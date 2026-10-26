@@ -23,7 +23,6 @@ export default function HeroSection() {
   }, []);
 
   console.log(heroBanners[current]?.image?.src);
-  
 
   return (
     <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden bg-background">
@@ -48,12 +47,12 @@ export default function HeroSection() {
               sizes="100vw"
               quality={90}
             />
-            
+
             {/* Gradient overlays — warm tones */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/40 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-            <div className="relative mx-auto flex h-full max-w-7xl items-center px-6 lg:px-8">
+            <div className="relative mx-auto flex h-full max- items-center px-6 lg:px-8">
               <motion.div
                 initial={current === 0 ? false : { y: 24, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -103,7 +102,6 @@ export default function HeroSection() {
         </motion.div>
       </AnimatePresence>
 
-
       {/* Slide indicators */}
       <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-3">
         {heroBanners.map((_, index) => (
@@ -132,7 +130,9 @@ export default function HeroSection() {
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           className="flex flex-col items-center gap-2 text-white/40"
         >
-          <span className="text-[10px] font-medium tracking-widest uppercase">Scroll</span>
+          <span className="text-[10px] font-medium tracking-widest uppercase">
+            Scroll
+          </span>
           <div className="w-px h-6 bg-white/30" />
         </motion.div>
       </motion.div>

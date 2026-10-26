@@ -16,7 +16,11 @@ import {
 } from "lucide-react";
 import { api, ApiService } from "@/lib/services/apiservices";
 import { orderService } from "@/lib/services/orderService";
-import { useConfirmPayment, useOrderDetails, verifyAndPollPaymentStatus } from "@/features/payment-tracking";
+import {
+  useConfirmPayment,
+  useOrderDetails,
+  verifyAndPollPaymentStatus,
+} from "@/features/payment-tracking";
 import { toast } from "sonner";
 import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Button } from "@/components/ui/button";
@@ -105,13 +109,13 @@ function SuccessPageContent() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const orderId = searchParams
-  ? searchParams.get("order_id") || searchParams.get("orderId")
-  : null;
+    ? searchParams.get("order_id") || searchParams.get("orderId")
+    : null;
   const sessionId = searchParams ? searchParams.get("session_id") : null;
   const paymentIntentId = searchParams
-  ? searchParams.get("payment_intent") ||
-  searchParams.get("payment_intent_id")
-  : null;
+    ? searchParams.get("payment_intent") ||
+      searchParams.get("payment_intent_id")
+    : null;
   const targetOrderId = orderId || sessionId;
 
   const {
@@ -137,7 +141,8 @@ function SuccessPageContent() {
     }
   }, [confirmData, queryClient]);
 
-  const loading = !targetOrderId || isConfirming || (!!confirmData && isOrderLoading);
+  const loading =
+    !targetOrderId || isConfirming || (!!confirmData && isOrderLoading);
   const error = confirmError
     ? "Payment confirmation failed."
     : orderError
@@ -151,7 +156,7 @@ function SuccessPageContent() {
   if (loading) {
     return (
       <ProtectedPage>
-        <div className="flex flex-col items-center justify-center min-h-[70vh] w-7xl mx-auto text-center space-y-4">
+        <div className="flex flex-col items-center justify-center min-h-[70vh]  mx-auto text-center space-y-4">
           <Loader2 className="h-10 w-10 animate-spin text-[var(--gold)]" />
           <div>
             <h2 className="font-cormorant text-2xl font-light text-[var(--brand-text)]">

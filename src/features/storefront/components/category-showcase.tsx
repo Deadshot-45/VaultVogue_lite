@@ -131,7 +131,7 @@ export default function CategoryShowcase({
 
   return (
     <section className="py-20 bg-[var(--background)]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max- px-4 sm:px-6 lg:px-8">
         {/* Title Frame */}
         <div className="mb-14 text-center">
           <span className="section-label">Selected Collections</span>
@@ -144,11 +144,7 @@ export default function CategoryShowcase({
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {categoryCards.map((cat, idx) => (
-            <CategoryCard
-              key={cat.slug}
-              category={cat}
-              index={idx}
-            />
+            <CategoryCard key={cat.slug} category={cat} index={idx} />
           ))}
         </div>
       </div>

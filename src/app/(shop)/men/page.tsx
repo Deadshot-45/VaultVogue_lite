@@ -26,7 +26,7 @@ export default function MensPage() {
 
   return (
     <section className="w-full py-16 bg-[var(--background)]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Editorial Heading */}
         <div className="mb-12">
@@ -50,7 +50,7 @@ export default function MensPage() {
                 onClick={() => setSelectedCategory(cat)}
                 className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-98 cursor-pointer ${
                   isActive
-                    ? "bg-[var(--gold)] text-white shadow-md"
+                    ? "bg-[var(--gold)] text-background shadow-md"
                     : "border border-border/40 text-muted-foreground hover:text-foreground hover:border-border"
                 }`}
               >

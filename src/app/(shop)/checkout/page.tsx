@@ -290,7 +290,7 @@ function CheckoutPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-7xl w-full px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
+      <div className="mx-auto w-full px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
         {/* Amazon-Inspired Stepper/Breadcrumb Header */}
         <div className="mb-12 border-b border-border/40 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>

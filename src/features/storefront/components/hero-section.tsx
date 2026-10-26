@@ -15,9 +15,8 @@ export default function HeroSection() {
       <div className="absolute top-1/4 left-10 -z-10 h-72 w-72 rounded-full bg-[var(--gold)]/10 blur-3xl" />
       <div className="absolute bottom-1/4 right-10 -z-10 h-96 w-96 rounded-full bg-[var(--gold)]/8 blur-[100px]" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max- px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
-          
           {/* Text Content */}
           <div className="space-y-8 lg:col-span-7">
             {/* Badge */}
@@ -40,7 +39,9 @@ export default function HeroSection() {
               className="section-title max-w-2xl font-light leading-[1.1] tracking-tight"
             >
               The Art of <br />
-              <span className="italic font-normal text-[var(--gold)]">Quiet Luxury</span>
+              <span className="italic font-normal text-[var(--gold)]">
+                Quiet Luxury
+              </span>
             </motion.h1>
 
             {/* Gold Divider */}
@@ -58,7 +59,9 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.25 }}
               className="section-subtitle max-w-xl text-lg"
             >
-              Restrained, editorial, and curated for the refined eye. Spun from the world&apos;s most premium fibers to accompany a life well-lived.
+              Restrained, editorial, and curated for the refined eye. Spun from
+              the world&apos;s most premium fibers to accompany a life
+              well-lived.
             </motion.p>
 
             {/* Dual CTAs */}
@@ -91,16 +94,28 @@ export default function HeroSection() {
               className="grid grid-cols-3 gap-6 pt-8 border-t border-border/10 max-w-lg"
             >
               <div className="space-y-1">
-                <span className="font-cormorant text-2xl md:text-3xl text-[var(--brand-text)] font-light">100%</span>
-                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Cashmere &amp; Silk</p>
+                <span className="font-cormorant text-2xl md:text-3xl text-[var(--brand-text)] font-light">
+                  100%
+                </span>
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Cashmere &amp; Silk
+                </p>
               </div>
               <div className="relative pl-6 before:absolute before:left-0 before:top-1/4 before:h-1/2 before:w-px before:bg-border/20 space-y-1">
-                <span className="font-cormorant text-2xl md:text-3xl text-[var(--brand-text)] font-light">80+</span>
-                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Ateliers Worldwide</p>
+                <span className="font-cormorant text-2xl md:text-3xl text-[var(--brand-text)] font-light">
+                  80+
+                </span>
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Ateliers Worldwide
+                </p>
               </div>
               <div className="relative pl-6 before:absolute before:left-0 before:top-1/4 before:h-1/2 before:w-px before:bg-border/20 space-y-1">
-                <span className="font-cormorant text-2xl md:text-3xl text-[var(--brand-text)] font-light">1982</span>
-                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Est. Heritage</p>
+                <span className="font-cormorant text-2xl md:text-3xl text-[var(--brand-text)] font-light">
+                  1982
+                </span>
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Est. Heritage
+                </p>
               </div>
             </motion.div>
           </div>
@@ -122,15 +137,19 @@ export default function HeroSection() {
                   className="object-cover transition-transform duration-1000 hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 35vw"
                 />
-                
+
                 {/* Gold Gradient Label Plate */}
                 <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/15 label backdrop-blur-md p-4 shadow-lg">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--gold)]">Featured Edit</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--gold)]">
+                    Featured Edit
+                  </span>
                   <h3 className="font-cormorant text-xl mt-1.5 font-light leading-tight tracking-wide text-white">
                     The Silk Slip &amp; Tailored Coat
                   </h3>
                   <div className="mt-2.5 flex items-center justify-between">
-                    <span className="text-xs text-white/70">Cashmere, Linen &amp; Silk</span>
+                    <span className="text-xs text-white/70">
+                      Cashmere, Linen &amp; Silk
+                    </span>
                     <button
                       onClick={() => router.push("/women")}
                       className="text-xs font-semibold text-[var(--gold)] hover:text-white transition-colors duration-200 underline-offset-2 hover:underline"
@@ -142,7 +161,6 @@ export default function HeroSection() {
               </div>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>

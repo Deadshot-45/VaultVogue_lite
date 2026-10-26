@@ -5,7 +5,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Vault Vogue — Seller Atelier",
-  description: "Seller portal for managing products, tracking orders, and revenue insights",
+  description:
+    "Seller portal for managing products, tracking orders, and revenue insights",
 };
 
 export default function SellerLayout({
@@ -28,7 +29,7 @@ export default function SellerLayout({
 
           {/* Main Scrollable Content Area */}
           <main
-            className="flex-1 overflow-y-auto p-4 md:p-6 w-full max-w-7xl mx-auto no-scrollbar"
+            className="flex-1 overflow-y-auto p-4 md:p-6 w-full max- mx-auto no-scrollbar"
             style={{ background: "var(--background)" }}
           >
             {children}

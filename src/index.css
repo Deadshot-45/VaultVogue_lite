@@ -50,15 +50,17 @@
   /* Light Theme Variables */
   --background: oklch(1 0 0);           /* Pure white */
   --foreground: oklch(0.145 0 0);       /* Near black */
-  --primary: oklch(0.205 0 0);          /* Dark */
+  --primary: #B76E79;                   /* Rose Gold */
   --border: oklch(0.922 0 0);           /* Light gray */
-  --gold: #8a6a42;                       /* Brand gold */
+  --gold: #B76E79;                      /* Rose gold */
+  --vault-accent: #B76E79;              /* Vault accent rose gold */
+  --vault-accent-ink: #ffffff;          /* Contrast ink */
   --bg: #f5f0ea;                         /* Warm cream */
   --brand-text: #2e1f0e;                /* Deep brown text */
-  --slogan-text: rgba(80, 55, 28, 0.55);/* Muted brown */
-  --gold-soft: rgba(138, 106, 66, 0.5); /* Semi-transparent gold */
-  --gold-faint: rgba(138, 106, 66, 0.12);/* Very light gold */
-  --gold-glow: rgba(138, 106, 66, 0.08);/* Glow effect */
+  --slogan-text: rgba(183, 110, 121, 0.55);/* Muted rose gold */
+  --gold-soft: rgba(183, 110, 121, 0.35); /* Semi-transparent rose gold */
+  --gold-faint: rgba(183, 110, 121, 0.12);/* Very light rose gold */
+  --gold-glow: rgba(183, 110, 121, 0.22);/* Glow effect */
   --sale-red-500: oklch(0.637 0.237 25.331); /* Sale accent */
   
   /* Success colors */
@@ -80,7 +82,7 @@
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --input: oklch(0.922 0 0);
-  --ring: #8a6a42;
+  --ring: #B76E79;
   
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -98,15 +100,17 @@
   /* Dark Theme Variables */
   --background: oklch(0.145 0.02 25.326);  /* Warm near-black */
   --foreground: oklch(0.985 0.01 25.326); /* Warm white */
-  --primary: oklch(0.985 0.01 25.326);
+  --primary: #0891b2;                      /* Green accent for dark */
   --border: oklch(1 0 0 / 10%);
-  --gold: #d4b796;                         /* Lighter gold for dark */
+  --gold: #0891b2;                         /* Green accent for dark */
+  --vault-accent: #0891b2;
+  --vault-accent-ink: #ffffff;
   --bg: #0a0a08;                           /* Near black */
   --brand-text: #e8d9c4;                   /* Cream text */
-  --slogan-text: rgba(212, 183, 150, 0.5); /* Muted gold-cream */
-  --gold-soft: rgba(212, 183, 150, 0.5);
-  --gold-faint: rgba(212, 183, 150, 0.12);
-  --gold-glow: rgba(212, 183, 150, 0.06);
+  --slogan-text: rgba(8, 145, 178, 0.5);   /* Muted green */
+  --gold-soft: rgba(8, 145, 178, 0.35);
+  --gold-faint: rgba(8, 145, 178, 0.15);
+  --gold-glow: rgba(8, 145, 178, 0.2);
 
   --success-500: oklch(0.7 0.18 150);
   --success-600: oklch(0.62 0.2 150);
@@ -126,7 +130,7 @@
   --accent-foreground: oklch(0.985 0.01 25.326);
   --destructive: oklch(0.704 0.191 22.216);
   --input: oklch(1 0 0 / 15%);
-  --ring: #d4b796;
+  --ring: #0891b2;
 
   --sidebar: oklch(0.18 0.02 25.326);
   --sidebar-foreground: oklch(0.985 0.01 25.326);
@@ -492,4 +496,195 @@
   box-shadow:
     0 24px 48px -28px oklch(0 0 0 / 0.65),
     0 14px 24px -18px oklch(0 0 0 / 0.45) !important;
+}
+
+.vault-storefront,
+[data-vault-theme="obsidian"],
+:root.dark {
+  --vault-canvas: #0a0a0c;
+  --vault-ink: #f3f2ee;
+  --vault-panel: #121216;
+  --vault-line: #24242c;
+  --vault-muted: #8e8e98;
+  --vault-accent: #0891b2;
+  --vault-accent-ink: #ffffff;
+
+  --background: #0a0a0c;
+  --foreground: #f3f2ee;
+  --card: #121216;
+  --card-foreground: #f3f2ee;
+  --popover: #121216;
+  --popover-foreground: #f3f2ee;
+  --primary: #0891b2;
+  --primary-foreground: #ffffff;
+  --secondary: #18181f;
+  --secondary-foreground: #f3f2ee;
+  --muted: #18181f;
+  --muted-foreground: #8e8e98;
+  --accent: #1d1d24;
+  --accent-foreground: #0891b2;
+  --border: #24242c;
+  --input: #24242c;
+  --ring: #0891b2;
+
+  --brand-text: #f3f2ee;
+  --gold: #0891b2;
+  --gold-soft: rgba(8, 145, 178, 0.35);
+  --gold-faint: rgba(8, 145, 178, 0.15);
+  --gold-glow: rgba(8, 145, 178, 0.2);
+
+  background: var(--vault-canvas);
+  color: var(--vault-ink);
+}
+
+[data-vault-theme="alabaster"],
+.vault-storefront[data-vault-theme="alabaster"],
+:root.light[data-vault-theme="alabaster"] {
+  --vault-canvas: #f6f5f0;
+  --vault-ink: #0a0a0c;
+  --vault-panel: #eeede8;
+  --vault-line: #d5d2c8;
+  --vault-muted: #5a5955;
+
+  /* Rose Gold Accent */
+  --vault-accent: #B76E79;
+  --vault-accent-ink: #ffffff;
+
+  --background: #f6f5f0;
+  --foreground: #0a0a0c;
+  --card: #eeede8;
+  --card-foreground: #0a0a0c;
+  --popover: #eeede8;
+  --popover-foreground: #0a0a0c;
+  --primary: #B76E79;
+  --primary-foreground: #ffffff;
+  --secondary: #e6e4dc;
+  --secondary-foreground: #0a0a0c;
+  --muted: #e6e4dc;
+  --muted-foreground: #5a5955;
+  --accent: #eee9dc;
+  --accent-foreground: #B76E79;
+  --border: #d5d2c8;
+  --input: #d5d2c8;
+  --ring: #B76E79;
+
+  --brand-text: #0a0a0c;
+  --gold: #B76E79;
+  --gold-soft: rgba(183, 110, 121, 0.35);
+  --gold-faint: rgba(183, 110, 121, 0.12);
+  --gold-glow: rgba(183, 110, 121, 0.22);
+
+  background: var(--vault-canvas);
+  color: var(--vault-ink);
+}
+
+/* Light Theme - Refined Rose Gold Touch for Buttons */
+[data-vault-theme="alabaster"] .btn-primary,
+.vault-storefront[data-vault-theme="alabaster"] .btn-primary,
+:root.light .btn-primary,
+:root:not(.dark) .btn-primary {
+  background-color: var(--gold);
+  color: #ffffff;
+  box-shadow: 0 4px 16px -2px var(--gold-glow);
+  border: 1px solid rgba(183, 110, 121, 0.35);
+}
+
+[data-vault-theme="alabaster"] .btn-primary:hover,
+.vault-storefront[data-vault-theme="alabaster"] .btn-primary:hover,
+:root.light .btn-primary:hover,
+:root:not(.dark) .btn-primary:hover {
+  background-color: #9e5963;
+  border-color: #9e5963;
+  box-shadow: 0 6px 22px 0 var(--gold-soft);
+  transform: translateY(-2px);
+}
+
+[data-vault-theme="alabaster"] .btn-secondary,
+.vault-storefront[data-vault-theme="alabaster"] .btn-secondary,
+:root.light .btn-secondary,
+:root:not(.dark) .btn-secondary {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+[data-vault-theme="alabaster"] .btn-secondary:hover,
+.vault-storefront[data-vault-theme="alabaster"] .btn-secondary:hover,
+:root.light .btn-secondary:hover,
+:root:not(.dark) .btn-secondary:hover {
+  background-color: var(--gold-faint);
+  border-color: #9e5963;
+  color: #9e5963;
+}
+
+[data-vault-theme="alabaster"] .btn-ghost:hover,
+.vault-storefront[data-vault-theme="alabaster"] .btn-ghost:hover,
+:root.light .btn-ghost:hover,
+:root:not(.dark) .btn-ghost:hover {
+  background-color: var(--gold-faint);
+  color: var(--gold);
+}
+
+/* Storefront Action Buttons (Add to Bag, Checkout, Drop triggers) */
+[data-vault-theme="alabaster"] button.bg-\[var\(--vault-accent\)\],
+.vault-storefront[data-vault-theme="alabaster"] button.bg-\[var\(--vault-accent\)\],
+:root.light button.bg-\[var\(--vault-accent\)\],
+:root:not(.dark) button.bg-\[var\(--vault-accent\)\],
+[data-vault-theme="alabaster"] a.bg-\[var\(--vault-accent\)\],
+.vault-storefront[data-vault-theme="alabaster"] a.bg-\[var\(--vault-accent\)\],
+:root.light a.bg-\[var\(--vault-accent\)\],
+:root:not(.dark) a.bg-\[var\(--vault-accent\)\] {
+  box-shadow: 0 4px 18px -4px var(--gold-glow);
+  transition: all 0.25s ease;
+}
+
+[data-vault-theme="alabaster"] button.bg-\[var\(--vault-accent\)\]:hover:not(:disabled),
+.vault-storefront[data-vault-theme="alabaster"] button.bg-\[var\(--vault-accent\)\]:hover:not(:disabled),
+:root.light button.bg-\[var\(--vault-accent\)\]:hover:not(:disabled),
+:root:not(.dark) button.bg-\[var\(--vault-accent\)\]:hover:not(:disabled),
+[data-vault-theme="alabaster"] a.bg-\[var\(--vault-accent\)\]:hover,
+.vault-storefront[data-vault-theme="alabaster"] a.bg-\[var\(--vault-accent\)\]:hover,
+:root.light a.bg-\[var\(--vault-accent\)\]:hover,
+:root:not(.dark) a.bg-\[var\(--vault-accent\)\]:hover {
+  background-color: #9e5963 !important;
+  box-shadow: 0 6px 24px 0 var(--gold-soft);
+  color: #ffffff !important;
+}
+
+/* Shadcn Button Primitives in Light Theme */
+[data-vault-theme="alabaster"] [data-slot="button"][data-variant="default"],
+.vault-storefront[data-vault-theme="alabaster"] [data-slot="button"][data-variant="default"],
+:root.light [data-slot="button"][data-variant="default"],
+:root:not(.dark) [data-slot="button"][data-variant="default"] {
+  background-color: var(--gold);
+  color: #ffffff;
+  box-shadow: 0 4px 14px -2px var(--gold-glow);
+}
+
+[data-vault-theme="alabaster"] [data-slot="button"][data-variant="default"]:hover,
+.vault-storefront[data-vault-theme="alabaster"] [data-slot="button"][data-variant="default"]:hover,
+:root.light [data-slot="button"][data-variant="default"]:hover,
+:root:not(.dark) [data-slot="button"][data-variant="default"]:hover {
+  background-color: #9e5963;
+  box-shadow: 0 6px 20px 0 var(--gold-soft);
+}
+
+[data-vault-theme="alabaster"] [data-slot="button"][data-variant="outline"]:hover,
+.vault-storefront[data-vault-theme="alabaster"] [data-slot="button"][data-variant="outline"]:hover,
+:root.light [data-slot="button"][data-variant="outline"]:hover,
+:root:not(.dark) [data-slot="button"][data-variant="outline"]:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background-color: var(--gold-faint);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .vault-storefront *,
+  .vault-storefront *::before,
+  .vault-storefront *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

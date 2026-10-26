@@ -40,7 +40,7 @@ export function SiteHeader() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
-  
+
   const [mounted, setMounted] = useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -73,7 +73,7 @@ export function SiteHeader() {
 
       {/* ─── Sticky Header Frame ─── */}
       <motion.header className="h-(--header-height) w-full border-b border-border/10 backdrop-blur-xl bg-background/60 transition-all duration-300">
-        <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-full max- items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Left — Mobile Hamburg & Brand Logo */}
           <div className="flex items-center md:gap-4 gap-0">
             {isMobile && (
@@ -256,20 +256,21 @@ export function SiteHeader() {
                           <span>Orders</span>
                         </Link>
                       </DropdownMenuItem>
-                      {mounted && (user?.role === "seller" || user?.role === "admin") && (
-                        <DropdownMenuItem
-                          asChild
-                          className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-[var(--gold)] font-medium"
-                        >
-                          <Link
-                            href="/seller/dashboard"
-                            className="flex items-center gap-2"
+                      {mounted &&
+                        (user?.role === "seller" || user?.role === "admin") && (
+                          <DropdownMenuItem
+                            asChild
+                            className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-[var(--gold)] font-medium"
                           >
-                            <Gem className="h-4 w-4 text-[var(--gold)]" />
-                            <span>Seller Atelier</span>
-                          </Link>
-                        </DropdownMenuItem>
-                      )}
+                            <Link
+                              href="/seller/dashboard"
+                              className="flex items-center gap-2"
+                            >
+                              <Gem className="h-4 w-4 text-[var(--gold)]" />
+                              <span>Seller Atelier</span>
+                            </Link>
+                          </DropdownMenuItem>
+                        )}
                       {mounted && user?.role === "admin" && (
                         <DropdownMenuItem
                           asChild
@@ -298,7 +299,10 @@ export function SiteHeader() {
                         asChild
                         className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-foreground"
                       >
-                        <Link href={`/login?redirect=${pathname}`} className="flex items-center gap-2">
+                        <Link
+                          href={`/login?redirect=${pathname}`}
+                          className="flex items-center gap-2"
+                        >
                           <User className="h-4 w-4 text-[var(--gold)]" />
                           <span>Login</span>
                         </Link>
@@ -330,7 +334,7 @@ export function SiteHeader() {
       </motion.header>
 
       {/* ─── Mobile Search Bar (slides in below header) ─── */}
-      <AnimatePresence> 
+      <AnimatePresence>
         {mobileSearchOpen && (
           <motion.div
             key="mobile-search"

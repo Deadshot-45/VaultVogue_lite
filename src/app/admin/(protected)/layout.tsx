@@ -21,12 +21,12 @@ export default function AdminLayout({
         </div>
         <div className="flex flex-1 flex-col min-w-0 w-dvw overflow-hidden">
           <AdminHeader />
-            <main
-              className="flex-1 overflow-y-auto p-4 md:p-6 w-full max-w-7xl mx-auto no-scrollbar"
-              style={{ background: "var(--background)" }}
-            >
-              {children}
-            </main>
+          <main
+            className="flex-1 overflow-y-auto p-4 md:p-6 w-full max- mx-auto no-scrollbar"
+            style={{ background: "var(--background)" }}
+          >
+            {children}
+          </main>
         </div>
       </div>
     </AdminGuard>

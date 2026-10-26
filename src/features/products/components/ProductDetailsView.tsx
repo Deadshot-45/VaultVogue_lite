@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import { ProductGallery } from "./ProductGallery";
 import { SizeSelector } from "./SizeSelector";
 import { AddToCartSection } from "./AddToCartSection";
@@ -21,6 +21,12 @@ export default function ProductDetailsView({
   product: ProductDetail;
   suggestionsSection: React.ReactNode;
 }) {
+  useEffect(() => {
+    if (product?.name) {
+      document.title = `${product.name} | Vault Vogue`;
+    }
+  }, [product?.name]);
+
   const [selectedSize, setSelectedSize] = useState<string | null>(() => {
     const variants = product.variants ?? [];
     const mediumVariant = variants.find(
@@ -33,7 +39,7 @@ export default function ProductDetailsView({
       (variant) => !variant.isOutOfStock && variant.availableStock > 0,
     );
 
-    return mediumVariant?.attributes.size ?? firstAvailableVariant?.attributes.size ?? "M";
+    return mediumVariant?.attributes?.size ?? firstAvailableVariant?.attributes?.size ?? "M";
   });
 
   // O(1) variant lookup
@@ -48,10 +54,10 @@ export default function ProductDetailsView({
   }, [product.variants]);
 
   const sizes = useMemo(() => {
-    return (product.variants ?? []).map((v) => ({
-      size: v.attributes.size,
-      variantId: v.variantId,
-      stock: v.availableStock ?? v.stock,
+    return (product.variants ?? []).map((v: any, idx: number) => ({
+      size: v.attributes?.size || `Size-${idx}`,
+      variantId: v.variantId || v._id || v.id || `variant-${idx}`,
+      stock: v.availableStock ?? v.stock ?? 0,
     }));
   }, [product.variants]);
 
