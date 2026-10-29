@@ -239,16 +239,16 @@ export default async function ProductPage(props: PageProps) {
     console.error("Product detail fetch failed", error);
 
     return (
-      <section className="mx-auto flex min-h-[70vh] w-full max-w-4xl items-center px-4 py-12 sm:px-6 lg:px-8 bg-[var(--background)]">
-        <Card className="w-full rounded-[2.5rem] border border-[var(--gold-soft)] bg-card/50 backdrop-blur-md">
+      <section className="mx-auto flex min-h-[70vh] w-full max-w-4xl items-center px-4 py-12 sm:px-6 lg:px-8 bg-[var(--vault-bg)] text-[var(--vault-ink)]">
+        <Card className="w-full rounded-[2.5rem] border border-[var(--vault-line)] bg-[var(--vault-panel)] shadow-sm">
           <CardContent className="space-y-6 p-10 text-center">
-            <Badge className="rounded-full px-3 py-1 badge-gold">
+            <Badge className="rounded-full px-3 py-1 bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] border border-[var(--vault-accent)]/30">
               Unavailable
             </Badge>
-            <h1 className="font-cormorant text-3xl font-light tracking-tight text-[var(--brand-text)]">
+            <h1 className="font-serif text-3xl font-light tracking-tight text-[var(--vault-ink)]">
               Maison Creation Not Found
             </h1>
-            <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">
+            <p className="text-xs text-[var(--vault-muted)] max-w-sm mx-auto leading-relaxed">
               This catalog creation may have been retired or updated. Explore
               our collections for alternative edits.
             </p>

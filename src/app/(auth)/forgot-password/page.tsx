@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { authService } from "@/lib/services/authServices";
 import { useMutation } from "@tanstack/react-query";
 
-type ApiResponse = {
+export type ApiResponse = {
   success: boolean;
   message: string;
   data: any;
@@ -134,7 +134,7 @@ export default function ForgotPasswordPage() {
                 id="email"
                 type="text"
                 placeholder="you@domain.com or +123456789"
-                className="h-12 pl-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--gold)]"
+                className="h-12 pl-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--vault-accent)]"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -174,7 +174,7 @@ export default function ForgotPasswordPage() {
                 type="text"
                 maxLength={6}
                 placeholder="0 0 0 0 0 0"
-                className="h-12 pl-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--gold)] tracking-[0.75em] text-center font-medium"
+                className="h-12 pl-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--vault-accent)] tracking-[0.75em] text-center font-medium"
                 value={otp}
                 onChange={(e) => {
                   setOtp(e.target.value.replace(/[^A-Za-z0-9]/g, ""));
@@ -198,7 +198,7 @@ export default function ForgotPasswordPage() {
           <div className="text-center mt-4">
             <button
               type="button"
-              className="text-xs text-muted-foreground hover:text-[var(--gold)] transition-colors flex items-center justify-center gap-1 mx-auto"
+              className="text-xs text-muted-foreground hover:text-[var(--vault-accent)] transition-colors flex items-center justify-center gap-1 mx-auto"
               onClick={() => {
                 setStep(1);
                 setOtp("");
@@ -227,7 +227,7 @@ export default function ForgotPasswordPage() {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter new security key"
-                className="h-12 pl-11 pr-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--gold)]"
+                className="h-12 pl-11 pr-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--vault-accent)]"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -265,7 +265,7 @@ export default function ForgotPasswordPage() {
                 id="confirmPassword"
                 type={showPassword ? "text" : "password"}
                 placeholder="Confirm new security key"
-                className="h-12 pl-11 pr-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--gold)]"
+                className="h-12 pl-11 pr-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--vault-accent)]"
                 value={confirmPassword}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);

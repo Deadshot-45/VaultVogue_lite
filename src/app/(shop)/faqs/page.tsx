@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { HelpCircle, ChevronDown, Sparkles, ShieldCheck, ArrowRight, Compass } from "lucide-react";
+import { ChevronDown, ArrowRight, ChevronRight } from "lucide-react";
 
 interface FAQItem {
   id: string;
@@ -34,7 +34,7 @@ const FAQS_DATA: FAQItem[] = [
     category: "garments",
     question: "How do I ensure the correct sizing across structured and oversized silhouettes?",
     answer:
-      "Every piece on Vault Vogue contains exact dimensional measurements (chest width, shoulder drop, sleeve length, and total garment drape) measured in centimeters. We recommend cross-referencing our interactive Size Selector against your best-fitting archival layer, or contacting our concierge for custom fitting guidance.",
+      "Every piece on Vault Vogue contains exact dimensional measurements (chest width, shoulder drop, sleeve length, and total garment drape) measured in centimeters. We recommend cross-referencing our dedicated Size Guide against your best-fitting archival layer, or contacting our concierge for custom fitting guidance.",
     telemetry: "SIZE ACCURACY // 1:1 ATELIER METRIC",
   },
   {
@@ -58,8 +58,8 @@ const FAQS_DATA: FAQItem[] = [
     category: "shipping",
     question: "Is complimentary white-glove shipping offered?",
     answer:
-      "Yes. All acquisitions over $150 automatically receive complimentary expedited air-freight delivery. Orders are packaged in weather-resistant Tyvek® garment sleeves, placed in custom rigid archive boxes, and accompanied by embossed dust covers.",
-    telemetry: "COMPLIMENTARY TIER // ORDERS > $150",
+      "Yes. All acquisitions over ₹10,000 automatically receive complimentary expedited air-freight delivery. Orders are packaged in weather-resistant Tyvek® garment sleeves, placed in custom rigid archive boxes, and accompanied by embossed dust covers.",
+    telemetry: "COMPLIMENTARY TIER // ORDERS > ₹10,000",
   },
   {
     id: "faq-07",
@@ -95,148 +95,171 @@ export default function FaqsPage() {
   );
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 sm:py-20 text-[var(--vault-ink)]">
-      {/* Editorial Header Block */}
-      <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 backdrop-blur-md mb-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-[var(--gold)]" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--gold)]">
+    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+      {/* Breadcrumb Navigation */}
+      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+          >
+            <Link href="/" className="hover:text-[var(--vault-accent)] transition-colors">
+              Vault Vogue
+            </Link>
+            <ChevronRight size={10} className="text-[var(--vault-line)]" />
+            <Link href="/help" className="hover:text-[var(--vault-accent)] transition-colors">
+              Help Center
+            </Link>
+            <ChevronRight size={10} className="text-[var(--vault-line)]" />
+            <span className="text-[var(--vault-accent)] font-semibold">FAQs</span>
+          </nav>
+        </div>
+      </div>
+
+      <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
+        {/* Editorial Header Block */}
+        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)] animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold flex items-center gap-1.5">
               Maison Knowledge Repository
+              </span>
+            </div>
+            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+              VERSION 4.2 · UPDATED REGULARLY
             </span>
           </div>
-          <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
-            VERSION 4.2 · UPDATED MONTHLY
-          </span>
+
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-8 space-y-4">
+              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+                Frequently Asked <span className="italic text-[var(--vault-accent)]">Inquiries.</span>
+              </h1>
+              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+                Comprehensive guidelines detailing archival acquisition, international air-courier transit,
+                cryptographic NFC authentication, and bespoke garment sizing.
+              </p>
+            </div>
+
+            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
+              <div className="flex justify-between text-[11px]">
+                <span className="text-[var(--vault-muted)]">TOPICS INDEXED:</span>
+                <span className="font-bold">4 PRIMARY SECTORS</span>
+              </div>
+              <div className="flex justify-between text-[11px]">
+                <span className="text-[var(--vault-muted)]">AUTHENTICATION:</span>
+                <span className="text-[var(--vault-accent)] font-bold">100% NFC VERIFIED</span>
+              </div>
+              <div className="flex justify-between text-[11px]">
+                <span className="text-[var(--vault-muted)]">GLOBAL DISPATCH:</span>
+                <span className="font-bold">DDP INCLUDED</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          <div className="lg:col-span-8 space-y-4">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
-              Frequently Asked <span className="font-serif italic text-[var(--gold)]">Inquiries.</span>
-            </h1>
-            <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
-              Comprehensive guidelines detailing archival acquisition, international air-courier transit,
-              cryptographic NFC authentication, and bespoke garment sizing.
+        {/* Category Selector Filter Bar */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {CATEGORIES.map((cat) => {
+            const active = activeCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setActiveCategory(cat.id)}
+                className={`border px-4 py-2 font-mono text-[11px] uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  active
+                    ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold shadow-sm"
+                    : "border-[var(--vault-line)] bg-[var(--vault-panel)] text-[var(--vault-muted)] hover:text-[var(--vault-ink)] hover:border-[var(--vault-accent)]"
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Accordion List */}
+        <div className="space-y-4 mb-16">
+          {filteredFaqs.map((faq, index) => {
+            const isOpen = !!openItems[faq.id];
+            return (
+              <article
+                key={faq.id}
+                className={`border transition-all duration-300 ${
+                  isOpen
+                    ? "border-[var(--vault-accent)]/40 bg-[var(--vault-panel)] shadow-md"
+                    : "border-[var(--vault-line)] bg-[var(--vault-panel)] hover:border-[var(--vault-accent)]/30"
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => toggleItem(faq.id)}
+                  className="w-full text-left p-6 sm:p-7 flex items-start justify-between gap-4 cursor-pointer"
+                  aria-expanded={isOpen}
+                >
+                  <div className="space-y-1.5 flex-1 pr-4">
+                    <div className="flex items-center gap-3 font-mono text-[10px] uppercase">
+                      <span className="text-[var(--vault-accent)] font-bold">
+                        0{index + 1} //
+                      </span>
+                      <span className="text-[var(--vault-muted)] tracking-wider">
+                        {faq.telemetry}
+                      </span>
+                    </div>
+                    <h3 className="font-serif text-lg sm:text-xl font-light uppercase tracking-tight text-[var(--vault-ink)] pt-1">
+                      {faq.question}
+                    </h3>
+                  </div>
+
+                  <div
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center border transition-all duration-300 ${
+                      isOpen
+                        ? "border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] rotate-180"
+                        : "border-[var(--vault-line)] text-[var(--vault-muted)]"
+                    }`}
+                  >
+                    <ChevronDown size={15} />
+                  </div>
+                </button>
+
+                {isOpen && (
+                  <div className="px-6 pb-7 sm:px-7 sm:pb-8 pt-0 border-t border-[var(--vault-line)] mt-2">
+                    <p className="text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-sans pt-4 max-w-4xl">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </article>
+            );
+          })}
+        </div>
+
+        {/* Still Need Assistance Strip */}
+        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-accent)] font-bold">
+                Require Bespoke Consultation?
+              </span>
+            </div>
+            <h2 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+              Our atelier curators are ready to help.
+            </h2>
+            <p className="text-xs text-[var(--vault-muted)] max-w-md font-mono">
+              Direct coordination for custom measurements, private showroom visits, or order assistance.
             </p>
           </div>
 
-          <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
-            <div className="flex justify-between text-[11px]">
-              <span className="text-[var(--vault-muted)]">RECORD COUNT:</span>
-              <span className="font-bold">{FAQS_DATA.length} VERIFIED ANSWERS</span>
-            </div>
-            <div className="flex justify-between text-[11px]">
-              <span className="text-[var(--vault-muted)]">SPECIALIST DESK:</span>
-              <span className="text-[var(--gold)] font-bold">24-HOUR RESOLUTION</span>
-            </div>
-          </div>
+          <Link
+            href="/contact-us"
+            className="btn-primary inline-flex items-center gap-2 px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.16em] font-bold"
+          >
+            Contact Atelier Desk <ArrowRight size={14} />
+          </Link>
         </div>
-      </div>
-
-      {/* Filter Pills */}
-      <div className="flex flex-wrap items-center gap-2 mb-10 pb-4 border-b border-[var(--vault-line)]">
-        <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)] mr-2 flex items-center gap-1.5">
-          <Compass size={13} className="text-[var(--gold)]" /> Filter:
-        </span>
-        {CATEGORIES.map((cat) => {
-          const active = activeCategory === cat.id;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`border px-4 py-2 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                active
-                  ? "border-[var(--gold)] bg-[var(--gold)] text-white shadow-sm"
-                  : "border-[var(--vault-line)] bg-[var(--vault-panel)] text-[var(--vault-muted)] hover:text-[var(--vault-ink)] hover:border-[var(--vault-ink)]"
-              }`}
-            >
-              {cat.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Accordion List */}
-      <div className="space-y-4 mb-16">
-        {filteredFaqs.map((faq, index) => {
-          const isOpen = !!openItems[faq.id];
-          return (
-            <article
-              key={faq.id}
-              className={`border transition-all duration-300 backdrop-blur-md ${
-                isOpen
-                  ? "border-[var(--gold-soft)] bg-[var(--vault-panel)] shadow-lg"
-                  : "border-[var(--vault-line)] bg-[var(--vault-panel)]/60 hover:border-[var(--vault-line)] hover:bg-[var(--vault-panel)]"
-              }`}
-            >
-              <button
-                type="button"
-                onClick={() => toggleItem(faq.id)}
-                className="w-full text-left p-6 sm:p-7 flex items-start justify-between gap-4 cursor-pointer"
-                aria-expanded={isOpen}
-              >
-                <div className="space-y-1.5 flex-1 pr-4">
-                  <div className="flex items-center gap-3 font-mono text-[10px] uppercase">
-                    <span className="text-[var(--gold)] font-bold">
-                      0{index + 1} //
-                    </span>
-                    <span className="text-[var(--vault-muted)] tracking-wider">
-                      {faq.telemetry}
-                    </span>
-                  </div>
-                  <h3 className="text-base sm:text-lg font-light uppercase tracking-tight text-[var(--vault-ink)] pt-1">
-                    {faq.question}
-                  </h3>
-                </div>
-
-                <div
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center border transition-transform duration-300 ${
-                    isOpen
-                      ? "border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)] rotate-180"
-                      : "border-[var(--vault-line)] text-[var(--vault-muted)]"
-                  }`}
-                >
-                  <ChevronDown size={15} />
-                </div>
-              </button>
-
-              {isOpen && (
-                <div className="px-6 pb-7 sm:px-7 sm:pb-8 pt-0 border-t border-[var(--vault-line)]/50 mt-2">
-                  <p className="text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-sans pt-4 max-w-4xl">
-                    {faq.answer}
-                  </p>
-                </div>
-              )}
-            </article>
-          );
-        })}
-      </div>
-
-      {/* Still Need Assistance Strip */}
-      <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 backdrop-blur-md">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-[var(--gold)]" />
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--gold)] font-bold">
-              Require Bespoke Consultation?
-            </span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
-            Our atelier curators are ready to help.
-          </h2>
-          <p className="text-xs text-[var(--vault-muted)] max-w-md font-mono">
-            Direct coordination for custom measurements, private showroom visits, or wholesale queries.
-          </p>
-        </div>
-
-        <Link
-          href="/contact-us"
-          className="inline-flex items-center gap-2 border border-[var(--gold)] bg-[var(--gold)] text-white px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.16em] font-bold transition hover:opacity-90"
-        >
-          Contact Atelier Desk <ArrowRight size={14} />
-        </Link>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

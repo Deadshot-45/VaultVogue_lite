@@ -6,9 +6,7 @@ import {
   ShieldCheck,
   Check,
   Smartphone,
-  Sparkles,
   QrCode,
-  HelpCircle,
   Truck,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,10 +26,10 @@ export function PaymentSelector({
       id: "stripe" as const,
       name: "Stripe secure card Checkout",
       tagline: "Recommended for Credit & Debit Cards",
-      description: "Pay securely via credit card, debit card, or link. Supports Visa, Mastercard, Amex, Discover.",
+      description:
+        "Pay securely via credit card, debit card, or link. Supports Visa, Mastercard, Amex, Discover.",
       icons: [
         <CreditCard key="card" className="h-5 w-5 text-indigo-500" />,
-        <Sparkles key="spark" className="h-4 w-4 text-[var(--gold)]" />,
       ],
       badge: "Credit/Debit Card",
     },
@@ -39,7 +37,8 @@ export function PaymentSelector({
       id: "razorpay" as const,
       name: "Razorpay UPI & instant Pay",
       tagline: "Recommended for Indian Payments",
-      description: "Pay instantly using UPI apps, scan-to-pay QR codes, Netbanking (all major Indian banks), or digital wallets.",
+      description:
+        "Pay instantly using UPI apps, scan-to-pay QR codes, Netbanking (all major Indian banks), or digital wallets.",
       icons: [
         <QrCode key="qr" className="h-5 w-5 text-emerald-500" />,
         <Smartphone key="phone" className="h-4 w-4 text-blue-500" />,
@@ -50,10 +49,9 @@ export function PaymentSelector({
       id: "cod" as const,
       name: "Cash on Delivery",
       tagline: "Pay upon order arrival",
-      description: "Hand over cash or UPI payment directly to the delivery agent when your luxury atelier pieces arrive.",
-      icons: [
-        <Truck key="truck" className="h-5 w-5 text-amber-500" />,
-      ],
+      description:
+        "Hand over cash or UPI payment directly to the delivery agent when your luxury atelier pieces arrive.",
+      icons: [<Truck key="truck" className="h-5 w-5 text-amber-500" />],
       badge: "Pay on Delivery",
     },
   ];
@@ -90,7 +88,6 @@ export function PaymentSelector({
               >
                 <CardContent className="p-6">
                   <div className="flex gap-4 items-start justify-between">
-                    
                     {/* Left Icon Panel */}
                     <div className="flex gap-3.5 items-start text-left min-w-0">
                       <div
@@ -102,7 +99,7 @@ export function PaymentSelector({
                       >
                         {option.icons[0]}
                       </div>
-                      
+
                       {/* Name & Tagline */}
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -132,7 +129,6 @@ export function PaymentSelector({
                         <div className="h-5 w-5 rounded-full border border-slate-200" />
                       )}
                     </div>
-
                   </div>
                 </CardContent>
               </Card>
@@ -145,7 +141,9 @@ export function PaymentSelector({
       <div className="flex items-center gap-2.5 rounded-xl border border-slate-100 bg-slate-50/50 p-4 text-[10px] text-muted-foreground text-left mt-6">
         <ShieldCheck className="h-5 w-5 text-emerald-600 shrink-0" />
         <p className="leading-normal">
-          Vault Vogue securely routes all transaction sessions using bank-grade 256-bit SSL encryption. We never store credit card pin details or bank passwords on our servers.
+          Vault Vogue securely routes all transaction sessions using bank-grade
+          256-bit SSL encryption. We never store credit card pin details or bank
+          passwords on our servers.
         </p>
       </div>
     </div>

@@ -1,7 +1,8 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
-import { RefreshCcw, Clock, ShieldCheck, AlertCircle, ArrowRight, CheckCircle2, RotateCcw } from "lucide-react";
+import { RefreshCcw, Clock, ArrowRight, CheckCircle2, RotateCcw, ChevronRight, AlertCircle } from "lucide-react";
 
 const REFUND_POLICIES = [
   {
@@ -60,124 +61,145 @@ const REFUND_POLICIES = [
 
 export default function RefundPolicyPage() {
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 sm:py-20 text-[var(--vault-ink)]">
-      {/* Editorial Header Block */}
-      <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 backdrop-blur-md mb-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-[var(--gold)]" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--gold)]">
-              Maison Escrow &amp; Client Guarantee
+    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+      {/* Breadcrumb Navigation */}
+      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+          >
+            <Link href="/" className="hover:text-[var(--vault-accent)] transition-colors">
+              Vault Vogue
+            </Link>
+            <ChevronRight size={10} className="text-[var(--vault-line)]" />
+            <Link href="/help" className="hover:text-[var(--vault-accent)] transition-colors">
+              Help Center
+            </Link>
+            <ChevronRight size={10} className="text-[var(--vault-line)]" />
+            <span className="text-[var(--vault-accent)] font-semibold">Refund Policy</span>
+          </nav>
+        </div>
+      </div>
+
+      <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
+        {/* Editorial Header Block */}
+        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)] animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold flex items-center gap-1.5">
+                 Maison Escrow &amp; Client Guarantee
+              </span>
+            </div>
+            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+              SLA // 100% SECURE REIMBURSEMENT
             </span>
           </div>
-          <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
-            PROTOCOL // 100% ATELIER VERIFICATION
-          </span>
+
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-8 space-y-4">
+              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+                Reimbursement &amp;
+                <br />
+                <span className="italic text-[var(--vault-accent)]">Refund</span> Policy.
+              </h1>
+              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+                Transparent settlement timelines, pre-dispatch cancellation rights, and uncompromised escrow protection for all global orders.
+              </p>
+            </div>
+
+            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
+              <div className="flex justify-between text-[11px]">
+                <span className="text-[var(--vault-muted)]">SETTLEMENT WINDOW:</span>
+                <span className="text-[var(--vault-accent)] font-bold">3 – 5 BANKING DAYS</span>
+              </div>
+              <div className="flex justify-between text-[11px]">
+                <span className="text-[var(--vault-muted)]">CANCELLATIONS:</span>
+                <span className="font-bold">100% INSTANT REVERSAL</span>
+              </div>
+              <div className="flex justify-between text-[11px]">
+                <span className="text-[var(--vault-muted)]">RETURN SHIPPING:</span>
+                <span className="text-emerald-500 font-bold">COMPLIMENTARY</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          <div className="lg:col-span-8 space-y-4">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
-              Refund &amp; <span className="font-serif italic text-[var(--gold)]">Settlement</span>
-              <br />
-              Guidelines.
-            </h1>
-            <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
-              Transparent terms governing archival returns, payment reimbursements, pre-dispatch cancellations,
-              and our unwavering commitment to client satisfaction.
+        {/* Policy Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+          {REFUND_POLICIES.map((p) => (
+            <article
+              key={p.title}
+              className="group border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 transition-all duration-300 hover:border-[var(--vault-accent)] hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between font-mono text-[10px] pb-4 border-b border-[var(--vault-line)]">
+                  <span className="text-[var(--vault-accent)] font-bold">{p.code}</span>
+                  <span className="font-serif italic text-lg text-[var(--vault-muted)]">
+                    {p.step}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3 pt-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-[var(--vault-accent)]/30 bg-[var(--vault-accent)]/10 text-[var(--vault-accent)]">
+                    <p.icon className="h-5 w-5" />
+                  </div>
+                  <h2 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+                    {p.title}
+                  </h2>
+                </div>
+
+                <p className="mt-4 text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-sans">
+                  {p.summary}
+                </p>
+
+                <ul className="mt-6 space-y-2 border-t border-[var(--vault-line)] pt-4 font-mono text-[11px] text-[var(--vault-muted)]">
+                  {p.details.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-[var(--vault-accent)] mt-0.5">▪</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Initiation Action Strip */}
+        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <RotateCcw className="h-4 w-4 text-[var(--vault-accent)]" />
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-accent)] font-bold">
+                Ready to Initiate a Return or Exchange?
+              </span>
+            </div>
+            <h3 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+              Manage Purchases in Your Account Workspace
+            </h3>
+            <p className="text-xs text-[var(--vault-muted)] font-mono">
+              Access your active orders, print pre-paid waybills, or contact the atelier concierge.
             </p>
           </div>
 
-          <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
-            <div className="flex justify-between text-[11px]">
-              <span className="text-[var(--vault-muted)]">RETURN WINDOW:</span>
-              <span className="font-bold">7 CALENDAR DAYS</span>
-            </div>
-            <div className="flex justify-between text-[11px]">
-              <span className="text-[var(--vault-muted)]">REFUND TIMELINE:</span>
-              <span className="text-[var(--gold)] font-bold">3–5 BANKING DAYS</span>
-            </div>
-            <div className="flex justify-between text-[11px]">
-              <span className="text-[var(--vault-muted)]">RETURN SHIPPING:</span>
-              <span className="text-emerald-500 font-bold">COMPLIMENTARY</span>
-            </div>
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <Link
+              href="/orders"
+              className="btn-primary inline-flex items-center justify-center gap-2 px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.16em] font-bold whitespace-nowrap"
+            >
+              Go to My Orders <ArrowRight size={14} />
+            </Link>
+            <Link
+              href="/contact-us"
+              className="btn-secondary inline-flex items-center justify-center gap-2 px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.16em] font-bold whitespace-nowrap"
+            >
+              Contact Concierge
+            </Link>
           </div>
         </div>
-      </div>
-
-      {/* Policy Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-        {REFUND_POLICIES.map((p) => (
-          <article
-            key={p.title}
-            className="group border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 backdrop-blur-md transition-all duration-300 hover:border-[var(--gold-soft)] hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between font-mono text-[10px] pb-4 border-b border-[var(--vault-line)]">
-                <span className="text-[var(--gold)] font-bold">{p.code}</span>
-                <span className="font-serif italic text-lg text-[var(--vault-muted)]">
-                  {p.step}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 pt-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-[var(--gold-faint)] bg-[var(--gold-glow)] text-[var(--gold)]">
-                  <p.icon className="h-5 w-5" />
-                </div>
-                <h2 className="text-xl sm:text-2xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
-                  {p.title}
-                </h2>
-              </div>
-
-              <p className="mt-4 text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-sans">
-                {p.summary}
-              </p>
-
-              <ul className="mt-6 space-y-2 border-t border-[var(--vault-line)] pt-4 font-mono text-[11px] text-[var(--vault-muted)]">
-                {p.details.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[var(--gold)] mt-0.5">▪</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      {/* Initiation Action Strip */}
-      <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 backdrop-blur-md">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <RotateCcw className="h-4 w-4 text-[var(--gold)]" />
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--gold)] font-bold">
-              Ready to Initiate a Return or Exchange?
-            </span>
-          </div>
-          <h3 className="text-2xl sm:text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
-            Manage Purchases in Your Account Workspace
-          </h3>
-          <p className="text-xs text-[var(--vault-muted)] font-mono">
-            Access your active orders, print pre-paid waybills, or contact the atelier concierge.
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-          <Link
-            href="/orders"
-            className="inline-flex items-center justify-center gap-2 border border-[var(--gold)] bg-[var(--gold)] text-white px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.16em] font-bold transition hover:opacity-90 whitespace-nowrap"
-          >
-            Go to My Orders <ArrowRight size={14} />
-          </Link>
-          <Link
-            href="/contact-us"
-            className="inline-flex items-center justify-center gap-2 border border-[var(--vault-line)] bg-[var(--vault-canvas)] text-[var(--vault-ink)] px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.16em] font-bold transition hover:border-[var(--vault-ink)] whitespace-nowrap"
-          >
-            Contact Concierge
-          </Link>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

@@ -12,7 +12,6 @@ import {
   X,
   Package,
   CheckCircle,
-  Sparkles,
   Upload,
   Loader2,
 } from "lucide-react";
@@ -67,7 +66,8 @@ const SUBCATEGORIES: Record<string, string[]> = {
 const CATEGORIES = Object.keys(SUBCATEGORIES);
 
 const getSubcategories = (category: string) => SUBCATEGORIES[category] || [];
-const getDefaultSubcategory = (category: string) => getSubcategories(category)[0] || "";
+const getDefaultSubcategory = (category: string) =>
+  getSubcategories(category)[0] || "";
 
 const APPAREL_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 
@@ -78,7 +78,7 @@ export default function SellerInventoryPage() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  
+
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -98,9 +98,11 @@ export default function SellerInventoryPage() {
 
   const [variants, setVariants] = useState<ProductVariant[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
+
   // Upload states
-  const [uploadingIndexes, setUploadingIndexes] = useState<Record<number, boolean>>({});
+  const [uploadingIndexes, setUploadingIndexes] = useState<
+    Record<number, boolean>
+  >({});
   const [isUploadingCover, setIsUploadingCover] = useState(false);
 
   const { user } = useAppSelector((s) => s.auth);
@@ -153,10 +155,11 @@ export default function SellerInventoryPage() {
       subCategory:
         typeof product.subCategory === "object" && product.subCategory !== null
           ? (product.subCategory as any).name || ""
-          : product.subCategory || getDefaultSubcategory(
+          : product.subCategory ||
+            getDefaultSubcategory(
               typeof product.category === "object" && product.category !== null
                 ? (product.category as any).name || ""
-                : product.category || ""
+                : product.category || "",
             ),
       stock: product.stock.toString(),
       image: product.image,
@@ -184,7 +187,9 @@ export default function SellerInventoryPage() {
 
   const handleDelete = (id: string) => {
     if (
-      confirm("Are you sure you want to remove this item from your boutique catalog?")
+      confirm(
+        "Are you sure you want to remove this item from your boutique catalog?",
+      )
     ) {
       deleteProductMutation.mutate(id);
     }
@@ -201,10 +206,16 @@ export default function SellerInventoryPage() {
     onSuccess: (data, { id, nextIsActive }) => {
       if (data.success) {
         const nextStatus = nextIsActive ? "active" : "draft";
-        queryClient.setQueryData<Product[]>(["sellerProducts", user?.id], (old) =>
-          old ? old.map((p) =>
-            p.id === id ? { ...p, status: nextStatus as "active" | "draft" } : p,
-          ) : []
+        queryClient.setQueryData<Product[]>(
+          ["sellerProducts", user?.id],
+          (old) =>
+            old
+              ? old.map((p) =>
+                  p.id === id
+                    ? { ...p, status: nextStatus as "active" | "draft" }
+                    : p,
+                )
+              : [],
         );
         toast.success(
           nextIsActive
@@ -227,8 +238,12 @@ export default function SellerInventoryPage() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.name.trim()) newErrors.name = "Item name is required";
-    
-    if (!formData.price || isNaN(Number(formData.price)) || Number(formData.price) <= 0) {
+
+    if (
+      !formData.price ||
+      isNaN(Number(formData.price)) ||
+      Number(formData.price) <= 0
+    ) {
       newErrors.price = "Enter a valid positive price";
     }
 
@@ -238,20 +253,30 @@ export default function SellerInventoryPage() {
 
     if (isVariantCategory && variants.length > 0) {
       // Validate variants
-      const hasEmptyVariant = variants.some(v => !v.color.trim() || !v.size.trim() || isNaN(v.stock) || v.stock < 0);
+      const hasEmptyVariant = variants.some(
+        (v) =>
+          !v.color.trim() || !v.size.trim() || isNaN(v.stock) || v.stock < 0,
+      );
       if (hasEmptyVariant) {
-        newErrors.variants = "Complete color, size, and stock for all variant rows";
+        newErrors.variants =
+          "Complete color, size, and stock for all variant rows";
       }
     } else {
       // Validate normal stock
-      if (formData.stock === "" || isNaN(Number(formData.stock)) || Number(formData.stock) < 0) {
+      if (
+        formData.stock === "" ||
+        isNaN(Number(formData.stock)) ||
+        Number(formData.stock) < 0
+      ) {
         newErrors.stock = "Enter a valid stock number";
       }
     }
-    
+
     // Validate SKU uniqueness on Add
     if (!editingProduct) {
-      const exists = products.some((p) => p.sku.toLowerCase() === formData.sku.toLowerCase());
+      const exists = products.some(
+        (p) => p.sku.toLowerCase() === formData.sku.toLowerCase(),
+      );
       if (exists) newErrors.sku = "SKU must be unique";
     }
 
@@ -266,17 +291,19 @@ export default function SellerInventoryPage() {
     ]);
   };
 
-  const handleUpdateVariant = (index: number, field: keyof ProductVariant, value: any) => {
+  const handleUpdateVariant = (
+    index: number,
+    field: keyof ProductVariant,
+    value: any,
+  ) => {
     setVariants((prev) =>
-      prev.map((v, i) => (i === index ? { ...v, [field]: value } : v))
+      prev.map((v, i) => (i === index ? { ...v, [field]: value } : v)),
     );
   };
 
   const handleRemoveVariant = (index: number) => {
     setVariants((prev) => prev.filter((_, i) => i !== index));
   };
-
-  
 
   const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -285,7 +312,7 @@ export default function SellerInventoryPage() {
     setIsUploadingCover(true);
     try {
       const url = await uploadImageToServer(file);
-      setFormData(p => ({ ...p, image: url }));
+      setFormData((p) => ({ ...p, image: url }));
       toast.success("Cover image uploaded successfully");
     } catch (err: any) {
       console.error(err);
@@ -295,7 +322,10 @@ export default function SellerInventoryPage() {
     }
   };
 
-  const handleVariantImageUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVariantImageUpload = async (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
@@ -332,14 +362,20 @@ export default function SellerInventoryPage() {
     mutationFn: (payload: any) => productService.createProduct(payload),
     onSuccess: (data) => {
       if (data.success) {
-        toast.success(editingProduct ? "Catalog listing updated" : "New product added to catalog");
+        toast.success(
+          editingProduct
+            ? "Catalog listing updated"
+            : "New product added to catalog",
+        );
         setIsModalOpen(false);
         fetchProducts();
       }
     },
     onError: (err: any) => {
       console.error("Failed to save product", err);
-      toast.error(err.response?.data?.message || err.message || "Failed to save product");
+      toast.error(
+        err.response?.data?.message || err.message || "Failed to save product",
+      );
     },
   });
 
@@ -361,7 +397,7 @@ export default function SellerInventoryPage() {
       status: formData.status,
       image: {
         url: formData.image,
-        isPrimary: true
+        isPrimary: true,
       },
       sellerId: user?.id,
     };
@@ -382,7 +418,8 @@ export default function SellerInventoryPage() {
     const matchSearch =
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.sku.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchCategory = selectedCategory === "All" || p.category === selectedCategory;
+    const matchCategory =
+      selectedCategory === "All" || p.category === selectedCategory;
     return matchSearch && matchCategory;
   });
 
@@ -481,7 +518,10 @@ export default function SellerInventoryPage() {
           <div className="overflow-x-auto no-scrollbar">
             <table className="w-full text-left">
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--gold-faint)" }} className="[&>th]:pl-4" >
+                <tr
+                  style={{ borderBottom: "1px solid var(--gold-faint)" }}
+                  className="[&>th]:pl-4"
+                >
                   <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
                     Item Info
                   </th>
@@ -515,7 +555,10 @@ export default function SellerInventoryPage() {
                     {/* Item Info */}
                     <td className="py-3.5 flex items-center gap-3">
                       <img
-                        src={product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80"}
+                        src={
+                          product.image ||
+                          "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80"
+                        }
                         alt={product.name}
                         className="h-12 w-12 rounded-xl object-cover border border-border/40 bg-muted/40"
                         onError={(e) => {
@@ -529,7 +572,7 @@ export default function SellerInventoryPage() {
                         </p>
                         {product.variants && product.variants.length > 0 && (
                           <div className="flex flex-col gap-1.5 mt-2 max-w-[280px]">
-                            {product.variants.map((v:any) => (
+                            {product.variants.map((v: any) => (
                               <div
                                 key={v._id || `${v.color}-${v.size}`}
                                 className="flex flex-col gap-1 bg-[var(--gold-faint)]/40 p-2 rounded border border-[var(--gold-soft)]/20"
@@ -539,19 +582,24 @@ export default function SellerInventoryPage() {
                                 </span>
                                 {v.images && v.images.length > 0 && (
                                   <div className="flex gap-1 flex-wrap mt-0.5">
-                                    {v.images.map((img: any, imgIdx: number) => (
-                                      <img
-                                        key={imgIdx}
-                                        src={img.url || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80"}
-                                        className="h-6 w-6 rounded object-cover border border-border/20 bg-background"
-                                        alt=""
-                                        onError={(e) => {
-                                          (
-                                            e.target as HTMLImageElement
-                                          ).style.display = "none";
-                                        }}
-                                      />
-                                    ))}
+                                    {v.images.map(
+                                      (img: any, imgIdx: number) => (
+                                        <img
+                                          key={imgIdx}
+                                          src={
+                                            img.url ||
+                                            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80"
+                                          }
+                                          className="h-6 w-6 rounded object-cover border border-border/20 bg-background"
+                                          alt=""
+                                          onError={(e) => {
+                                            (
+                                              e.target as HTMLImageElement
+                                            ).style.display = "none";
+                                          }}
+                                        />
+                                      ),
+                                    )}
                                   </div>
                                 )}
                               </div>
@@ -676,7 +724,6 @@ export default function SellerInventoryPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between pb-4 border-b border-border/10 mb-6">
                   <h3 className="font-cormorant text-xl font-light text-[var(--brand-text)] flex items-center gap-1.5">
-                    <Sparkles className="h-4 w-4 text-[var(--gold)]" />
                     {editingProduct
                       ? "Revise Collection Item"
                       : "Onboard New Collection Item"}
@@ -795,7 +842,7 @@ export default function SellerInventoryPage() {
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                         <SelectContent>
-                          {CATEGORIES.map((cat,index) => (
+                          {CATEGORIES.map((cat, index) => (
                             <SelectItem key={index} value={cat}>
                               {cat}
                             </SelectItem>
@@ -998,7 +1045,10 @@ export default function SellerInventoryPage() {
                                           className="relative group h-7 w-7 border border-border/20 rounded overflow-hidden"
                                         >
                                           <img
-                                            src={img.url || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100&auto=format&fit=crop&q=80"}
+                                            src={
+                                              img.url ||
+                                              "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100&auto=format&fit=crop&q=80"
+                                            }
                                             className="h-full w-full object-cover"
                                             alt=""
                                             onError={(e) => {
@@ -1193,8 +1243,8 @@ export default function SellerInventoryPage() {
                   {saveProductMutation.isPending
                     ? "Saving..."
                     : editingProduct
-                    ? "Save Changes"
-                    : "Publish Listing"}
+                      ? "Save Changes"
+                      : "Publish Listing"}
                 </Button>
               </div>
             </motion.div>

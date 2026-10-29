@@ -7,7 +7,7 @@ import {
   ShieldCheck,
   Gift,
   RefreshCw,
-  Sparkles,
+  Feather,
 } from "lucide-react";
 
 const signals = [
@@ -42,7 +42,7 @@ const signals = [
       "Initiate smooth returns or alterations within 30 days of receiving your order.",
   },
   {
-    icon: Sparkles,
+    icon: Feather,
     title: "Pure Sourcing",
     description:
       "Only certified organic silk, extra-fine merino, and long-staple cashmere fibers.",

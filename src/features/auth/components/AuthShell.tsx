@@ -22,52 +22,39 @@ export function AuthShell({
   children,
 }: AuthShellProps) {
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12">
-      <div
-        className="relative w-full max-w-xl overflow-hidden rounded-2xl p-6 sm:p-10 backdrop-blur-2xl"
-        style={{
-          background: "color-mix(in oklch, var(--bg) 92%, transparent)",
-          border: "1px solid var(--gold-faint)",
-          boxShadow: "0 24px 80px rgba(0,0,0,0.08)",
-        }}
-      >
-        {/* Top gold accent line */}
+    <div className="flex min-h-screen items-center justify-center bg-[var(--vault-bg)] px-4 py-12 transition-colors duration-300">
+      <div className="relative w-full max-w-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
+        {/* Top Rose Gold accent line */}
         <div
-          className="absolute inset-x-0 top-0 h-px"
+          className="absolute inset-x-0 top-0 h-[2px]"
           style={{
             background:
-              "linear-gradient(to right, transparent, var(--gold-soft), transparent)",
+              "linear-gradient(to right, transparent, var(--vault-accent), transparent)",
           }}
         />
 
         {/* Header row */}
         <div className="mb-8 flex items-start justify-between gap-4">
-          <div
-            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-muted-foreground"
-            style={{
-              border: "1px solid var(--gold-faint)",
-              background: "var(--gold-glow)",
-            }}
-          >
-            <LockKeyhole className="h-3.5 w-3.5" />
-            Secure Access
+          <div className="inline-flex items-center gap-2 border border-[var(--vault-line)] bg-[var(--vault-bg)] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--vault-accent)]">
+            <LockKeyhole className="h-3 w-3 text-[var(--vault-accent)]" />
+            Authenticated Gateway
           </div>
 
           <Link
             href="/"
-            className="inline-flex items-center gap-1 rounded-full px-4 py-1.5 text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+            className="inline-flex items-center gap-1 border border-[var(--vault-line)] px-3.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)] transition-colors duration-200 hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
           >
             Storefront
-            <ArrowUpRight className="h-3.5 w-3.5" />
+            <ArrowUpRight className="h-3 w-3" />
           </Link>
         </div>
 
         {/* Title */}
-        <h2 className="font-cormorant text-4xl font-light tracking-tight text-foreground">
+        <h2 className="font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
           {title}
         </h2>
 
-        <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">
+        <p className="mt-2.5 max-w-md font-sans text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)]">
           {description}
         </p>
 
@@ -76,22 +63,19 @@ export function AuthShell({
 
         {/* Divider */}
         <div className="my-8 flex items-center gap-3">
-          <div className="h-px flex-1" style={{ background: "var(--gold-faint)" }} />
-          <span
-            className="text-[10px] uppercase tracking-[0.3em]"
-            style={{ color: "var(--gold)" }}
-          >
-            Account Access
+          <div className="h-px flex-1 bg-[var(--vault-line)]" />
+          <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-[var(--vault-accent)] font-semibold flex items-center gap-1">
+             VAULT VOGUE IDENTITY
           </span>
-          <div className="h-px flex-1" style={{ background: "var(--gold-faint)" }} />
+          <div className="h-px flex-1 bg-[var(--vault-line)]" />
         </div>
 
         {/* Footer */}
-        <p className="text-sm text-muted-foreground">
+        <p className="font-mono text-xs text-[var(--vault-muted)] text-center sm:text-left">
           {footerText}{" "}
           <Link
             href={footerLink}
-            className="font-semibold text-foreground transition-colors duration-200 hover:opacity-70"
+            className="font-semibold text-[var(--vault-accent)] uppercase tracking-wider transition-colors hover:underline"
           >
             {footerLinkLabel}
           </Link>

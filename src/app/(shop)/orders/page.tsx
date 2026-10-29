@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+import Link from "next/link";
 import ProtectedPage from "@/features/auth/components/ProtectedPage";
 import { Badge } from "@/components/ui/badge";
 import { orderService } from "@/lib/services/orderService";
@@ -16,7 +18,6 @@ function resolveProductImage(imageField: string | undefined): string {
 
   const imgStr = imageField.trim();
 
-  // If it's a direct URL
   if (
     imgStr.startsWith("http://") ||
     imgStr.startsWith("https://") ||
@@ -25,7 +26,6 @@ function resolveProductImage(imageField: string | undefined): string {
     return imgStr;
   }
 
-  // Try parsing as standard JSON
   try {
     const parsed = JSON.parse(imgStr);
     if (parsed) {
@@ -36,10 +36,9 @@ function resolveProductImage(imageField: string | undefined): string {
       }
     }
   } catch {
-    // Fail-safe: regex for non-standard JS-like object string representations
+    // Fail-safe: fallback to regex
   }
 
-  // Try extracting using regex for format like { url: 'https://...' } or "url": "https://..."
   const match = imgStr.match(/url\s*:\s*['"]([^'"]+)['"]/i);
   if (match && match[1]) {
     return match[1];
@@ -58,8 +57,8 @@ export default function OrdersPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[var(--background)]">
-        <Loader2 className="h-8 w-8 animate-spin text-[var(--gold)]" />
+      <div className="flex items-center justify-center h-screen bg-[var(--vault-bg)]">
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--vault-accent)]" />
       </div>
     );
   }
@@ -75,8 +74,8 @@ export default function OrdersPage() {
       : "Pending",
     total:
       order.totalAmount !== undefined
-        ? `$${Number(order.totalAmount).toFixed(2)}`
-        : "$0.00",
+        ? `₹${Number(order.totalAmount).toLocaleString("en-IN")}.00`
+        : "₹0.00",
     date: order.createdAt
       ? new Date(order.createdAt).toLocaleDateString("en-IN", {
           day: "numeric",
@@ -87,7 +86,6 @@ export default function OrdersPage() {
     paymentStatus: order.paymentStatus || "pending",
   }));
 
-  /** Returns true when the order needs a payment retry CTA */
   const needsRetry = (paymentStatus: string) => {
     const s = paymentStatus?.toLowerCase();
     return s === "unpaid" || s === "failed" || s === "pending" || s === "initiated";
@@ -95,172 +93,192 @@ export default function OrdersPage() {
 
   return (
     <ProtectedPage>
-      <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 lg:px-8 bg-[var(--background)]">
-        {/* Editorial Heading */}
-        <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="section-label">Fulfillment History</p>
-            <div className="gold-divider" />
-            <h1 className="mt-5 font-cormorant text-4xl font-light text-[var(--brand-text)] lg:text-5xl">
-              Maison Orders
-            </h1>
+      <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+        {/* ── Breadcrumb Bar ── */}
+        <div className="border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/50 backdrop-blur-md">
+          <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+            <nav className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--vault-muted)]" aria-label="Breadcrumb">
+              <Link href="/" className="hover:text-[var(--vault-ink)] transition-colors">
+                Home
+              </Link>
+              <span>/</span>
+              <Link href="/account" className="hover:text-[var(--vault-ink)] transition-colors">
+                Maison Portal
+              </Link>
+              <span>/</span>
+              <span className="text-[var(--vault-accent)] font-semibold">Orders</span>
+            </nav>
           </div>
-          <button
-            onClick={() => router.push("/")}
-            className="btn-secondary hidden sm:inline-flex py-3.5 text-xs font-semibold uppercase tracking-wider"
-          >
-            Continue Browsing
-            <ArrowUpRight className="ml-2 h-4 w-4" />
-          </button>
         </div>
 
-        {/* Orders List */}
-        {orders.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center border border-border/40 bg-card/45 backdrop-blur-md rounded-2xl p-8 shadow-sm">
-            <PackageCheck className="h-16 w-16 text-muted-foreground/60 mb-4 stroke-1" />
-            <h2 className="text-xl font-light font-cormorant text-[var(--brand-text)] mb-2">
-              No Orders Found
-            </h2>
-            <p className="text-xs text-muted-foreground max-w-xs mb-6">
-              It looks like you haven't placed any orders yet. Discover our
-              latest collections.
-            </p>
+        <section className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 lg:px-8 space-y-10">
+          {/* Editorial Heading */}
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between border-b border-[var(--vault-line)] pb-8">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+                Fulfillment History
+              </p>
+              <div className="h-0.5 w-12 bg-[var(--vault-accent)] mt-3" />
+              <h1 className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-[var(--vault-ink)]">
+                Maison Orders
+              </h1>
+            </div>
             <button
-              onClick={() => router.push("/")}
-              className="btn-secondary py-3 px-8 text-[10px] font-semibold uppercase tracking-wider border-[var(--gold-soft)] text-[var(--gold)]"
+              onClick={() => router.push("/products")}
+              className="inline-flex items-center gap-2 rounded-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] px-5 py-3 text-xs font-semibold uppercase tracking-wider text-[var(--vault-ink)] hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] transition-all shadow-sm active:scale-[0.98]"
             >
-              Start Shopping
+              Continue Browsing
+              <ArrowUpRight className="h-4 w-4" />
             </button>
           </div>
-        ) : (
-          <div className="grid gap-6">
-            {orders.map((order: any) => (
-              <div
-                key={order.id}
-                className="overflow-hidden rounded-2xl border border-border/40 bg-card/45 backdrop-blur-md transition-all hover:border-[var(--gold-soft)] shadow-md hover:shadow-lg"
+
+          {/* Orders List */}
+          {orders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center border border-[var(--vault-line)] bg-[var(--vault-panel)] rounded-3xl p-8 shadow-sm">
+              <PackageCheck className="h-16 w-16 text-[var(--vault-muted)]/50 mb-4 stroke-1" />
+              <h2 className="text-2xl font-light font-serif text-[var(--vault-ink)] mb-2">
+                No Orders Placed Yet
+              </h2>
+              <p className="text-xs text-[var(--vault-muted)] max-w-xs mb-6 font-light">
+                Discover our latest menswear, womenswear, and youth archives.
+              </p>
+              <button
+                onClick={() => router.push("/products")}
+                className="rounded-xl bg-[var(--vault-accent)] px-8 py-3 text-xs font-semibold uppercase tracking-wider text-white shadow-sm hover:brightness-110 active:scale-[0.98] transition-all"
               >
-                <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-start gap-5">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--gold-glow)] text-[var(--gold)] border border-[var(--gold-faint)]">
-                      <PackageCheck className="h-5 w-5" />
+                Browse Catalog
+              </button>
+            </div>
+          ) : (
+            <div className="grid gap-6">
+              {orders.map((order: any) => (
+                <div
+                  key={order.id}
+                  className="overflow-hidden rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] transition-all hover:border-[var(--vault-accent)]/50 shadow-sm"
+                >
+                  <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-start gap-5">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] border border-[var(--vault-accent)]/20">
+                        <PackageCheck className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-semibold text-[var(--vault-ink)] font-mono">
+                          {order.id}
+                        </h3>
+                        <p className="text-xs text-[var(--vault-muted)] mt-0.5">
+                          Placed on {order.date}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-[var(--brand-text)]">
-                        {order.id}
-                      </h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        Placed on {order.date}
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center gap-6 sm:gap-10">
-                    <div className="text-right space-y-1">
-                      <p className="text-base font-bold text-[var(--gold)]">
-                        {order.total}
-                      </p>
-                      <Badge className="rounded-full badge-gold font-normal px-2.5 py-0.5 text-[9px]">
-                        {order.status}
-                      </Badge>
-                    </div>
-                    {order.status?.toLowerCase() === "shipped" ? (
-                      <button
-                        onClick={() => router.push(`/orders/${order.id}/track`)}
-                        className="btn-primary py-2.5 px-5 text-xs font-semibold uppercase tracking-wider text-white flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
-                      >
-                        <Truck className="h-3.5 w-3.5" />
-                        Track Package
-                      </button>
-                    ) : needsRetry(order.paymentStatus) ? (
-                      <button
-                        onClick={() => router.push(`/orders/${order.id}`)}
-                        className="btn-primary py-2.5 px-5 text-xs font-semibold uppercase tracking-wider text-white flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer bg-rose-600 hover:bg-rose-700 border-rose-600"
-                      >
-                        <RefreshCw className="h-3.5 w-3.5" />
-                        Retry Payment
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => router.push(`/orders/${order.id}`)}
-                        className="btn-secondary py-2.5 px-6 text-xs font-semibold uppercase tracking-wider border-[var(--gold-soft)] text-[var(--gold)]"
-                      >
-                        View Receipt
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Items List */}
-                {order.items && order.items.length > 0 && (
-                  <div className="border-t border-border/40 bg-card/10 px-6 py-4 space-y-4">
-                    {order.items.map((item: any, idx: number) => {
-                      const imageUrl = resolveProductImage(item.image);
-                      return (
-                        <div
-                          key={item._id || idx}
-                          className="flex items-center gap-4"
+                    <div className="flex items-center gap-6 sm:gap-8">
+                      <div className="text-right space-y-1">
+                        <p className="font-mono text-base font-bold text-[var(--vault-ink)]">
+                          {order.total}
+                        </p>
+                        <Badge className="rounded-full bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] border border-[var(--vault-accent)]/30 font-medium px-2.5 py-0.5 text-[9px]">
+                          {order.status}
+                        </Badge>
+                      </div>
+                      {order.status?.toLowerCase() === "shipped" ? (
+                        <button
+                          onClick={() => router.push(`/orders/${order.id}/track`)}
+                          className="rounded-xl bg-[var(--vault-accent)] py-2.5 px-5 text-xs font-semibold uppercase tracking-wider text-white flex items-center gap-2 active:scale-95 hover:brightness-110 transition-all cursor-pointer shadow-sm"
                         >
-                          <div className="relative h-16 w-12 shrink-0 overflow-hidden rounded-md border border-border/30 bg-muted">
-                            <Image
-                              src={imageUrl}
-                              alt={item.name}
-                              fill
-                              sizes="48px"
-                              className="object-cover"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-medium text-[var(--brand-text)] truncate">
-                              {item.name}
-                            </h4>
-                            <p className="text-xs text-muted-foreground mt-0.5">
-                              Qty: {item.quantity} · $
-                              {(item.price || 0).toFixed(2)} each
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-sm font-semibold text-[var(--brand-text)]">
-                              $
-                              {(
-                                (item.price || 0) * (item.quantity || 1)
-                              ).toFixed(2)}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
+                          <Truck className="h-3.5 w-3.5" />
+                          Track Package
+                        </button>
+                      ) : needsRetry(order.paymentStatus) ? (
+                        <button
+                          onClick={() => router.push(`/orders/${order.id}`)}
+                          className="rounded-xl bg-rose-600 hover:bg-rose-700 py-2.5 px-5 text-xs font-semibold uppercase tracking-wider text-white flex items-center gap-2 active:scale-95 transition-all cursor-pointer shadow-sm"
+                        >
+                          <RefreshCw className="h-3.5 w-3.5" />
+                          Retry Payment
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => router.push(`/orders/${order.id}`)}
+                          className="rounded-xl border border-[var(--vault-line)] bg-[var(--vault-bg)] hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] py-2.5 px-5 text-xs font-semibold uppercase tracking-wider text-[var(--vault-ink)] transition-colors"
+                        >
+                          View Receipt
+                        </button>
+                      )}
+                    </div>
                   </div>
-                )}
 
-                {/* Status bar */}
-                <div className="h-1 w-full bg-[var(--gold-faint)]">
-                  <div
-                    className="h-full bg-[var(--gold)]"
-                    style={{
-                      width: ["delivered", "confirmed"].includes(
-                        order.status.toLowerCase(),
-                      )
-                        ? "100%"
-                        : "45%",
-                    }}
-                  />
+                  {/* Items List */}
+                  {order.items && order.items.length > 0 && (
+                    <div className="border-t border-[var(--vault-line)] bg-[var(--vault-bg)]/30 px-6 py-4 space-y-3">
+                      {order.items.map((item: any, idx: number) => {
+                        const imageUrl = resolveProductImage(item.image);
+                        return (
+                          <div
+                            key={item._id || idx}
+                            className="flex items-center gap-4"
+                          >
+                            <div className="relative h-14 w-12 shrink-0 overflow-hidden rounded-xl border border-[var(--vault-line)] bg-[var(--vault-panel)]">
+                              <Image
+                                src={imageUrl}
+                                alt={item.name}
+                                fill
+                                sizes="48px"
+                                className="object-cover"
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-xs font-medium text-[var(--vault-ink)] truncate">
+                                {item.name}
+                              </h4>
+                              <p className="text-[11px] text-[var(--vault-muted)] mt-0.5">
+                                Qty: {item.quantity} · ₹
+                                {(item.price || 0).toLocaleString("en-IN")}.00 each
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-mono text-xs font-semibold text-[var(--vault-ink)]">
+                                ₹
+                                {(
+                                  (item.price || 0) * (item.quantity || 1)
+                                ).toLocaleString("en-IN")}
+                                .00
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Status bar */}
+                  <div className="h-1 w-full bg-[var(--vault-line)]">
+                    <div
+                      className="h-full bg-[var(--vault-accent)] transition-all duration-500"
+                      style={{
+                        width: ["delivered", "confirmed"].includes(
+                          order.status.toLowerCase(),
+                        )
+                          ? "100%"
+                          : "45%",
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
 
-        {/* Mobile CTA */}
-        <div className="mt-12 text-center sm:hidden">
-          <button
-            onClick={() => router.push("/")}
-            className="btn-secondary w-full py-4 text-xs font-semibold uppercase tracking-wider"
-          >
-            Continue Browsing
-            <ArrowUpRight className="ml-2 h-4 w-4" />
-          </button>
-        </div>
-      </section>
+          {/* Mobile CTA */}
+          <div className="mt-8 text-center sm:hidden">
+            <button
+              onClick={() => router.push("/products")}
+              className="w-full rounded-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--vault-ink)] hover:border-[var(--vault-accent)]"
+            >
+              Continue Browsing
+            </button>
+          </div>
+        </section>
+      </div>
     </ProtectedPage>
   );
 }

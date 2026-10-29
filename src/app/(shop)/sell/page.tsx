@@ -14,7 +14,6 @@ import {
   CreditCard,
   FileText,
   Clock,
-  Sparkles,
 } from "lucide-react";
 import { sellerService } from "@/lib/services/sellerService";
 import {
@@ -330,42 +329,47 @@ export default function PublicSellerOnboardPage() {
           animate={{ opacity: 1, y: 0 }}
           className="border border-[var(--vault-line)] bg-[var(--vault-panel)] text-center p-8 sm:p-12 flex flex-col items-center space-y-6 backdrop-blur-md shadow-2xl"
         >
-          <div className="flex h-16 w-16 items-center justify-center border border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)]">
-            <Clock className="h-7 w-7 animate-pulse text-[var(--gold)]" />
+          <div className="flex h-16 w-16 items-center justify-center border border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 text-[var(--vault-accent)]">
+            <Clock className="h-7 w-7 animate-pulse text-[var(--vault-accent)]" />
           </div>
 
           <div className="space-y-2">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] block">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] block font-semibold">
               // JURY VALIDATION QUEUE
             </span>
-            <h2 className="text-2xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+            <h2 className="font-serif text-2xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
               Application Under Curation Review
             </h2>
             <p className="text-xs text-[var(--vault-muted)] max-w-md mx-auto font-mono">
-              Thank you for applying to Vault Vogue. Your boutique label profile is
-              currently pending credentials verification by our curation board.
+              Thank you for applying to Vault Vogue. Your boutique label profile
+              is currently pending credentials verification by our curation
+              board.
             </p>
           </div>
 
-          <div className="w-full max-w-md p-5 border border-[var(--vault-line)] bg-[var(--vault-canvas)] text-left text-xs space-y-2 text-[var(--vault-muted)] font-mono">
+          <div className="w-full max-w-md p-5 border border-[var(--vault-line)] bg-[var(--vault-bg)] text-left text-xs space-y-2 text-[var(--vault-muted)] font-mono">
             <p className="font-bold text-[var(--vault-ink)] flex items-center gap-1.5 uppercase text-[10px] tracking-wider border-b border-[var(--vault-line)] pb-2">
-              <Shield className="h-3.5 w-3.5 text-[var(--gold)]" />
+              <Shield className="h-3.5 w-3.5 text-[var(--vault-accent)]" />
               What happens next?
             </p>
             <p className="pt-1">
-              1. Curation team verifies label eligibility, catalog artistry, and GST credentials.
+              1. Curation team verifies label eligibility, catalog artistry, and
+              GST credentials.
             </p>
             <p>
-              2. Once validated, status transitions to <strong>Approved</strong>.
+              2. Once validated, status transitions to <strong>Approved</strong>
+              .
             </p>
             <p>
-              3. You receive direct access to your <strong>Seller Atelier</strong> to manage inventory, drops, and waybills.
+              3. You receive direct access to your{" "}
+              <strong>Seller Atelier</strong> to manage inventory, drops, and
+              waybills.
             </p>
           </div>
 
           <button
             onClick={() => router.push("/")}
-            className="border border-[var(--gold)] bg-[var(--gold)] text-white py-3 px-8 font-mono text-[11px] uppercase tracking-wider font-bold transition hover:opacity-90"
+            className="btn-primary py-3 px-8 font-mono text-[11px] uppercase tracking-wider font-bold"
           >
             Return to Boutique
           </button>
@@ -377,11 +381,11 @@ export default function PublicSellerOnboardPage() {
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 sm:py-20 text-[var(--vault-ink)]">
       {/* Editorial Header Block */}
-      <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 backdrop-blur-md mb-8">
+      <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
           <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-[var(--gold)]" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--gold)]">
+            <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)]" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold">
               Atelier Partnership &amp; Label Curation
             </span>
           </div>
@@ -392,28 +396,43 @@ export default function PublicSellerOnboardPage() {
 
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className="lg:col-span-8 space-y-4">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
-              Partner with <span className="font-serif italic text-[var(--gold)]">Vault Vogue.</span>
+            <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+              Partner with{" "}
+              <span className="italic text-[var(--vault-accent)]">
+                Vault Vogue.
+              </span>
               <br />
               Onboard Your Label.
             </h1>
             <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
-              Join an exclusive curation of independent luxury designers, heritage textile ateliers, and avant-garde creators.
-              Reach discerning global collectors across our digital and physical showrooms.
+              Join an exclusive curation of independent luxury designers,
+              heritage textile ateliers, and avant-garde creators. Reach
+              discerning global collectors across our digital and physical
+              showrooms.
             </p>
           </div>
 
           <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
             <div className="flex justify-between text-[11px]">
-              <span className="text-[var(--vault-muted)]">CURATION REVIEW:</span>
-              <span className="font-bold text-[var(--gold)]">48-HOUR JURY</span>
+              <span className="text-[var(--vault-muted)]">
+                CURATION REVIEW:
+              </span>
+              <span className="font-bold text-[var(--vault-accent)]">
+                48-HOUR JURY
+              </span>
             </div>
             <div className="flex justify-between text-[11px]">
-              <span className="text-[var(--vault-muted)]">COMMISSION MARGIN:</span>
-              <span className="text-emerald-500 font-bold">15% PLATFORM CUT</span>
+              <span className="text-[var(--vault-muted)]">
+                COMMISSION MARGIN:
+              </span>
+              <span className="text-emerald-500 font-bold">
+                15% PLATFORM CUT
+              </span>
             </div>
             <div className="flex justify-between text-[11px]">
-              <span className="text-[var(--vault-muted)]">LOGISTICS ASSIST:</span>
+              <span className="text-[var(--vault-muted)]">
+                LOGISTICS ASSIST:
+              </span>
               <span className="font-bold">INCLUDED (AIR DDP)</span>
             </div>
           </div>
@@ -424,13 +443,13 @@ export default function PublicSellerOnboardPage() {
       <div className="flex items-center justify-center gap-2 sm:gap-4 mb-10 text-xs font-mono">
         <button
           onClick={() => step > 1 && handleGoStep(1)}
-          className={`flex items-center gap-2 px-3 py-1.5 border transition-all ${
+          className={`flex items-center gap-2 px-3 py-1.5 border transition-all cursor-pointer ${
             step >= 1
-              ? "border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)] font-bold"
+              ? "border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] font-bold"
               : "border-[var(--vault-line)] text-[var(--vault-muted)]"
           }`}
         >
-          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--gold)] text-white text-[9px]">
+          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--vault-accent)] text-white text-[9px]">
             1
           </span>
           <span className="uppercase tracking-wider">Business Details</span>
@@ -438,9 +457,9 @@ export default function PublicSellerOnboardPage() {
         <div className="w-6 sm:w-12 border-t border-[var(--vault-line)]" />
         <button
           onClick={() => step > 2 && handleGoStep(2)}
-          className={`flex items-center gap-2 px-3 py-1.5 border transition-all ${
+          className={`flex items-center gap-2 px-3 py-1.5 border transition-all cursor-pointer ${
             step >= 2
-              ? "border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)] font-bold"
+              ? "border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] font-bold"
               : "border-[var(--vault-line)] text-[var(--vault-muted)]"
           }`}
           disabled={step < 2}
@@ -454,7 +473,7 @@ export default function PublicSellerOnboardPage() {
         <span
           className={`flex items-center gap-2 px-3 py-1.5 border transition-all ${
             step === 3
-              ? "border-[var(--gold)] bg-[var(--gold-glow)] text-[var(--gold)] font-bold"
+              ? "border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] font-bold"
               : "border-[var(--vault-line)] text-[var(--vault-muted)]"
           }`}
         >
@@ -482,8 +501,8 @@ export default function PublicSellerOnboardPage() {
             {step === 1 && (
               <div className="space-y-4">
                 <div className="flex items-center gap-1.5 border-b border-border/10 pb-2">
-                  <Building className="h-4 w-4 text-[var(--gold)]" />
-                  <h3 className="font-cormorant text-lg font-light text-[var(--brand-text)]">
+                  <Building className="h-4 w-4 text-[var(--vault-accent)]" />
+                  <h3 className="font-serif text-lg font-light uppercase tracking-tight text-[var(--vault-ink)]">
                     Atelier & Brand Information
                   </h3>
                 </div>
@@ -653,8 +672,8 @@ export default function PublicSellerOnboardPage() {
             {step === 2 && (
               <div className="space-y-4">
                 <div className="flex items-center gap-1.5 border-b border-border/10 pb-2">
-                  <CreditCard className="h-4 w-4 text-[var(--gold)]" />
-                  <h3 className="font-cormorant text-lg font-light text-[var(--brand-text)]">
+                  <CreditCard className="h-4 w-4 text-[var(--vault-accent)]" />
+                  <h3 className="font-serif text-lg font-light uppercase tracking-tight text-[var(--vault-ink)]">
                     Payout Bank Account Details
                   </h3>
                 </div>
@@ -769,45 +788,45 @@ export default function PublicSellerOnboardPage() {
             {step === 3 && (
               <div className="space-y-4">
                 <div className="flex items-center gap-1.5 border-b border-border/10 pb-2">
-                  <FileText className="h-4 w-4 text-[var(--gold)]" />
-                  <h3 className="font-cormorant text-lg font-light text-[var(--brand-text)]">
+                  <FileText className="h-4 w-4 text-[var(--vault-accent)]" />
+                  <h3 className="font-serif text-lg font-light uppercase tracking-tight text-[var(--vault-ink)]">
                     Review Registration Profile
                   </h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs mt-2">
                   {/* Summary Business */}
-                  <div className="space-y-2.5 p-4 rounded-xl border border-border/15 bg-background/20">
-                    <p className="font-semibold text-[var(--brand-text)] uppercase tracking-wider text-[10px] border-b border-border/10 pb-1 flex items-center gap-1">
-                      <Building className="h-3.5 w-3.5 text-[var(--gold)]" />
+                  <div className="space-y-2.5 p-4 rounded-none border border-[var(--vault-line)] bg-[var(--vault-bg)]">
+                    <p className="font-semibold text-[var(--vault-ink)] uppercase tracking-wider text-[10px] border-b border-[var(--vault-line)] pb-1 flex items-center gap-1 font-mono">
+                      <Building className="h-3.5 w-3.5 text-[var(--vault-accent)]" />
                       Atelier Info
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">
+                      <strong className="text-[var(--vault-muted)]">
                         Label Name:
                       </strong>{" "}
                       {form.businessInfo.businessName}
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">
+                      <strong className="text-[var(--vault-muted)]">
                         Owner Name:
                       </strong>{" "}
                       {form.businessInfo.ownerName}
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">
+                      <strong className="text-[var(--vault-muted)]">
                         Contact:
                       </strong>{" "}
                       {form.businessInfo.email} | {form.businessInfo.phone}
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">
+                      <strong className="text-[var(--vault-muted)]">
                         GSTIN Code:
                       </strong>{" "}
                       {form.businessInfo.gstNumber}
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">
+                      <strong className="text-[var(--vault-muted)]">
                         Collection:
                       </strong>{" "}
                       {form.businessInfo.category}
@@ -815,30 +834,32 @@ export default function PublicSellerOnboardPage() {
                   </div>
 
                   {/* Summary Bank */}
-                  <div className="space-y-2.5 p-4 rounded-xl border border-border/15 bg-background/20">
-                    <p className="font-semibold text-[var(--brand-text)] uppercase tracking-wider text-[10px] border-b border-border/10 pb-1 flex items-center gap-1">
-                      <CreditCard className="h-3.5 w-3.5 text-[var(--gold)]" />
+                  <div className="space-y-2.5 p-4 rounded-none border border-[var(--vault-line)] bg-[var(--vault-bg)]">
+                    <p className="font-semibold text-[var(--vault-ink)] uppercase tracking-wider text-[10px] border-b border-[var(--vault-line)] pb-1 flex items-center gap-1 font-mono">
+                      <CreditCard className="h-3.5 w-3.5 text-[var(--vault-accent)]" />
                       Payout Account
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">
+                      <strong className="text-[var(--vault-muted)]">
                         Bank Name:
                       </strong>{" "}
                       {form.bankDetails.bankName}
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">Holder:</strong>{" "}
+                      <strong className="text-[var(--vault-muted)]">
+                        Holder:
+                      </strong>{" "}
                       {form.bankDetails.accountHolder}
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">
+                      <strong className="text-[var(--vault-muted)]">
                         Account Number:
                       </strong>{" "}
                       {form.bankDetails.accountNumber} (
                       {form.bankDetails.accountType})
                     </p>
                     <p>
-                      <strong className="text-muted-foreground">
+                      <strong className="text-[var(--vault-muted)]">
                         IFSC Code:
                       </strong>{" "}
                       {form.bankDetails.ifscCode}
@@ -847,10 +868,10 @@ export default function PublicSellerOnboardPage() {
                 </div>
 
                 <div className="pt-4 space-y-3">
-                  <label className="flex items-start gap-2.5 text-xs text-muted-foreground cursor-pointer select-none">
+                  <label className="flex items-start gap-2.5 text-xs text-[var(--vault-muted)] cursor-pointer select-none">
                     <input
                       type="checkbox"
-                      className="accent-[var(--gold)] mt-0.5 rounded"
+                      className="accent-[var(--vault-accent)] mt-0.5 rounded-none"
                       checked={form.agreedToTerms}
                       onChange={(e) =>
                         setForm((p) => ({
@@ -907,10 +928,7 @@ export default function PublicSellerOnboardPage() {
                     Submitting...
                   </>
                 ) : (
-                  <>
-                    <Sparkles className="h-3.5 w-3.5 text-white" />
-                    Submit Application
-                  </>
+                  <>Submit Application</>
                 )}
               </button>
             )}
