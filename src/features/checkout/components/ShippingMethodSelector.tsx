@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Truck, Check, AlertCircle } from "lucide-react";
+import { Truck, Check } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export interface ShippingMethod {

@@ -5,7 +5,6 @@ import {
   IconFolder,
   IconHelp,
   IconListDetails,
-  IconSearch,
   IconSettings,
   IconTag,
 } from "@tabler/icons-react";

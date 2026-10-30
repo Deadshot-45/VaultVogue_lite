@@ -31,6 +31,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
           y: 0,
           duration: 0.5,
           ease: "power3.out",
+          clearProps: "transform",
         },
       );
 

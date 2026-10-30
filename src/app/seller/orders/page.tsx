@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Search,
   ShoppingCart,
   Calendar,
   User,
-  CreditCard,
   CheckCircle,
   Truck,
   Loader2,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { logError } from "../log-error";
 import { Product as ApiProduct, productService } from "../services/productService";
@@ -61,97 +60,98 @@ export type UIProduct = {
   createdAt: string;
 };
 
-interface UseGetProductsProps {
+export interface UseGetProductsProps {
   categoryId?: string;
   limit?: number;
   label?: string; // e.g. "men" | "women" | "kids" - used as part of query key
-  categoryName?: string; // Add this
+  categoryName?: string;
   search?: string;
   isSale?: boolean;
+  sortBy?: string;
+  order?: string;
+  isNew?: boolean;
+  bestseller?: boolean;
+  trending?: boolean;
 }
 
-// type UIProductBase = Pick<
-//   UIProduct,
-//   | "id"
-//   | "name"
-//   | "image"
-//   | "description"
-//   | "bestseller"
-//   | "trending"
-//   | "createdAt"
-// >;
-
-const mapProduct = (p: ApiProduct): UIProduct => {
+export const mapProduct = (p: ApiProduct): UIProduct => {
   const sizes = p.sizes ?? [];
   const variants = p.variants ?? [];
 
   // Distinct sizes and colors across all variants
-  const availableSizes = Array.from(new Set(sizes.map((s) => s.size).filter(Boolean)));
-  const availableColors = Array.from(new Set(sizes.map((s) => s.color).filter(Boolean)));
+  const availableSizes = [
+    ...new Set(sizes.map((s: { size?: string }) => s.size).filter(Boolean)),
+  ] as string[];
+  const availableColors = [
+    ...new Set(sizes.map((s: { color?: string }) => s.color).filter(Boolean)),
+  ] as string[];
 
+  // Stock per size (summed across colors for that size)
   const sizeQuantities: Record<string, number> = {};
-  /**
-   * sizeToVariantMap supports two lookup strategies:
-   *   1. By size only:         sizeToVariantMap["M"]          → variantId
-   *   2. By color+size combo:  sizeToVariantMap["Black|M"]    → variantId
-   * UI should prefer the composite key when a color is selected.
-   */
-  const sizeToVariantMap: Record<string, string> = {};
-
   for (const s of sizes) {
     if (s.size) {
-      sizeQuantities[s.size] = (sizeQuantities[s.size] ?? 0) + s.stock;
-      // Fallback: last write wins for size-only key
-      sizeToVariantMap[s.size] = s.variantId;
-    }
-    if (s.color && s.size) {
-      sizeToVariantMap[`${s.color}|${s.size}`] = s.variantId;
-    } else if (s.color) {
-      sizeToVariantMap[s.color] = s.variantId;
+      sizeQuantities[s.size] = (sizeQuantities[s.size] ?? 0) + (s.stock ?? 0);
     }
   }
 
-  const priceList = sizes.map((s) => s.price).filter((v) => v != null);
-  const minPrice = priceList.length ? Math.min(...priceList) : p.minPrice;
-  const maxPrice = priceList.length ? Math.max(...priceList) : p.maxPrice;
+  // Size / color → variantId lookup map
+  const sizeToVariantMap: Record<string, string> = {};
+  for (const s of sizes) {
+    if (s.size && s.variantId) {
+      sizeToVariantMap[s.size] = s.variantId;
+      if (s.color) {
+        sizeToVariantMap[`${s.color}|${s.size}`] = s.variantId;
+      }
+    }
+  }
 
-  // Primary image: try variant images first (colour-specific), then product images
-  const primaryImage =
-    sizes[0]?.images?.find((img) => img.isPrimary)?.url ??
-    sizes[0]?.images?.[0]?.url ??
-    p.images?.find((img) => img.isPrimary)?.url ??
+  // Primary image fallback chain:
+  // 1. First image flagged isPrimary
+  // 2. First image in product.images array
+  // 3. First image of first variant
+  // 4. Placeholder
+  const primaryImg =
+    p.images?.find((img: { isPrimary?: boolean; url?: string }) => img.isPrimary)?.url ??
     p.images?.[0]?.url ??
-    "";
+    variants[0]?.images?.[0]?.url ??
+    "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=85";
+
+  // Category name: from populated array or plain string
+  const categoryName =
+    p.categories?.[0]?.name ?? p.category ?? "Uncategorized";
 
   return {
     id: p._id,
     name: p.name,
-
-    price: minPrice ?? 0,
-    minPrice,
-    maxPrice,
-
+    price: p.minPrice,
+    minPrice: p.minPrice,
+    maxPrice: p.maxPrice,
     sellerId: p.sellerId,
+    image: primaryImg,
+    category: categoryName,
+    description: p.description,
+
+    bestseller: p.bestseller ?? false,
+    trending: p.trending ?? false,
+    isNew: false,
+    isSale: p.maxPrice > p.minPrice,
 
     availableSizes,
     availableColors,
     sizeQuantities,
     sizeToVariantMap,
-
     lowStockThreshold: 5,
 
-    image: primaryImage,
-    category: p.category || p.categories?.[0]?.name || "Fashion",
-
-    description: p.description,
-
-    bestseller: p.bestseller ?? false,
-    trending: p.trending ?? false,
-
-    isNew: false,
-    isSale: sizes.some((s) => s.compareAtPrice && s.compareAtPrice > s.price),
-
-    variants: variants.map((v) => ({
+    variants: variants.map((v: {
+      _id: string;
+      sku: string;
+      size: string;
+      color: string;
+      price: number;
+      compareAtPrice?: number;
+      images: { url: string; isPrimary: boolean }[];
+      isActive: boolean;
+    }) => ({
       id: v._id,
       sku: v.sku,
       size: v.size,
@@ -162,7 +162,15 @@ const mapProduct = (p: ApiProduct): UIProduct => {
       isActive: v.isActive,
     })),
 
-    sizes: sizes.map((s) => ({
+    sizes: sizes.map((s: {
+      variantId: string;
+      size: string;
+      color: string;
+      price: number;
+      stock: number;
+      compareAtPrice?: number;
+      images: { url: string; isPrimary: boolean }[];
+    }) => ({
       variantId: s.variantId,
       size: s.size,
       color: s.color,
@@ -188,22 +196,43 @@ export const useGetProducts = ({
   categoryName,
   search,
   isSale,
+  sortBy,
+  order,
+  isNew,
+  bestseller,
+  trending,
 }: UseGetProductsProps = {}) => {
   return useInfiniteQuery({
-    queryKey: ["products", label, categoryId, limit, categoryName, search, isSale],
+    queryKey: [
+      "products",
+      label,
+      categoryId,
+      limit,
+      categoryName,
+      search,
+      isSale,
+      sortBy,
+      order,
+      isNew,
+      bestseller,
+      trending,
+    ],
     initialPageParam: 1,
     queryFn: async ({ pageParam, signal }) => {
       try {
         const apiProducts: ApiProduct[] = await productService.getAllProducts(
           {
-            page: pageParam,
+            page: pageParam as number,
             limit,
-            sortBy: "createdAt",
-            order: "desc",
+            sortBy: sortBy || "createdAt",
+            order: order || "desc",
             categoryId: categoryId as string,
             categoryName,
             search,
             isSale,
+            isNew,
+            bestseller,
+            trending,
           },
           { signal },
         );

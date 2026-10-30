@@ -433,9 +433,9 @@ operation:
 At the end of each implementation task:
 
 1.  Inspect `package.json` and identify the repository's actual lint,
-    type-check, test, and build scripts.
+    type-check, test, and build scripts (`pnpm` use for build).
 2.  Run the applicable lint command.
-3.  Run the production build.
+3.  Run the production build (`pnpm run build`).
 4.  Run a separate TypeScript check when the project provides one and it
     is relevant.
 5.  Run targeted tests for changed behavior when available and

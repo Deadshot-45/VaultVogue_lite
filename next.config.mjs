@@ -17,6 +17,26 @@ const remotePatterns = [
     hostname: "vault-vogue-server.vercel.app",
     pathname: "/**",
   },
+  {
+    protocol: "https",
+    hostname: "images.unsplash.com",
+    pathname: "/**",
+  },
+  {
+    protocol: "https",
+    hostname: "res.cloudinary.com",
+    pathname: "/**",
+  },
+  {
+    protocol: "https",
+    hostname: "firebasestorage.googleapis.com",
+    pathname: "/**",
+  },
+  {
+    protocol: "https",
+    hostname: "**.googleusercontent.com",
+    pathname: "/**",
+  },
 ];
 
 if (apiUrl) {
@@ -26,7 +46,7 @@ if (apiUrl) {
     remotePatterns.push({
       protocol: protocol.replace(":", ""),
       hostname,
-      port,
+      port: port || undefined,
       pathname: "/**",
     });
   } catch {
@@ -36,13 +56,15 @@ if (apiUrl) {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  cacheComponents: true,
-  partialPrefetching: true,
   images: {
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 86400,
     remotePatterns,
-    unoptimized: true,
+    dangerouslyAllowLocalIP: true,
   },
-  allowedDevOrigins: ["192.168.6.167", "192.168.6.151"],
+  allowedDevOrigins: ["192.168.6.167", "192.168.6.151", "10.20.18.21"],
   experimental: {
     optimizePackageImports: [
       "lucide-react",

@@ -5,7 +5,6 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useGetProducts } from "@/lib/queries/useGetProducts";
 import { mapApiProductToVariantProduct } from "@/lib/utility/category-adapter";
 import { CATEGORY_CONFIGS } from "@/data/categories";
-import { VARIANT_PRODUCTS } from "@/features/storefront/data/catalog";
 import type {
   CatalogCategory,
   CatalogSortOption,
@@ -102,8 +101,8 @@ export function useProductCatalog() {
   }, [rawApiProducts]);
 
   // Fallback / offline master catalog
-  const fallbackCatalog = useMemo(() => {
-    const list: VariantProduct[] = [...VARIANT_PRODUCTS];
+  const _fallbackCatalog = useMemo(() => {
+    const list: VariantProduct[] = [];
     Object.values(CATEGORY_CONFIGS).forEach((conf) => {
       conf.products.forEach((p) => {
         if (!list.some((existing) => existing.id === p.id || existing.slug === p.slug)) {
@@ -118,8 +117,8 @@ export function useProductCatalog() {
   const isLive = apiVariantProducts.length > 0;
   const allAvailableProducts = useMemo(() => {
     if (isLive) return apiVariantProducts;
-    return fallbackCatalog;
-  }, [isLive, apiVariantProducts, fallbackCatalog]);
+    return [];
+  }, [isLive, apiVariantProducts]);
 
   // 5. Client-Side Filtering across Active Product Pool
   const filteredProducts = useMemo(() => {

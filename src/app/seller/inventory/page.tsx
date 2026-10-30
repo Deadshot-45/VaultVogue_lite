@@ -106,7 +106,6 @@ export default function SellerInventoryPage() {
   const [isUploadingCover, setIsUploadingCover] = useState(false);
 
   const { user } = useAppSelector((s) => s.auth);
-  const [mounted, setMounted] = useState(false);
 
   const {
     data: products = [],
@@ -120,8 +119,6 @@ export default function SellerInventoryPage() {
       openAddModal();
       router.replace("/seller/inventory");
     }
-
-    setMounted(true);
   }, [searchParams, router]);
 
   const openAddModal = () => {

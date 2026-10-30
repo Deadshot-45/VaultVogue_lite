@@ -478,11 +478,11 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
         {/* ─── RIGHT: Authentication Panel (Independent Scroll, Full Screen Height) ─── */}
         <div
           ref={rightPanelRef}
-          className="lg:col-span-7 xl:col-span-6 h-screen overflow-y-auto overflow-x-hidden flex flex-col px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 scroll-smooth [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-[var(--vault-line)] [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-[var(--vault-accent)]"
+          className="lg:col-span-7 xl:col-span-6 min-h-[80vh] overflow-y-auto overflow-x-hidden flex flex-col px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 scroll-smooth [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-[var(--vault-line)] [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-[var(--vault-accent)]"
         >
           <div
             ref={formCardRef}
-            className="mx-auto my-auto w-full max-w-md py-10 sm:py-14 space-y-7"
+            className="mx-auto sm:my-auto w-full max-w-md py-0 max-sm:my-6 sm:py-14 space-y-7"
           >
             {/* Mobile Brand Header */}
             <div className="flex items-center justify-between lg:hidden border-b border-[var(--vault-line)] pb-5">

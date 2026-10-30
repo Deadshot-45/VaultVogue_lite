@@ -18,7 +18,7 @@ import { getAuthCookie } from "@/lib/auth";
 import { openCartDrawer } from "@/features/cart-drawer";
 
 export const AddToCartSection = ({
-  product,
+  product: _product,
   selectedVariant,
 }: {
   product: ProductDetail;
@@ -62,8 +62,7 @@ export const AddToCartSection = ({
   });
 
   const cartItem = cartItems.find(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (item: any) => item.variantId === selectedVariant?.variantId,
+    (item) => item.variantId === selectedVariant?.variantId,
   );
 
   const handleAdd = () => {

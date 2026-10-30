@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 // import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  title: "Vault Vogue Lite",
+  title: "Vault Vogue",
   description: "Modern E-commerce Experience",
 };
 
@@ -23,14 +23,11 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html
       lang="en"
@@ -39,6 +36,20 @@ export default function RootLayout({
       data-vault-theme="obsidian"
       className={`${cormorant.variable} ${montserrat.variable} vault-storefront dark`}
     >
+      <head>
+        <link
+          rel="preconnect"
+          href="https://images.unsplash.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link
+          rel="preconnect"
+          href="https://res.cloudinary.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
       <body className="vault-storefront antialiased selection:bg-[var(--vault-accent)] selection:text-[var(--vault-accent-ink)]">
         <Analytics />
         {/* <SpeedInsights /> */}

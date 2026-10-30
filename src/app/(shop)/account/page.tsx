@@ -92,7 +92,7 @@ export default function AccountPage() {
       await performAppLogout(dispatch);
       toast.success("Logged out from Vault-Vogue Maison.");
       router.push("/login");
-    } catch (err) {
+    } catch {
       toast.error("Logout failed. Please try again.");
     }
   };

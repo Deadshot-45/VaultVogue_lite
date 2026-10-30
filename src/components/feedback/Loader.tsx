@@ -1,6 +1,5 @@
 "use client";
 
-import "@/App.css";
 import { useEffect, useState } from "react";
 
 export function Loader() {

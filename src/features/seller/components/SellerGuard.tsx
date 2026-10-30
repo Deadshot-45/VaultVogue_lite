@@ -63,7 +63,7 @@ export function SellerGuard({ children }: SellerGuardProps) {
     };
 
     checkStatus();
-  }, [isAuthenticated, user, router]);
+  }, [isAuthenticated, user, router, pathname]);
 
   // Prevent hydration flashing
   if (!mounted || status === "loading") {

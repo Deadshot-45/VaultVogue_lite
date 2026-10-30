@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -13,14 +13,18 @@ import {
   Compass,
   ChevronRight,
   ChevronLeft,
+  RotateCcw,
 } from "lucide-react";
 import { toast } from "sonner";
-import { VARIANT_PRODUCTS } from "../data/catalog";
 import { formatCurrency } from "../lib/variant-utils";
-import type { VariantProduct, VariantSize } from "../types/variant";
+import type { VariantProduct, VariantSize, VariantColor } from "../types/variant";
 import { useStorefront } from "../context/storefront-context";
 import { isReducedMotion } from "@/lib/animations/gsap-utils";
 import { Newsletter } from "./newsletter";
+import { useGetProducts } from "@/lib/queries/useGetProducts";
+import { useLandingPage } from "@/lib/queries/useLandingPage";
+import { mapApiProductToVariantProduct } from "@/lib/utility/category-adapter";
+import { resolveUiProductImage } from "@/lib/utility/utils";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -48,10 +52,22 @@ function ProductCardItem({
   const [isHovered, setIsHovered] = useState(false);
   const heartBtnRef = useRef<HTMLButtonElement>(null);
 
-  const activeColor = product.colors[selectedColorIdx] || product.colors[0];
+  const fallbackColor: VariantColor = {
+    id: "default-obsidian",
+    name: "Classic Obsidian",
+    code: "BLK",
+    hex: "#080B12",
+    pantone: "PMS 19-4005",
+    image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=85",
+    stockBySize: { XS: 10, S: 10, M: 10, L: 10, XL: 10 },
+  };
+
+  const colors =
+    product.colors && product.colors.length > 0 ? product.colors : [fallbackColor];
+  const activeColor = colors[selectedColorIdx] || colors[0] || fallbackColor;
   const alternateColor =
-    product.colors.length > 1
-      ? product.colors[(selectedColorIdx + 1) % product.colors.length]
+    colors.length > 1
+      ? colors[(selectedColorIdx + 1) % colors.length]
       : activeColor;
 
   const inWishlist = isInWishlist(product.id);
@@ -100,6 +116,8 @@ function ProductCardItem({
     }
   };
 
+  const productLink = `/products/${product.slug || product.id}`;
+
   return (
     <article
       className="product-grid-card group relative flex flex-col justify-between border border-[var(--vault-line)] bg-[var(--vault-panel)] transition-all duration-300 hover:border-[var(--vault-accent)] hover:shadow-xl"
@@ -136,11 +154,11 @@ function ProductCardItem({
 
         {/* Main Product Image with Alternate Crossfade */}
         <Link
-          href={`/products/${product.slug}`}
+          href={productLink}
           className="block h-full w-full relative"
         >
           <Image
-            src={activeColor.image}
+            src={activeColor.image || fallbackColor.image}
             alt={`${product.name} in ${activeColor.name}`}
             fill
             priority={priority}
@@ -150,7 +168,7 @@ function ProductCardItem({
             }`}
           />
           <Image
-            src={alternateColor.image}
+            src={alternateColor.image || activeColor.image || fallbackColor.image}
             alt={`${product.name} alternate angle`}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -177,12 +195,12 @@ function ProductCardItem({
         <div>
           {/* Category & Code */}
           <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)]">
-            <span>{product.category}</span>
+            <span className="truncate max-w-[120px]">{product.category}</span>
             <span>{product.code}</span>
           </div>
 
           {/* Title */}
-          <Link href={`/products/${product.slug}`}>
+          <Link href={productLink}>
             <h3 className="mt-1 font-serif text-lg font-light uppercase tracking-tight text-[var(--vault-ink)] transition-colors hover:text-[var(--vault-accent)] line-clamp-1">
               {product.name}
             </h3>
@@ -199,10 +217,10 @@ function ProductCardItem({
           </div>
 
           {/* Color Swatches */}
-          <div className="mt-3 flex items-center gap-1.5">
-            {product.colors.map((c, idx) => (
+          <div className="mt-3 flex items-center gap-1.5 flex-wrap">
+            {colors.slice(0, 4).map((c, idx) => (
               <button
-                key={c.id}
+                key={c.id || idx}
                 type="button"
                 onClick={() => setSelectedColorIdx(idx)}
                 aria-label={`Select ${c.name}`}
@@ -214,7 +232,7 @@ function ProductCardItem({
                 style={{ backgroundColor: c.hex }}
               />
             ))}
-            <span className="ml-1 font-mono text-[9px] uppercase text-[var(--vault-muted)]">
+            <span className="ml-1 font-mono text-[9px] uppercase text-[var(--vault-muted)] truncate max-w-[120px]">
               {activeColor.name}
             </span>
           </div>
@@ -243,12 +261,13 @@ function ProductCardItem({
           <button
             type="button"
             onClick={handleQuickAdd}
-            className="btn-primary w-full py-2 font-mono text-[9px] uppercase tracking-wider"
+            className="btn-primary max-sm:rounded-md! text-wrap w-full py-2 max-sm:px-2! font-mono text-[9px] uppercase tracking-wider"
           >
             Quick Add
           </button>
         </div>
       </div>
+
     </article>
   );
 }
@@ -263,6 +282,141 @@ export function StorefrontHome() {
   const heroBgRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLAnchorElement>(null);
   const categoriesScrollRef = useRef<HTMLDivElement>(null);
+
+  type ProductSectionTab = "new-arrivals" | "trending" | "bestsellers";
+  const [activeTab, setActiveTab] = useState<ProductSectionTab>("new-arrivals");
+
+  // Fetch live products from backend API
+  const {
+    data: apiProductsData,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
+    refetch: refetchProducts,
+  } = useGetProducts({
+    limit: 20,
+    label: "storefront-home",
+    sortBy: "createdAt",
+    order: "desc",
+  });
+
+  // Fetch landing CMS data
+  const { data: landingData } = useLandingPage();
+
+  const rawApiProducts = useMemo(() => {
+    return apiProductsData?.pages.flatMap((page) => page) || [];
+  }, [apiProductsData]);
+
+  const apiVariantProducts = useMemo(() => {
+    return rawApiProducts.map(mapApiProductToVariantProduct);
+  }, [rawApiProducts]);
+
+  const isUsingLiveData = apiVariantProducts.length > 0;
+
+  // Base pool of products: live API products if available, else curated archive fallback
+  const baseProducts = useMemo(() => {
+    return isUsingLiveData ? apiVariantProducts : [];
+  }, [isUsingLiveData, apiVariantProducts]);
+
+  // Filter products based on selected tab
+  const displayedProducts = useMemo(() => {
+    if (activeTab === "trending") {
+      const trending = baseProducts.filter(
+        (p) =>
+          p.leadTime?.toLowerCase().includes("demand") ||
+          rawApiProducts.find((r) => r.id === p.id)?.trending,
+      );
+      return trending.length >= 4 ? trending.slice(0, 8) : baseProducts.slice(0, 8);
+    }
+    if (activeTab === "bestsellers") {
+      const best = baseProducts.filter(
+        (p) =>
+          p.leadTime?.toLowerCase().includes("bestseller") ||
+          rawApiProducts.find((r) => r.id === p.id)?.bestseller,
+      );
+      return best.length >= 4 ? best.slice(0, 8) : baseProducts.slice(0, 8);
+    }
+    return baseProducts.slice(0, 8);
+  }, [baseProducts, activeTab, rawApiProducts]);
+
+  // Dynamic trending categories combining backend categories with fallback editorial categories
+  const categoriesList = useMemo(() => {
+    if (landingData?.categories && landingData.categories.length > 0) {
+      return landingData.categories.map((cat) => {
+        const count = baseProducts.filter(
+          (p) =>
+            p.category?.toLowerCase().includes(cat.name.toLowerCase()) ||
+            p.name?.toLowerCase().includes(cat.name.toLowerCase()),
+        ).length;
+        return {
+          title: cat.name,
+          subtitle: `${cat.name} Atelier Cuts`,
+          count: count > 0 ? `${count} Silhouettes` : "Archival Edition",
+          image: cat.image ? resolveUiProductImage(cat.image) : "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=85",
+          href: `/products?category=${encodeURIComponent(cat.name)}`,
+        };
+      });
+    }
+
+    const defaults = [
+      {
+        title: "Oversized Tees",
+        subtitle: "340gsm Dropped Shoulder Cuts",
+        catKey: "tee",
+        image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=85",
+        href: "/products?category=Oversized+Tees",
+      },
+      {
+        title: "Tailored Trousers",
+        subtitle: "Double-Pleat & Modular Cargo",
+        catKey: "trouser",
+        image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=85",
+        href: "/products?category=Tailored+Trousers",
+      },
+      {
+        title: "Outerwear",
+        subtitle: "Bonded Shells & Shearling Bombers",
+        catKey: "outerwear",
+        image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=85",
+        href: "/products?category=Outerwear",
+      },
+      {
+        title: "Knitwear",
+        subtitle: "620gsm Balaclava Collars",
+        catKey: "knit",
+        image: "https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=800&q=85",
+        href: "/products?category=Knitwear",
+      },
+      {
+        title: "Accessories",
+        subtitle: "Calfskin Holsters & Jewelry",
+        catKey: "access",
+        image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=85",
+        href: "/products?category=Accessories",
+      },
+    ];
+
+    return defaults.map((d) => {
+      const count = baseProducts.filter(
+        (p) =>
+          p.category?.toLowerCase().includes(d.catKey) ||
+          p.name?.toLowerCase().includes(d.catKey),
+      ).length;
+      return {
+        title: d.title,
+        subtitle: d.subtitle,
+        count: count > 0 ? `${count} Silhouettes` : "Archival Edition",
+        image: d.image,
+        href: d.href,
+      };
+    });
+  }, [landingData, baseProducts]);
+
+  // Recalculate ScrollTrigger once product grid updates
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      ScrollTrigger.refresh();
+    }
+  }, [displayedProducts.length, isProductsLoading]);
 
   // GSAP Initial Entrance Timeline & ScrollTrigger Orchestration
   useEffect(() => {
@@ -363,7 +517,7 @@ export function StorefrontHome() {
       // 2. ScrollTrigger: Hero Scroll Parallax
       if (heroImgRef.current && heroRef.current) {
         gsap.to(heroImgRef.current, {
-          yPercent: 18,
+          yPercent: 12,
           ease: "none",
           scrollTrigger: {
             trigger: heroRef.current,
@@ -518,7 +672,7 @@ export function StorefrontHome() {
         <section
           ref={heroRef}
           onMouseMove={handleHeroMouseMove}
-          className="relative isolate min-h-[85vh] sm:min-h-[92vh] overflow-hidden border-b border-[var(--vault-line)] flex flex-col justify-end"
+          className="relative isolate min-h-[85vh] sm:min-h-[92vh] lg:min-h-screen overflow-hidden border-b border-[var(--vault-line)] flex flex-col justify-end"
         >
           {/* Subtle Background Layer */}
           <div
@@ -529,7 +683,7 @@ export function StorefrontHome() {
           {/* Masked Hero Campaign Image */}
           <div
             ref={heroImgRef}
-            className="absolute inset-0 -z-20 h-full w-full will-change-transform"
+            className="absolute inset-x-0 -top-[10%] h-[120%] w-full -z-20 will-change-transform"
           >
             <Image
               src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=2400&q=88"
@@ -544,8 +698,9 @@ export function StorefrontHome() {
           {/* Ambient Editorial Gradients */}
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[var(--vault-canvas)] via-[var(--vault-canvas)]/40 to-transparent opacity-95" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[var(--vault-canvas)]/85 via-transparent to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-40 -z-10 bg-gradient-to-b from-[var(--vault-canvas)]/60 via-transparent to-transparent pointer-events-none hidden lg:block" />
 
-          <div className="mx-auto w-full max-w-[1440px] px-5 pb-16 pt-32 text-[var(--vault-ink)] sm:px-10 lg:px-16">
+          <div className="mx-auto w-full max-w-[1440px] px-5 pb-16 pt-32 text-[var(--vault-ink)] sm:px-10 lg:px-16 lg:pt-44 lg:pb-20">
             {/* Seasonal Tag */}
             <div className="hero-seasonal-tag flex items-center gap-3">
               <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--vault-accent)] font-semibold">
@@ -762,55 +917,130 @@ export function StorefrontHome() {
           id="new-arrivals"
           className="mx-auto max-w-[1440px] border-b border-[var(--vault-line)] px-4 py-20 sm:px-8 sm:py-28"
         >
-          <div className="mb-12 flex flex-col justify-between gap-4 border-b border-[var(--vault-line)] pb-6 sm:flex-row sm:items-end">
+          <div className="mb-12 flex flex-col justify-between gap-4 border-b border-[var(--vault-line)] pb-6 lg:flex-row lg:items-end">
             <div>
-              <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)]">
-                Seasonal Release
-              </span>
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)]">
+                  Seasonal Release
+                </span>
+                {isUsingLiveData ? (
+                  <span className="inline-flex items-center gap-1.5 border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-emerald-500">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Live API Data ({baseProducts.length})
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 border border-[var(--vault-line)] bg-[var(--vault-panel)] px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--vault-accent)]" />
+                    Curated Archive ({baseProducts.length})
+                  </span>
+                )}
+                {isProductsError && (
+                  <button
+                    type="button"
+                    onClick={() => refetchProducts()}
+                    className="inline-flex items-center gap-1 text-[10px] font-mono uppercase text-[var(--vault-accent)] hover:underline"
+                  >
+                    <RotateCcw size={10} /> Retry
+                  </button>
+                )}
+              </div>
               <h2 className="mt-2 text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)] sm:text-5xl">
                 New Arrivals
               </h2>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
-                Showing 8 Pieces · INR Pricing
-              </span>
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              {/* Category Mode Tabs */}
+              <div className="flex items-center gap-1 border border-[var(--vault-line)] bg-[var(--vault-panel)] p-1">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("new-arrivals")}
+                  className={`px-3 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                    activeTab === "new-arrivals"
+                      ? "bg-[var(--vault-accent)] text-white font-bold"
+                      : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                  }`}
+                >
+                  All Releases
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("trending")}
+                  className={`px-3 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                    activeTab === "trending"
+                      ? "bg-[var(--vault-accent)] text-white font-bold"
+                      : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                  }`}
+                >
+                  Trending
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("bestsellers")}
+                  className={`px-3 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                    activeTab === "bestsellers"
+                      ? "bg-[var(--vault-accent)] text-white font-bold"
+                      : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                  }`}
+                >
+                  Bestsellers
+                </button>
+              </div>
+
               <Link
                 href="/products"
                 className="btn-secondary inline-flex items-center gap-1.5 px-4 py-2 text-[10px] font-mono uppercase tracking-wider"
               >
-                View All <ArrowUpRight size={13} />
+                View Full Catalog <ArrowUpRight size={13} />
               </Link>
             </div>
           </div>
 
           {/* 4 columns desktop / 2 columns mobile */}
-          <div
-            id="new-arrivals-grid"
-            className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4"
-          >
-            {VARIANT_PRODUCTS.map((product, idx) => (
-              <ProductCardItem
-                key={product.id}
-                product={product}
-                badge={
-                  idx === 0 || idx === 4
-                    ? "NEW ARRIVAL"
-                    : idx === 1 || idx === 6
-                      ? "BESTSELLER"
-                      : undefined
-                }
-                badgeType={
-                  idx === 0 || idx === 4
-                    ? "new"
-                    : idx === 1 || idx === 6
-                      ? "bestseller"
-                      : "new"
-                }
-                priority={idx < 4}
-              />
-            ))}
-          </div>
+          {isProductsLoading ? (
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="animate-pulse border border-[var(--vault-line)] bg-[var(--vault-panel)] p-4 flex flex-col justify-between"
+                >
+                  <div className="aspect-[3/4] w-full bg-[var(--vault-line)]/50 mb-4" />
+                  <div className="space-y-2">
+                    <div className="h-3 w-1/3 bg-[var(--vault-line)]/60" />
+                    <div className="h-4 w-3/4 bg-[var(--vault-line)]/70" />
+                    <div className="h-3 w-1/4 bg-[var(--vault-line)]/60" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div
+              id="new-arrivals-grid"
+              className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4"
+            >
+              {displayedProducts.map((product, idx) => (
+                <ProductCardItem
+                  key={product.id}
+                  product={product}
+                  badge={
+                    idx === 0 || idx === 4
+                      ? "NEW ARRIVAL"
+                      : idx === 1 || idx === 6
+                        ? "BESTSELLER"
+                        : undefined
+                  }
+                  badgeType={
+                    idx === 0 || idx === 4
+                      ? "new"
+                      : idx === 1 || idx === 6
+                        ? "bestseller"
+                        : "new"
+                  }
+                  priority={idx < 4}
+                />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* ================================================================== */}
@@ -930,48 +1160,7 @@ export function StorefrontHome() {
             ref={categoriesScrollRef}
             className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4"
           >
-            {[
-              {
-                title: "Oversized Tees",
-                subtitle: "340gsm Dropped Shoulder Cuts",
-                count: "14 Silhouettes",
-                image:
-                  "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=85",
-                href: "/products?category=Oversized+Tees",
-              },
-              {
-                title: "Tailored Trousers",
-                subtitle: "Double-Pleat & Modular Cargo",
-                count: "18 Silhouettes",
-                image:
-                  "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=85",
-                href: "/products?category=Tailored+Trousers",
-              },
-              {
-                title: "Outerwear",
-                subtitle: "Bonded Shells & Shearling Bombers",
-                count: "12 Silhouettes",
-                image:
-                  "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=85",
-                href: "/products?category=Outerwear",
-              },
-              {
-                title: "Knitwear",
-                subtitle: "620gsm Balaclava Collars",
-                count: "9 Silhouettes",
-                image:
-                  "https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=800&q=85",
-                href: "/products?category=Knitwear",
-              },
-              {
-                title: "Accessories",
-                subtitle: "Calfskin Holsters & Jewelry",
-                count: "16 Silhouettes",
-                image:
-                  "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=85",
-                href: "/products?category=Accessories",
-              },
-            ].map((cat) => (
+            {categoriesList.map((cat) => (
               <Link
                 key={cat.title}
                 href={cat.href}

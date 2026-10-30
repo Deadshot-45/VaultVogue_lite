@@ -1,5 +1,4 @@
 import { ApiService } from "@/lib/services/apiservices";
-import { getAuthCookie } from "@/lib/auth";
 import type {
   PaymentDetails,
   InitializePaymentPayload,

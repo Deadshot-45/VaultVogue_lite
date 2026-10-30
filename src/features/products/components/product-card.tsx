@@ -1,7 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { UIProduct } from "@/lib/queries/useGetProducts";
 import { motion } from "framer-motion";
@@ -14,6 +12,7 @@ import { toast } from "sonner";
 import { useAddToCart } from "@/lib/queries/useCart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAuthCookie } from "@/lib/auth";
+import { resolveUiProductImage } from "@/lib/utility/utils";
 
 interface ProductCardProps {
   product: UIProduct & { isSale?: boolean };
@@ -22,7 +21,6 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const router = useRouter();
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -90,8 +88,6 @@ export default function ProductCard({ product }: ProductCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
       className="group relative"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
       <Card
         className="product-card flex flex-col h-full bg-card/40 border border-border/40 overflow-hidden cursor-pointer"
@@ -104,7 +100,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <Skeleton className="absolute inset-0 z-10 rounded-none" />
           )}
           <Image
-            src={imageError || !product.image ? "/fallback.png" : product.image}
+            src={imageError || !product.image ? "/fallback.png" : resolveUiProductImage(product.image, 600)}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

@@ -3,13 +3,11 @@
 import React, { useState, useMemo, Suspense } from "react";
 import Link from "next/link";
 import { ChevronRight, Loader2, ArrowRight } from "lucide-react";
-import { ProductCatalogHero } from "@/components/shop/ProductCatalogHero";
 import { ProductCategoryNav } from "@/components/shop/ProductCategoryNav";
 import { ProductCatalogToolbar } from "@/components/shop/ProductCatalogToolbar";
 import { ProductFilters } from "@/components/shop/ProductFilters";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ProductPagination } from "@/components/shop/ProductPagination";
-import { Newsletter } from "@/features/storefront/components/newsletter";
 import { useProductCatalog } from "@/hooks/useProductCatalog";
 
 function CatalogContent() {

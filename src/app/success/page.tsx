@@ -1,25 +1,19 @@
 "use client";
 
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-  ArrowLeft,
-  Calendar,
   ShoppingBag,
   Truck,
 } from "lucide-react";
-import { api, ApiService } from "@/lib/services/apiservices";
-import { orderService } from "@/lib/services/orderService";
 import {
   useConfirmPayment,
   useOrderDetails,
-  verifyAndPollPaymentStatus,
 } from "@/features/payment-tracking";
 import { toast } from "sonner";
 import ProtectedPage from "@/features/auth/components/ProtectedPage";
@@ -77,32 +71,6 @@ interface OrderItem {
   size?: string;
 }
 
-interface OrderDetails {
-  _id: string;
-  userId?: string;
-  orderId?: string;
-  items: OrderItem[];
-  shippingAddress: {
-    fullName: string;
-    phone: string;
-    addressLine1: string;
-    addressLine2?: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-  shippingMethod: string;
-  shippingFee: number;
-  subtotal: number;
-  tax: number;
-  discount: number;
-  totalAmount: number;
-  paymentMethod: string;
-  paymentStatus: string;
-  status: string;
-  createdAt: string;
-}
 
 function SuccessPageContent() {
   const searchParams = useSearchParams();

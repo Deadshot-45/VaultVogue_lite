@@ -218,7 +218,7 @@ export function useOrderDetails(orderId: string | null, enabled = true) {
       if (!orderId) return null;
       try {
         return await orderService.getOrderById(orderId);
-      } catch (_) {
+      } catch {
         const fallbackRes = await ApiService.get<{
           success: boolean;
           payment: any;

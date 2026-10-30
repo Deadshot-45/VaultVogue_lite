@@ -1,19 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-  getFilteredRowModel,
-  getPaginationRowModel,
-} from "@tanstack/react-table";
+import { useState } from "react";
+import { createColumnHelper } from "@tanstack/react-table";
 import type { UserRow } from "@/types/admin";
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
-import { ApiService } from "@/lib/services/apiservices";
-import { useGetProducts } from "@/lib/queries/useGetProducts";
 import { adminService } from "@/lib/services/adminService";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { DataTable } from "@/components/ui/data-table";

@@ -76,7 +76,6 @@ export function PaymentRetryBanner({
   const selected = GATEWAY_OPTIONS.find((g) => g.id === selectedGateway)!;
 
   const isCritical = paymentStatus?.toLowerCase() === 'failed';
-  const isProcessing = paymentStatus?.toLowerCase() === 'processing' || paymentStatus?.toLowerCase() === 'initiated';
 
   return (
     <motion.div

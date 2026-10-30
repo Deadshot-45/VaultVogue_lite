@@ -49,8 +49,8 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
     if (apiVariantProducts.length > 0) {
       return apiVariantProducts;
     }
-    return config?.products || [];
-  }, [apiVariantProducts, config]);
+    return [];
+  }, [apiVariantProducts]);
 
   const isUsingLiveData = apiVariantProducts.length > 0;
 

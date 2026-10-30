@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { ShieldCheck, Lock, Landmark, ArrowRight, Loader2 } from "lucide-react";
+import { ShieldCheck, Lock, ArrowRight, Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 

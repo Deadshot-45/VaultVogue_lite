@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Compass } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function NotFound() {
   const router = useRouter();

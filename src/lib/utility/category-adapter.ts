@@ -56,11 +56,11 @@ export function mapApiProductToVariantProduct(apiProduct: UIProduct): VariantPro
 
   // Build stock by size
   const stockBySize: Record<VariantSize, number> = {
-    XS: sizeQuantities["XS"] ?? (apiProduct.availableSizes?.includes("XS") ? 8 : 4),
-    S: sizeQuantities["S"] ?? (apiProduct.availableSizes?.includes("S") ? 14 : 6),
-    M: sizeQuantities["M"] ?? (apiProduct.availableSizes?.includes("M") ? 20 : 10),
-    L: sizeQuantities["L"] ?? (apiProduct.availableSizes?.includes("L") ? 12 : 5),
-    XL: sizeQuantities["XL"] ?? (apiProduct.availableSizes?.includes("XL") ? 7 : 2),
+    XS: sizeQuantities["XS"] ?? (apiProduct.availableSizes?.includes("XS") ? 10 : 0),
+    S: sizeQuantities["S"] ?? (apiProduct.availableSizes?.includes("S") ? 10 : 0),
+    M: sizeQuantities["M"] ?? (apiProduct.availableSizes?.includes("M") ? 10 : 0),
+    L: sizeQuantities["L"] ?? (apiProduct.availableSizes?.includes("L") ? 10 : 0),
+    XL: sizeQuantities["XL"] ?? (apiProduct.availableSizes?.includes("XL") ? 10 : 0),
   };
 
   // Primary image
@@ -96,36 +96,21 @@ export function mapApiProductToVariantProduct(apiProduct: UIProduct): VariantPro
         name: colorName,
         code: colorName.slice(0, 3).toUpperCase(),
         hex,
-        pantone: "Vault Atelier",
+        pantone: "Standard",
         image: colorImg,
         stockBySize,
       });
     });
-  }
-
-  // If the product didn't have specific color variants in database
-  if (colors.length === 0) {
+  } else {
     colors.push({
-      id: "vault-obsidian",
-      name: "Midnight Black",
-      code: "BLK",
+      id: "default",
+      name: "Standard",
+      code: "STD",
       hex: "#080B12",
-      pantone: "PMS 19-4005 TCX",
+      pantone: "Standard",
       image: primaryImg,
       stockBySize,
     });
-
-    if (altImg && altImg !== primaryImg) {
-      colors.push({
-        id: "vault-rosegold",
-        name: "Rose Gold Accent",
-        code: "RSG",
-        hex: "#B76E79",
-        pantone: "PMS 16-1518 TCX",
-        image: altImg,
-        stockBySize,
-      });
-    }
   }
 
   // Classify subcategory for intelligent navigation filtering
@@ -149,9 +134,20 @@ export function mapApiProductToVariantProduct(apiProduct: UIProduct): VariantPro
 
   const code =
     apiProduct.variants?.[0]?.sku ||
-    `VV-${apiProduct.id.slice(-6).toUpperCase()}`;
+    `VV-${(apiProduct.id || "").slice(-6).toUpperCase()}`;
 
-  const price = apiProduct.price || apiProduct.minPrice || 2490;
+  const price = apiProduct.price || apiProduct.minPrice || 0;
+  const originalPrice =
+    apiProduct.maxPrice && apiProduct.maxPrice > price
+      ? apiProduct.maxPrice
+      : undefined;
+
+  const rawGallery = [
+    primaryImg,
+    ...(altImg !== primaryImg ? [altImg] : []),
+    ...allVariantImages.map((img: { url: string }) => resolveUiProductImage(img.url)),
+  ];
+  const gallery = Array.from(new Set(rawGallery.filter(Boolean) as string[]));
 
   return {
     id: apiProduct.id,
@@ -160,19 +156,21 @@ export function mapApiProductToVariantProduct(apiProduct: UIProduct): VariantPro
     name: apiProduct.name,
     category: classifiedCategory,
     price,
+    originalPrice,
     leadTime: apiProduct.trending
-      ? "High Demand"
+      ? "Trending"
       : apiProduct.bestseller
-      ? "Atelier Bestseller"
-      : "Ships in 24h",
+      ? "Bestseller"
+      : "In Stock",
     fabric: apiProduct.description
-      ? apiProduct.description.slice(0, 52)
-      : "100% Heavyweight Cotton · Architectural Cut",
-    description:
-      apiProduct.description ||
-      "A quintessential Vault Vogue silhouette crafted with strict adherence to garment longevity and timeless form.",
+      ? apiProduct.description.slice(0, 60)
+      : "Standard Fabric",
+    description: apiProduct.description || "",
     measurements,
     colors,
+    gallery: gallery.length > 0 ? gallery : [primaryImg],
+    highlights: [],
+    careInstructions: [],
+    composition: "",
   };
 }
-

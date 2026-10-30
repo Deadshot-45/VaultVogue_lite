@@ -26,11 +26,18 @@ export interface VariantProduct {
   name: string;
   category: string;
   price: number;
+  originalPrice?: number;
   leadTime: string;
   fabric: string;
   description: string;
   measurements: Record<VariantSize, SizeMeasurement>;
   colors: VariantColor[];
+  gallery?: string[];
+  rating?: number;
+  reviewsCount?: number;
+  highlights?: string[];
+  careInstructions?: string[];
+  composition?: string;
 }
 
 export interface CartItem {

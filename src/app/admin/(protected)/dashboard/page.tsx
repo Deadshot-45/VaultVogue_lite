@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { StatsCard } from "@/features/admin/components/StatsCard";
 import { RevenueChart } from "@/features/admin/components/RevenueChart";
 import { CategoryDonutChart } from "@/features/admin/components/CategoryDonutChart";

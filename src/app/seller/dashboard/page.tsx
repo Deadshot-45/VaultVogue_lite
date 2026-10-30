@@ -22,7 +22,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useAppSelector } from "@/lib/store/hooks";
-import { api } from "@/lib/services/apiservices";
 import { useGetSellerDashboard } from "@/lib/queries/sellerQuery";
 import Image from "next/image";
 

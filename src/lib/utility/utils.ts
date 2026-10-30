@@ -13,12 +13,36 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "";
 export const FALLBACK_IMAGE =
   "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Crect width='300' height='400' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='%239ca3af' font-family='Arial, sans-serif' font-size='18'%3ENo image%3C/text%3E%3C/svg%3E";
 
-export const resolveUiProductImage = (image: string) => {
+export const resolveUiProductImage = (image: string, maxWidth?: number) => {
   if (!image || image.length === 0) {
     return FALLBACK_IMAGE;
   }
 
-  const imageUrl = image;
+  const imageUrl = image.trim();
+
+  // If it's an Unsplash image, optimize URL parameters for fast CDN delivery
+  if (imageUrl.includes("images.unsplash.com")) {
+    try {
+      const urlObj = new URL(imageUrl);
+      if (!urlObj.searchParams.has("auto")) {
+        urlObj.searchParams.set("auto", "format");
+      }
+      if (!urlObj.searchParams.has("fit")) {
+        urlObj.searchParams.set("fit", "crop");
+      }
+      if (maxWidth) {
+        urlObj.searchParams.set("w", String(maxWidth));
+      } else if (!urlObj.searchParams.has("w")) {
+        urlObj.searchParams.set("w", "800");
+      }
+      if (!urlObj.searchParams.has("q")) {
+        urlObj.searchParams.set("q", "80");
+      }
+      return urlObj.toString();
+    } catch {
+      return imageUrl;
+    }
+  }
 
   if (!imageUrl) {
     return FALLBACK_IMAGE;

@@ -117,6 +117,7 @@ export function CategoryProductItem({
               alt={`${product.name} alternate view`}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              loading="lazy"
               onError={() => setAltImgError(true)}
               className={`object-cover object-top transition-all duration-700 ease-out group-hover:scale-105 ${
                 isHovered ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -213,7 +214,7 @@ export function CategoryProductItem({
           <button
             type="button"
             onClick={handleQuickAdd}
-            className="btn-primary w-full py-2 font-mono text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 cursor-pointer"
+            className="btn-primary max-sm:rounded-lg! text-wrap max-sm:px-2! w-full py-2 font-mono text-[6px] sm:text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 cursor-pointer"
           >
             <Plus size={12} /> Add to Bag ({selectedSize})
           </button>

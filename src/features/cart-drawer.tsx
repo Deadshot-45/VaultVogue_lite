@@ -21,7 +21,6 @@ import {
 } from "@/lib/queries/useCart";
 import { getAuthCookie } from "@/lib/auth";
 import { useCartQueue } from "@/hooks/useCartQueue";
-import { toast } from "sonner";
 
 const FALLBACK_IMAGE =
   "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 700'%3E%3Crect width='600' height='700' fill='%23f5f0ea'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='%238a6a42' font-family='Arial, sans-serif' font-size='20'%3EAtelier Piece%3C/text%3E%3C/svg%3E";

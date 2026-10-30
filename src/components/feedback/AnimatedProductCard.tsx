@@ -20,7 +20,7 @@ export default function AnimatedProductCard({
 }) {
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState(() =>
-    resolveUiProductImage(product.image),
+    resolveUiProductImage(product.image, 600),
   );
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -31,7 +31,7 @@ export default function AnimatedProductCard({
     .sort((a, b) => a - b)[0];
 
   useEffect(() => {
-    queueMicrotask(() => setImageSrc(resolveUiProductImage(product.image)));
+    queueMicrotask(() => setImageSrc(resolveUiProductImage(product.image, 600)));
   }, [product.image]);
 
   const handleViewProduct = () => {
@@ -67,7 +67,7 @@ export default function AnimatedProductCard({
               }`}
               onError={() => setImageSrc(FALLBACK_IMAGE)}
               onLoad={handleImageLoad}
-              loading="eager"
+              loading="lazy"
             />
             {product.isNew && (
               <Badge className="absolute left-2 top-2 rounded-full sale-primary px-2 py-0.5 text-[10px] shadow-md">

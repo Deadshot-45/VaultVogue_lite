@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ArrowLeft, Lock, ShoppingBag, Loader2 } from "lucide-react";
 
@@ -28,7 +27,6 @@ import { OrderSummary } from "@/features/checkout/components/OrderSummary";
 import { SuccessModal } from "@/features/checkout/components/SuccessModal";
 import { openRazorpayCheckout } from "@/lib/services/razorpay";
 import { ApiService } from "@/lib/services/apiservices";
-import { paymentTrackingApi } from "@/features/payment-tracking";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
@@ -46,7 +44,6 @@ export default function Page() {
 
 function CheckoutPage() {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const user = useAppSelector((state) => state.auth.user);
   const placeOrderMutation = usePlaceOrderMutation();
 
@@ -99,7 +96,7 @@ function CheckoutPage() {
   // Prevents cart-empty redirect while browser is navigating to Stripe
   const [isStripeRedirecting, setIsStripeRedirecting] = useState<boolean>(false);
   const [isAddressCompleted, setIsAddressCompleted] = useState<boolean>(true);
-  const [isShippingCompleted, setIsShippingCompleted] =
+  const [_isShippingCompleted, setIsShippingCompleted] =
     useState<boolean>(false);
 
   // Promo Code Applied State
@@ -191,7 +188,7 @@ function CheckoutPage() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1800));
       const generatedId = `VV-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
-      const { email, id, ...addressData } = activeAddress!;
+      const { email: _email, id: _id, ...addressData } = activeAddress!;
 
       const response = await placeOrderMutation.mutateAsync({
         address: addressData,

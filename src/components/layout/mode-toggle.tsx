@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-context";
 
 export function ModeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
 
   return (
     <Button variant="outline" size="icon" className="sm:p-1.5!" onClick={toggleTheme}>

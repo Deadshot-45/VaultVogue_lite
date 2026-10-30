@@ -12,12 +12,7 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { ApiService } from "@/lib/services/apiservices";
-import { AuthResponse, authService } from "@/lib/services/authServices";
-
-// Demo admin credentials (replace with real API call)
-const DEMO_EMAIL = "admin@vaultvogue.com";
-const DEMO_PASSWORD = "admin123";
+import { authService } from "@/lib/services/authServices";
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email."),

@@ -62,7 +62,7 @@ const CATEGORIES = [
 
 export default function PublicSellerOnboardPage() {
   const router = useRouter();
-  const { user, isAuthenticated } = useAppSelector((s) => s.auth);
+  const { user } = useAppSelector((s) => s.auth);
 
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState(1);

@@ -19,15 +19,24 @@ interface StorefrontContextValue {
   toggleTheme: () => void;
   cart: CartItem[];
   cartCount: number;
+  cartOpen: boolean;
+  setCartOpen: (open: boolean) => void;
+  openCart: () => void;
+  closeCart: () => void;
   addToCart: (
     product: VariantProduct,
     color: VariantColor,
     size: VariantSize,
+    quantity?: number,
   ) => boolean;
   setCartQuantity: (variantKey: string, quantity: number) => void;
   removeFromCart: (variantKey: string) => void;
   wishlist: VariantProduct[];
   wishlistCount: number;
+  wishlistOpen: boolean;
+  setWishlistOpen: (open: boolean) => void;
+  openWishlist: () => void;
+  closeWishlist: () => void;
   toggleWishlist: (product: VariantProduct) => void;
   isInWishlist: (productId: string) => boolean;
   removeFromWishlist: (productId: string) => void;
@@ -41,6 +50,8 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   const { theme, toggleTheme } = useTheme();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<VariantProduct[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -81,22 +92,32 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     }
   }, [wishlist, isHydrated]);
 
+  const openCart = useCallback(() => setCartOpen(true), []);
+  const closeCart = useCallback(() => setCartOpen(false), []);
+  const openWishlist = useCallback(() => setWishlistOpen(true), []);
+  const closeWishlist = useCallback(() => setWishlistOpen(false), []);
+
   const addToCart = useCallback(
-    (product: VariantProduct, color: VariantColor, size: VariantSize) => {
+    (
+      product: VariantProduct,
+      color: VariantColor,
+      size: VariantSize,
+      quantity = 1,
+    ) => {
       const maxStock = color.stockBySize[size];
       const variantKey = buildSku(product, color, size);
-      if (maxStock < 1) return false;
+      if (maxStock < 1 || quantity < 1) return false;
       const existingItem = cart.find((item) => item.variantKey === variantKey);
       if (existingItem && existingItem.quantity >= maxStock) return false;
 
+      const qtyToAdd = Math.max(1, quantity);
+
       setCart((items) => {
         const existing = items.find((item) => item.variantKey === variantKey);
-        if (existing && existing.quantity >= maxStock) return items;
         if (existing) {
+          const updatedQty = Math.min(existing.quantity + qtyToAdd, maxStock);
           return items.map((item) =>
-            item.variantKey === variantKey
-              ? { ...item, quantity: Math.min(item.quantity + 1, maxStock) }
-              : item,
+            item.variantKey === variantKey ? { ...item, quantity: updatedQty } : item,
           );
         }
 
@@ -113,7 +134,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
             size,
             price: product.price,
             image: color.image,
-            quantity: 1,
+            quantity: Math.min(qtyToAdd, maxStock),
           },
         ];
       });
@@ -165,11 +186,19 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       toggleTheme,
       cart,
       cartCount: cart.reduce((total, item) => total + item.quantity, 0),
+      cartOpen,
+      setCartOpen,
+      openCart,
+      closeCart,
       addToCart,
       setCartQuantity,
       removeFromCart,
       wishlist,
       wishlistCount: wishlist.length,
+      wishlistOpen,
+      setWishlistOpen,
+      openWishlist,
+      closeWishlist,
       toggleWishlist,
       isInWishlist,
       removeFromWishlist,
@@ -177,14 +206,22 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     [
       addToCart,
       cart,
+      cartOpen,
+      closeCart,
+      closeWishlist,
       isInWishlist,
+      openCart,
+      openWishlist,
       removeFromCart,
       removeFromWishlist,
+      setCartOpen,
       setCartQuantity,
+      setWishlistOpen,
       theme,
       toggleTheme,
       toggleWishlist,
       wishlist,
+      wishlistOpen,
     ],
   );
 

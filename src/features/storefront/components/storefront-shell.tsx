@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   ShoppingBag,
   Sun,
@@ -27,16 +28,31 @@ import { StorefrontSearchOverlay } from "./storefront-search-overlay";
 import { isReducedMotion } from "@/lib/animations/gsap-utils";
 import { getAuthCookie } from "@/lib/auth";
 
-export function StorefrontChrome({ children }: { children: React.ReactNode }) {
-  const [cartOpen, setCartOpen] = useState(false);
-  const [wishlistOpen, setWishlistOpen] = useState(false);
+export function StorefrontChrome({
+  children,
+  overlapHeader = false,
+}: {
+  children: React.ReactNode;
+  overlapHeader?: boolean;
+}) {
+  const pathname = usePathname();
+  const shouldOverlap = overlapHeader || pathname === "/";
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const { theme, toggleTheme, cartCount, wishlistCount } = useStorefront();
+  const {
+    theme,
+    toggleTheme,
+    cartCount,
+    wishlistCount,
+    cartOpen,
+    setCartOpen,
+    wishlistOpen,
+    setWishlistOpen,
+  } = useStorefront();
 
   const headerRef = useRef<HTMLElement>(null);
   const themeIconRef = useRef<HTMLSpanElement>(null);
@@ -168,16 +184,18 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen w-full bg-[var(--vault-canvas)] text-[var(--vault-ink)] transition-colors duration-300">
-      {/* Dynamic Header: Becomes solid and compact when scrolling */}
+      {/* Dynamic Header: Overlaps hero banner on large screens; becomes solid and compact when scrolling */}
       <header
         ref={headerRef}
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? "h-16 border-b border-[var(--vault-line)] bg-[var(--vault-canvas)] shadow-md backdrop-blur-md"
-            : "h-20 border-b border-[var(--vault-line)] bg-[var(--vault-canvas)]/90 backdrop-blur-md"
+            ? "h-16 border-b border-[var(--vault-line)] bg-[var(--vault-canvas)]/95 shadow-md backdrop-blur-md bg-none"
+            : shouldOverlap
+              ? "h-20 border-b border-[var(--vault-line)] bg-[var(--vault-canvas)]/90 backdrop-blur-md lg:border-transparent lg:bg-transparent lg:bg-gradient-to-b lg:from-[var(--vault-canvas)]/85 lg:via-[var(--vault-canvas)]/35 lg:to-transparent lg:shadow-none lg:backdrop-blur-none"
+              : "h-20 border-b border-[var(--vault-line)] bg-[var(--vault-canvas)]/90 backdrop-blur-md"
         }`}
       >
-        <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-4 sm:px-8">
+        <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-2 sm:px-8">
           {/* Mobile menu trigger */}
           <button
             type="button"
@@ -191,10 +209,10 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
           {/* Logo with upwards fade entrance */}
           <Link
             href="/"
-            className="header-logo flex items-center gap-2 text-left font-serif text-xl sm:text-2xl font-light uppercase tracking-[0.22em] text-[var(--vault-ink)]"
+            className="header-logo flex items-center gap-2 text-left font-serif text-lg sm:text-2xl font-light uppercase sm:tracking-[0.22em] text-[var(--vault-ink)]"
           >
             <span>VAULT VOGUE</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--vault-accent)] inline-block" />
+            <span className="h-1.5 w-1.5 max-sm:hidden rounded-full bg-[var(--vault-accent)] inline-block" />
           </Link>
 
           {/* Desktop Navigation Links with sequential reveal */}
@@ -375,7 +393,7 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Search catalog"
-              className="header-action-icon flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
+              className="header-action-icon flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
             >
               <Search size={16} />
             </button>
@@ -384,7 +402,7 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
             <Link
               href={isAuthed ? "/account" : "/login"}
               aria-label="Account Profile"
-              className="header-action-icon hidden sm:flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
+              className="header-action-icon hidden sm:flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
             >
               <User size={16} />
             </Link>
@@ -394,7 +412,7 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => setWishlistOpen(true)}
               aria-label={`Open wishlist, ${wishlistCount} items`}
-              className="header-action-icon relative flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
+              className="header-action-icon relative flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
             >
               <Heart size={16} />
               {wishlistCount > 0 && (
@@ -409,7 +427,7 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={handleToggleTheme}
               aria-label={`Switch to ${theme === "obsidian" ? "Light" : "Dark"} theme`}
-              className="header-action-icon flex h-10 items-center gap-2 border border-[var(--vault-line)] px-3 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] cursor-pointer transform-none"
+              className="header-action-icon flex h-10 items-center gap-2 border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md px-3 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] cursor-pointer transform-none !rotate-0"
             >
               <span ref={themeIconRef} className="inline-flex items-center justify-center origin-center will-change-transform">
                 {theme === "obsidian" ? (
@@ -428,7 +446,7 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => setCartOpen(true)}
               aria-label={`Open shopping bag, ${cartCount} items`}
-              className="header-action-icon relative flex h-10 items-center gap-2 border border-[var(--vault-line)] px-3.5 transition hover:border-[var(--vault-accent)]"
+              className="header-action-icon relative flex h-10 items-center gap-2 border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md px-3.5 transition hover:border-[var(--vault-accent)]"
             >
               <ShoppingBag size={16} />
               <span className="font-mono text-[10px] uppercase hidden sm:inline">Bag</span>
@@ -531,7 +549,9 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Page Content */}
-      <div className="flex-1 min-h-[calc(100vh-8rem)]">{children}</div>
+      <div className={`flex-1 min-h-[calc(100vh-8rem)] ${shouldOverlap ? "lg:-mt-20" : ""}`}>
+        {children}
+      </div>
 
       {/* Structured Closing Footer */}
       <footer className="border-t border-[var(--vault-line)] bg-[var(--vault-canvas)] px-4 py-16 sm:px-8">
@@ -729,6 +749,12 @@ export function StorefrontChrome({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function StorefrontShell({ children }: { children: React.ReactNode }) {
-  return <StorefrontChrome>{children}</StorefrontChrome>;
+export function StorefrontShell({
+  children,
+  overlapHeader = false,
+}: {
+  children: React.ReactNode;
+  overlapHeader?: boolean;
+}) {
+  return <StorefrontChrome overlapHeader={overlapHeader}>{children}</StorefrontChrome>;
 }

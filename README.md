@@ -1,6 +1,6 @@
-# Vault Vogue Lite
+# Vault Vogue
 
-Vault Vogue Lite is a fashion storefront built with Next.js, TypeScript, Tailwind CSS, and the App Router. It includes shop pages, auth pages, product browsing, cart UI, and a reusable component structure for expanding the storefront.
+Vault Vogue is a fashion storefront built with Next.js, TypeScript, Tailwind CSS, and the App Router. It includes shop pages, auth pages, product browsing, cart UI, and a reusable component structure for expanding the storefront.
 
 ## Features
 

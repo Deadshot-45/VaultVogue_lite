@@ -1,7 +1,7 @@
 "use client";
 
 import type { SellerOnboardingForm } from "@/types/admin";
-import { Building2, CreditCard, Package, CheckCircle2 } from "lucide-react";
+import { Building2, CreditCard, Package } from "lucide-react";
 
 interface Props {
   form: SellerOnboardingForm;

@@ -50,15 +50,18 @@ export interface RazorpayOptions {
   onDismiss?: () => void;
 }
 
-export const openRazorpayCheckout = async (options: RazorpayOptions): Promise<void> => {
+export const openRazorpayCheckout = async (
+  options: RazorpayOptions,
+): Promise<void> => {
   const loaded = await loadRazorpayScript();
 
   if (!loaded || !window.Razorpay) {
-    throw new Error("Razorpay SDK failed to load. Please check your internet connection.");
+    throw new Error(
+      "Razorpay SDK failed to load. Please check your internet connection.",
+    );
   }
 
   return new Promise((resolve, reject) => {
-
     const razorpayKey =
       options.keyId ||
       process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
@@ -68,7 +71,7 @@ export const openRazorpayCheckout = async (options: RazorpayOptions): Promise<vo
       key: razorpayKey,
       amount: options.amount,
       currency: options.currency || "INR",
-      name: options.name || "Vault Vogue Lite",
+      name: options.name || "Vault Vogue",
       description: options.description || "Luxury Purchase Checkout",
       order_id: options.orderId,
       handler: async (response: {

@@ -1,18 +1,9 @@
 "use client";
 
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-  getFilteredRowModel,
-  getPaginationRowModel,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import type { SellerRow, SellerStatus } from "@/types/admin";
 import { motion } from "framer-motion";
-import { Search, UserPlus } from "lucide-react";
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import { toast } from "sonner";
 import { sellerService } from "@/lib/services/sellerService";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -38,7 +29,7 @@ const col = createColumnHelper<SellerRow>();
 
 export default function SellersPage() {
   const [globalFilter, setGlobalFilter] = useState("");
-  const [limit, setLimit] = useState<number>(10);
+  const [limit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const query = useDebounce(globalFilter, 500);
 

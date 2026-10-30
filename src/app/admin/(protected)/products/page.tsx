@@ -68,7 +68,7 @@ const columns = [
 
 export default function ProductsPage() {
   const [globalFilter, setGlobalFilter] = useState<string>("");
-  const [limit, setLimit] = useState<number>(10);
+  const [limit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const query = useDebounce(globalFilter, 500);
   const { data, isLoading } = useQuery({

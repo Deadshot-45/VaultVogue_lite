@@ -64,14 +64,42 @@ export interface Product {
   createdAt: string;
 }
 
+export interface LandingBanner {
+  title: string;
+  image: string;
+  link: string;
+}
+
+export interface LandingCategory {
+  _id: string;
+  name: string;
+  slug: string;
+  image?: string;
+}
+
+export interface LandingPageData {
+  banners: LandingBanner[];
+  categories: LandingCategory[];
+  sections: {
+    newArrivals: Product[];
+    trending: Product[];
+    bestsellers: Product[];
+    featured: Product[];
+  };
+}
+
 interface ProductListResponse {
   data: Product[];
 }
 
 export const productService = {
-  getDashboardProducts: async (options?: { signal?: AbortSignal }): Promise<any> => {
-    const res = await ApiService.get<any>("/api/landing");
-    return res.data;
+  getDashboardProducts: async (_options?: { signal?: AbortSignal }): Promise<LandingPageData | null> => {
+    try {
+      const res = await ApiService.get<{ success: boolean; data: LandingPageData }>("/api/landing");
+      return res?.data ?? null;
+    } catch {
+      return null;
+    }
   },
 
   getAllProducts: async (
@@ -91,8 +119,11 @@ export const productService = {
       isSale?: boolean;
       sellerId?: string;
       isActive?: string;
+      bestseller?: boolean;
+      trending?: boolean;
+      isNew?: boolean;
     },
-    options?: { signal?: AbortSignal },
+    _options?: { signal?: AbortSignal },
   ): Promise<Product[]> => {
     const data = await ApiService.get<ProductListResponse>(
       "/api/products/getAll",
@@ -101,7 +132,7 @@ export const productService = {
     return data?.data ?? [];
   },
 
-  getProductById: async (id: string, options?: { signal?: AbortSignal }) => {
+  getProductById: async (id: string, _options?: { signal?: AbortSignal }) => {
     return ApiService.get(`/api/products/getById/${id}`);
   },
 
