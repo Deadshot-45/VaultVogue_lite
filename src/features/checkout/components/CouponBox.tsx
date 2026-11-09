@@ -28,7 +28,7 @@ export function CouponBox({
         htmlFor="promo"
         className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold flex items-center gap-1.5"
       >
-        <Percent className="h-3 w-3 text-[var(--gold-soft)]" />
+        <Percent className="h-3 w-3 text-(--gold-soft)" />
         Maison Promo / Voucher Code
       </Label>
       <div className="flex gap-2">
@@ -37,7 +37,7 @@ export function CouponBox({
           value={coupon}
           onChange={(e) => onCouponChange(e.target.value)}
           placeholder="e.g. WELCOME10"
-          className="h-10 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)] rounded-lg bg-slate-50/50"
+          className="h-10 text-xs border-(--gold-faint) focus-visible:border-(--gold) rounded-lg bg-slate-50/50"
           disabled={!!appliedPromo}
         />
         {appliedPromo ? (
@@ -53,7 +53,7 @@ export function CouponBox({
           <Button
             type="button"
             onClick={onApplyCoupon}
-            className="btn-secondary h-10 text-xs px-5 border-[var(--gold)] text-[var(--gold)] font-semibold uppercase tracking-wider active:scale-95 transition-all"
+            className="btn-secondary h-10 text-xs px-5 border-(--gold) text-(--gold) font-semibold uppercase tracking-wider active:scale-95 transition-all"
           >
             Apply
           </Button>
@@ -75,7 +75,7 @@ export function CouponBox({
 
       {!appliedPromo && (
         <div className="text-[9px] text-muted-foreground leading-relaxed pl-1">
-          Available benefits: <span className="font-mono font-semibold text-[var(--gold)]">WELCOME10</span> (10% Off) or <span className="font-mono font-semibold text-[var(--gold)]">ATELIER5</span> (₹500 Off)
+          Available benefits: <span className="font-mono font-semibold text-(--gold)">WELCOME10</span> (10% Off) or <span className="font-mono font-semibold text-(--gold)">ATELIER5</span> (₹500 Off)
         </div>
       )}
     </div>

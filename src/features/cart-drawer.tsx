@@ -98,7 +98,7 @@ const CartDrawer: React.FC = () => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0 }}
-                className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--gold)] text-[10px] font-semibold text-white"
+                className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-(--gold) text-[10px] font-semibold text-white"
               >
                 {cartItems.length}
               </motion.span>
@@ -107,10 +107,10 @@ const CartDrawer: React.FC = () => {
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="w-full overflow-hidden border-[var(--gold-faint)] bg-[var(--background)] p-0 sm:max-w-xl">
-        <SheetHeader className="border-b border-[var(--gold-faint)] px-6 py-5 text-left">
+      <SheetContent className="w-full overflow-hidden border-(--gold-faint) bg-(--background) p-0 sm:max-w-xl">
+        <SheetHeader className="border-b border-(--gold-faint) px-6 py-5 text-left">
           <p className="section-label">Your Atelier Bag</p>
-          <SheetTitle className="font-cormorant text-3xl font-light text-[var(--brand-text)]">
+          <SheetTitle className="font-cormorant text-3xl font-light text-(--brand-text)">
             Shopping Bag ({cartItems.length})
           </SheetTitle>
         </SheetHeader>
@@ -118,9 +118,9 @@ const CartDrawer: React.FC = () => {
         <div className="flex min-h-0 flex-1 flex-col">
           {!isAuthenticated ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-5 px-8 py-20 text-center">
-              <ShoppingBag className="h-12 w-12 text-[var(--gold)]" />
+              <ShoppingBag className="h-12 w-12 text-(--gold)" />
               <div>
-                <h3 className="font-cormorant text-3xl font-light text-[var(--brand-text)]">
+                <h3 className="font-cormorant text-3xl font-light text-(--brand-text)">
                   Maison Authentication Required
                 </h3>
                 <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
@@ -140,9 +140,9 @@ const CartDrawer: React.FC = () => {
             </div>
           ) : cartItems.length === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-5 px-8 py-20 text-center">
-              <ShoppingBag className="h-12 w-12 text-[var(--gold)]" />
+              <ShoppingBag className="h-12 w-12 text-(--gold)" />
               <div>
-                <h3 className="font-cormorant text-3xl font-light text-[var(--brand-text)]">
+                <h3 className="font-cormorant text-3xl font-light text-(--brand-text)">
                   Your Atelier Bag is Empty
                 </h3>
                 <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
@@ -175,21 +175,21 @@ const CartDrawer: React.FC = () => {
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <span className="block text-[10px] font-medium uppercase tracking-widest text-[var(--gold)]">
+                        <span className="block text-[10px] font-medium uppercase tracking-widest text-(--gold)">
                           Atelier Series
                         </span>
-                        <p className="mt-1 line-clamp-2 text-sm font-semibold text-[var(--brand-text)]">
+                        <p className="mt-1 line-clamp-2 text-sm font-semibold text-(--brand-text)">
                           {item.name}
                         </p>
                         {item.size && (
                           <p className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground">
                             Selected Size:{" "}
-                            <span className="font-bold text-[var(--gold)]">
+                            <span className="font-bold text-(--gold)">
                               {item.size}
                             </span>
                           </p>
                         )}
-                        <p className="mt-3 text-sm font-bold text-[var(--gold)]">
+                        <p className="mt-3 text-sm font-bold text-(--gold)">
                           Rs. {(item.price ?? 0).toFixed(2)}
                         </p>
                       </div>
@@ -212,7 +212,7 @@ const CartDrawer: React.FC = () => {
                             <Minus className="h-3 w-3" />
                           </button>
 
-                          <span className="w-7 text-center text-xs font-semibold text-[var(--brand-text)]">
+                          <span className="w-7 text-center text-xs font-semibold text-(--brand-text)">
                             {item.quantity}
                           </span>
 
@@ -230,29 +230,29 @@ const CartDrawer: React.FC = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="border-t border-[var(--gold-faint)] bg-card/45 p-5 backdrop-blur-md">
+              <div className="border-t border-(--gold-faint) bg-card/45 p-5 backdrop-blur-md">
                 <div className="space-y-3 text-xs">
                   <div className="flex justify-between text-muted-foreground">
                     <span>Bag Subtotal</span>
-                    <span className="font-medium text-[var(--brand-text)]">
+                    <span className="font-medium text-(--brand-text)">
                       Rs. {subtotal.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Premium Shipping</span>
-                    <span className="font-medium text-[var(--brand-text)]">
+                    <span className="font-medium text-(--brand-text)">
                       {shipping === 0 ? "Complimentary" : `Rs. ${shipping.toFixed(2)}`}
                     </span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Maison Tax (8%)</span>
-                    <span className="font-medium text-[var(--brand-text)]">
+                    <span className="font-medium text-(--brand-text)">
                       Rs. {tax.toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex justify-between border-t border-border/10 pt-3 text-sm font-semibold text-[var(--brand-text)]">
+                  <div className="flex justify-between border-t border-border/10 pt-3 text-sm font-semibold text-(--brand-text)">
                     <span>Total Order Value</span>
-                    <span className="font-bold text-[var(--gold)]">
+                    <span className="font-bold text-(--gold)">
                       Rs. {total.toFixed(2)}
                     </span>
                   </div>

@@ -67,7 +67,7 @@ export function SiteHeader() {
   return (
     <div className="w-full sticky top-0 z-50 flex flex-col">
       {/* ─── Premium Announcement Bar ─── */}
-      <div className="w-full bg-[var(--brand-text)] py-2 text-center text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--bg)]">
+      <div className="w-full bg-(--brand-text) py-2 text-center text-[10px] font-medium uppercase tracking-[0.25em] text-(--bg)">
         Complimentary Shipping on all Orders above ₹999
       </div>
 
@@ -117,10 +117,10 @@ export function SiteHeader() {
               href="/"
               className="flex flex-col items-start transition-opacity duration-200 hover:opacity-85"
             >
-              <h1 className="font-cormorant md:text-2xl text-xl font-light tracking-[0.1em] text-[var(--brand-text)] leading-none">
+              <h1 className="font-cormorant md:text-2xl text-xl font-light tracking-[0.1em] text-(--brand-text) leading-none">
                 Vault-Vogue
               </h1>
-              {/* <span className="text-[8px] font-semibold uppercase tracking-[0.45em] text-[var(--gold)] mt-0.5 leading-none">
+              {/* <span className="text-[8px] font-semibold uppercase tracking-[0.45em] text-(--gold) mt-0.5 leading-none">
                 Maison
               </span> */}
             </Link>
@@ -138,10 +138,10 @@ export function SiteHeader() {
                         className={cn(
                           "relative text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground transition-colors duration-200 hover:text-foreground",
                           pathname === href || pathname?.startsWith(`${href}/`)
-                            ? "text-[var(--gold)] font-semibold"
+                            ? "text-(--gold) font-semibold"
                             : "",
                           // luxury animated underline on hover
-                          "after:absolute after:-bottom-4 after:left-0 after:h-[1px] after:w-full after:scale-x-0 after:bg-[var(--gold)] after:transition-transform after:duration-300 hover:after:scale-x-100",
+                          "after:absolute after:-bottom-4 after:left-0 after:h-[1px] after:w-full after:scale-x-0 after:bg-(--gold) after:transition-transform after:duration-300 hover:after:scale-x-100",
                           pathname === href || pathname?.startsWith(`${href}/`)
                             ? "after:scale-x-100"
                             : "",
@@ -228,7 +228,7 @@ export function SiteHeader() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="mt-2 w-50 bg-background/95 backdrop-blur-xl border border-[var(--gold-faint)]"
+                  className="mt-2 w-50 bg-background/95 backdrop-blur-xl border border-(--gold-faint)"
                 >
                   {isUserAuthed ? (
                     <>
@@ -240,7 +240,7 @@ export function SiteHeader() {
                           href="/account"
                           className="flex items-center gap-2"
                         >
-                          <User className="h-4 w-4 text-[var(--gold)]" />
+                          <User className="h-4 w-4 text-(--gold)" />
                           <span>Account</span>
                         </Link>
                       </DropdownMenuItem>
@@ -252,7 +252,7 @@ export function SiteHeader() {
                           href="/orders"
                           className="flex items-center gap-2"
                         >
-                          <ShoppingBag className="h-4 w-4 text-[var(--gold)]" />
+                          <ShoppingBag className="h-4 w-4 text-(--gold)" />
                           <span>Orders</span>
                         </Link>
                       </DropdownMenuItem>
@@ -260,13 +260,13 @@ export function SiteHeader() {
                         (user?.role === "seller" || user?.role === "admin") && (
                           <DropdownMenuItem
                             asChild
-                            className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-[var(--gold)] font-medium"
+                            className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-(--gold) font-medium"
                           >
                             <Link
                               href="/seller/dashboard"
                               className="flex items-center gap-2"
                             >
-                              <Gem className="h-4 w-4 text-[var(--gold)]" />
+                              <Gem className="h-4 w-4 text-(--gold)" />
                               <span>Seller Atelier</span>
                             </Link>
                           </DropdownMenuItem>
@@ -274,18 +274,18 @@ export function SiteHeader() {
                       {mounted && user?.role === "admin" && (
                         <DropdownMenuItem
                           asChild
-                          className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-[var(--gold)] font-medium"
+                          className="cursor-pointer hover:bg-muted/50 text-xs uppercase tracking-wider text-(--gold) font-medium"
                         >
                           <Link
                             href="/admin/dashboard"
                             className="flex items-center gap-2"
                           >
-                            <Gem className="h-4 w-4 text-[var(--gold)]" />
+                            <Gem className="h-4 w-4 text-(--gold)" />
                             <span>Admin Console</span>
                           </Link>
                         </DropdownMenuItem>
                       )}
-                      <div className="my-1 border-t border-[var(--gold-faint)]" />
+                      <div className="my-1 border-t border-(--gold-faint)" />
                       <DropdownMenuItem
                         className="cursor-pointer text-xs uppercase tracking-wider text-destructive focus:text-destructive hover:bg-destructive/10"
                         onClick={() => setIsLogoutDialogOpen(true)}
@@ -303,7 +303,7 @@ export function SiteHeader() {
                           href={`/login?redirect=${pathname}`}
                           className="flex items-center gap-2"
                         >
-                          <User className="h-4 w-4 text-[var(--gold)]" />
+                          <User className="h-4 w-4 text-(--gold)" />
                           <span>Login</span>
                         </Link>
                       </DropdownMenuItem>
@@ -315,7 +315,7 @@ export function SiteHeader() {
                           href="/register"
                           className="flex items-center gap-2"
                         >
-                          <User className="h-4 w-4 text-[var(--gold)]" />
+                          <User className="h-4 w-4 text-(--gold)" />
                           <span>Create Account</span>
                         </Link>
                       </DropdownMenuItem>

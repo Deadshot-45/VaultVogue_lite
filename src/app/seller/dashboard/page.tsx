@@ -53,7 +53,7 @@ export default function SellerDashboardPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold)]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-(--gold)"></div>
       </div>
     );
   }
@@ -89,7 +89,7 @@ export default function SellerDashboardPage() {
       {/* Welcome Banner */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-light font-cormorant text-[var(--brand-text)]">
+          <h2 className="text-3xl font-light font-cormorant text-(--brand-text)">
             Welcome to your Atelier
           </h2>
           <p className="text-xs text-muted-foreground mt-1">
@@ -116,12 +116,12 @@ export default function SellerDashboardPage() {
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Metric 1 */}
-        <div className="card hover:border-[var(--gold-soft)] transition-colors">
+        <div className="card hover:border-(--gold-soft) transition-colors">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest text-[var(--gold)] font-semibold">
+            <span className="text-[10px] uppercase tracking-widest text-(--gold) font-semibold">
               Gross Earnings
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--gold-faint)] border border-[var(--gold-soft)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-(--gold-faint) border border-(--gold-soft)">
               <TrendingUp
                 className="h-4 w-4"
                 style={{ color: "var(--gold)" }}
@@ -129,7 +129,7 @@ export default function SellerDashboardPage() {
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl font-light text-[var(--brand-text)]">
+            <h3 className="text-2xl font-light text-(--brand-text)">
               ₹{totalRevenue?.toLocaleString("en-IN")}
             </h3>
             <span className="text-[10px] text-green-500 font-semibold flex items-center gap-1 mt-1">
@@ -142,12 +142,12 @@ export default function SellerDashboardPage() {
         </div>
 
         {/* Metric 2 */}
-        <div className="card hover:border-[var(--gold-soft)] transition-colors">
+        <div className="card hover:border-(--gold-soft) transition-colors">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest text-[var(--gold)] font-semibold">
+            <span className="text-[10px] uppercase tracking-widest text-(--gold) font-semibold">
               Atelier Orders
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--gold-faint)] border border-[var(--gold-soft)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-(--gold-faint) border border-(--gold-soft)">
               <ShoppingBag
                 className="h-4 w-4"
                 style={{ color: "var(--gold)" }}
@@ -155,7 +155,7 @@ export default function SellerDashboardPage() {
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl font-light text-[var(--brand-text)]">
+            <h3 className="text-2xl font-light text-(--brand-text)">
               {totalOrders}
             </h3>
             <span className="text-[10px] text-green-500 font-semibold flex items-center gap-1 mt-1">
@@ -168,17 +168,17 @@ export default function SellerDashboardPage() {
         </div>
 
         {/* Metric 3 */}
-        <div className="card hover:border-[var(--gold-soft)] transition-colors">
+        <div className="card hover:border-(--gold-soft) transition-colors">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest text-[var(--gold)] font-semibold">
+            <span className="text-[10px] uppercase tracking-widest text-(--gold) font-semibold">
               Active Listings
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--gold-faint)] border border-[var(--gold-soft)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-(--gold-faint) border border-(--gold-soft)">
               <Package className="h-4 w-4" style={{ color: "var(--gold)" }} />
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl font-light text-[var(--brand-text)]">
+            <h3 className="text-2xl font-light text-(--brand-text)">
               {activeListings}
             </h3>
             <span className="text-[10px] text-muted-foreground font-normal flex items-center gap-1 mt-1">
@@ -188,16 +188,16 @@ export default function SellerDashboardPage() {
         </div>
 
         {/* Metric 4 */}
-        <div className="card hover:border-[var(--gold-soft)] transition-colors">
+        <div className="card hover:border-(--gold-soft) transition-colors">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest text-[var(--gold)] font-semibold">
+            <span className="text-[10px] uppercase tracking-widest text-(--gold) font-semibold">
               Atelier Alerts
             </span>
             <div
               className={`flex h-8 w-8 items-center justify-center rounded-xl border ${
                 lowStockCount > 0
                   ? "bg-amber-500/10 border-amber-500/30"
-                  : "bg-[var(--gold-faint)] border-[var(--gold-soft)]"
+                  : "bg-(--gold-faint) border-(--gold-soft)"
               }`}
             >
               <AlertTriangle
@@ -206,7 +206,7 @@ export default function SellerDashboardPage() {
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl font-light text-[var(--brand-text)]">
+            <h3 className="text-2xl font-light text-(--brand-text)">
               {lowStockCount}{" "}
               <span className="text-xs text-muted-foreground font-normal">
                 items low stock
@@ -228,14 +228,14 @@ export default function SellerDashboardPage() {
         <div className="lg:col-span-2 card flex flex-col justify-between">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h4 className="text-sm font-semibold tracking-wider uppercase text-[var(--gold)]">
+              <h4 className="text-sm font-semibold tracking-wider uppercase text-(--gold)">
                 Revenue & Sales Curve
               </h4>
               <p className="text-[10px] text-muted-foreground">
                 Earnings trends aggregated over active days.
               </p>
             </div>
-            <span className="text-xs font-semibold text-[var(--gold)] flex items-center gap-1">
+            <span className="text-xs font-semibold text-(--gold) flex items-center gap-1">
               Atelier Average: ₹{avgOrderValue?.toLocaleString("en-IN")}
             </span>
           </div>
@@ -307,7 +307,7 @@ export default function SellerDashboardPage() {
         {/* Low Stock Panel */}
         <div className="card flex flex-col justify-between">
           <div>
-            <h4 className="text-sm font-semibold tracking-wider uppercase text-[var(--gold)]">
+            <h4 className="text-sm font-semibold tracking-wider uppercase text-(--gold)">
               Low Stock Warnings
             </h4>
             <p className="text-[10px] text-muted-foreground">
@@ -329,7 +329,7 @@ export default function SellerDashboardPage() {
                 .map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center gap-3 p-2.5 rounded-xl border border-border/20 bg-background/30 hover:border-[var(--gold-faint)] transition-colors"
+                    className="flex items-center gap-3 p-2.5 rounded-xl border border-border/20 bg-background/30 hover:border-(--gold-faint) transition-colors"
                   >
                     <Image
                       src={
@@ -344,7 +344,7 @@ export default function SellerDashboardPage() {
                       height={40}
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-[var(--brand-text)] truncate">
+                      <p className="text-xs font-semibold text-(--brand-text) truncate">
                         {product.name}
                       </p>
                     </div>
@@ -365,10 +365,10 @@ export default function SellerDashboardPage() {
             )}
           </div>
 
-          <div className="pt-3 border-t border-[var(--gold-faint)]">
+          <div className="pt-3 border-t border-(--gold-faint)">
             <Link
               href="/seller/inventory"
-              className="text-xs font-semibold text-[var(--gold)] flex items-center justify-center gap-1 hover:opacity-80 transition-opacity"
+              className="text-xs font-semibold text-(--gold) flex items-center justify-center gap-1 hover:opacity-80 transition-opacity"
             >
               Adjust Inventories <ChevronRight className="h-3 w-3" />
             </Link>
@@ -380,7 +380,7 @@ export default function SellerDashboardPage() {
       <div className="card">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h4 className="text-sm font-semibold tracking-wider uppercase text-[var(--gold)]">
+            <h4 className="text-sm font-semibold tracking-wider uppercase text-(--gold)">
               Recent Client Orders
             </h4>
             <p className="text-[10px] text-muted-foreground">
@@ -389,7 +389,7 @@ export default function SellerDashboardPage() {
           </div>
           <Link
             href="/seller/orders"
-            className="text-xs font-semibold text-[var(--gold)] flex items-center gap-0.5 hover:opacity-80 transition-opacity"
+            className="text-xs font-semibold text-(--gold) flex items-center gap-0.5 hover:opacity-80 transition-opacity"
           >
             View All Orders <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
@@ -399,19 +399,19 @@ export default function SellerDashboardPage() {
           <table className="w-full text-left">
             <thead>
               <tr style={{ borderBottom: "1px solid var(--gold-faint)" }}>
-                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                   Order ID
                 </th>
-                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                   Customer
                 </th>
-                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                   Date
                 </th>
-                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                   Amount
                 </th>
-                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                   Status
                 </th>
               </tr>
@@ -420,14 +420,14 @@ export default function SellerDashboardPage() {
               {orders.slice(0, 3).map((order) => (
                 <tr
                   key={order.id}
-                  className="transition-colors hover:bg-[var(--gold-glow)]"
+                  className="transition-colors hover:bg-(--gold-glow)"
                   style={{ borderBottom: "1px solid var(--gold-faint)" }}
                 >
-                  <td className="py-3.5 font-mono text-xs font-semibold text-[var(--gold)]">
+                  <td className="py-3.5 font-mono text-xs font-semibold text-(--gold)">
                     {order.id}
                   </td>
                   <td className="py-3.5">
-                    <p className="text-xs font-medium text-[var(--brand-text)]">
+                    <p className="text-xs font-medium text-(--brand-text)">
                       {order.customer}
                     </p>
                     <p className="text-[10px] text-muted-foreground">
@@ -441,7 +441,7 @@ export default function SellerDashboardPage() {
                       year: "numeric",
                     })}
                   </td>
-                  <td className="py-3.5 text-xs font-semibold text-[var(--brand-text)]">
+                  <td className="py-3.5 text-xs font-semibold text-(--brand-text)">
                     ₹{order?.amount?.toLocaleString("en-IN")}
                   </td>
                   <td className="py-3.5">

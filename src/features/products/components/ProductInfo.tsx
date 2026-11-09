@@ -28,33 +28,51 @@ export function ProductInfo({
   onReviewsClick,
 }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
-  const maxStock = selectedColor.stockBySize[selectedSize] ?? 0;
+  const [justAdded, setJustAdded] = useState(false);
+
+  // Quantity is only meaningful when the chosen silhouette can be added to bag.
+  const isAvailable = (selectedColor.stockBySize[selectedSize] ?? 0) > 0;
+
+  const handleAddToCartSuccess = () => {
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 2200);
+  };
+
+  const maxStock =
+    selectedColor.stockBySize?.[selectedSize] ??
+    product.variants?.find(
+      (v) =>
+        v.size === selectedSize &&
+        (!v.color || v.color.toLowerCase() === selectedColor.name.toLowerCase()),
+    )?.stock ??
+    product.variants?.find((v) => v.size === selectedSize)?.stock ??
+    10;
 
   return (
     <div className="space-y-5 sm:space-y-6">
       {/* ── BREADCRUMBS ── */}
-      <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
-        <Link href="/" className="hover:text-[var(--vault-ink)] transition-colors">
+      <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
+        <Link href="/" className="hover:text-(--vault-ink) transition-colors">
           Home
         </Link>
         <span>/</span>
-        <Link href="/products" className="hover:text-[var(--vault-ink)] transition-colors">
+        <Link href="/products" className="hover:text-(--vault-ink) transition-colors">
           Catalog
         </Link>
         <span>/</span>
         <Link
           href={`/products?category=${encodeURIComponent(product.category)}`}
-          className="hover:text-[var(--vault-ink)] transition-colors"
+          className="hover:text-(--vault-ink) transition-colors"
         >
           {product.category}
         </Link>
         <span>/</span>
-        <span className="text-[var(--vault-ink)] truncate max-w-[200px]">{product.name}</span>
+        <span className="text-(--vault-ink) truncate max-w-[200px]">{product.name}</span>
       </nav>
 
       {/* ── PRODUCT TITLE & HEADER ── */}
       <div className="space-y-2">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)]">
+        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent)">
           <span>{product.code}</span>
           <span>·</span>
           <span>{product.category}</span>
@@ -62,7 +80,7 @@ export function ProductInfo({
           <span>{product.leadTime}</span>
         </div>
 
-        <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+        <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light uppercase tracking-tight text-(--vault-ink)">
           {product.name}
         </h1>
       </div>
@@ -78,12 +96,12 @@ export function ProductInfo({
       />
 
       {/* ── EDITORIAL DESCRIPTION ── */}
-      <p className="max-w-xl font-mono text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)]">
+      <p className="max-w-xl font-mono text-xs sm:text-sm leading-relaxed text-(--vault-muted)">
         {product.description}
       </p>
 
       {/* ── VARIANT SELECTORS (Color & Size) ── */}
-      <div className="space-y-6 border-y border-[var(--vault-line)] py-6">
+      <div className="space-y-6 border-y border-(--vault-line) py-6">
         <ProductColorSelector
           colors={product.colors}
           selectedColor={selectedColor}
@@ -91,17 +109,22 @@ export function ProductInfo({
         />
 
         <ProductSizeSelector
+          availability={true}
           color={selectedColor}
           selectedSize={selectedSize}
           onSelectSize={onSelectSize}
           measurements={product.measurements}
+          variants={product.variants}
+          availableSizes={product.availableSizes}
         />
 
-        <ProductQuantitySelector
-          quantity={quantity}
-          maxStock={Math.max(1, maxStock)}
-          onChange={setQuantity}
-        />
+        {isAvailable || justAdded ? (
+          <ProductQuantitySelector
+            quantity={quantity}
+            maxStock={Math.max(1, maxStock)}
+            onChange={setQuantity}
+          />
+        ) : null}
       </div>
 
       {/* ── PURCHASE ACTIONS (Add to Bag, Wishlist, Pincode) ── */}
@@ -110,6 +133,7 @@ export function ProductInfo({
         color={selectedColor}
         size={selectedSize}
         quantity={quantity}
+        onAddToCartSuccess={handleAddToCartSuccess}
       />
 
       {/* ── PRODUCT SPECIFICATIONS & DETAILS ACCORDION ── */}

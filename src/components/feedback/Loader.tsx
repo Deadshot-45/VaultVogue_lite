@@ -31,7 +31,7 @@ export function Loader() {
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center bg-[var(--background)] z-50 ${theme === "light" ? "light" : "dark"}`}
+      className={`fixed inset-0 flex items-center justify-center bg-(--background) z-50 ${theme === "light" ? "light" : "dark"}`}
     >
       {/* Mode Toggle */}
       <div

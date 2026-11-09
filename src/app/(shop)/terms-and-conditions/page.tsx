@@ -82,29 +82,29 @@ const TERMS_SECTIONS = [
 
 export default function TermsAndConditionsPage() {
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* Breadcrumb Navigation */}
-      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+      <div className="w-full border-b border-(--vault-line) bg-(--vault-panel)/60 py-3 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted)"
           >
             <Link
               href="/"
-              className="hover:text-[var(--vault-accent)] transition-colors"
+              className="hover:text-(--vault-accent) transition-colors"
             >
               Vault Vogue
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
+            <ChevronRight size={10} className="text-(--vault-line)" />
             <Link
               href="/help"
-              className="hover:text-[var(--vault-accent)] transition-colors"
+              className="hover:text-(--vault-accent) transition-colors"
             >
               Legal &amp; Policy
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <span className="text-[var(--vault-accent)] font-semibold">
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <span className="text-(--vault-accent) font-semibold">
               Terms &amp; Conditions
             </span>
           </nav>
@@ -113,54 +113,54 @@ export default function TermsAndConditionsPage() {
 
       <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
         {/* Editorial Header Block */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 mb-8 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-(--vault-line) pb-6">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)] animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-(--vault-accent) animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-(--vault-accent) font-semibold flex items-center gap-1.5">
                 Maison Charter &amp; Legal Framework
               </span>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               TERMS REVISION // 2026.10
             </span>
           </div>
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-8 space-y-4">
-              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-(--vault-ink) leading-none">
                 Terms &amp;{" "}
-                <span className="italic text-[var(--vault-accent)]">
+                <span className="italic text-(--vault-accent)">
                   Conditions
                 </span>
                 <br />
                 of Service.
               </h1>
-              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-(--vault-muted) font-mono">
                 The contractual charter governing client engagements, archival
                 acquisitions, cryptographic authenticity keying, and dispute
                 resolution on Vault Vogue®.
               </p>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
+            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-(--vault-line) lg:pl-8 pt-4 lg:pt-0">
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">
+                <span className="text-(--vault-muted)">
                   LEGAL JURISDICTION:
                 </span>
                 <span className="font-bold">PARIS / INDORE</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">AUTHENTICITY:</span>
+                <span className="text-(--vault-muted)">AUTHENTICITY:</span>
                 <span className="text-emerald-500 font-bold">
                   100% KEYED &amp; SEALED
                 </span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">
+                <span className="text-(--vault-muted)">
                   LEGAL INQUIRIES:
                 </span>
-                <span className="font-bold text-[var(--vault-accent)]">
+                <span className="font-bold text-(--vault-accent)">
                   legal@vaultvogue.com
                 </span>
               </div>
@@ -173,38 +173,38 @@ export default function TermsAndConditionsPage() {
           {TERMS_SECTIONS.map((sec) => (
             <article
               key={sec.title}
-              className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-10 transition-all duration-300 hover:border-[var(--vault-accent)] hover:shadow-xl"
+              className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-10 transition-all duration-300 hover:border-(--vault-accent) hover:shadow-xl"
             >
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[var(--vault-line)] pb-5 mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-(--vault-line) pb-5 mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-[var(--vault-accent)]/30 bg-[var(--vault-accent)]/10 text-[var(--vault-accent)]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-(--vault-accent)/30 bg-(--vault-accent)/10 text-(--vault-accent)">
                     <sec.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-accent)] block font-semibold">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-(--vault-accent) block font-semibold">
                       {sec.num} // {sec.code}
                     </span>
-                    <h2 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-tight text-[var(--vault-ink)] mt-0.5">
+                    <h2 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-tight text-(--vault-ink) mt-0.5">
                       {sec.title}
                     </h2>
                   </div>
                 </div>
               </div>
 
-              <p className="text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] mb-5 max-w-4xl font-sans">
+              <p className="text-xs sm:text-sm leading-relaxed text-(--vault-muted) mb-5 max-w-4xl font-sans">
                 {sec.summary}
               </p>
 
-              <ul className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 font-mono text-[11px] text-[var(--vault-muted)]">
+              <ul className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 font-mono text-[11px] text-(--vault-muted)">
                 {sec.clauses.map((clause, idx) => (
                   <li
                     key={idx}
-                    className="border border-[var(--vault-line)] bg-[var(--vault-bg)] p-3.5 space-y-1"
+                    className="border border-(--vault-line) bg-(--vault-bg) p-3.5 space-y-1"
                   >
-                    <span className="text-[var(--vault-accent)] font-bold text-[9px] block">
+                    <span className="text-(--vault-accent) font-bold text-[9px] block">
                       [ CLAUSE {sec.num}.{idx + 1} ]
                     </span>
-                    <p className="text-[var(--vault-ink)]">{clause}</p>
+                    <p className="text-(--vault-ink)">{clause}</p>
                   </li>
                 ))}
               </ul>
@@ -213,18 +213,18 @@ export default function TermsAndConditionsPage() {
         </div>
 
         {/* Legal Counsel Desk Strip */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <Scale className="h-4 w-4 text-[var(--vault-accent)]" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-accent)] font-bold">
+              <Scale className="h-4 w-4 text-(--vault-accent)" />
+              <span className="font-mono text-[10px] uppercase tracking-widest text-(--vault-accent) font-bold">
                 Legal Counsel &amp; Corporate Inquiries
               </span>
             </div>
-            <h3 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+            <h3 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-tight text-(--vault-ink)">
               Contact the Vault Vogue Legal &amp; Compliance Office
             </h3>
-            <p className="text-xs text-[var(--vault-muted)] font-mono">
+            <p className="text-xs text-(--vault-muted) font-mono">
               For trademark licensing, institutional contracts, or press
               verification requests.
             </p>

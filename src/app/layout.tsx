@@ -50,7 +50,7 @@ export default function RootLayout({
         />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>
-      <body className="vault-storefront antialiased selection:bg-[var(--vault-accent)] selection:text-[var(--vault-accent-ink)]">
+      <body className="vault-storefront antialiased selection:bg-(--vault-accent) selection:text-(--vault-accent-ink)">
         <Analytics />
         {/* <SpeedInsights /> */}
         <Providers>{children}</Providers>

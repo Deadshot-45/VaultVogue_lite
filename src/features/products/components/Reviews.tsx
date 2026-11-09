@@ -31,7 +31,7 @@ export const Reviews = React.memo(() => {
       {/* Header */}
       <div>
         <span className="section-label">Client Reviews</span>
-        <h2 className="text-xl font-light font-cormorant text-[var(--brand-text)] mt-1.5">
+        <h2 className="text-xl font-light font-cormorant text-(--brand-text) mt-1.5">
           Client Experiences
         </h2>
         <div className="gold-divider" />
@@ -46,11 +46,11 @@ export const Reviews = React.memo(() => {
           return (
             <div
               key={review.name}
-              className="p-5 border border-border/40 rounded-2xl bg-card/30 backdrop-blur-sm space-y-2.5 transition-all hover:border-[var(--gold-soft)]"
+              className="p-5 border border-border/40 rounded-2xl bg-card/30 backdrop-blur-sm space-y-2.5 transition-all hover:border-(--gold-soft)"
             >
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-xs font-semibold text-[var(--brand-text)]">{review.name}</p>
+                  <p className="text-xs font-semibold text-(--brand-text)">{review.name}</p>
                   <p className="text-[9px] text-muted-foreground mt-0.5">{review.date}</p>
                 </div>
                 
@@ -61,9 +61,9 @@ export const Reviews = React.memo(() => {
                       key={i}
                       className={`h-3 w-3 ${
                         i < wholeStars
-                          ? "fill-[var(--gold)] text-[var(--gold)]"
+                          ? "fill-(--gold) text-(--gold)"
                           : i === wholeStars && hasHalfStar
-                          ? "fill-[var(--gold)]/50 text-[var(--gold)]/50"
+                          ? "fill-(--gold)/50 text-(--gold)/50"
                           : "text-muted-foreground/30"
                       }`}
                     />

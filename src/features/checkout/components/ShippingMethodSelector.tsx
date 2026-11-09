@@ -53,8 +53,8 @@ export function ShippingMethodSelector({
 
   return (
     <div className="space-y-4">
-      <h3 className="font-cormorant text-2xl font-light text-[var(--brand-text)] flex items-center gap-2 text-left">
-        <Truck className="h-5 w-5 text-[var(--gold)]" />
+      <h3 className="font-cormorant text-2xl font-light text-(--brand-text) flex items-center gap-2 text-left">
+        <Truck className="h-5 w-5 text-(--gold)" />
         Shipping Speed
       </h3>
 
@@ -81,13 +81,13 @@ export function ShippingMethodSelector({
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                     {method.id === "vip" ? "Maison Instant" : "Premium Transit"}
                   </p>
-                  <p className="font-bold text-sm text-[var(--brand-text)] mt-1.5">{method.name}</p>
+                  <p className="font-bold text-sm text-(--brand-text) mt-1.5">{method.name}</p>
                   <p className="text-xs text-muted-foreground mt-1">{method.duration}</p>
                   <p className="text-[10px] text-slate-400 mt-3 leading-normal">{method.description}</p>
                 </div>
                 <div className="pt-4 border-t border-slate-50 mt-4 flex items-center justify-between">
                   <span className="text-[10px] text-muted-foreground font-semibold">Delivery Charge</span>
-                  <span className="font-mono font-bold text-xs text-[var(--gold)]">
+                  <span className="font-mono font-bold text-xs text-(--gold)">
                     {method.cost === 0 ? (
                       <span className="text-green-600 font-semibold uppercase">FREE</span>
                     ) : (

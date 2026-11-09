@@ -72,66 +72,66 @@ const ACCEPTANCE_CRITERIA = [
 
 export default function ReturnsPage() {
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* Breadcrumb Navigation */}
-      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+      <div className="w-full border-b border-(--vault-line) bg-(--vault-panel)/60 py-3 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted)"
           >
-            <Link href="/" className="hover:text-[var(--vault-accent)] transition-colors">
+            <Link href="/" className="hover:text-(--vault-accent) transition-colors">
               Vault Vogue
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <Link href="/help" className="hover:text-[var(--vault-accent)] transition-colors">
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <Link href="/help" className="hover:text-(--vault-accent) transition-colors">
               Help Center
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <span className="text-[var(--vault-accent)] font-semibold">Returns &amp; Exchanges</span>
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <span className="text-(--vault-accent) font-semibold">Returns &amp; Exchanges</span>
           </nav>
         </div>
       </div>
 
       <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
         {/* Editorial Header Block */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 mb-8 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-(--vault-line) pb-6">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)] animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-(--vault-accent) animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-(--vault-accent) font-semibold flex items-center gap-1.5">
                  Client Care &amp; Alteration Protocols
               </span>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               TIMEFRAME // 7 CALENDAR DAYS
             </span>
           </div>
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-8 space-y-4">
-              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-(--vault-ink) leading-none">
                 Archival Return &amp;
                 <br />
-                <span className="italic text-[var(--vault-accent)]">Exchange</span> Protocol.
+                <span className="italic text-(--vault-accent)">Exchange</span> Protocol.
               </h1>
-              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-(--vault-muted) font-mono">
                 We design every piece to be a permanent cornerstone of your wardrobe.
                 Should silhouette proportions or sizing require adjustment, our complimentary 4-stage process ensures effortless resolution.
               </p>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
+            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-(--vault-line) lg:pl-8 pt-4 lg:pt-0">
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">RETURN FEE:</span>
+                <span className="text-(--vault-muted)">RETURN FEE:</span>
                 <span className="text-emerald-500 font-bold">₹0.00 (COMPLIMENTARY)</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">EXCHANGE DISPATCH:</span>
-                <span className="text-[var(--vault-accent)] font-bold">EXPRESS AIR-FREIGHT</span>
+                <span className="text-(--vault-muted)">EXCHANGE DISPATCH:</span>
+                <span className="text-(--vault-accent) font-bold">EXPRESS AIR-FREIGHT</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">COURIER PICKUP:</span>
+                <span className="text-(--vault-muted)">COURIER PICKUP:</span>
                 <span className="font-bold">DOORSTEP RETRIEVAL</span>
               </div>
             </div>
@@ -140,11 +140,11 @@ export default function ReturnsPage() {
 
         {/* 4-Stage Architectural Pipeline */}
         <div className="mb-16">
-          <div className="mb-6 flex items-center justify-between border-b border-[var(--vault-line)] pb-4">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] font-semibold">
+          <div className="mb-6 flex items-center justify-between border-b border-(--vault-line) pb-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) font-semibold">
               // STEP-BY-STEP CUSTODY CHAIN
             </span>
-            <span className="font-mono text-[10px] uppercase text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase text-(--vault-muted)">
               4 VERIFIED CHECKPOINTS
             </span>
           </div>
@@ -153,33 +153,33 @@ export default function ReturnsPage() {
             {RETURN_STAGES.map((st) => (
               <article
                 key={st.step}
-                className="group border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-7 transition-all duration-300 hover:border-[var(--vault-accent)] hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
+                className="group border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-7 transition-all duration-300 hover:border-(--vault-accent) hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
               >
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between font-mono text-[10px] border-b border-[var(--vault-line)] pb-3">
-                    <span className="font-serif italic text-2xl text-[var(--vault-accent)]">
+                  <div className="flex items-center justify-between font-mono text-[10px] border-b border-(--vault-line) pb-3">
+                    <span className="font-serif italic text-2xl text-(--vault-accent)">
                       {st.step}
                     </span>
-                    <span className="px-2 py-0.5 border border-[var(--vault-line)] text-[9px] uppercase tracking-wider text-[var(--vault-muted)]">
+                    <span className="px-2 py-0.5 border border-(--vault-line) text-[9px] uppercase tracking-wider text-(--vault-muted)">
                       {st.window}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-3 pt-1">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-[var(--vault-accent)]/30 bg-[var(--vault-accent)]/10 text-[var(--vault-accent)]">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-(--vault-accent)/30 bg-(--vault-accent)/10 text-(--vault-accent)">
                       <st.icon className="h-5 w-5" />
                     </div>
-                    <h3 className="font-mono text-xs uppercase tracking-wider text-[var(--vault-ink)] font-bold">
+                    <h3 className="font-mono text-xs uppercase tracking-wider text-(--vault-ink) font-bold">
                       {st.title}
                     </h3>
                   </div>
 
-                  <p className="text-xs leading-relaxed text-[var(--vault-muted)] font-sans">
+                  <p className="text-xs leading-relaxed text-(--vault-muted) font-sans">
                     {st.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-3 border-t border-[var(--vault-line)] font-mono text-[9px] uppercase text-emerald-500 font-bold">
+                <div className="mt-6 pt-3 border-t border-(--vault-line) font-mono text-[9px] uppercase text-emerald-500 font-bold">
                   ● {st.telemetry}
                 </div>
               </article>
@@ -188,17 +188,17 @@ export default function ReturnsPage() {
         </div>
 
         {/* Acceptance Standards Checklist */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-16 shadow-sm">
-          <div className="mb-8 border-b border-[var(--vault-line)] pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 mb-16 shadow-sm">
+          <div className="mb-8 border-b border-(--vault-line) pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] block font-semibold">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) block font-semibold">
                 // ATELIER QUALITY SPECIFICATIONS
               </span>
-              <h2 className="mt-2 font-serif text-2xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+              <h2 className="mt-2 font-serif text-2xl sm:text-4xl font-light uppercase tracking-tight text-(--vault-ink)">
                 Intake Inspection Criteria
               </h2>
             </div>
-            <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <p className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               To preserve the integrity of future collectors.
             </p>
           </div>
@@ -207,16 +207,16 @@ export default function ReturnsPage() {
             {ACCEPTANCE_CRITERIA.map((crit, idx) => (
               <div
                 key={crit.title}
-                className="border border-[var(--vault-line)] bg-[var(--vault-bg)] p-5 space-y-2"
+                className="border border-(--vault-line) bg-(--vault-bg) p-5 space-y-2"
               >
-                <div className="flex items-center gap-2 font-mono text-[10px] text-[var(--vault-accent)] uppercase font-bold">
+                <div className="flex items-center gap-2 font-mono text-[10px] text-(--vault-accent) uppercase font-bold">
                   <CheckCircle2 size={13} />
                   <span>REQUIREMENT 0{idx + 1}</span>
                 </div>
-                <h4 className="font-mono text-xs uppercase font-bold text-[var(--vault-ink)]">
+                <h4 className="font-mono text-xs uppercase font-bold text-(--vault-ink)">
                   {crit.title}
                 </h4>
-                <p className="text-xs text-[var(--vault-muted)] leading-relaxed font-sans">
+                <p className="text-xs text-(--vault-muted) leading-relaxed font-sans">
                   {crit.desc}
                 </p>
               </div>
@@ -225,18 +225,18 @@ export default function ReturnsPage() {
         </div>
 
         {/* Action Strip */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-[var(--vault-accent)]" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-accent)] font-bold">
+              <ShieldCheck className="h-4 w-4 text-(--vault-accent)" />
+              <span className="font-mono text-[10px] uppercase tracking-widest text-(--vault-accent) font-bold">
                 Initiate an Archival Exchange Today
               </span>
             </div>
-            <h3 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+            <h3 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-(--vault-ink)">
               Access Your Orders to Generate Waybill
             </h3>
-            <p className="text-xs text-[var(--vault-muted)] font-mono">
+            <p className="text-xs text-(--vault-muted) font-mono">
               Directly select garments from your acquisition history and request immediate pickup.
             </p>
           </div>

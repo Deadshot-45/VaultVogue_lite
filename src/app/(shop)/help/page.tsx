@@ -132,22 +132,22 @@ export default function HelpPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* Breadcrumb Navigation */}
-      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+      <div className="w-full border-b border-(--vault-line) bg-(--vault-panel)/60 py-3 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted)"
           >
             <Link
               href="/"
-              className="hover:text-[var(--vault-accent)] transition-colors"
+              className="hover:text-(--vault-accent) transition-colors"
             >
               Vault Vogue
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <span className="text-[var(--vault-accent)] font-semibold">
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <span className="text-(--vault-accent) font-semibold">
               Help Center &amp; Directory
             </span>
           </nav>
@@ -156,44 +156,44 @@ export default function HelpPage() {
 
       <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
         {/* Editorial Hero Block */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 mb-8 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-(--vault-line) pb-6">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)] animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-(--vault-accent) animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-(--vault-accent) font-semibold flex items-center gap-1.5">
                 Vault Vogue Assistance Hub
               </span>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               CLIENT DIRECTORY · NAVIGATION MATRIX
             </span>
           </div>
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-8 space-y-4">
-              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-(--vault-ink) leading-none">
                 How May We{" "}
-                <span className="italic text-[var(--vault-accent)]">
+                <span className="italic text-(--vault-accent)">
                   Assist
                 </span>
                 <br />
                 Your Acquisition?
               </h1>
-              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-(--vault-muted) font-mono">
                 Explore guidance across order waybills, air-freight milestones,
                 garment care, or reach our human concierge team directly.
               </p>
             </div>
 
             <div className="lg:col-span-4 w-full">
-              <div className="flex items-center border border-[var(--vault-line)] bg-[var(--vault-bg)] px-4 py-3 font-mono text-xs">
-                <Search className="h-4 w-4 mr-2 text-[var(--vault-muted)]" />
+              <div className="flex items-center border border-(--vault-line) bg-(--vault-bg) px-4 py-3 font-mono text-xs">
+                <Search className="h-4 w-4 mr-2 text-(--vault-muted)" />
                 <input
                   type="text"
                   value={searchFilter}
                   onChange={(e) => setSearchFilter(e.target.value)}
                   placeholder="Search topics (e.g. shipping, sizing)..."
-                  className="w-full bg-transparent focus:outline-none uppercase text-[var(--vault-ink)] placeholder:text-[var(--vault-muted)] font-mono text-xs"
+                  className="w-full bg-transparent focus:outline-none uppercase text-(--vault-ink) placeholder:text-(--vault-muted) font-mono text-xs"
                 />
               </div>
             </div>
@@ -206,52 +206,52 @@ export default function HelpPage() {
             <Link
               key={topic.title}
               href={topic.href}
-              className="group relative flex flex-col justify-between border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--vault-accent)] hover:shadow-xl"
+              className="group relative flex flex-col justify-between border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-(--vault-accent) hover:shadow-xl"
             >
               <div>
                 <div className="flex items-center justify-between font-mono text-[10px]">
-                  <span className="text-[var(--vault-accent)] font-bold tracking-wider">
+                  <span className="text-(--vault-accent) font-bold tracking-wider">
                     {topic.code}
                   </span>
-                  <span className="font-serif italic text-xl text-[var(--vault-muted)] opacity-60">
+                  <span className="font-serif italic text-xl text-(--vault-muted) opacity-60">
                     {topic.num}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3 pt-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-[var(--vault-accent)]/30 bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] transition-transform duration-300 group-hover:scale-110">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-(--vault-accent)/30 bg-(--vault-accent)/10 text-(--vault-accent) transition-transform duration-300 group-hover:scale-110">
                     <topic.icon className="h-5 w-5" />
                   </div>
-                  <h3 className="font-mono text-xs uppercase tracking-wider text-[var(--vault-ink)] font-bold">
+                  <h3 className="font-mono text-xs uppercase tracking-wider text-(--vault-ink) font-bold">
                     {topic.title}
                   </h3>
                 </div>
 
-                <p className="mt-4 text-xs leading-relaxed text-[var(--vault-muted)] font-sans">
+                <p className="mt-4 text-xs leading-relaxed text-(--vault-muted) font-sans">
                   {topic.description}
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[var(--vault-line)] flex items-center justify-between font-mono text-[10px] uppercase text-[var(--vault-muted)]">
+              <div className="mt-6 pt-4 border-t border-(--vault-line) flex items-center justify-between font-mono text-[10px] uppercase text-(--vault-muted)">
                 <span>View Directive</span>
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 text-[var(--vault-accent)]" />
+                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 text-(--vault-accent)" />
               </div>
             </Link>
           ))}
         </div>
 
         {/* Direct Contact Channels Strip */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[var(--vault-line)] pb-6 mb-8">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-(--vault-line) pb-6 mb-8">
             <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] block font-semibold">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) block font-semibold">
                 // ESCALATION DESK
               </span>
-              <h2 className="mt-2 font-serif text-2xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+              <h2 className="mt-2 font-serif text-2xl sm:text-4xl font-light uppercase tracking-tight text-(--vault-ink)">
                 Direct Atelier Access
               </h2>
             </div>
-            <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <p className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               Our curators respond personally to every dispatch.
             </p>
           </div>
@@ -261,25 +261,25 @@ export default function HelpPage() {
               <Link
                 key={ch.title}
                 href={ch.href}
-                className="group flex items-start gap-5 border border-[var(--vault-line)] bg-[var(--vault-bg)] p-6 transition-all duration-300 hover:border-[var(--vault-accent)] hover:-translate-y-0.5 hover:shadow-lg"
+                className="group flex items-start gap-5 border border-(--vault-line) bg-(--vault-bg) p-6 transition-all duration-300 hover:border-(--vault-accent) hover:-translate-y-0.5 hover:shadow-lg"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-[var(--vault-accent)]/30 bg-[var(--vault-accent)]/10 text-[var(--vault-accent)]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-(--vault-accent)/30 bg-(--vault-accent)/10 text-(--vault-accent)">
                   <ch.icon className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-mono text-xs uppercase tracking-wider text-[var(--vault-ink)] font-bold">
+                    <h4 className="font-mono text-xs uppercase tracking-wider text-(--vault-ink) font-bold">
                       {ch.title}
                     </h4>
                     <ArrowUpRight
                       size={14}
-                      className="text-[var(--vault-accent)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      className="text-(--vault-accent) transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     />
                   </div>
-                  <p className="mt-1 text-xs text-[var(--vault-muted)] font-sans">
+                  <p className="mt-1 text-xs text-(--vault-muted) font-sans">
                     {ch.subtitle}
                   </p>
-                  <p className="mt-2 font-mono text-xs font-semibold text-[var(--vault-accent)]">
+                  <p className="mt-2 font-mono text-xs font-semibold text-(--vault-accent)">
                     {ch.value}
                   </p>
                 </div>

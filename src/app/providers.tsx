@@ -28,6 +28,7 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
 }
 
 import { StorefrontProvider } from "@/features/storefront/context/storefront-context";
+import { LocationProvider } from "@/features/storefront/context/location-context";
 
 interface Props {
   readonly children: React.ReactNode;
@@ -72,41 +73,43 @@ export function Providers({ children }: Props) {
   return (
     <ThemeProvider>
       <StorefrontProvider>
-        <ReduxProvider store={store}>
-          {persistor ? (
-            <PersistGate loading={<Loader />} persistor={persistor}>
-              <ErrorBoundary>
-                <AuthInitializer />
-                <QueryClientProvider client={queryClient}>
-                  <SidebarProvider>
-                    <div>
-                      <Toaster
-                        position="top-right"
-                        duration={3000}
-                        expand={true}
-                        richColors={false}
-                        closeButton={true}
-                        toastOptions={{
-                          classNames: {
-                            toast: "toast",
-                            success: "toast-success",
-                            error: "toast-error",
-                            info: "toast-info",
-                            warning: "toast-warning",
-                            loading: "toast-loading",
-                          },
-                        }}
-                      />
-                    </div>
-                    {children}
-                  </SidebarProvider>
-                </QueryClientProvider>
-              </ErrorBoundary>
-            </PersistGate>
-          ) : (
-            <Loader />
-          )}
-        </ReduxProvider>
+        <LocationProvider>
+          <ReduxProvider store={store}>
+            {persistor ? (
+              <PersistGate loading={<Loader />} persistor={persistor}>
+                <ErrorBoundary>
+                  <AuthInitializer />
+                  <QueryClientProvider client={queryClient}>
+                    <SidebarProvider>
+                      <div>
+                        <Toaster
+                          position="top-right"
+                          duration={3000}
+                          expand={true}
+                          richColors={false}
+                          closeButton={true}
+                          toastOptions={{
+                            classNames: {
+                              toast: "toast",
+                              success: "toast-success",
+                              error: "toast-error",
+                              info: "toast-info",
+                              warning: "toast-warning",
+                              loading: "toast-loading",
+                            },
+                          }}
+                        />
+                      </div>
+                      {children}
+                    </SidebarProvider>
+                  </QueryClientProvider>
+                </ErrorBoundary>
+              </PersistGate>
+            ) : (
+              <Loader />
+            )}
+          </ReduxProvider>
+        </LocationProvider>
       </StorefrontProvider>
     </ThemeProvider>
   );

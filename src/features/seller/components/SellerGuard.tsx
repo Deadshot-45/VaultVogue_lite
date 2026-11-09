@@ -68,10 +68,10 @@ export function SellerGuard({ children }: SellerGuardProps) {
   // Prevent hydration flashing
   if (!mounted || status === "loading") {
     return (
-      <div className="flex min-h-screen w-full mx-auto items-center justify-center bg-[var(--background)]">
+      <div className="flex min-h-screen w-full mx-auto items-center justify-center bg-(--background)">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--gold)" }} />
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--gold)] font-medium">
+          <p className="text-xs uppercase tracking-[0.2em] text-(--gold) font-medium">
             Resolving Partner Credentials...
           </p>
         </div>
@@ -87,22 +87,22 @@ export function SellerGuard({ children }: SellerGuardProps) {
   // Pending status blocker page
   if (status === "pending") {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center p-6 bg-[var(--background)]">
+      <div className="flex min-h-screen w-full items-center justify-center p-6 bg-(--background)">
         <div className="card max-w-md w-full text-center p-8 space-y-6">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/30 mx-auto">
             <Clock className="h-6 w-6 text-amber-500 animate-pulse" />
           </div>
 
           <div className="space-y-2">
-            <h2 className="font-cormorant text-2xl font-light text-[var(--brand-text)]">
+            <h2 className="font-cormorant text-2xl font-light text-(--brand-text)">
               Application Under Curation Review
             </h2>
             <p className="text-xs text-muted-foreground">
-              Your registration for <strong className="text-[var(--brand-text)] font-semibold">{businessName || "your brand"}</strong> is currently under review by our Maison Curation Board.
+              Your registration for <strong className="text-(--brand-text) font-semibold">{businessName || "your brand"}</strong> is currently under review by our Maison Curation Board.
             </p>
           </div>
 
-          <p className="text-[11px] text-muted-foreground bg-[var(--gold-glow)] border border-[var(--gold-faint)] p-3 rounded-lg">
+          <p className="text-[11px] text-muted-foreground bg-(--gold-glow) border border-(--gold-faint) p-3 rounded-lg">
             Verification typically takes 24–48 hours. You will receive an approval notification containing your boutique credentials.
           </p>
 
@@ -120,7 +120,7 @@ export function SellerGuard({ children }: SellerGuardProps) {
   // Rejected status blocker page
   if (status === "rejected") {
     return (
-      <div className="flex min-h-screen items-center justify-center p-6 bg-[var(--background)]">
+      <div className="flex min-h-screen items-center justify-center p-6 bg-(--background)">
         <div className="card max-w-md w-full text-center p-8 space-y-6">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10 border border-red-500/30 mx-auto">
             <ShieldAlert className="h-6 w-6 text-red-500" />
@@ -131,7 +131,7 @@ export function SellerGuard({ children }: SellerGuardProps) {
               Application Declined
             </h2>
             <p className="text-xs text-muted-foreground">
-              We regret to inform you that your application for <strong className="text-[var(--brand-text)] font-semibold">{businessName}</strong> does not align with our current curation guidelines.
+              We regret to inform you that your application for <strong className="text-(--brand-text) font-semibold">{businessName}</strong> does not align with our current curation guidelines.
             </p>
           </div>
 
@@ -151,18 +151,18 @@ export function SellerGuard({ children }: SellerGuardProps) {
 
   // Not registered as seller blocker page
   return (
-    <div className="flex min-h-screen items-center justify-center p-6 bg-[var(--background)]">
+    <div className="flex min-h-screen items-center justify-center p-6 bg-(--background)">
       <div className="card max-w-md w-full text-center p-8 space-y-6">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--gold-faint)] border border-[var(--gold-soft)] mx-auto">
-          <Store className="h-6 w-6 text-[var(--gold)]" />
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-(--gold-faint) border border-(--gold-soft) mx-auto">
+          <Store className="h-6 w-6 text-(--gold)" />
         </div>
 
         <div className="space-y-2">
-          <h2 className="font-cormorant text-2xl font-light text-[var(--brand-text)]">
+          <h2 className="font-cormorant text-2xl font-light text-(--brand-text)">
             Register as a Seller Partner
           </h2>
           <p className="text-xs text-muted-foreground">
-            You do not currently have an active seller profile associated with <strong className="text-[var(--brand-text)]">{user?.email}</strong>.
+            You do not currently have an active seller profile associated with <strong className="text-(--brand-text)">{user?.email}</strong>.
           </p>
         </div>
 

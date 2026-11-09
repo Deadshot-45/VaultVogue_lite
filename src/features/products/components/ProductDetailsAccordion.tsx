@@ -37,7 +37,7 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
       title: "Silhouette & Architectural Fit",
       icon: Scissors,
       content: (
-        <div className="space-y-3 font-mono text-xs leading-relaxed text-[var(--vault-muted)]">
+        <div className="space-y-3 font-mono text-xs leading-relaxed text-(--vault-muted)">
           <p>
             Cut with an intentional drop-shoulder stance, articulated underarm gussets, and balanced torso drape for movement and structured elegance.
           </p>
@@ -55,12 +55,12 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
       title: "Materials & Textile Composition",
       icon: Layers,
       content: (
-        <div className="space-y-3 font-mono text-xs leading-relaxed text-[var(--vault-muted)]">
+        <div className="space-y-3 font-mono text-xs leading-relaxed text-(--vault-muted)">
           <p>
-            <strong className="text-[var(--vault-ink)]">Fabric:</strong> {product.fabric || "Premium Japanese Compact Weave"}
+            <strong className="text-(--vault-ink)">Fabric:</strong> {product.fabric || "Premium Japanese Compact Weave"}
           </p>
           <p>
-            <strong className="text-[var(--vault-ink)]">Composition:</strong> {product.composition || "100% GOTS-Certified Organic Long-Staple Cotton"}
+            <strong className="text-(--vault-ink)">Composition:</strong> {product.composition || "100% GOTS-Certified Organic Long-Staple Cotton"}
           </p>
           <p>
             Milled exclusively in limited bolts to maintain density, tensile resilience, and tactile hand feel without synthetic additives.
@@ -73,7 +73,7 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
       title: "Care & Preservation Guidance",
       icon: Info,
       content: (
-        <div className="space-y-2 font-mono text-xs leading-relaxed text-[var(--vault-muted)]">
+        <div className="space-y-2 font-mono text-xs leading-relaxed text-(--vault-muted)">
           {(
             product.careInstructions || [
               "Professional archival dry clean strongly recommended",
@@ -83,7 +83,7 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
             ]
           ).map((instruction, idx) => (
             <p key={idx} className="flex items-start gap-2">
-              <span className="text-[var(--vault-accent)]">•</span>
+              <span className="text-(--vault-accent)">•</span>
               <span>{instruction}</span>
             </p>
           ))}
@@ -95,18 +95,18 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
       title: "Insured Shipping & Complimentary Returns",
       icon: Truck,
       content: (
-        <div className="space-y-3 font-mono text-xs leading-relaxed text-[var(--vault-muted)]">
+        <div className="space-y-3 font-mono text-xs leading-relaxed text-(--vault-muted)">
           <p>
             Every order is dispatched in our signature unbleached organic cotton dust pouch with serialized tamper-evident sealing.
           </p>
           <p>
-            <strong className="text-[var(--vault-ink)]">Domestic Deliveries:</strong> 2–4 business days via carbon-neutral air courier.
+            <strong className="text-(--vault-ink)">Domestic Deliveries:</strong> 2–4 business days via carbon-neutral air courier.
           </p>
           <p>
-            <strong className="text-[var(--vault-ink)]">International Deliveries:</strong> 3–6 business days with all duties and import customs handled seamlessly at checkout.
+            <strong className="text-(--vault-ink)">International Deliveries:</strong> 3–6 business days with all duties and import customs handled seamlessly at checkout.
           </p>
           <p>
-            <strong className="text-[var(--vault-ink)]">14-Day Return Window:</strong> Full refund or exchange on garments returned unworn with archival tags intact.
+            <strong className="text-(--vault-ink)">14-Day Return Window:</strong> Full refund or exchange on garments returned unworn with archival tags intact.
           </p>
         </div>
       ),
@@ -116,9 +116,9 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
       title: "Provenance & Authenticity Guarantee",
       icon: ShieldCheck,
       content: (
-        <div className="space-y-3 font-mono text-xs leading-relaxed text-[var(--vault-muted)]">
+        <div className="space-y-3 font-mono text-xs leading-relaxed text-(--vault-muted)">
           <p>
-            Item Code: <strong className="text-[var(--vault-ink)]">{product.code}</strong>
+            Item Code: <strong className="text-(--vault-ink)">{product.code}</strong>
           </p>
           <p>
             Accompanied by a serialized Vault Vogue Certificate of Authenticity. Registered in our atelier registry to guarantee origin, secondary-market verification, and lifetime stitching warranty.
@@ -129,7 +129,7 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
   ];
 
   return (
-    <div className="divide-y divide-[var(--vault-line)] border-y border-[var(--vault-line)]">
+    <div className="divide-y divide-(--vault-line) border-y border-(--vault-line)">
       {items.map((item) => {
         const isOpen = !!openItems[item.id];
         const Icon = item.icon;
@@ -140,16 +140,16 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
               type="button"
               onClick={() => toggleItem(item.id)}
               aria-expanded={isOpen}
-              className="flex w-full items-center justify-between text-left transition hover:text-[var(--vault-accent)] cursor-pointer"
+              className="flex w-full items-center justify-between text-left transition hover:text-(--vault-accent) cursor-pointer"
             >
-              <div className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-wider font-semibold text-[var(--vault-ink)]">
-                <Icon size={14} className="text-[var(--vault-accent)]" />
+              <div className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-wider font-semibold text-(--vault-ink)">
+                <Icon size={14} className="text-(--vault-accent)" />
                 <span>{item.title}</span>
               </div>
               <ChevronDown
                 size={16}
-                className={`text-[var(--vault-muted)] transition-transform duration-300 ${
-                  isOpen ? "rotate-180 text-[var(--vault-accent)]" : ""
+                className={`text-(--vault-muted) transition-transform duration-300 ${
+                  isOpen ? "rotate-180 text-(--vault-accent)" : ""
                 }`}
               />
             </button>

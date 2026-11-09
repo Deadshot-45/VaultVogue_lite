@@ -144,12 +144,12 @@ export function PaymentRetryBanner({
             type="button"
             disabled={isRetrying}
             onClick={() => setGatewayOpen((v) => !v)}
-            className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-border/60 bg-white dark:bg-zinc-900 hover:border-[var(--gold-soft)] transition-all text-left disabled:opacity-50"
+            className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-border/60 bg-white dark:bg-zinc-900 hover:border-(--gold-soft) transition-all text-left disabled:opacity-50"
           >
             <div className="flex items-center gap-2.5">
               {selected.icon}
               <div>
-                <p className="text-xs font-semibold text-[var(--brand-text)]">{selected.label}</p>
+                <p className="text-xs font-semibold text-(--brand-text)">{selected.label}</p>
                 <p className="text-[10px] text-muted-foreground">{selected.subLabel}</p>
               </div>
             </div>
@@ -176,16 +176,16 @@ export function PaymentRetryBanner({
                       setGatewayOpen(false);
                     }}
                     className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors ${
-                      selectedGateway === option.id ? 'bg-[var(--gold-glow)] dark:bg-zinc-800' : ''
+                      selectedGateway === option.id ? 'bg-(--gold-glow) dark:bg-zinc-800' : ''
                     }`}
                   >
                     {option.icon}
                     <div>
-                      <p className="text-xs font-semibold text-[var(--brand-text)]">{option.label}</p>
+                      <p className="text-xs font-semibold text-(--brand-text)">{option.label}</p>
                       <p className="text-[10px] text-muted-foreground">{option.subLabel}</p>
                     </div>
                     {selectedGateway === option.id && (
-                      <span className="ml-auto text-[10px] font-bold text-[var(--gold)] uppercase tracking-wider">Selected</span>
+                      <span className="ml-auto text-[10px] font-bold text-(--gold) uppercase tracking-wider">Selected</span>
                     )}
                   </button>
                 ))}

@@ -94,7 +94,7 @@ export function CategoryHero({ config }: CategoryHeroProps) {
   return (
     <header
       ref={heroRef}
-      className="relative min-h-[82vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-[var(--vault-line)] bg-[var(--vault-bg)] flex items-end"
+      className="relative min-h-[82vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-(--vault-line) bg-(--vault-bg) flex items-end"
     >
       {/* Background Campaign Imagery with Contrast Overlays */}
       <div ref={imgWrapperRef} className="absolute inset-0 z-0">
@@ -108,8 +108,8 @@ export function CategoryHero({ config }: CategoryHeroProps) {
         />
 
         {/* Cinematic Dual Gradient Overlays for Readability across Light & Dark themes */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--vault-bg)] via-[var(--vault-bg)]/60 to-[var(--vault-bg)]/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--vault-bg)]/85 via-[var(--vault-bg)]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-(--vault-bg) via-(--vault-bg)/60 to-(--vault-bg)/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-(--vault-bg)/85 via-(--vault-bg)/40 to-transparent" />
         <div className="absolute inset-0 bg-black/25 mix-blend-multiply pointer-events-none" />
       </div>
 
@@ -118,10 +118,10 @@ export function CategoryHero({ config }: CategoryHeroProps) {
         <div className="max-w-3xl">
           {/* Accent Kicker & Season Label */}
           <div className="cat-hero-kicker flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--vault-accent)] border border-[var(--vault-accent)]/30 bg-[var(--vault-panel)]/80 backdrop-blur-md">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-(--vault-accent) border border-(--vault-accent)/30 bg-(--vault-panel)/80 backdrop-blur-md">
               {config.accentLabel}
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-muted)">
               {config.seasonBadge}
             </span>
           </div>
@@ -130,7 +130,7 @@ export function CategoryHero({ config }: CategoryHeroProps) {
           <div className="overflow-hidden mt-4">
             <h1
               ref={headlineRef}
-              className="cat-hero-title font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-tight text-[var(--vault-ink)] uppercase leading-[0.9]"
+              className="cat-hero-title font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-tight text-(--vault-ink) uppercase leading-[0.9]"
             >
               {config.title}
             </h1>
@@ -138,10 +138,10 @@ export function CategoryHero({ config }: CategoryHeroProps) {
 
           {/* Subtitle & Tagline */}
           <div className="cat-hero-subtitle mt-5 space-y-2">
-            <p className="font-mono text-sm sm:text-base uppercase tracking-widest text-[var(--vault-accent)] font-semibold">
+            <p className="font-mono text-sm sm:text-base uppercase tracking-widest text-(--vault-accent) font-semibold">
               {config.subtitle} — {config.tagline}
             </p>
-            <p className="text-xs sm:text-sm text-[var(--vault-muted)] max-w-xl leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-(--vault-muted) max-w-xl leading-relaxed font-sans">
               {config.description}
             </p>
           </div>
@@ -168,10 +168,10 @@ export function CategoryHero({ config }: CategoryHeroProps) {
       </div>
 
       {/* Decorative Corner Coordinate */}
-      <div className="hidden md:flex absolute bottom-6 right-8 z-10 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em] text-[var(--vault-muted)] border-t border-[var(--vault-line)] pt-2">
+      <div className="hidden md:flex absolute bottom-6 right-8 z-10 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em] text-(--vault-muted) border-t border-(--vault-line) pt-2">
         <span>VAULT VOGUE</span>
         <span>//</span>
-        <span className="text-[var(--vault-ink)]">
+        <span className="text-(--vault-ink)">
           {config.key.toUpperCase()} CATEGORY ARCHIVE
         </span>
       </div>

@@ -32,7 +32,7 @@ export function AddToCartButton({
       disabled={disabled || isLoading}
       className={cn(
         "relative overflow-hidden flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold uppercase tracking-wider text-xs shadow-md transition-all duration-300 cursor-pointer",
-        "bg-[var(--gold)] text-white hover:shadow-lg",
+        "bg-(--gold) text-white hover:shadow-lg",
         (disabled || isLoading) && "opacity-50 cursor-not-allowed",
         isError && "bg-red-500 text-white",
         className

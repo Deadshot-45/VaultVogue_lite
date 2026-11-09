@@ -75,11 +75,11 @@ export function RecentlyViewedProducts({
   if (recentItems.length === 0) return null;
 
   return (
-    <section className="border-t border-[var(--vault-line)] pt-16 sm:pt-20">
-      <div className="mb-8 flex items-center justify-between border-b border-[var(--vault-line)] pb-4">
+    <section className="border-t border-(--vault-line) pt-16 sm:pt-20">
+      <div className="mb-8 flex items-center justify-between border-b border-(--vault-line) pb-4">
         <div className="flex items-center gap-2">
-          <Clock size={16} className="text-[var(--vault-accent)]" />
-          <h3 className="font-serif text-2xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+          <Clock size={16} className="text-(--vault-accent)" />
+          <h3 className="font-serif text-2xl font-light uppercase tracking-tight text-(--vault-ink)">
             Recently Inspected
           </h3>
         </div>
@@ -94,9 +94,9 @@ export function RecentlyViewedProducts({
             <Link
               key={item.id}
               href={`/products/${item.slug || item.id}`}
-              className="group border border-[var(--vault-line)] bg-[var(--vault-panel)] p-3 transition hover:border-[var(--vault-accent)]"
+              className="group border border-(--vault-line) bg-(--vault-panel) p-3 transition hover:border-(--vault-accent)"
             >
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[var(--vault-canvas)]">
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-(--vault-canvas)">
                 <Image
                   src={resolveUiProductImage(mainImg, 400)}
                   alt={item.name}
@@ -108,14 +108,14 @@ export function RecentlyViewedProducts({
               </div>
 
               <div className="pt-3 space-y-1">
-                <span className="block font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)] truncate">
+                <span className="block font-mono text-[9px] uppercase tracking-wider text-(--vault-muted) truncate">
                   {item.category}
                 </span>
-                <h4 className="font-serif text-sm font-light uppercase tracking-tight text-[var(--vault-ink)] truncate group-hover:text-[var(--vault-accent)] transition-colors">
+                <h4 className="font-serif text-sm font-light uppercase tracking-tight text-(--vault-ink) truncate group-hover:text-(--vault-accent) transition-colors">
                   {item.name}
                 </h4>
-                <p className="font-mono text-xs font-semibold text-[var(--vault-ink)]">
-                  {formatCurrency(item.price, "USD")}
+                <p className="font-mono text-xs font-semibold text-(--vault-ink)">
+                  {formatCurrency(item.price, "INR")}
                 </p>
               </div>
             </Link>

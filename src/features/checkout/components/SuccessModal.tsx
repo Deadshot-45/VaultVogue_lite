@@ -31,7 +31,7 @@ export function SuccessModal({
             <CheckCircle2 className="h-10 w-10 animate-pulse" />
           </div>
           
-          <DialogTitle className="font-cormorant text-3xl font-light text-[var(--brand-text)] mt-6">
+          <DialogTitle className="font-cormorant text-3xl font-light text-(--brand-text) mt-6">
             Payment Successful
           </DialogTitle>
         </DialogHeader>
@@ -42,7 +42,7 @@ export function SuccessModal({
           </p>
           <div className="bg-slate-50 rounded-xl py-3 px-4 border border-slate-100/60 inline-block">
             <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Atelier Reference ID</p>
-            <p className="font-mono font-bold text-sm text-[var(--brand-text)] mt-1">{orderId}</p>
+            <p className="font-mono font-bold text-sm text-(--brand-text) mt-1">{orderId}</p>
           </div>
         </div>
 

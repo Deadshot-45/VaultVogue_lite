@@ -88,10 +88,10 @@ function StatusIcon({ status }: { status: CheckerStatus }) {
       );
     default:
       return (
-        <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[var(--gold-glow)] border-2 border-[var(--gold)]">
-          <Loader2 className="h-7 w-7 text-[var(--gold)] animate-spin" />
+        <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-(--gold-glow) border-2 border-(--gold)">
+          <Loader2 className="h-7 w-7 text-(--gold) animate-spin" />
           {/* Pulse ring */}
-          <span className="absolute inset-0 rounded-full border-2 border-[var(--gold)] animate-ping opacity-30" />
+          <span className="absolute inset-0 rounded-full border-2 border-(--gold) animate-ping opacity-30" />
         </div>
       );
   }
@@ -110,7 +110,7 @@ const STATUS_LABEL: Record<CheckerStatus, string> = {
 
 const STATUS_COLOR: Record<CheckerStatus, string> = {
   idle:              'text-muted-foreground',
-  polling:           'text-[var(--gold)]',
+  polling:           'text-(--gold)',
   'manual-checking': 'text-blue-600 dark:text-blue-400',
   paid:              'text-emerald-600 dark:text-emerald-400',
   failed:            'text-rose-600 dark:text-rose-400',
@@ -156,7 +156,7 @@ export function PaymentStatusMonitor({
       <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-border/50 bg-card/40 backdrop-blur-sm">
         <div className="flex items-center gap-2.5">
           {isActive ? (
-            <Loader2 className="h-4 w-4 text-[var(--gold)] animate-spin shrink-0" />
+            <Loader2 className="h-4 w-4 text-(--gold) animate-spin shrink-0" />
           ) : status === 'paid' ? (
             <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
           ) : status === 'failed' ? (
@@ -181,7 +181,7 @@ export function PaymentStatusMonitor({
             onClick={manualCheck}
             disabled={isActive}
             title="Check payment status now"
-            className="p-1.5 rounded-lg border border-border/50 text-muted-foreground hover:text-[var(--gold)] hover:border-[var(--gold-soft)] transition-all disabled:opacity-40"
+            className="p-1.5 rounded-lg border border-border/50 text-muted-foreground hover:text-(--gold) hover:border-(--gold-soft) transition-all disabled:opacity-40"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${isManualChecking ? 'animate-spin' : ''}`} />
           </button>
@@ -212,7 +212,7 @@ export function PaymentStatusMonitor({
                 ? 'bg-gradient-to-r from-rose-500 to-red-400'
                 : status === 'timeout'
                 ? 'bg-gradient-to-r from-amber-500 to-yellow-400'
-                : 'bg-gradient-to-r from-[var(--gold)] to-amber-400 animate-pulse'
+                : 'bg-gradient-to-r from-(--gold) to-amber-400 animate-pulse'
             }`}
           />
 
@@ -239,7 +239,7 @@ export function PaymentStatusMonitor({
             <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
               {isPolling ? (
                 <>
-                  <Wifi className="h-3.5 w-3.5 text-[var(--gold)]" />
+                  <Wifi className="h-3.5 w-3.5 text-(--gold)" />
                   <span>Auto-verifying via webhook</span>
                 </>
               ) : isTimedOut ? (
@@ -263,7 +263,7 @@ export function PaymentStatusMonitor({
                 <button
                   onClick={manualCheck}
                   disabled={isActive}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border/60 bg-white dark:bg-zinc-900 hover:border-[var(--gold-soft)] text-xs font-semibold text-[var(--brand-text)] transition-all disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border/60 bg-white dark:bg-zinc-900 hover:border-(--gold-soft) text-xs font-semibold text-(--brand-text) transition-all disabled:opacity-50"
                 >
                   <RefreshCw className={`h-3.5 w-3.5 ${isManualChecking ? 'animate-spin' : ''}`} />
                   {isManualChecking ? 'Checking...' : 'Check Status Now'}
@@ -275,7 +275,7 @@ export function PaymentStatusMonitor({
                 <button
                   onClick={startPolling}
                   disabled={isPolling}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--gold)] text-white text-xs font-bold uppercase tracking-wider transition-all hover:opacity-90 disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-(--gold) text-white text-xs font-bold uppercase tracking-wider transition-all hover:opacity-90 disabled:opacity-50"
                 >
                   <RefreshCw className="h-3.5 w-3.5" />
                   Retry Auto-Verify

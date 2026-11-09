@@ -49,7 +49,7 @@ export function AdminHeader() {
       <div className="flex items-center gap-3">
         <Sheet>
           <SheetTrigger asChild>
-            <button className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
+            <button className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-(--gold) cursor-pointer"
               style={{ borderColor: "var(--gold-faint)", background: "var(--gold-glow)" }}
               aria-label="Menu"
             >
@@ -77,7 +77,7 @@ export function AdminHeader() {
 
       <div className="flex items-center gap-3">
         <button
-          className="relative flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
+          className="relative flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-(--gold) cursor-pointer"
           style={{ borderColor: 'var(--gold-faint)', background: 'var(--gold-glow)' }}
           aria-label="Notifications"
         >

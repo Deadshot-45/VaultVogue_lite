@@ -65,7 +65,7 @@ export function Step4Review({ form, onAgreementChange }: Props) {
             type="checkbox"
             checked={form.agreedToTerms}
             onChange={(e) => onAgreementChange(e.target.checked)}
-            className="mt-0.5 h-4 w-4 accent-[var(--gold)] cursor-pointer"
+            className="mt-0.5 h-4 w-4 accent-(--gold) cursor-pointer"
           />
           <label htmlFor="terms-agree" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
             I confirm that all information provided is accurate and agree to Vault Vogue&apos;s{' '}

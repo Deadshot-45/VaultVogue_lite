@@ -29,16 +29,16 @@ export function ProductPrice({
     <div className="space-y-3">
       {/* Price + Discount Tag */}
       <div className="flex flex-wrap items-baseline gap-3">
-        <span className="font-mono text-2xl sm:text-3xl font-light tracking-tight text-[var(--vault-ink)]">
+        <span className="font-mono text-2xl sm:text-3xl font-light tracking-tight text-(--vault-ink)">
           {formatCurrency(price, currency)}
         </span>
 
         {hasDiscount && (
           <>
-            <span className="font-mono text-base text-[var(--vault-muted)] line-through">
+            <span className="font-mono text-base text-(--vault-muted) line-through">
               {formatCurrency(originalPrice, currency)}
             </span>
-            <span className="border border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 px-2 py-0.5 font-mono text-[10px] uppercase font-bold tracking-wider text-[var(--vault-accent)]">
+            <span className="border border-(--vault-accent) bg-(--vault-accent)/10 px-2 py-0.5 font-mono text-[10px] uppercase font-bold tracking-wider text-(--vault-accent)">
               {discountPct}% OFF
             </span>
           </>
@@ -46,22 +46,22 @@ export function ProductPrice({
       </div>
 
       {/* Review summary line */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-[var(--vault-muted)]">
-        <div className="flex items-center gap-0.5 text-[var(--vault-accent)]">
+      <div className="flex items-center gap-2 font-mono text-[11px] text-(--vault-muted)">
+        <div className="flex items-center gap-0.5 text-(--vault-accent)">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
               key={i}
               size={12}
-              className={i < Math.floor(rating) ? "fill-[var(--vault-accent)] text-[var(--vault-accent)]" : "text-[var(--vault-line)]"}
+              className={i < Math.floor(rating) ? "fill-(--vault-accent) text-(--vault-accent)" : "text-(--vault-line)"}
             />
           ))}
         </div>
-        <span className="font-bold text-[var(--vault-ink)]">{rating.toFixed(1)}</span>
+        <span className="font-bold text-(--vault-ink)">{rating.toFixed(1)}</span>
         <span>·</span>
         <button
           type="button"
           onClick={onReviewsClick}
-          className="underline underline-offset-4 hover:text-[var(--vault-accent)] transition-colors cursor-pointer"
+          className="underline underline-offset-4 hover:text-(--vault-accent) transition-colors cursor-pointer"
         >
           {reviewsCount} Atelier Reviews
         </button>

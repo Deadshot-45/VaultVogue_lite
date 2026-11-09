@@ -287,45 +287,45 @@ function CheckoutPage() {
 
   return (
     <>
-      <div className="mx-auto w-full px-4 py-16 sm:px-6 lg:px-8 bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+      <div className="mx-auto w-full px-4 py-16 sm:px-6 lg:px-8 bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
         {/* Amazon-Inspired Stepper/Breadcrumb Header */}
-        <div className="mb-12 border-b border-[var(--vault-line)] pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="mb-12 border-b border-(--vault-line) pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[9px] font-bold text-[var(--vault-accent)] uppercase tracking-[0.25em]">
+              <span className="text-[9px] font-bold text-(--vault-accent) uppercase tracking-[0.25em]">
                 Secure Dispatch Zone
               </span>
-              <Lock className="h-3 w-3 text-[var(--vault-accent)]" />
+              <Lock className="h-3 w-3 text-(--vault-accent)" />
             </div>
-            <h1 className="mt-2 font-serif text-3xl sm:text-4xl font-light text-[var(--vault-ink)] lg:text-5xl">
+            <h1 className="mt-2 font-serif text-3xl sm:text-4xl font-light text-(--vault-ink) lg:text-5xl">
               Checkout Gateway
             </h1>
           </div>
 
           {/* Stepper progress stepper */}
-          <div className="flex items-center gap-2.5 text-[11px] font-semibold text-[var(--vault-muted)]">
-            <span className="text-[var(--vault-accent)] font-bold">Cart</span>
-            <span className="h-[1px] w-6 bg-[var(--vault-line)]"></span>
+          <div className="flex items-center gap-2.5 text-[11px] font-semibold text-(--vault-muted)">
+            <span className="text-(--vault-accent) font-bold">Cart</span>
+            <span className="h-[1px] w-6 bg-(--vault-line)"></span>
             <span
               className={
                 activeStep === "shipping"
-                  ? "text-[var(--vault-cobalt)] font-bold"
+                  ? "text-(--vault-cobalt) font-bold"
                   : isAddressCompleted
-                    ? "text-[var(--vault-accent)]"
+                    ? "text-(--vault-accent)"
                     : ""
               }
             >
               Shipping
             </span>
-            <span className="h-[1px] w-6 bg-[var(--vault-line)]"></span>
+            <span className="h-[1px] w-6 bg-(--vault-line)"></span>
             <span
               className={
-                activeStep === "payment" ? "text-[var(--vault-cobalt)] font-bold" : ""
+                activeStep === "payment" ? "text-(--vault-cobalt) font-bold" : ""
               }
             >
               Payment
             </span>
-            <span className="h-[1px] w-6 bg-[var(--vault-line)]"></span>
+            <span className="h-[1px] w-6 bg-(--vault-line)"></span>
             <span
               className={
                 activeStep === "review" ? "text-emerald-500 font-bold" : ""
@@ -338,19 +338,19 @@ function CheckoutPage() {
 
         {isCartLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[40vh] gap-3">
-            <Loader2 className="animate-spin h-8 w-8 text-[var(--vault-accent)]" />
-            <p className="text-xs text-[var(--vault-muted)] uppercase tracking-widest font-mono">
+            <Loader2 className="animate-spin h-8 w-8 text-(--vault-accent)" />
+            <p className="text-xs text-(--vault-muted) uppercase tracking-widest font-mono">
               Retrieving Atelier Bag...
             </p>
           </div>
         ) : cartItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[40vh] text-center gap-6">
-            <ShoppingBag className="h-12 w-12 text-[var(--vault-accent)]/50" />
+            <ShoppingBag className="h-12 w-12 text-(--vault-accent)/50" />
             <div>
-              <h3 className="font-serif text-3xl font-light text-[var(--vault-ink)]">
+              <h3 className="font-serif text-3xl font-light text-(--vault-ink)">
                 Your Atelier Bag is Empty
               </h3>
-              <p className="mt-3 text-xs leading-relaxed text-[var(--vault-muted)]">
+              <p className="mt-3 text-xs leading-relaxed text-(--vault-muted)">
                 There are no items currently queued for checkout.
               </p>
             </div>

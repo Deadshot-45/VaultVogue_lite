@@ -59,7 +59,7 @@ export function PaymentSelector({
   return (
     <div className="space-y-6">
       <div className="text-left">
-        <h3 className="font-cormorant text-2xl font-light text-[var(--brand-text)]">
+        <h3 className="font-cormorant text-2xl font-light text-(--brand-text)">
           Payment Method
         </h3>
         <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">
@@ -103,14 +103,14 @@ export function PaymentSelector({
                       {/* Name & Tagline */}
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-semibold text-xs text-[var(--brand-text)]">
+                          <span className="font-semibold text-xs text-(--brand-text)">
                             {option.name}
                           </span>
                           <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-slate-50 border border-slate-100 text-slate-500 font-semibold uppercase tracking-wider">
                             {option.badge}
                           </span>
                         </div>
-                        <p className="text-[10px] text-[var(--gold)] font-medium mt-0.5">
+                        <p className="text-[10px] text-(--gold) font-medium mt-0.5">
                           {option.tagline}
                         </p>
                         <p className="text-[10px] text-muted-foreground mt-2 leading-relaxed max-w-lg">

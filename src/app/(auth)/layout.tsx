@@ -12,7 +12,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="relative w-full min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="relative w-full min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {children}
     </div>
   );

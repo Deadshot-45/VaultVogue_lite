@@ -18,13 +18,16 @@ import {
   CreditCard,
   Truck,
   RotateCcw,
+  MapPin,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useStorefront } from "../context/storefront-context";
+import { useLocation } from "../context/location-context";
 import { StorefrontCart } from "./storefront-cart";
 import { StorefrontWishlist } from "./storefront-wishlist";
 import { StorefrontSearchOverlay } from "./storefront-search-overlay";
+import { LocationDialog } from "./location-dialog";
 import { isReducedMotion } from "@/lib/animations/gsap-utils";
 import { getAuthCookie } from "@/lib/auth";
 
@@ -53,6 +56,8 @@ export function StorefrontChrome({
     wishlistOpen,
     setWishlistOpen,
   } = useStorefront();
+
+  const { location, openLocationDialog, isHydrated } = useLocation();
 
   const headerRef = useRef<HTMLElement>(null);
   const themeIconRef = useRef<HTMLSpanElement>(null);
@@ -183,16 +188,24 @@ export function StorefrontChrome({
   };
 
   return (
-    <div className="min-h-screen w-full bg-[var(--vault-canvas)] text-[var(--vault-ink)] transition-colors duration-300">
-      {/* Dynamic Header: Overlaps hero banner on large screens; becomes solid and compact when scrolling */}
+    <div className="min-h-screen w-full bg-(--vault-canvas) text-(--vault-ink) transition-colors duration-300">
+      {/* Skip to Main Content Link for Keyboard and Screen Readers */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-(--vault-panel) focus:text-(--vault-accent) focus:border focus:border-(--vault-accent) focus:font-mono focus:text-xs focus:uppercase focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-(--vault-accent)"
+      >
+        Skip to main content
+      </a>
+
+      {/* Dynamic Header: Overlaps hero banner; becomes solid and compact when scrolling */}
       <header
         ref={headerRef}
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? "h-16 border-b border-[var(--vault-line)] bg-[var(--vault-canvas)]/95 shadow-md backdrop-blur-md bg-none"
+            ? "h-16 border-b border-(--vault-line) bg-(--vault-canvas)/95 shadow-md backdrop-blur-md bg-none"
             : shouldOverlap
-              ? "h-20 border-b border-[var(--vault-line)] bg-[var(--vault-canvas)]/90 backdrop-blur-md lg:border-transparent lg:bg-transparent lg:bg-gradient-to-b lg:from-[var(--vault-canvas)]/85 lg:via-[var(--vault-canvas)]/35 lg:to-transparent lg:shadow-none lg:backdrop-blur-none"
-              : "h-20 border-b border-[var(--vault-line)] bg-[var(--vault-canvas)]/90 backdrop-blur-md"
+              ? "h-20 border-transparent bg-transparent bg-gradient-to-b from-(--vault-canvas)/85 via-(--vault-canvas)/35 to-transparent shadow-none backdrop-blur-none"
+              : "h-20 border-b border-(--vault-line) bg-(--vault-canvas)/90 backdrop-blur-md"
         }`}
       >
         <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-2 sm:px-8">
@@ -200,25 +213,26 @@ export function StorefrontChrome({
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 lg:hidden text-[var(--vault-ink)] hover:text-[var(--vault-accent)] transition-colors"
-            aria-label="Toggle Navigation Menu"
+            className="p-2 lg:hidden text-(--vault-ink) hover:text-(--vault-accent) transition-colors touch-manipulation focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
           </button>
 
           {/* Logo with upwards fade entrance */}
           <Link
             href="/"
-            className="header-logo flex items-center gap-2 text-left font-serif text-lg sm:text-2xl font-light uppercase sm:tracking-[0.22em] text-[var(--vault-ink)]"
+            className="header-logo flex items-center gap-2 text-left font-serif text-lg sm:text-2xl font-light uppercase sm:tracking-[0.22em] text-(--vault-ink) focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
           >
             <span>VAULT VOGUE</span>
-            <span className="h-1.5 w-1.5 max-sm:hidden rounded-full bg-[var(--vault-accent)] inline-block" />
+            <span className="h-1.5 w-1.5 max-sm:hidden rounded-full bg-(--vault-accent) inline-block" />
           </Link>
 
           {/* Desktop Navigation Links with sequential reveal */}
           <nav
             aria-label="Store navigation"
-            className="hidden items-center gap-8 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--vault-muted)] lg:flex [&>a]:cursor-pointer"
+            className="hidden items-center gap-8 font-mono text-[11px] uppercase tracking-[0.2em] text-(--vault-muted) lg:flex [&>a]:cursor-pointer"
           >
             {/* Collections with Mega Menu Trigger */}
             <div
@@ -229,29 +243,31 @@ export function StorefrontChrome({
               <button
                 type="button"
                 onClick={() => setMegaMenuOpen(!megaMenuOpen)}
-                className="flex items-center gap-1 transition hover:text-[var(--vault-ink)]"
+                aria-expanded={megaMenuOpen}
+                aria-haspopup="true"
+                className="flex items-center gap-1 transition hover:text-(--vault-ink) focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
               >
-                Collections <ChevronDown size={12} className={`transition-transform duration-200 ${megaMenuOpen ? "rotate-180" : ""}`} />
+                Collections <ChevronDown size={12} aria-hidden="true" className={`transition-transform duration-200 ${megaMenuOpen ? "rotate-180" : ""}`} />
               </button>
 
               {/* Mega Menu Dropdown */}
               {megaMenuOpen && (
                 <div
                   ref={megaMenuRef}
-                  className="absolute left-0 top-[100%] w-[680px] -translate-x-12 border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 shadow-2xl"
+                  className="absolute left-0 top-[100%] w-[680px] -translate-x-12 border border-(--vault-line) bg-(--vault-panel) p-6 shadow-2xl"
                 >
                   <div className="grid grid-cols-3 gap-6">
                     {/* Col 1 */}
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--vault-accent)] border-b border-[var(--vault-line)] pb-2 mb-3">
+                      <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-(--vault-accent) border-b border-(--vault-line) pb-2 mb-3">
                         Curated Collections
                       </p>
-                      <ul className="space-y-2 text-[10px] font-mono uppercase tracking-wider text-[var(--vault-ink)]">
+                      <ul className="space-y-2 text-[10px] font-mono uppercase tracking-wider text-(--vault-ink)">
                         <li>
                           <Link
                             href="/#featured-collections"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 hover:text-[var(--vault-accent)] transition-colors"
+                            className="block py-1 hover:text-(--vault-accent) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             Urban Essentials
                           </Link>
@@ -260,7 +276,7 @@ export function StorefrontChrome({
                           <Link
                             href="/#featured-collections"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 hover:text-[var(--vault-accent)] transition-colors"
+                            className="block py-1 hover:text-(--vault-accent) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             Elevated Basics
                           </Link>
@@ -269,7 +285,7 @@ export function StorefrontChrome({
                           <Link
                             href="/#featured-collections"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 hover:text-[var(--vault-accent)] transition-colors"
+                            className="block py-1 hover:text-(--vault-accent) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             After Hours
                           </Link>
@@ -278,7 +294,7 @@ export function StorefrontChrome({
                           <Link
                             href="/products"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 text-[var(--vault-cobalt)] hover:underline"
+                            className="block py-1 text-(--vault-cobalt) hover:underline focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             Browse All Pieces →
                           </Link>
@@ -288,15 +304,15 @@ export function StorefrontChrome({
 
                     {/* Col 2 */}
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--vault-accent)] border-b border-[var(--vault-line)] pb-2 mb-3">
+                      <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-(--vault-accent) border-b border-(--vault-line) pb-2 mb-3">
                         Silhouettes
                       </p>
-                      <ul className="space-y-2 text-[10px] font-mono uppercase tracking-wider text-[var(--vault-ink)]">
+                      <ul className="space-y-2 text-[10px] font-mono uppercase tracking-wider text-(--vault-ink)">
                         <li>
                           <Link
                             href="/#trending-categories"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 hover:text-[var(--vault-accent)] transition-colors"
+                            className="block py-1 hover:text-(--vault-accent) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             Oversized Tees
                           </Link>
@@ -305,7 +321,7 @@ export function StorefrontChrome({
                           <Link
                             href="/#trending-categories"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 hover:text-[var(--vault-accent)] transition-colors"
+                            className="block py-1 hover:text-(--vault-accent) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             Tailored Trousers
                           </Link>
@@ -314,7 +330,7 @@ export function StorefrontChrome({
                           <Link
                             href="/#trending-categories"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 hover:text-[var(--vault-accent)] transition-colors"
+                            className="block py-1 hover:text-(--vault-accent) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             Outerwear
                           </Link>
@@ -323,7 +339,7 @@ export function StorefrontChrome({
                           <Link
                             href="/#trending-categories"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 hover:text-[var(--vault-accent)] transition-colors"
+                            className="block py-1 hover:text-(--vault-accent) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             Knitwear
                           </Link>
@@ -332,7 +348,7 @@ export function StorefrontChrome({
                           <Link
                             href="/#trending-categories"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="block py-1 hover:text-[var(--vault-accent)] transition-colors"
+                            className="block py-1 hover:text-(--vault-accent) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                           >
                             Accessories
                           </Link>
@@ -341,7 +357,7 @@ export function StorefrontChrome({
                     </div>
 
                     {/* Col 3: Editorial preview */}
-                    <div className="relative aspect-[3/4] overflow-hidden border border-[var(--vault-line)] bg-black/10">
+                    <div className="relative aspect-[3/4] overflow-hidden border border-(--vault-line) bg-black/10">
                       <Image
                         src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80"
                         alt="Editorial preview"
@@ -349,7 +365,7 @@ export function StorefrontChrome({
                         className="object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-4 flex flex-col justify-end text-white">
-                        <span className="font-mono text-[8px] uppercase tracking-widest text-[var(--vault-accent)]">
+                        <span className="font-mono text-[8px] uppercase tracking-widest text-(--vault-accent)">
                           Lookbook
                         </span>
                         <p className="font-serif text-sm uppercase leading-tight mt-1">
@@ -358,9 +374,9 @@ export function StorefrontChrome({
                         <Link
                           href="/#editorial-campaign"
                           onClick={() => setMegaMenuOpen(false)}
-                          className="mt-2 inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-white/90 hover:text-[var(--vault-accent)]"
+                          className="mt-2 inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-white/90 hover:text-(--vault-accent) focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
                         >
-                          Explore <ArrowUpRight size={11} />
+                          Explore <ArrowUpRight size={11} aria-hidden="true" />
                         </Link>
                       </div>
                     </div>
@@ -369,42 +385,78 @@ export function StorefrontChrome({
               )}
             </div>
 
-            <Link href="/men" className="header-nav-link transition hover:text-[var(--vault-ink)]">
+            <Link href="/men" className="header-nav-link transition hover:text-(--vault-ink) focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
               Men
             </Link>
-            <Link href="/women" className="header-nav-link transition hover:text-[var(--vault-ink)]">
+            <Link href="/women" className="header-nav-link transition hover:text-(--vault-ink) focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
               Women
             </Link>
-            <Link href="/kids" className="header-nav-link transition hover:text-[var(--vault-ink)]">
+            <Link href="/kids" className="header-nav-link transition hover:text-(--vault-ink) focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
               Kids
             </Link>
-            <Link href="/#new-arrivals" className="header-nav-link transition hover:text-[var(--vault-ink)]">
+            <Link href="/#new-arrivals" className="header-nav-link transition hover:text-(--vault-ink) focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
               New Arrivals
             </Link>
-            <Link href="/#editorial-campaign" className="header-nav-link transition hover:text-[var(--vault-ink)]">
+            <Link href="/#editorial-campaign" className="header-nav-link transition hover:text-(--vault-ink) focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
               Editorial
             </Link>
           </nav>
 
           {/* Action Icons Suite */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Delivery Location Trigger (Desktop) */}
+            <button
+              type="button"
+              onClick={openLocationDialog}
+              aria-label={
+                isHydrated && location
+                  ? `Deliver to ${location.pincode}, ${location.city}. Click to change delivery location`
+                  : "Select delivery location"
+              }
+              className="header-action-icon hidden lg:flex h-10 items-center gap-2 border border-(--vault-line) bg-(--vault-canvas)/40 backdrop-blur-md px-3 font-mono text-[10px] uppercase tracking-wider text-(--vault-ink) transition hover:border-(--vault-accent) hover:text-(--vault-accent) touch-manipulation focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none max-w-[210px]"
+            >
+              <MapPin size={14} aria-hidden="true" className="shrink-0 text-(--vault-accent)" />
+              <div className="flex flex-col text-left leading-tight truncate">
+                <span className="text-[8px] text-(--vault-muted) tracking-widest uppercase">
+                  Deliver to
+                </span>
+                <span className="truncate font-sans text-[11px] font-semibold text-(--vault-ink)">
+                  {isHydrated && location ? `${location.selectedLocality || location.city} ${location.pincode}` : "Select Location"}
+                </span>
+              </div>
+            </button>
+
+            {/* Delivery Location Trigger (Mobile / Tablet compact icon) */}
+            <button
+              type="button"
+              onClick={openLocationDialog}
+              aria-label={
+                isHydrated && location
+                  ? `Deliver to ${location.pincode}`
+                  : "Select delivery location"
+              }
+              className="header-action-icon flex lg:hidden h-10 w-10 items-center justify-center border border-(--vault-line) bg-(--vault-canvas)/40 backdrop-blur-md text-(--vault-ink) transition hover:border-(--vault-accent) hover:text-(--vault-accent) touch-manipulation focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
+            >
+              <MapPin size={16} aria-hidden="true" className="text-(--vault-accent)" />
+            </button>
+
             {/* Search */}
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Search catalog"
-              className="header-action-icon flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
+              className="header-action-icon flex h-10 w-10 items-center justify-center border border-(--vault-line) bg-(--vault-canvas)/40 backdrop-blur-md text-(--vault-ink) transition hover:border-(--vault-accent) hover:text-(--vault-accent) touch-manipulation focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
             >
-              <Search size={16} />
+              <Search size={16} aria-hidden="true" />
             </button>
 
             {/* Account */}
             <Link
               href={isAuthed ? "/account" : "/login"}
               aria-label="Account Profile"
-              className="header-action-icon hidden sm:flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
+              className="header-action-icon hidden sm:flex h-10 w-10 items-center justify-center border border-(--vault-line) bg-(--vault-canvas)/40 backdrop-blur-md text-(--vault-ink) transition hover:border-(--vault-accent) hover:text-(--vault-accent) touch-manipulation focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
             >
-              <User size={16} />
+              <User size={16} aria-hidden="true" />
             </Link>
 
             {/* Wishlist */}
@@ -412,11 +464,11 @@ export function StorefrontChrome({
               type="button"
               onClick={() => setWishlistOpen(true)}
               aria-label={`Open wishlist, ${wishlistCount} items`}
-              className="header-action-icon relative flex h-10 w-10 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
+              className="header-action-icon relative flex h-10 w-10 items-center justify-center border border-(--vault-line) bg-(--vault-canvas)/40 backdrop-blur-md text-(--vault-ink) transition hover:border-(--vault-accent) hover:text-(--vault-accent) touch-manipulation focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
             >
-              <Heart size={16} />
+              <Heart size={16} aria-hidden="true" />
               {wishlistCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--vault-accent)] font-mono text-[9px] font-bold text-white">
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-(--vault-accent) font-mono text-[9px] font-bold text-white tabular-nums">
                   {wishlistCount}
                 </span>
               )}
@@ -427,13 +479,13 @@ export function StorefrontChrome({
               type="button"
               onClick={handleToggleTheme}
               aria-label={`Switch to ${theme === "obsidian" ? "Light" : "Dark"} theme`}
-              className="header-action-icon flex h-10 items-center gap-2 border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md px-3 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] cursor-pointer transform-none !rotate-0"
+              className="header-action-icon flex h-10 items-center gap-2 border border-(--vault-line) bg-(--vault-canvas)/40 backdrop-blur-md px-3 font-mono text-[10px] uppercase tracking-wider text-(--vault-ink) transition hover:border-(--vault-accent) cursor-pointer transform-none !rotate-0 touch-manipulation focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
             >
               <span ref={themeIconRef} className="inline-flex items-center justify-center origin-center will-change-transform">
                 {theme === "obsidian" ? (
-                  <Sun size={15} className="text-[var(--vault-accent)]" />
+                  <Sun size={15} aria-hidden="true" className="text-(--vault-accent)" />
                 ) : (
-                  <Moon size={15} className="text-[var(--vault-accent)]" />
+                  <Moon size={15} aria-hidden="true" className="text-(--vault-accent)" />
                 )}
               </span>
               <span className="hidden md:inline select-none">
@@ -446,13 +498,13 @@ export function StorefrontChrome({
               type="button"
               onClick={() => setCartOpen(true)}
               aria-label={`Open shopping bag, ${cartCount} items`}
-              className="header-action-icon relative flex h-10 items-center gap-2 border border-[var(--vault-line)] bg-[var(--vault-canvas)]/40 backdrop-blur-md px-3.5 transition hover:border-[var(--vault-accent)]"
+              className="header-action-icon relative flex h-10 items-center gap-2 border border-(--vault-line) bg-(--vault-canvas)/40 backdrop-blur-md px-3.5 transition hover:border-(--vault-accent) touch-manipulation focus-visible:ring-2 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
             >
-              <ShoppingBag size={16} />
+              <ShoppingBag size={16} aria-hidden="true" />
               <span className="font-mono text-[10px] uppercase hidden sm:inline">Bag</span>
               <span
                 ref={bagBadgeRef}
-                className="font-mono text-[10px] font-bold text-[var(--vault-accent)] inline-block"
+                className="font-mono text-[10px] font-bold text-(--vault-accent) inline-block tabular-nums"
               >
                 {cartCount}
               </span>
@@ -464,82 +516,97 @@ export function StorefrontChrome({
         {mobileMenuOpen && (
           <div
             ref={mobileMenuRef}
-            className="border-t border-[var(--vault-line)] bg-[var(--vault-panel)] px-6 py-6 lg:hidden"
+            className="border-t border-(--vault-line) bg-(--vault-panel) px-6 py-6 lg:hidden overscroll-contain"
           >
-            <nav className="flex flex-col gap-4 font-mono text-xs uppercase tracking-widest text-[var(--vault-ink)]">
+            <nav className="flex flex-col gap-4 font-mono text-xs uppercase tracking-widest text-(--vault-ink)">
               <Link
                 href="/#featured-collections"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mobile-nav-link py-1 hover:text-[var(--vault-accent)]"
+                className="mobile-nav-link py-1 hover:text-(--vault-accent)"
               >
                 Collections
               </Link>
               <Link
                 href="/men"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mobile-nav-link py-1 hover:text-[var(--vault-accent)]"
+                className="mobile-nav-link py-1 hover:text-(--vault-accent)"
               >
                 Men
               </Link>
               <Link
                 href="/women"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mobile-nav-link py-1 hover:text-[var(--vault-accent)]"
+                className="mobile-nav-link py-1 hover:text-(--vault-accent)"
               >
                 Women
               </Link>
               <Link
                 href="/kids"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mobile-nav-link py-1 hover:text-[var(--vault-accent)]"
+                className="mobile-nav-link py-1 hover:text-(--vault-accent)"
               >
                 Kids
               </Link>
               <Link
                 href="/#new-arrivals"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mobile-nav-link py-1 hover:text-[var(--vault-accent)]"
+                className="mobile-nav-link py-1 hover:text-(--vault-accent)"
               >
                 New Arrivals
               </Link>
               <Link
                 href="/#editorial-campaign"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mobile-nav-link py-1 hover:text-[var(--vault-accent)]"
+                className="mobile-nav-link py-1 hover:text-(--vault-accent)"
               >
                 Editorial
               </Link>
-              <div className="my-2 border-t border-[var(--vault-line)]" />
+              <div className="my-2 border-t border-(--vault-line)" />
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openLocationDialog();
+                }}
+                className="mobile-nav-link flex items-center justify-between py-1 text-(--vault-muted) hover:text-(--vault-ink) text-left touch-manipulation focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
+              >
+                <span className="flex items-center gap-2">
+                  <MapPin size={14} aria-hidden="true" className="text-(--vault-accent)" /> Delivery Location
+                </span>
+                <span className="font-mono text-[10px] uppercase text-(--vault-accent)">
+                  {isHydrated && location ? `${location.pincode}` : "Select"}
+                </span>
+              </button>
               <button
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setWishlistOpen(true);
                 }}
-                className="mobile-nav-link flex items-center justify-between py-1 text-[var(--vault-muted)] hover:text-[var(--vault-ink)] text-left"
+                className="mobile-nav-link flex items-center justify-between py-1 text-(--vault-muted) hover:text-(--vault-ink) text-left touch-manipulation focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
               >
                 <span className="flex items-center gap-2">
-                  <Heart size={14} /> Wishlist
+                  <Heart size={14} aria-hidden="true" /> Wishlist
                 </span>
-                <span className="font-bold text-[var(--vault-accent)]">{wishlistCount}</span>
+                <span className="font-bold text-(--vault-accent) tabular-nums">{wishlistCount}</span>
               </button>
               <Link
                 href={isAuthed ? "/account" : "/login"}
                 onClick={() => setMobileMenuOpen(false)}
-                className="mobile-nav-link flex items-center gap-2 py-1 text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                className="mobile-nav-link flex items-center gap-2 py-1 text-(--vault-muted) hover:text-(--vault-ink) touch-manipulation focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
               >
-                <User size={14} /> {isAuthed ? "My Account" : "Sign In / Register"}
+                <User size={14} aria-hidden="true" /> {isAuthed ? "My Account" : "Sign In / Register"}
               </Link>
               <button
                 type="button"
                 onClick={handleToggleTheme}
-                className="mobile-nav-link flex items-center justify-between py-1 text-[var(--vault-muted)] hover:text-[var(--vault-ink)] text-left cursor-pointer"
+                className="mobile-nav-link flex items-center justify-between py-1 text-(--vault-muted) hover:text-(--vault-ink) text-left cursor-pointer touch-manipulation focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none"
               >
                 <span className="flex items-center gap-2">
-                  {theme === "obsidian" ? <Sun size={14} className="text-[var(--vault-accent)]" /> : <Moon size={14} className="text-[var(--vault-accent)]" />}
+                  {theme === "obsidian" ? <Sun size={14} aria-hidden="true" className="text-(--vault-accent)" /> : <Moon size={14} aria-hidden="true" className="text-(--vault-accent)" />}
                   Theme
                 </span>
-                <span className="font-mono text-[10px] uppercase text-[var(--vault-accent)]">
+                <span className="font-mono text-[10px] uppercase text-(--vault-accent)">
                   {theme === "obsidian" ? "Light" : "Dark"}
                 </span>
               </button>
@@ -549,79 +616,79 @@ export function StorefrontChrome({
       </header>
 
       {/* Main Page Content */}
-      <div className={`flex-1 min-h-[calc(100vh-8rem)] ${shouldOverlap ? "lg:-mt-20" : ""}`}>
+      <div className={`flex-1 min-h-[calc(100vh-8rem)] ${shouldOverlap ? "-mt-20" : ""}`}>
         {children}
       </div>
 
       {/* Structured Closing Footer */}
-      <footer className="border-t border-[var(--vault-line)] bg-[var(--vault-canvas)] px-4 py-16 sm:px-8">
+      <footer className="border-t border-(--vault-line) bg-(--vault-canvas) px-4 py-16 sm:px-8">
         <div className="mx-auto max-w-[1440px]">
           {/* Top Features Strip */}
-          <div className="grid grid-cols-2 gap-6 pb-12 border-b border-[var(--vault-line)] sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-6 pb-12 border-b border-(--vault-line) sm:grid-cols-4">
             <div className="flex items-center gap-3">
-              <Truck size={20} className="text-[var(--vault-accent)]" />
+              <Truck size={20} aria-hidden="true" className="text-(--vault-accent)" />
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-wider font-semibold">Worldwide Delivery</p>
-                <p className="text-[11px] text-[var(--vault-muted)]">Insured dispatch in 24h</p>
+                <p className="text-[11px] text-(--vault-muted)">Insured dispatch in 24h</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <ShieldCheck size={20} className="text-[var(--vault-accent)]" />
+              <ShieldCheck size={20} aria-hidden="true" className="text-(--vault-accent)" />
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-wider font-semibold">Archival Authenticity</p>
-                <p className="text-[11px] text-[var(--vault-muted)]">100% genuine garment proof</p>
+                <p className="text-[11px] text-(--vault-muted)">100% genuine garment proof</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <RotateCcw size={20} className="text-[var(--vault-accent)]" />
+              <RotateCcw size={20} aria-hidden="true" className="text-(--vault-accent)" />
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-wider font-semibold">Complimentary Returns</p>
-                <p className="text-[11px] text-[var(--vault-muted)]">14-day return concierge</p>
+                <p className="text-[11px] text-(--vault-muted)">14-day return concierge</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <CreditCard size={20} className="text-[var(--vault-accent)]" />
+              <CreditCard size={20} aria-hidden="true" className="text-(--vault-accent)" />
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-wider font-semibold">Encrypted Checkout</p>
-                <p className="text-[11px] text-[var(--vault-muted)]">Visa, Mastercard, UPI, INR</p>
+                <p className="text-[11px] text-(--vault-muted)">Visa, Mastercard, UPI, INR</p>
               </div>
             </div>
           </div>
 
           {/* Links Grid */}
-          <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4 border-b border-[var(--vault-line)]">
+          <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4 border-b border-(--vault-line)">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)]">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent)">
                 Shop Collections
               </p>
-              <ul className="mt-4 space-y-2.5 font-mono text-[11px] uppercase tracking-wider text-[var(--vault-muted)]">
+              <ul className="mt-4 space-y-2.5 font-mono text-[11px] uppercase tracking-wider text-(--vault-muted)">
                 <li>
-                  <Link href="/#new-arrivals" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/#new-arrivals" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     New Arrivals
                   </Link>
                 </li>
                 <li>
-                  <Link href="/men" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/men" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Men&apos;s Streetwear
                   </Link>
                 </li>
                 <li>
-                  <Link href="/women" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/women" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Women&apos;s Editorial
                   </Link>
                 </li>
                 <li>
-                  <Link href="/kids" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/kids" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Kids&apos; Junior Archive
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#featured-collections" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/#featured-collections" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Urban Essentials
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#featured-collections" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/#featured-collections" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     After Hours
                   </Link>
                 </li>
@@ -629,42 +696,42 @@ export function StorefrontChrome({
             </div>
 
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)]">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent)">
                 Client Support
               </p>
-              <ul className="mt-4 space-y-2.5 font-mono text-[11px] uppercase tracking-wider text-[var(--vault-muted)]">
+              <ul className="mt-4 space-y-2.5 font-mono text-[11px] uppercase tracking-wider text-(--vault-muted)">
                 <li>
-                  <Link href="/shipping" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/shipping" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Shipping & Delivery
                   </Link>
                 </li>
                 <li>
-                  <Link href="/returns" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/returns" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Returns & Exchanges
                   </Link>
                 </li>
                 <li>
-                  <Link href="/refund-policy" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/refund-policy" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Refund Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/size-guide" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/size-guide" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Sizing Matrix Guide
                   </Link>
                 </li>
                 <li>
-                  <Link href="/help" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/help" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Client Care & Help
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact-us" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/contact-us" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Atelier Concierge
                   </Link>
                 </li>
                 <li>
-                  <Link href="/faqs" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/faqs" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Frequently Asked Questions
                   </Link>
                 </li>
@@ -672,32 +739,32 @@ export function StorefrontChrome({
             </div>
 
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)]">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent)">
                 Brand Heritage
               </p>
-              <ul className="mt-4 space-y-2.5 font-mono text-[11px] uppercase tracking-wider text-[var(--vault-muted)]">
+              <ul className="mt-4 space-y-2.5 font-mono text-[11px] uppercase tracking-wider text-(--vault-muted)">
                 <li>
-                  <Link href="/about" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/about" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     About Maison
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#brand-story" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/#brand-story" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Brand Philosophy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#editorial-campaign" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/#editorial-campaign" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Fashion Without The Filter
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terms-and-conditions" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/terms-and-conditions" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Terms & Conditions
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy-policy" className="hover:text-[var(--vault-ink)] transition-colors">
+                  <Link href="/privacy-policy" className="hover:text-(--vault-ink) transition-colors focus-visible:ring-1 focus-visible:ring-(--vault-accent) focus-visible:outline-none">
                     Privacy Policy
                   </Link>
                 </li>
@@ -705,24 +772,24 @@ export function StorefrontChrome({
             </div>
 
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)]">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent)">
                 Flagship Hubs
               </p>
-              <p className="mt-4 font-mono text-[11px] uppercase leading-relaxed text-[var(--vault-muted)]">
+              <p className="mt-4 font-mono text-[11px] uppercase leading-relaxed text-(--vault-muted)">
                 Mumbai · Paris · Tokyo · New York
                 <br />
                 Global dispatches in sustainable unbleached fiber packaging.
               </p>
-              <div className="mt-4 flex gap-3 text-xs font-mono uppercase tracking-widest text-[var(--vault-cobalt)]">
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:underline">
+              <div className="mt-4 flex gap-3 text-xs font-mono uppercase tracking-widest text-(--vault-cobalt)">
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:underline focus-visible:ring-1 focus-visible:ring-(--vault-cobalt) focus-visible:outline-none">
                   IG
                 </a>
                 <span>·</span>
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:underline">
+                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:underline focus-visible:ring-1 focus-visible:ring-(--vault-cobalt) focus-visible:outline-none">
                   X
                 </a>
                 <span>·</span>
-                <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="hover:underline">
+                <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="hover:underline focus-visible:ring-1 focus-visible:ring-(--vault-cobalt) focus-visible:outline-none">
                   TT
                 </a>
               </div>
@@ -730,7 +797,7 @@ export function StorefrontChrome({
           </div>
 
           {/* Bottom Legal Bar with exact Tagline */}
-          <div className="mt-8 flex flex-col gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--vault-muted)] sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-8 flex flex-col gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-(--vault-muted) sm:flex-row sm:items-center sm:justify-between">
             <span>VAULT VOGUE® · TIMELESS FASHION. MODERN EXPRESSION. · {new Date().getFullYear()}</span>
             <span>Rose Gold &amp; Midnight Black Editions · All Rights Reserved</span>
           </div>
@@ -745,6 +812,9 @@ export function StorefrontChrome({
 
       {/* Centralized Search Overlay */}
       <StorefrontSearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+
+      {/* Global Location & Pincode Verification Dialog */}
+      <LocationDialog />
     </div>
   );
 }

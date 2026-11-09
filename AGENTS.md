@@ -33,7 +33,7 @@ Before editing:
     scripts, dependencies, routing, configuration, and relevant source
     files.
 3.  Read the applicable repository instructions and skills, including
-    `.agents/skills/ponytail.json` and/or
+    `/ponytail-help` and/or
     `.agents/skills/design-animation/SKILLS.md`, plus any relevant skill
     files they reference.
 4.  Read `DESIGN_TOKENS.md` before changing styling. Locate existing

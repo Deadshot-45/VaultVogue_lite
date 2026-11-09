@@ -102,7 +102,7 @@ export function DataTable<TData>({
             placeholder={searchPlaceholder}
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            className="w-full h-10 pl-10 pr-4 text-sm bg-background dark:bg-zinc-900 border border-border/60 dark:border-zinc-800 rounded-xl focus:outline-none focus:ring-1 focus:ring-[var(--gold)] focus:border-[var(--gold)] transition-all"
+            className="w-full h-10 pl-10 pr-4 text-sm bg-background dark:bg-zinc-900 border border-border/60 dark:border-zinc-800 rounded-xl focus:outline-none focus:ring-1 focus:ring-(--gold) focus:border-(--gold) transition-all"
           />
         </div>
         {rightHeaderAction && (
@@ -123,7 +123,7 @@ export function DataTable<TData>({
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="py-3.5 px-6 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)] align-middle select-none whitespace-nowrap"
+                      className="py-3.5 px-6 text-[10px] font-semibold uppercase tracking-widest text-(--gold) align-middle select-none whitespace-nowrap"
                     >
                       {header.isPlaceholder
                         ? null

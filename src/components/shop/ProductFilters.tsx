@@ -102,10 +102,10 @@ function FilterControls({
   };
 
   return (
-    <div className="space-y-7 text-[var(--vault-ink)]">
+    <div className="space-y-7 text-(--vault-ink)">
       {/* 1. Category Division */}
       <div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] font-semibold mb-3">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) font-semibold mb-3">
           Division
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -116,8 +116,8 @@ function FilterControls({
               onClick={() => onSelectCategory(cat.id)}
               className={`px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider border transition-colors cursor-pointer ${
                 category === cat.id
-                  ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold"
-                  : "border-[var(--vault-line)] bg-[var(--vault-bg)] text-[var(--vault-muted)] hover:border-[var(--vault-ink)] hover:text-[var(--vault-ink)]"
+                  ? "border-(--vault-accent) bg-(--vault-accent) text-white font-bold"
+                  : "border-(--vault-line) bg-(--vault-bg) text-(--vault-muted) hover:border-(--vault-ink) hover:text-(--vault-ink)"
               }`}
             >
               {cat.label}
@@ -127,8 +127,8 @@ function FilterControls({
       </div>
 
       {/* 2. Subcategories */}
-      <div className="border-t border-[var(--vault-line)] pt-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] font-semibold mb-3">
+      <div className="border-t border-(--vault-line) pt-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) font-semibold mb-3">
           Silhouettes
         </p>
         <div className="space-y-1">
@@ -141,13 +141,13 @@ function FilterControls({
                 onClick={() => onSelectSubcategory(sub.id)}
                 className={`w-full flex items-center justify-between px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-wider text-left transition-colors cursor-pointer ${
                   isActive
-                    ? "border-l-2 border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] font-bold pl-2"
-                    : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                    ? "border-l-2 border-(--vault-accent) bg-(--vault-accent)/10 text-(--vault-accent) font-bold pl-2"
+                    : "text-(--vault-muted) hover:text-(--vault-ink)"
                 }`}
               >
                 <span>{sub.label}</span>
                 {isActive && (
-                  <Check size={12} className="text-[var(--vault-accent)]" />
+                  <Check size={12} className="text-(--vault-accent)" />
                 )}
               </button>
             );
@@ -156,8 +156,8 @@ function FilterControls({
       </div>
 
       {/* 3. Sizes */}
-      <div className="border-t border-[var(--vault-line)] pt-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] font-semibold mb-3">
+      <div className="border-t border-(--vault-line) pt-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) font-semibold mb-3">
           Sizes
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -166,8 +166,8 @@ function FilterControls({
             onClick={() => onSelectSize("")}
             className={`h-8 px-2.5 border font-mono text-[10px] uppercase transition-colors cursor-pointer ${
               selectedSize === ""
-                ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold"
-                : "border-[var(--vault-line)] bg-[var(--vault-bg)] text-[var(--vault-muted)] hover:border-[var(--vault-ink)]"
+                ? "border-(--vault-accent) bg-(--vault-accent) text-white font-bold"
+                : "border-(--vault-line) bg-(--vault-bg) text-(--vault-muted) hover:border-(--vault-ink)"
             }`}
           >
             All
@@ -179,8 +179,8 @@ function FilterControls({
               onClick={() => onSelectSize(selectedSize === sz ? "" : sz)}
               className={`h-8 w-9 border font-mono text-[10px] uppercase transition-colors cursor-pointer ${
                 selectedSize === sz
-                  ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold"
-                  : "border-[var(--vault-line)] bg-[var(--vault-bg)] text-[var(--vault-muted)] hover:border-[var(--vault-ink)]"
+                  ? "border-(--vault-accent) bg-(--vault-accent) text-white font-bold"
+                  : "border-(--vault-line) bg-(--vault-bg) text-(--vault-muted) hover:border-(--vault-ink)"
               }`}
             >
               {sz}
@@ -190,8 +190,8 @@ function FilterControls({
       </div>
 
       {/* 4. Colors */}
-      <div className="border-t border-[var(--vault-line)] pt-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] font-semibold mb-3">
+      <div className="border-t border-(--vault-line) pt-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) font-semibold mb-3">
           Palette
         </p>
         <div className="grid grid-cols-2 gap-2">
@@ -204,8 +204,8 @@ function FilterControls({
                 onClick={() => onSelectColor(c.id)}
                 className={`flex items-center gap-2 border px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider text-left transition-colors cursor-pointer ${
                   isActive
-                    ? "border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] font-bold"
-                    : "border-[var(--vault-line)] bg-[var(--vault-bg)] text-[var(--vault-muted)] hover:border-[var(--vault-ink)] hover:text-[var(--vault-ink)]"
+                    ? "border-(--vault-accent) bg-(--vault-accent)/10 text-(--vault-accent) font-bold"
+                    : "border-(--vault-line) bg-(--vault-bg) text-(--vault-muted) hover:border-(--vault-ink) hover:text-(--vault-ink)"
                 }`}
               >
                 {c.hex !== "transparent" ? (
@@ -214,7 +214,7 @@ function FilterControls({
                     style={{ backgroundColor: c.hex }}
                   />
                 ) : (
-                  <span className="h-3 w-3 rounded-full border border-dashed border-[var(--vault-line)] flex-shrink-0" />
+                  <span className="h-3 w-3 rounded-full border border-dashed border-(--vault-line) flex-shrink-0" />
                 )}
                 <span className="truncate">{c.name}</span>
               </button>
@@ -224,8 +224,8 @@ function FilterControls({
       </div>
 
       {/* 5. Price Range */}
-      <div className="border-t border-[var(--vault-line)] pt-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] font-semibold mb-3">
+      <div className="border-t border-(--vault-line) pt-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) font-semibold mb-3">
           Price (INR)
         </p>
 
@@ -244,13 +244,13 @@ function FilterControls({
                 }}
                 className={`w-full flex items-center justify-between px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-left transition-colors cursor-pointer ${
                   isActive
-                    ? "text-[var(--vault-accent)] font-bold"
-                    : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                    ? "text-(--vault-accent) font-bold"
+                    : "text-(--vault-muted) hover:text-(--vault-ink)"
                 }`}
               >
                 <span>{p.label}</span>
                 {isActive && (
-                  <Check size={11} className="text-[var(--vault-accent)]" />
+                  <Check size={11} className="text-(--vault-accent)" />
                 )}
               </button>
             );
@@ -267,15 +267,15 @@ function FilterControls({
             placeholder="Min ₹"
             value={customMin}
             onChange={(e) => setCustomMin(e.target.value)}
-            className="w-full rounded-none border border-[var(--vault-line)] bg-[var(--vault-bg)] px-2.5 py-1.5 font-mono text-[11px] text-[var(--vault-ink)] placeholder-[var(--vault-muted)] focus:border-[var(--vault-accent)] focus:outline-none"
+            className="w-full rounded-none border border-(--vault-line) bg-(--vault-bg) px-2.5 py-1.5 font-mono text-[11px] text-(--vault-ink) placeholder-(--vault-muted) focus:border-(--vault-accent) focus:outline-none"
           />
-          <span className="text-[var(--vault-muted)] font-mono text-xs">–</span>
+          <span className="text-(--vault-muted) font-mono text-xs">–</span>
           <input
             type="number"
             placeholder="Max ₹"
             value={customMax}
             onChange={(e) => setCustomMax(e.target.value)}
-            className="w-full rounded-none border border-[var(--vault-line)] bg-[var(--vault-bg)] px-2.5 py-1.5 font-mono text-[11px] text-[var(--vault-ink)] placeholder-[var(--vault-muted)] focus:border-[var(--vault-accent)] focus:outline-none"
+            className="w-full rounded-none border border-(--vault-line) bg-(--vault-bg) px-2.5 py-1.5 font-mono text-[11px] text-(--vault-ink) placeholder-(--vault-muted) focus:border-(--vault-accent) focus:outline-none"
           />
           <button
             type="submit"
@@ -287,8 +287,8 @@ function FilterControls({
       </div>
 
       {/* 6. Curated Badges */}
-      <div className="border-t border-[var(--vault-line)] pt-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] font-semibold mb-3">
+      <div className="border-t border-(--vault-line) pt-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) font-semibold mb-3">
           Curated Releases
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -304,8 +304,8 @@ function FilterControls({
               onClick={() => onSelectBadge(b.id as CatalogBadge)}
               className={`px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider border transition-colors cursor-pointer ${
                 badge === b.id
-                  ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold"
-                  : "border-[var(--vault-line)] bg-[var(--vault-bg)] text-[var(--vault-muted)] hover:border-[var(--vault-ink)]"
+                  ? "border-(--vault-accent) bg-(--vault-accent) text-white font-bold"
+                  : "border-(--vault-line) bg-(--vault-bg) text-(--vault-muted) hover:border-(--vault-ink)"
               }`}
             >
               {b.label}
@@ -316,7 +316,7 @@ function FilterControls({
 
       {/* Reset All */}
       {hasActiveFilters && (
-        <div className="border-t border-[var(--vault-line)] pt-5">
+        <div className="border-t border-(--vault-line) pt-5">
           <button
             type="button"
             onClick={onResetAll}
@@ -343,17 +343,17 @@ export function ProductFilters(props: ProductFiltersProps) {
       {props.isDesktopVisible && (
         <aside
           aria-label="Product Catalog Filters"
-          className="hidden lg:block w-72 flex-shrink-0 border-r border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 self-start sticky top-36 max-h-[calc(100vh-10rem)] overflow-y-auto no-scrollbar"
+          className="hidden lg:block w-72 flex-shrink-0 border-r border-(--vault-line) bg-(--vault-panel) p-6 self-start sticky top-36 max-h-[calc(100vh-10rem)] overflow-y-auto no-scrollbar"
         >
-          <div className="flex items-center justify-between border-b border-[var(--vault-line)] pb-4 mb-6">
-            <span className="font-serif text-lg uppercase tracking-tight text-[var(--vault-ink)] flex items-center gap-2">
+          <div className="flex items-center justify-between border-b border-(--vault-line) pb-4 mb-6">
+            <span className="font-serif text-lg uppercase tracking-tight text-(--vault-ink) flex items-center gap-2">
               Filters
             </span>
             {props.hasActiveFilters && (
               <button
                 type="button"
                 onClick={props.onResetAll}
-                className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-cobalt)] hover:underline cursor-pointer"
+                className="font-mono text-[10px] uppercase tracking-wider text-(--vault-cobalt) hover:underline cursor-pointer"
               >
                 Reset
               </button>
@@ -370,16 +370,16 @@ export function ProductFilters(props: ProductFiltersProps) {
       >
         <SheetContent
           side="left"
-          className="w-full max-w-sm border-r border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 overflow-y-auto"
+          className="w-full max-w-sm border-r border-(--vault-line) bg-(--vault-panel) p-6 overflow-y-auto"
         >
-          <SheetHeader className="border-b border-[var(--vault-line)] pb-4 mb-6 flex-row items-center justify-between">
-            <SheetTitle className="font-serif text-xl uppercase tracking-tight text-[var(--vault-ink)]">
+          <SheetHeader className="border-b border-(--vault-line) pb-4 mb-6 flex-row items-center justify-between">
+            <SheetTitle className="font-serif text-xl uppercase tracking-tight text-(--vault-ink)">
               Refine Catalog
             </SheetTitle>
             <button
               type="button"
               onClick={props.onCloseMobile}
-              className="flex h-8 w-8 items-center justify-center border border-[var(--vault-line)] text-[var(--vault-ink)] hover:text-[var(--vault-accent)]"
+              className="flex h-8 w-8 items-center justify-center border border-(--vault-line) text-(--vault-ink) hover:text-(--vault-accent)"
               aria-label="Close filters sheet"
             >
               <X size={16} />
@@ -388,7 +388,7 @@ export function ProductFilters(props: ProductFiltersProps) {
 
           <FilterControls {...props} />
 
-          <div className="mt-8 pt-4 border-t border-[var(--vault-line)]">
+          <div className="mt-8 pt-4 border-t border-(--vault-line)">
             <button
               type="button"
               onClick={props.onCloseMobile}

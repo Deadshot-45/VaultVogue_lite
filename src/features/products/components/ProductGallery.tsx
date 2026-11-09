@@ -97,8 +97,8 @@ export function ProductGallery({
               onClick={() => setActiveIndex(idx)}
               className={`group relative h-20 w-16 sm:h-24 sm:w-20 shrink-0 overflow-hidden border transition-all duration-200 cursor-pointer ${
                 isSelected
-                  ? "border-[var(--vault-accent)] ring-1 ring-[var(--vault-accent)] opacity-100 shadow-md"
-                  : "border-[var(--vault-line)] opacity-60 hover:opacity-100 hover:border-[var(--vault-accent)]/50"
+                  ? "border-(--vault-accent) ring-1 ring-(--vault-accent) opacity-100 shadow-md"
+                  : "border-(--vault-line) opacity-60 hover:opacity-100 hover:border-(--vault-accent)/50"
               }`}
             >
               <Image
@@ -125,7 +125,7 @@ export function ProductGallery({
           onMouseLeave={() => setIsZoomed(false)}
           onMouseMove={handleMouseMove}
           onClick={() => setIsLightboxOpen(true)}
-          className="relative aspect-[3/4] max-h-[calc(100vh-8rem)] w-full overflow-hidden border border-[var(--vault-line)] bg-[var(--vault-panel)] cursor-zoom-in"
+          className="relative aspect-[3/4] max-h-[calc(100vh-8rem)] w-full overflow-hidden border border-(--vault-line) bg-(--vault-panel) cursor-zoom-in"
         >
           {/* Main Visual with Pan & Zoom on Hover */}
           <div
@@ -146,14 +146,14 @@ export function ProductGallery({
           </div>
 
           {/* Watermark / Brand Badge */}
-          <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2 bg-[var(--vault-canvas)]/80 px-2.5 py-1 backdrop-blur-md border border-[var(--vault-line)]">
-            <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--vault-accent)]">
+          <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2 bg-(--vault-canvas)/80 px-2.5 py-1 backdrop-blur-md border border-(--vault-line)">
+            <span className="font-mono text-[9px] uppercase tracking-widest text-(--vault-accent)">
               OWN YOUR EDGE
             </span>
             {activeColorName && (
               <>
-                <span className="text-[var(--vault-line)]">|</span>
-                <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--vault-ink)]">
+                <span className="text-(--vault-line)">|</span>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-(--vault-ink)">
                   {activeColorName}
                 </span>
               </>
@@ -161,13 +161,13 @@ export function ProductGallery({
           </div>
 
           {/* Image Counter Badge */}
-          <div className="pointer-events-none absolute right-4 top-4 bg-[var(--vault-canvas)]/80 px-2.5 py-1 backdrop-blur-md border border-[var(--vault-line)] font-mono text-[9px] uppercase tracking-widest text-[var(--vault-ink)]">
+          <div className="pointer-events-none absolute right-4 top-4 bg-(--vault-canvas)/80 px-2.5 py-1 backdrop-blur-md border border-(--vault-line) font-mono text-[9px] uppercase tracking-widest text-(--vault-ink)">
             0{activeIndex + 1} / 0{displayImages.length}
           </div>
 
           {/* Zoom In Tooltip (desktop indicator) */}
           <div className="pointer-events-none absolute bottom-4 right-4 hidden items-center gap-1.5 bg-black/75 px-3 py-1.5 text-white backdrop-blur-md sm:flex font-mono text-[9px] uppercase tracking-wider opacity-80 group-hover:opacity-100">
-            <ZoomIn size={12} className="text-[var(--vault-accent)]" /> Click to Expand Lightbox
+            <ZoomIn size={12} className="text-(--vault-accent)" /> Click to Expand Lightbox
           </div>
 
           {/* Prev / Next Controls on Image */}
@@ -178,7 +178,7 @@ export function ProductGallery({
               handlePrev();
             }}
             aria-label="Previous image"
-            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center bg-[var(--vault-canvas)]/85 text-[var(--vault-ink)] backdrop-blur-md border border-[var(--vault-line)] transition hover:bg-[var(--vault-accent)] hover:text-white cursor-pointer"
+            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center bg-(--vault-canvas)/85 text-(--vault-ink) backdrop-blur-md border border-(--vault-line) transition hover:bg-(--vault-accent) hover:text-white cursor-pointer"
           >
             <ChevronLeft size={16} />
           </button>
@@ -189,7 +189,7 @@ export function ProductGallery({
               handleNext();
             }}
             aria-label="Next image"
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center bg-[var(--vault-canvas)]/85 text-[var(--vault-ink)] backdrop-blur-md border border-[var(--vault-line)] transition hover:bg-[var(--vault-accent)] hover:text-white cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center bg-(--vault-canvas)/85 text-(--vault-ink) backdrop-blur-md border border-(--vault-line) transition hover:bg-(--vault-accent) hover:text-white cursor-pointer"
           >
             <ChevronRight size={16} />
           </button>
@@ -209,7 +209,7 @@ export function ProductGallery({
             type="button"
             onClick={() => setIsLightboxOpen(false)}
             aria-label="Close image lightbox"
-            className="absolute right-6 top-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-[var(--vault-accent)] hover:text-white cursor-pointer"
+            className="absolute right-6 top-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) hover:text-white cursor-pointer"
           >
             <X size={20} />
           </button>
@@ -219,7 +219,7 @@ export function ProductGallery({
             type="button"
             onClick={handlePrev}
             aria-label="Previous lightbox photo"
-            className="absolute left-6 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-[var(--vault-accent)] cursor-pointer"
+            className="absolute left-6 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) cursor-pointer"
           >
             <ChevronLeft size={24} />
           </button>
@@ -227,7 +227,7 @@ export function ProductGallery({
             type="button"
             onClick={handleNext}
             aria-label="Next lightbox photo"
-            className="absolute right-6 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-[var(--vault-accent)] cursor-pointer"
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) cursor-pointer"
           >
             <ChevronRight size={24} />
           </button>

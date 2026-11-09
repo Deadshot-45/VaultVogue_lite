@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { useLocation } from "@/features/storefront/context/location-context";
 
 export interface Address {
   id: string;
@@ -42,6 +43,7 @@ export function AddressSelector({
   onAddAddress,
   onUpdateAddress,
 }: AddressSelectorProps) {
+  const { location, openLocationDialog, isHydrated } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
 
@@ -68,10 +70,10 @@ export function AddressSelector({
       email: "",
       addressLine1: "",
       addressLine2: "",
-      city: "",
-      state: "",
+      city: location?.selectedLocality ? `${location.selectedLocality}, ${location.city}` : location?.city || "",
+      state: location?.state || "",
       country: "India",
-      zipCode: "",
+      zipCode: location?.pincode || "",
     });
     setFormErrors({});
     setIsOpen(true);
@@ -140,20 +142,42 @@ export function AddressSelector({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="font-cormorant text-2xl font-light text-[var(--brand-text)] flex items-center gap-2">
-          <MapPin className="h-5 w-5 text-[var(--gold)]" />
+        <h3 className="font-cormorant text-2xl font-light text-(--brand-text) flex items-center gap-2">
+          <MapPin className="h-5 w-5 text-(--gold)" />
           Shipping Address
         </h3>
         <Button
           type="button"
           onClick={handleOpenAdd}
           variant="outline"
-          className="h-9 px-3 border-[var(--gold-soft)] text-[var(--gold)] hover:bg-[var(--gold-glow)] text-xs font-semibold flex items-center gap-1.5 rounded-lg active:scale-95 transition-all"
+          className="h-9 px-3 border-(--gold-soft) text-(--gold) hover:bg-(--gold-glow) text-xs font-semibold flex items-center gap-1.5 rounded-lg active:scale-95 transition-all"
         >
           <Plus className="h-3.5 w-3.5" />
           Add New Address
         </Button>
       </div>
+
+      {/* Global Delivery Location Destination Banner */}
+      {isHydrated && location && (
+        <div className="flex items-center justify-between rounded-lg border border-(--gold-soft)/40 bg-(--gold-glow)/15 px-3.5 py-2.5 text-xs">
+          <div className="flex items-center gap-2 text-(--brand-text) font-mono text-[11px]">
+            <MapPin className="h-3.5 w-3.5 text-(--gold) shrink-0" />
+            <span>
+              Verified Destination:{" "}
+              <strong>
+                {location.selectedLocality ? `${location.selectedLocality}, ` : ""}{location.city} ({location.pincode})
+              </strong>
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={openLocationDialog}
+            className="font-mono text-[10px] uppercase font-bold text-(--gold) hover:underline ml-2 shrink-0 cursor-pointer"
+          >
+            Change
+          </button>
+        </div>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         {addresses.map((addr) => {
@@ -175,7 +199,7 @@ export function AddressSelector({
               )}
               <CardContent className="p-5 space-y-3 text-xs text-left">
                 <div className="pr-6">
-                  <p className="font-bold text-sm text-[var(--brand-text)]">{addr.fullName}</p>
+                  <p className="font-bold text-sm text-(--brand-text)">{addr.fullName}</p>
                 </div>
 
                 <div className="space-y-1.5 text-muted-foreground">
@@ -183,7 +207,7 @@ export function AddressSelector({
                     {addr.addressLine1}
                     {addr.addressLine2 ? `, ${addr.addressLine2}` : ""}
                   </p>
-                  <p className="font-medium text-[var(--brand-text)]">
+                  <p className="font-medium text-(--brand-text)">
                     {addr.city}, {addr.state} - {addr.zipCode}
                   </p>
                   <p>{addr.country}</p>
@@ -191,11 +215,11 @@ export function AddressSelector({
 
                 <div className="flex flex-col gap-1 border-t border-slate-100 pt-3 text-[10px] text-muted-foreground">
                   <span className="flex items-center gap-1.5">
-                    <Phone className="h-3 w-3 text-[var(--gold-soft)]" />
+                    <Phone className="h-3 w-3 text-(--gold-soft)" />
                     {addr.phone}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Mail className="h-3 w-3 text-[var(--gold-soft)] text-ellipsis overflow-hidden truncate max-w-[220px]" />
+                    <Mail className="h-3 w-3 text-(--gold-soft) text-ellipsis overflow-hidden truncate max-w-[220px]" />
                     {addr.email}
                   </span>
                 </div>
@@ -205,7 +229,7 @@ export function AddressSelector({
                     type="button"
                     variant="ghost"
                     onClick={(e) => handleOpenEdit(addr, e)}
-                    className="h-8 px-2.5 text-[10px] text-muted-foreground hover:text-[var(--brand-text)] hover:bg-slate-50 rounded-md font-semibold flex items-center gap-1"
+                    className="h-8 px-2.5 text-[10px] text-muted-foreground hover:text-(--brand-text) hover:bg-slate-50 rounded-md font-semibold flex items-center gap-1"
                   >
                     <Edit2 className="h-3 w-3" />
                     Edit Details
@@ -221,10 +245,32 @@ export function AddressSelector({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-md rounded-2xl p-6 bg-white border border-border">
           <DialogHeader>
-            <DialogTitle className="font-cormorant text-2xl font-light text-[var(--brand-text)]">
+            <DialogTitle className="font-cormorant text-2xl font-light text-(--brand-text)">
               {editingAddress ? "Edit Shipping Address" : "Add New Shipping Address"}
             </DialogTitle>
           </DialogHeader>
+
+          {isHydrated && location && (
+            <div className="flex items-center justify-between rounded-lg bg-blue-50/60 border border-blue-100 px-3 py-1.5 text-xs text-blue-900">
+              <span className="font-mono text-[11px]">
+                Global Pincode: <strong>{location.pincode}</strong> ({location.city})
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    city: location.selectedLocality ? `${location.selectedLocality}, ${location.city}` : location.city,
+                    state: location.state,
+                    zipCode: location.pincode,
+                  }));
+                }}
+                className="font-mono text-[10px] uppercase font-bold text-blue-700 hover:underline cursor-pointer"
+              >
+                Autofill
+              </button>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4 pt-4 text-left">
             <div className="space-y-1">
@@ -237,7 +283,7 @@ export function AddressSelector({
                 value={formData.fullName}
                 onChange={handleInputChange}
                 placeholder="Receiver Name"
-                className={`h-11 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)] ${formErrors.fullName ? "border-red-500" : ""}`}
+                className={`h-11 text-xs border-(--gold-faint) focus-visible:border-(--gold) ${formErrors.fullName ? "border-red-500" : ""}`}
               />
               {formErrors.fullName && (
                 <p className="text-[9px] text-red-500 mt-0.5">{formErrors.fullName}</p>
@@ -255,7 +301,7 @@ export function AddressSelector({
                   value={formData.phone}
                   onChange={handleInputChange}
                   placeholder="10-digit number"
-                  className={`h-11 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)] ${formErrors.phone ? "border-red-500" : ""}`}
+                  className={`h-11 text-xs border-(--gold-faint) focus-visible:border-(--gold) ${formErrors.phone ? "border-red-500" : ""}`}
                 />
                 {formErrors.phone && (
                   <p className="text-[9px] text-red-500 mt-0.5">{formErrors.phone}</p>
@@ -272,7 +318,7 @@ export function AddressSelector({
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="email@domain.com"
-                  className={`h-11 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)] ${formErrors.email ? "border-red-500" : ""}`}
+                  className={`h-11 text-xs border-(--gold-faint) focus-visible:border-(--gold) ${formErrors.email ? "border-red-500" : ""}`}
                 />
                 {formErrors.email && (
                   <p className="text-[9px] text-red-500 mt-0.5">{formErrors.email}</p>
@@ -290,7 +336,7 @@ export function AddressSelector({
                 value={formData.addressLine1}
                 onChange={handleInputChange}
                 placeholder="Avenue / Street / Suite / Flat"
-                className={`h-11 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)] ${formErrors.addressLine1 ? "border-red-500" : ""}`}
+                className={`h-11 text-xs border-(--gold-faint) focus-visible:border-(--gold) ${formErrors.addressLine1 ? "border-red-500" : ""}`}
               />
               {formErrors.addressLine1 && (
                 <p className="text-[9px] text-red-500 mt-0.5">{formErrors.addressLine1}</p>
@@ -307,7 +353,7 @@ export function AddressSelector({
                 value={formData.addressLine2}
                 onChange={handleInputChange}
                 placeholder="Near landmarks, floor, wing, etc."
-                className="h-11 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)]"
+                className="h-11 text-xs border-(--gold-faint) focus-visible:border-(--gold)"
               />
             </div>
 
@@ -322,7 +368,7 @@ export function AddressSelector({
                   value={formData.city}
                   onChange={handleInputChange}
                   placeholder="City"
-                  className={`h-11 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)] ${formErrors.city ? "border-red-500" : ""}`}
+                  className={`h-11 text-xs border-(--gold-faint) focus-visible:border-(--gold) ${formErrors.city ? "border-red-500" : ""}`}
                 />
                 {formErrors.city && (
                   <p className="text-[9px] text-red-500 mt-0.5">{formErrors.city}</p>
@@ -339,7 +385,7 @@ export function AddressSelector({
                   value={formData.state}
                   onChange={handleInputChange}
                   placeholder="State"
-                  className={`h-11 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)] ${formErrors.state ? "border-red-500" : ""}`}
+                  className={`h-11 text-xs border-(--gold-faint) focus-visible:border-(--gold) ${formErrors.state ? "border-red-500" : ""}`}
                 />
                 {formErrors.state && (
                   <p className="text-[9px] text-red-500 mt-0.5">{formErrors.state}</p>
@@ -358,7 +404,7 @@ export function AddressSelector({
                   value={formData.zipCode}
                   onChange={handleInputChange}
                   placeholder="6-digit PIN code"
-                  className={`h-11 text-xs border-[var(--gold-faint)] focus-visible:border-[var(--gold)] ${formErrors.zipCode ? "border-red-500" : ""}`}
+                  className={`h-11 text-xs border-(--gold-faint) focus-visible:border-(--gold) ${formErrors.zipCode ? "border-red-500" : ""}`}
                 />
                 {formErrors.zipCode && (
                   <p className="text-[9px] text-red-500 mt-0.5">{formErrors.zipCode}</p>
@@ -374,7 +420,7 @@ export function AddressSelector({
                   name="country"
                   value={formData.country}
                   disabled
-                  className="h-11 text-xs border-[var(--gold-faint)] bg-muted/30 cursor-not-allowed rounded-lg"
+                  className="h-11 text-xs border-(--gold-faint) bg-muted/30 cursor-not-allowed rounded-lg"
                 />
               </div>
             </div>

@@ -23,7 +23,8 @@ type ResponseById = {
 
 export const metadata: Metadata = {
   title: "Archival Garment Silhouette | VAULT VOGUE Atelier",
-  description: "Curated collection piece designed for timeless, modern editorial fashion.",
+  description:
+    "Curated collection piece designed for timeless, modern editorial fashion.",
 };
 
 export default async function ProductPage(props: PageProps) {
@@ -38,6 +39,7 @@ export default async function ProductPage(props: PageProps) {
   try {
     const response = await serverFetch<ResponseById>(`/products/getById/${id}`);
     rawProduct = response?.data || response;
+    console.log(response?.data || response);
   } catch (error) {
     console.warn("API product lookup failed for ID:", id, error);
   }
@@ -45,7 +47,9 @@ export default async function ProductPage(props: PageProps) {
   // 2. If not found by direct ID, search in case slug or code was provided
   if (!rawProduct || (!rawProduct._id && !rawProduct.id)) {
     try {
-      const searchRes = await serverFetch<any>(`/products/getAll?search=${encodeURIComponent(id)}&limit=1`);
+      const searchRes = await serverFetch<any>(
+        `/products/getAll?search=${encodeURIComponent(id)}&limit=1`,
+      );
       const searchList = searchRes?.data || searchRes;
       if (Array.isArray(searchList) && searchList.length > 0) {
         rawProduct = searchList[0];
@@ -62,7 +66,12 @@ export default async function ProductPage(props: PageProps) {
 
   rawProduct._id = rawProduct._id || rawProduct.id;
   const uiProduct = mapProduct(rawProduct as any);
-  const activeProduct: VariantProduct = mapApiProductToVariantProduct(uiProduct);
+  const activeProduct: VariantProduct =
+    mapApiProductToVariantProduct(uiProduct);
+
+  if (rawProduct.variants && (!activeProduct.variants || activeProduct.variants.length === 0)) {
+    activeProduct.variants = rawProduct.variants;
+  }
 
   const clientUrl = process.env.NEXT_PUBLIC_API || "https://vaultvogue.com";
 
@@ -78,7 +87,7 @@ export default async function ProductPage(props: PageProps) {
     offers: {
       "@type": "Offer",
       price: activeProduct.price.toString(),
-      priceCurrency: "USD",
+      priceCurrency: "INR",
       priceValidUntil: "2027-12-31",
       availability: "https://schema.org/InStock",
       url: `${clientUrl}/products/${activeProduct.slug || activeProduct.id}`,
@@ -99,12 +108,12 @@ export default async function ProductPage(props: PageProps) {
         fallback={
           <div className="mx-auto min-h-[70vh] max-w-[1440px] animate-pulse px-4 py-12 sm:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <div className="aspect-[3/4] bg-[var(--vault-panel)] border border-[var(--vault-line)]" />
+              <div className="aspect-[3/4] bg-(--vault-panel) border border-(--vault-line)" />
               <div className="space-y-6 pt-4">
-                <div className="h-4 w-1/4 bg-[var(--vault-line)]" />
-                <div className="h-10 w-3/4 bg-[var(--vault-line)]" />
-                <div className="h-6 w-1/3 bg-[var(--vault-line)]" />
-                <div className="h-20 w-full bg-[var(--vault-line)]" />
+                <div className="h-4 w-1/4 bg-(--vault-line)" />
+                <div className="h-10 w-3/4 bg-(--vault-line)" />
+                <div className="h-6 w-1/3 bg-(--vault-line)" />
+                <div className="h-20 w-full bg-(--vault-line)" />
               </div>
             </div>
           </div>

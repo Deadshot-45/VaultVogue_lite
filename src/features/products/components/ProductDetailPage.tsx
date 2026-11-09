@@ -29,8 +29,13 @@ export function ProductDetailPage({ product }: ProductDetailPageProps) {
           stockBySize: { XS: 5, S: 8, M: 12, L: 6, XL: 2 },
         };
 
+  const initialAvailableSize =
+    product.variants?.find((v) => (v.stock ?? 1) > 0 && v.size)?.size ||
+    product.availableSizes?.[0] ||
+    "M";
+
   const [selectedColorId, setSelectedColorId] = useState<string>(defaultColor.id);
-  const [selectedSize, setSelectedSize] = useState<VariantSize>("M");
+  const [selectedSize, setSelectedSize] = useState<VariantSize>(initialAvailableSize);
 
   const selectedColor: VariantColor =
     product.colors.find((c) => c.id === selectedColorId) || defaultColor;

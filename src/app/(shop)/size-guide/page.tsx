@@ -209,29 +209,29 @@ export default function SizeGuidePage() {
         : KIDS_MEASUREMENTS;
 
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* ── Breadcrumb Bar ── */}
-      <div className="border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/50 backdrop-blur-md">
+      <div className="border-b border-(--vault-line) bg-(--vault-panel)/50 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
           <nav
-            className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--vault-muted)]"
+            className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-(--vault-muted)"
             aria-label="Breadcrumb"
           >
             <Link
               href="/"
-              className="hover:text-[var(--vault-ink)] transition-colors"
+              className="hover:text-(--vault-ink) transition-colors"
             >
               Home
             </Link>
             <span>/</span>
             <Link
               href="/help"
-              className="hover:text-[var(--vault-ink)] transition-colors"
+              className="hover:text-(--vault-ink) transition-colors"
             >
               Client Care
             </Link>
             <span>/</span>
-            <span className="text-[var(--vault-accent)] font-semibold">
+            <span className="text-(--vault-accent) font-semibold">
               Size Guide
             </span>
           </nav>
@@ -241,13 +241,13 @@ export default function SizeGuidePage() {
       <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-16">
         {/* ── Header ── */}
         <div className="max-w-3xl space-y-4 text-left">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--vault-accent)]/20 bg-[var(--vault-accent)]/5 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+          <div className="inline-flex items-center gap-2 rounded-full border border-(--vault-accent)/20 bg-(--vault-accent)/5 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-(--vault-accent)">
             Precision Patterning
           </div>
-          <h1 className="font-serif text-4xl sm:text-5xl font-light tracking-tight text-[var(--vault-ink)]">
+          <h1 className="font-serif text-4xl sm:text-5xl font-light tracking-tight text-(--vault-ink)">
             Architectural Sizing Matrix
           </h1>
-          <p className="text-sm sm:text-base text-[var(--vault-muted)] font-light leading-relaxed">
+          <p className="text-sm sm:text-base text-(--vault-muted) font-light leading-relaxed">
             VAULT VOGUE garments are engineered with relaxed, architectural
             proportions. Compare your exact measurements with our master chart
             below to determine your intended silhouette drape.
@@ -255,7 +255,7 @@ export default function SizeGuidePage() {
         </div>
 
         {/* ── Controls: Gender & Units ── */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-(--vault-line) pb-6">
           {/* Gender division selector */}
           <div className="flex items-center gap-2">
             {(["men", "women", "kids"] as GenderTab[]).map((tab) => (
@@ -264,8 +264,8 @@ export default function SizeGuidePage() {
                 onClick={() => setActiveGender(tab)}
                 className={`rounded-xl px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all ${
                   activeGender === tab
-                    ? "bg-[var(--vault-accent)] text-white shadow-sm"
-                    : "border border-[var(--vault-line)] bg-[var(--vault-panel)] text-[var(--vault-muted)] hover:text-[var(--vault-ink)] hover:border-[var(--vault-accent)]/40"
+                    ? "bg-(--vault-accent) text-white shadow-sm"
+                    : "border border-(--vault-line) bg-(--vault-panel) text-(--vault-muted) hover:text-(--vault-ink) hover:border-(--vault-accent)/40"
                 }`}
               >
                 {tab === "kids" ? "Kids / Youth" : tab}
@@ -274,16 +274,16 @@ export default function SizeGuidePage() {
           </div>
 
           {/* Unit Toggle */}
-          <div className="flex items-center gap-2 rounded-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-1 text-xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--vault-muted)] px-3">
+          <div className="flex items-center gap-2 rounded-xl border border-(--vault-line) bg-(--vault-panel) p-1 text-xs">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-(--vault-muted) px-3">
               Unit:
             </span>
             <button
               onClick={() => setUnit("cm")}
               className={`rounded-lg px-3 py-1 font-mono text-xs transition-colors ${
                 unit === "cm"
-                  ? "bg-[var(--vault-accent)] text-white font-bold"
-                  : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                  ? "bg-(--vault-accent) text-white font-bold"
+                  : "text-(--vault-muted) hover:text-(--vault-ink)"
               }`}
             >
               Centimeters (cm)
@@ -292,8 +292,8 @@ export default function SizeGuidePage() {
               onClick={() => setUnit("in")}
               className={`rounded-lg px-3 py-1 font-mono text-xs transition-colors ${
                 unit === "in"
-                  ? "bg-[var(--vault-accent)] text-white font-bold"
-                  : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                  ? "bg-(--vault-accent) text-white font-bold"
+                  : "text-(--vault-muted) hover:text-(--vault-ink)"
               }`}
             >
               Inches (in)
@@ -302,11 +302,11 @@ export default function SizeGuidePage() {
         </div>
 
         {/* ── Dimension Matrix Table ── */}
-        <div className="overflow-hidden rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] shadow-sm">
+        <div className="overflow-hidden rounded-3xl border border-(--vault-line) bg-(--vault-panel) shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-left text-xs">
               <thead>
-                <tr className="border-b border-[var(--vault-line)] bg-[var(--vault-bg)]/50 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--vault-muted)]">
+                <tr className="border-b border-(--vault-line) bg-(--vault-bg)/50 text-[10px] font-bold uppercase tracking-[0.2em] text-(--vault-muted)">
                   <th className="px-6 py-4">Size</th>
                   <th className="px-6 py-4">Equivalence</th>
                   <th className="px-6 py-4">Chest ({unit})</th>
@@ -316,31 +316,31 @@ export default function SizeGuidePage() {
                   <th className="px-6 py-4">Garment Length ({unit})</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[var(--vault-line)]">
+              <tbody className="divide-y divide-(--vault-line)">
                 {rows.map((row) => (
                   <tr
                     key={row.size}
-                    className="hover:bg-[var(--vault-accent)]/5 transition-colors"
+                    className="hover:bg-(--vault-accent)/5 transition-colors"
                   >
-                    <td className="px-6 py-4 font-mono text-sm font-bold text-[var(--vault-accent)]">
+                    <td className="px-6 py-4 font-mono text-sm font-bold text-(--vault-accent)">
                       {row.size}
                     </td>
-                    <td className="px-6 py-4 font-medium text-[var(--vault-ink)]">
+                    <td className="px-6 py-4 font-medium text-(--vault-ink)">
                       {row.intl}
                     </td>
-                    <td className="px-6 py-4 font-mono text-[var(--vault-muted)]">
+                    <td className="px-6 py-4 font-mono text-(--vault-muted)">
                       {row.chest[unit]}
                     </td>
-                    <td className="px-6 py-4 font-mono text-[var(--vault-muted)]">
+                    <td className="px-6 py-4 font-mono text-(--vault-muted)">
                       {row.shoulder[unit]}
                     </td>
-                    <td className="px-6 py-4 font-mono text-[var(--vault-muted)]">
+                    <td className="px-6 py-4 font-mono text-(--vault-muted)">
                       {row.waist[unit]}
                     </td>
-                    <td className="px-6 py-4 font-mono text-[var(--vault-muted)]">
+                    <td className="px-6 py-4 font-mono text-(--vault-muted)">
                       {row.sleeve[unit]}
                     </td>
-                    <td className="px-6 py-4 font-mono text-[var(--vault-muted)]">
+                    <td className="px-6 py-4 font-mono text-(--vault-muted)">
                       {row.length[unit]}
                     </td>
                   </tr>
@@ -352,42 +352,42 @@ export default function SizeGuidePage() {
 
         {/* ── Fit Philosophy & Drape Advice ── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 space-y-3">
-            <div className="flex items-center gap-2 text-[var(--vault-accent)]">
+          <div className="rounded-2xl border border-(--vault-line) bg-(--vault-panel) p-6 space-y-3">
+            <div className="flex items-center gap-2 text-(--vault-accent)">
               <Check className="h-4 w-4" />
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--vault-ink)]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-(--vault-ink)">
                 Tailored Drop Shoulders
               </h3>
             </div>
-            <p className="text-xs text-[var(--vault-muted)] font-light leading-relaxed">
+            <p className="text-xs text-(--vault-muted) font-light leading-relaxed">
               Outerwear and hoodies feature an intentional dropped seam. Order
               your true size for a contemporary streetwear drape; size down for
               a classic fitted silhouette.
             </p>
           </div>
 
-          <div className="rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 space-y-3">
-            <div className="flex items-center gap-2 text-[var(--vault-accent)]">
+          <div className="rounded-2xl border border-(--vault-line) bg-(--vault-panel) p-6 space-y-3">
+            <div className="flex items-center gap-2 text-(--vault-accent)">
               <Check className="h-4 w-4" />
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--vault-ink)]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-(--vault-ink)">
                 Pre-Shrunk Heavyweight Weaves
               </h3>
             </div>
-            <p className="text-xs text-[var(--vault-muted)] font-light leading-relaxed">
+            <p className="text-xs text-(--vault-muted) font-light leading-relaxed">
               All 480GSM Wakayama terry and virgin wool garments undergo enzyme
               scouring before assembly, guaranteeing less than 1% dimensional
               change following cold hand washing.
             </p>
           </div>
 
-          <div className="rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 space-y-3">
-            <div className="flex items-center gap-2 text-[var(--vault-accent)]">
+          <div className="rounded-2xl border border-(--vault-line) bg-(--vault-panel) p-6 space-y-3">
+            <div className="flex items-center gap-2 text-(--vault-accent)">
               <Check className="h-4 w-4" />
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--vault-ink)]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-(--vault-ink)">
                 Between Two Sizes?
               </h3>
             </div>
-            <p className="text-xs text-[var(--vault-muted)] font-light leading-relaxed">
+            <p className="text-xs text-(--vault-muted) font-light leading-relaxed">
               For structured trousers and shirts, prioritize waist and chest
               measurements. For oversized tees and bombers, select the larger
               size to accentuate the architectural box cut.
@@ -397,11 +397,11 @@ export default function SizeGuidePage() {
 
         {/* ── Step-by-Step How To Measure ── */}
         <section className="space-y-8">
-          <div className="border-b border-[var(--vault-line)] pb-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+          <div className="border-b border-(--vault-line) pb-4">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-(--vault-accent)">
               Protocol
             </p>
-            <h2 className="font-serif text-2xl sm:text-3xl font-light text-[var(--vault-ink)] mt-1">
+            <h2 className="font-serif text-2xl sm:text-3xl font-light text-(--vault-ink) mt-1">
               How to Measure with Precision
             </h2>
           </div>
@@ -410,18 +410,18 @@ export default function SizeGuidePage() {
             {MEASURING_GUIDE.map((item) => (
               <div
                 key={item.step}
-                className="rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 space-y-3"
+                className="rounded-2xl border border-(--vault-line) bg-(--vault-panel) p-6 space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[var(--vault-accent)]">
+                  <span className="font-mono text-xs font-bold text-(--vault-accent)">
                     {item.step}
                   </span>
-                  <Ruler className="h-4 w-4 text-[var(--vault-muted)]" />
+                  <Ruler className="h-4 w-4 text-(--vault-muted)" />
                 </div>
-                <h3 className="text-sm font-semibold text-[var(--vault-ink)]">
+                <h3 className="text-sm font-semibold text-(--vault-ink)">
                   {item.title}
                 </h3>
-                <p className="text-xs text-[var(--vault-muted)] font-light leading-relaxed">
+                <p className="text-xs text-(--vault-muted) font-light leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -430,13 +430,13 @@ export default function SizeGuidePage() {
         </section>
 
         {/* ── Concierge Help Banner ── */}
-        <div className="rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1.5 text-center sm:text-left">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--vault-accent)]">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-(--vault-accent)">
               <HelpCircle className="h-4 w-4" />
               <span>Need bespoke sizing guidance?</span>
             </div>
-            <p className="text-xs sm:text-sm text-[var(--vault-muted)] font-light max-w-xl">
+            <p className="text-xs sm:text-sm text-(--vault-muted) font-light max-w-xl">
               Our atelier styling concierge can assist with specific body
               dimensions or custom alterations before dispatch.
             </p>
@@ -444,13 +444,13 @@ export default function SizeGuidePage() {
           <div className="flex items-center gap-3">
             <Link
               href="/contact-us"
-              className="rounded-xl bg-[var(--vault-accent)] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white shadow-sm hover:brightness-110 active:scale-[0.98] transition-all"
+              className="rounded-xl bg-(--vault-accent) px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white shadow-sm hover:brightness-110 active:scale-[0.98] transition-all"
             >
               Contact Concierge
             </Link>
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 rounded-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[var(--vault-ink)] hover:border-[var(--vault-accent)] transition-all"
+              className="inline-flex items-center gap-2 rounded-xl border border-(--vault-line) bg-(--vault-panel) px-6 py-3 text-xs font-semibold uppercase tracking-wider text-(--vault-ink) hover:border-(--vault-accent) transition-all"
             >
               Shop Collection
               <ArrowRight className="h-3.5 w-3.5" />

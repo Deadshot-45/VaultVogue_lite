@@ -195,7 +195,7 @@ export function AdminSidebar() {
       {/* Collapse toggle */}
       <button
         onClick={() => setCollapsed((p) => !p)}
-        className="absolute -right-3 top-20 z-10 hidden md:flex h-6 w-6 items-center justify-center rounded-full border shadow-sm transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
+        className="absolute -right-3 top-20 z-10 hidden md:flex h-6 w-6 items-center justify-center rounded-full border shadow-sm transition-colors duration-200 hover:border-(--gold) cursor-pointer"
         style={{
           background: "var(--background)",
           borderColor: "var(--gold-soft)",

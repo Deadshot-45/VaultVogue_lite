@@ -87,23 +87,23 @@ function CatalogContent() {
   }, [category, subcategory, search, color, size, minPrice, maxPrice, badge]);
 
   return (
-    <div className="min-h-screen w-full bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen w-full bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* 1. Editorial Catalog Hero */}
       {/*<ProductCatalogHero />*/}
 
       {/* 2. Breadcrumb Navigation */}
-      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+      <div className="w-full border-b border-(--vault-line) bg-(--vault-panel)/60 py-3 backdrop-blur-sm">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]">
-            <Link href="/" className="hover:text-[var(--vault-accent)] transition-colors">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted)">
+            <Link href="/" className="hover:text-(--vault-accent) transition-colors">
               Vault Vogue
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <Link href="/products" className="hover:text-[var(--vault-accent)] transition-colors">
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <Link href="/products" className="hover:text-(--vault-accent) transition-colors">
               Catalog
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <span className="text-[var(--vault-accent)] font-semibold">
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <span className="text-(--vault-accent) font-semibold">
               {category === "all" ? "All Silhouettes" : category}
             </span>
           </nav>
@@ -193,21 +193,21 @@ function CatalogContent() {
       </div>
 
       {/* 7. Luxury Editorial Campaign Strip */}
-      <section className="border-y border-[var(--vault-line)] bg-[var(--vault-panel)] py-16 sm:py-20 text-center">
+      <section className="border-y border-(--vault-line) bg-(--vault-panel) py-16 sm:py-20 text-center">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--vault-accent)]">
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-(--vault-accent)">
             A T E L I E R · M A N I F E S T O
           </p>
-          <blockquote className="mt-4 font-serif text-2xl sm:text-3xl md:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-snug">
+          <blockquote className="mt-4 font-serif text-2xl sm:text-3xl md:text-4xl font-light uppercase tracking-tight text-(--vault-ink) leading-snug">
             “Fashion without the filter. Wear the silence. Own the silhouette.”
           </blockquote>
-          <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-[var(--vault-muted)]">
+          <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-(--vault-muted)">
             VAULT VOGUE ARCHIVE · CRAFTED WITH ZERO-COMPROMISE SOURCING
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <Link
               href="/#brand-story"
-              className="inline-flex items-center gap-2 border border-[var(--vault-line)] px-6 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-ink)] hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] transition-colors"
+              className="inline-flex items-center gap-2 border border-(--vault-line) px-6 py-2.5 font-mono text-[10px] uppercase tracking-widest text-(--vault-ink) hover:border-(--vault-accent) hover:text-(--vault-accent) transition-colors"
             >
               Read Brand Philosophy <ArrowRight size={12} />
             </Link>
@@ -223,10 +223,10 @@ export default function ProductsPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[var(--vault-bg)]">
+        <div className="min-h-screen flex items-center justify-center bg-(--vault-bg)">
           <div className="flex flex-col items-center gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-[var(--vault-accent)]" />
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--vault-muted)]">
+            <Loader2 className="h-8 w-8 animate-spin text-(--vault-accent)" />
+            <span className="font-mono text-xs uppercase tracking-widest text-(--vault-muted)">
               Curating The Vault Collection...
             </span>
           </div>

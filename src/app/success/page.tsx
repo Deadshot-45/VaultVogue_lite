@@ -125,9 +125,9 @@ function SuccessPageContent() {
     return (
       <ProtectedPage>
         <div className="flex flex-col items-center justify-center min-h-[70vh]  mx-auto text-center space-y-4">
-          <Loader2 className="h-10 w-10 animate-spin text-[var(--gold)]" />
+          <Loader2 className="h-10 w-10 animate-spin text-(--gold)" />
           <div>
-            <h2 className="font-cormorant text-2xl font-light text-[var(--brand-text)]">
+            <h2 className="font-cormorant text-2xl font-light text-(--brand-text)">
               Verifying Payment Status
             </h2>
             <p className="text-xs text-muted-foreground mt-1">
@@ -148,7 +148,7 @@ function SuccessPageContent() {
             <AlertCircle className="h-8 w-8" />
           </div>
           <div>
-            <h2 className="font-cormorant text-3xl font-light text-[var(--brand-text)]">
+            <h2 className="font-cormorant text-3xl font-light text-(--brand-text)">
               Verification Issue
             </h2>
             <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
@@ -166,7 +166,7 @@ function SuccessPageContent() {
             <Button
               onClick={() => router.push("/")}
               variant="outline"
-              className="h-11 text-xs border-[var(--gold-soft)] text-[var(--gold)]"
+              className="h-11 text-xs border-(--gold-soft) text-(--gold)"
             >
               Return Home
             </Button>
@@ -184,13 +184,13 @@ function SuccessPageContent() {
             initial={{ scale: 0, rotate: -45 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 10 }}
-            className="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--gold-glow)] text-[var(--gold)] border-2 border-[var(--gold)]"
+            className="flex h-20 w-20 items-center justify-center rounded-full bg-(--gold-glow) text-(--gold) border-2 border-(--gold)"
           >
             <CheckCircle2 className="h-10 w-10" />
           </motion.div>
 
           <p className="section-label mt-8">Order Confirmed</p>
-          <h1 className="mt-2 font-cormorant text-4xl font-light text-[var(--brand-text)] sm:text-5xl">
+          <h1 className="mt-2 font-cormorant text-4xl font-light text-(--brand-text) sm:text-5xl">
             Thank You for Your Order
           </h1>
           <p className="mt-4 text-xs text-muted-foreground max-w-md">
@@ -200,13 +200,13 @@ function SuccessPageContent() {
           </p>
 
           {/* Receipt Summary Card */}
-          <div className="mt-12 w-full overflow-hidden rounded-2xl border border-[var(--gold-soft)] bg-card/40 p-6 sm:p-8 text-left shadow-lg backdrop-blur-md">
+          <div className="mt-12 w-full overflow-hidden rounded-2xl border border-(--gold-soft) bg-card/40 p-6 sm:p-8 text-left shadow-lg backdrop-blur-md">
             <div className="flex flex-col justify-between border-b border-border/40 pb-5 sm:flex-row">
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-[var(--gold)]">
+                <p className="text-[10px] uppercase tracking-widest text-(--gold)">
                   Atelier Receipt
                 </p>
-                <h3 className="mt-1 text-sm font-semibold text-[var(--brand-text)]">
+                <h3 className="mt-1 text-sm font-semibold text-(--brand-text)">
                   Order Ref: {order._id}
                 </h3>
               </div>
@@ -214,7 +214,7 @@ function SuccessPageContent() {
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
                   Order Date
                 </p>
-                <h3 className="mt-1 text-xs text-[var(--brand-text)]">
+                <h3 className="mt-1 text-xs text-(--brand-text)">
                   {new Date(order.createdAt).toLocaleDateString("en-IN", {
                     day: "numeric",
                     month: "long",
@@ -239,7 +239,7 @@ function SuccessPageContent() {
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h4 className="text-xs font-semibold line-clamp-1 text-[var(--brand-text)]">
+                      <h4 className="text-xs font-semibold line-clamp-1 text-(--brand-text)">
                         {item.name}
                       </h4>
                       <p className="text-[10px] text-muted-foreground mt-0.5">
@@ -247,7 +247,7 @@ function SuccessPageContent() {
                         {item.size && `| Size: ${item.size}`}
                       </p>
                     </div>
-                    <span className="text-xs font-bold text-[var(--gold)]">
+                    <span className="text-xs font-bold text-(--gold)">
                       Rs. {(item.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
@@ -259,10 +259,10 @@ function SuccessPageContent() {
             <div className="grid gap-6 pt-6 sm:grid-cols-2 text-xs">
               <div>
                 <h5 className="font-semibold text-muted-foreground flex items-center gap-1.5 mb-2.5">
-                  <Truck className="h-3.5 w-3.5 text-[var(--gold)]" /> Delivery
+                  <Truck className="h-3.5 w-3.5 text-(--gold)" /> Delivery
                   Destination
                 </h5>
-                <p className="font-semibold text-[var(--brand-text)]">
+                <p className="font-semibold text-(--brand-text)">
                   {order.shippingAddress.fullName}
                 </p>
                 <p className="text-muted-foreground mt-1 leading-relaxed">
@@ -282,7 +282,7 @@ function SuccessPageContent() {
 
               <div className="space-y-2">
                 <h5 className="font-semibold text-muted-foreground flex items-center gap-1.5 mb-2.5">
-                  <ShoppingBag className="h-3.5 w-3.5 text-[var(--gold)]" />{" "}
+                  <ShoppingBag className="h-3.5 w-3.5 text-(--gold)" />{" "}
                   Cost Breakdown
                 </h5>
                 <div className="flex justify-between text-muted-foreground">
@@ -308,9 +308,9 @@ function SuccessPageContent() {
                   </div>
                 )}
                 <Separator className="my-2" />
-                <div className="flex justify-between font-bold text-[var(--brand-text)] text-sm pt-1">
+                <div className="flex justify-between font-bold text-(--brand-text) text-sm pt-1">
                   <span>Total Amount Paid</span>
-                  <span className="text-[var(--gold)]">
+                  <span className="text-(--gold)">
                     Rs. {order.totalAmount.toFixed(2)}
                   </span>
                 </div>
@@ -345,7 +345,7 @@ export default function OrderSuccessPage() {
     <Suspense
       fallback={
         <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
-          <Loader2 className="h-10 w-10 animate-spin text-[var(--gold)]" />
+          <Loader2 className="h-10 w-10 animate-spin text-(--gold)" />
         </div>
       }
     >

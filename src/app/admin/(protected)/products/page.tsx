@@ -21,7 +21,7 @@ const columns = [
   col.accessor("id", {
     header: "SKU",
     cell: (i) => (
-      <span className="font-mono text-xs text-[var(--gold)]">
+      <span className="font-mono text-xs text-(--gold)">
         {i.getValue()}
       </span>
     ),
@@ -29,7 +29,7 @@ const columns = [
   col.accessor("name", {
     header: "Product",
     cell: (i) => (
-      <span className="text-sm font-medium text-[var(--brand-text)]">
+      <span className="text-sm font-medium text-(--brand-text)">
         {i.getValue()}
       </span>
     ),
@@ -43,7 +43,7 @@ const columns = [
   col.accessor("price", {
     header: "Price",
     cell: (i) => (
-      <span className="text-sm font-semibold font-mono text-[var(--brand-text)]">
+      <span className="text-sm font-semibold font-mono text-(--brand-text)">
         ₹{i.getValue().toLocaleString("en-IN")}
       </span>
     ),

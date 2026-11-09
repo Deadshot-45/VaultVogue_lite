@@ -65,7 +65,7 @@ export function CategoryProductItem({
 
   return (
     <article
-      className="group relative flex flex-col border border-[var(--vault-line)] bg-[var(--vault-panel)] transition-all duration-300 hover:border-[var(--vault-accent)] hover:shadow-xl"
+      className="group relative flex flex-col border border-(--vault-line) bg-(--vault-panel) transition-all duration-300 hover:border-(--vault-accent) hover:shadow-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -76,13 +76,13 @@ export function CategoryProductItem({
           type="button"
           onClick={handleWishlistToggle}
           aria-label={inWishlist ? "Remove from wishlist" : "Save to wishlist"}
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--vault-line)] bg-[var(--vault-panel)]/90 text-[var(--vault-ink)] backdrop-blur-md transition hover:scale-110 hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] cursor-pointer"
+          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-(--vault-line) bg-(--vault-panel)/90 text-(--vault-ink) backdrop-blur-md transition hover:scale-110 hover:border-(--vault-accent) hover:text-(--vault-accent) cursor-pointer"
         >
           <Heart
             size={14}
             className={
               inWishlist
-                ? "fill-[var(--vault-accent)] text-[var(--vault-accent)]"
+                ? "fill-(--vault-accent) text-(--vault-accent)"
                 : ""
             }
           />
@@ -90,7 +90,7 @@ export function CategoryProductItem({
 
         {/* Lead-Time or Stock Badge */}
         <div className="absolute left-3 top-3 z-10">
-          <span className="inline-flex items-center gap-1 bg-[var(--vault-panel)]/90 backdrop-blur-md border border-[var(--vault-line)] px-2 py-0.5 font-mono text-[8px] uppercase tracking-widest text-[var(--vault-accent)] font-semibold">
+          <span className="inline-flex items-center gap-1 bg-(--vault-panel)/90 backdrop-blur-md border border-(--vault-line) px-2 py-0.5 font-mono text-[8px] uppercase tracking-widest text-(--vault-accent) font-semibold">
             {product.leadTime}
           </span>
         </div>
@@ -142,30 +142,30 @@ export function CategoryProductItem({
       <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
         <div>
           {/* Category & Serial Code */}
-          <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)]">
+          <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-(--vault-muted)">
             <span>{product.category}</span>
-            <span>{product.code}</span>
+            {/*<span>{product.code}</span>  */}
           </div>
 
           {/* Product Title */}
           <Link href={`/products/${product.slug}`}>
-            <h3 className="mt-1 font-serif text-base sm:text-lg font-light uppercase tracking-tight text-[var(--vault-ink)] transition-colors hover:text-[var(--vault-accent)] line-clamp-1">
+            <h3 className="mt-1 font-serif text-base sm:text-lg font-light uppercase tracking-tight text-(--vault-ink) transition-colors hover:text-(--vault-accent) line-clamp-1">
               {product.name}
             </h3>
           </Link>
 
           {/* Pricing in INR */}
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-mono text-sm font-semibold text-[var(--vault-ink)]">
+            <span className="font-mono text-sm font-semibold text-(--vault-ink)">
               {formatCurrency(product.price, "INR")}
             </span>
-            <span className="font-mono text-[10px] line-through text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] line-through text-(--vault-muted)">
               {formatCurrency(Math.round(product.price * 1.3), "INR")}
             </span>
           </div>
 
           {/* Fabric Composition */}
-          <p className="mt-1 text-[10px] text-[var(--vault-muted)] line-clamp-1 font-mono">
+          <p className="mt-1 text-[10px] text-(--vault-muted) line-clamp-1 font-mono">
             {product.fabric}
           </p>
 
@@ -179,13 +179,13 @@ export function CategoryProductItem({
                 aria-label={`Select ${c.name}`}
                 className={`h-4 w-4 rounded-full border transition-transform cursor-pointer ${
                   selectedColorIdx === idx
-                    ? "scale-125 border-[var(--vault-accent)] ring-1 ring-[var(--vault-accent)]"
+                    ? "scale-125 border-(--vault-accent) ring-1 ring-(--vault-accent)"
                     : "border-black/20 hover:scale-110"
                 }`}
                 style={{ backgroundColor: c.hex }}
               />
             ))}
-            <span className="ml-1 font-mono text-[9px] uppercase text-[var(--vault-muted)]">
+            <span className="ml-1 font-mono text-[9px] uppercase text-(--vault-muted)">
               {activeColor.name}
             </span>
           </div>
@@ -199,8 +199,8 @@ export function CategoryProductItem({
                 onClick={() => setSelectedSize(sz)}
                 className={`h-6 w-7 border font-mono text-[9px] uppercase transition-colors cursor-pointer ${
                   selectedSize === sz
-                    ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold"
-                    : "border-[var(--vault-line)] text-[var(--vault-muted)] hover:border-[var(--vault-ink)] hover:text-[var(--vault-ink)]"
+                    ? "border-(--vault-accent) bg-(--vault-accent) text-white font-bold"
+                    : "border-(--vault-line) text-(--vault-muted) hover:border-(--vault-ink) hover:text-(--vault-ink)"
                 }`}
               >
                 {sz}
@@ -210,7 +210,7 @@ export function CategoryProductItem({
         </div>
 
         {/* Mobile Quick Add Button */}
-        <div className="mt-4 pt-3 border-t border-[var(--vault-line)] sm:hidden">
+        <div className="mt-4 pt-3 border-t border-(--vault-line) sm:hidden">
           <button
             type="button"
             onClick={handleQuickAdd}
@@ -230,16 +230,16 @@ function ProductGridSkeleton({ count = 8 }: { count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="border border-[var(--vault-line)] bg-[var(--vault-panel)] animate-pulse flex flex-col"
+          className="border border-(--vault-line) bg-(--vault-panel) animate-pulse flex flex-col"
         >
-          <div className="aspect-[3/4] w-full bg-[var(--vault-line)]/30" />
+          <div className="aspect-[3/4] w-full bg-(--vault-line)/30" />
           <div className="p-4 sm:p-5 space-y-3 flex-1 flex flex-col justify-between">
             <div className="space-y-2">
-              <div className="h-3 w-1/3 bg-[var(--vault-line)]/40 rounded-none" />
-              <div className="h-4 w-3/4 bg-[var(--vault-line)]/50 rounded-none" />
-              <div className="h-3 w-1/2 bg-[var(--vault-line)]/30 rounded-none" />
+              <div className="h-3 w-1/3 bg-(--vault-line)/40 rounded-none" />
+              <div className="h-4 w-3/4 bg-(--vault-line)/50 rounded-none" />
+              <div className="h-3 w-1/2 bg-(--vault-line)/30 rounded-none" />
             </div>
-            <div className="h-7 w-full bg-[var(--vault-line)]/20 rounded-none mt-4" />
+            <div className="h-7 w-full bg-(--vault-line)/20 rounded-none mt-4" />
           </div>
         </div>
       ))}
@@ -301,14 +301,14 @@ export function CategoryProductGrid({
 
   if (isError) {
     return (
-      <div className="py-16 text-center border border-[var(--vault-accent)]/40 bg-[var(--vault-panel)] p-8 my-8 max-w-xl mx-auto space-y-4">
-        <div className="flex justify-center text-[var(--vault-accent)]">
+      <div className="py-16 text-center border border-(--vault-accent)/40 bg-(--vault-panel) p-8 my-8 max-w-xl mx-auto space-y-4">
+        <div className="flex justify-center text-(--vault-accent)">
           <WifiOff size={32} />
         </div>
-        <h3 className="font-serif text-2xl uppercase tracking-tight text-[var(--vault-ink)]">
+        <h3 className="font-serif text-2xl uppercase tracking-tight text-(--vault-ink)">
           API Connection Interrupted
         </h3>
-        <p className="text-xs text-[var(--vault-muted)] max-w-md mx-auto leading-relaxed font-sans">
+        <p className="text-xs text-(--vault-muted) max-w-md mx-auto leading-relaxed font-sans">
           {errorMessage ||
             "Unable to reach the live product service. Check backend connection."}
         </p>
@@ -327,14 +327,14 @@ export function CategoryProductGrid({
 
   if (products.length === 0) {
     return (
-      <div className="py-20 text-center border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 my-8 max-w-xl mx-auto space-y-4">
-        <div className="flex justify-center text-[var(--vault-accent)]">
+      <div className="py-20 text-center border border-(--vault-line) bg-(--vault-panel) p-8 my-8 max-w-xl mx-auto space-y-4">
+        <div className="flex justify-center text-(--vault-accent)">
           <AlertCircle size={32} />
         </div>
-        <h3 className="font-serif text-2xl uppercase tracking-tight text-[var(--vault-ink)]">
+        <h3 className="font-serif text-2xl uppercase tracking-tight text-(--vault-ink)">
           No Creations Found
         </h3>
-        <p className="text-xs text-[var(--vault-muted)] max-w-md mx-auto leading-relaxed font-sans">
+        <p className="text-xs text-(--vault-muted) max-w-md mx-auto leading-relaxed font-sans">
           No garments currently match your selected filters. Try broadening your
           criteria or reset filters to browse the complete archive.
         </p>

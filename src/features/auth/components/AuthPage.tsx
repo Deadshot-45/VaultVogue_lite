@@ -391,11 +391,11 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen lg:h-screen w-full bg-[var(--vault-bg)] text-[var(--vault-ink)] overflow-hidden transition-colors duration-300"
+      className="min-h-screen lg:h-screen w-full bg-(--vault-bg) text-(--vault-ink) overflow-hidden transition-colors duration-300"
     >
       <div className="grid min-h-screen lg:h-screen w-full grid-cols-1 lg:grid-cols-12 overflow-hidden">
         {/* ─── LEFT: Editorial Fashion Campaign Panel (Exact screen height, fixed) ─── */}
-        <div className="relative hidden lg:col-span-5 xl:col-span-6 lg:flex flex-col justify-between h-screen overflow-hidden p-10 xl:p-14 border-r border-[var(--vault-line)] bg-[var(--vault-panel)] select-none">
+        <div className="relative hidden lg:col-span-5 xl:col-span-6 lg:flex flex-col justify-between h-screen overflow-hidden p-10 xl:p-14 border-r border-(--vault-line) bg-(--vault-panel) select-none">
           {/* Background image */}
           <Image
             src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1400&q=85"
@@ -412,26 +412,26 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
           {/* Top Brand Bar */}
           <div className="relative z-10 flex items-center justify-between">
             <Link href="/" className="group flex items-center gap-3">
-              <span className="font-serif text-2xl font-light tracking-[0.2em] text-white uppercase group-hover:text-[var(--vault-accent)] transition-colors">
+              <span className="font-serif text-2xl font-light tracking-[0.2em] text-white uppercase group-hover:text-(--vault-accent) transition-colors">
                 VAULT VOGUE
               </span>
             </Link>
-            <div className="inline-flex items-center gap-2 border border-white/20 bg-black/40 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.25em] text-[var(--vault-accent)] backdrop-blur-md">
-              <ShieldCheck className="h-3 w-3 text-[var(--vault-accent)]" />
+            <div className="inline-flex items-center gap-2 border border-white/20 bg-black/40 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.25em] text-(--vault-accent) backdrop-blur-md">
+              <ShieldCheck className="h-3 w-3 text-(--vault-accent)" />
               Authenticated Gateway
             </div>
           </div>
 
           {/* Middle Storytelling Block */}
           <div className="relative z-10 max-w-lg space-y-6 my-auto py-12">
-            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--vault-accent)]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--vault-accent)]" />
+            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-(--vault-accent)">
+              <span className="h-1.5 w-1.5 rounded-full bg-(--vault-accent)" />
               Maison Portal · Architecture &amp; Expression
             </div>
 
             <h1 className="font-serif text-4xl xl:text-5xl 2xl:text-6xl font-light uppercase tracking-tight text-white leading-[1.08]">
               YOUR STYLE. <br />
-              <span className="italic text-[var(--vault-accent)] font-normal">
+              <span className="italic text-(--vault-accent) font-normal">
                 YOUR WORLD.
               </span>
             </h1>
@@ -444,7 +444,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
             {/* Value Tenets Strip */}
             <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/15">
               <div className="space-y-1">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-accent)] font-semibold">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-(--vault-accent) font-semibold">
                   01 // Provenance
                 </p>
                 <p className="text-xs text-white/70 font-light">
@@ -452,7 +452,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                 </p>
               </div>
               <div className="space-y-1">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-accent)] font-semibold">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-(--vault-accent) font-semibold">
                   02 // Private Archive
                 </p>
                 <p className="text-xs text-white/70 font-light">
@@ -467,7 +467,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
             <span>PARIS · INDORE · TOKYO · MILAN</span>
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-white/80 hover:text-[var(--vault-accent)] transition-colors"
+              className="inline-flex items-center gap-1.5 text-white/80 hover:text-(--vault-accent) transition-colors"
             >
               <span>Storefront</span>
               <ArrowUpRight className="h-3.5 w-3.5" />
@@ -478,20 +478,20 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
         {/* ─── RIGHT: Authentication Panel (Independent Scroll, Full Screen Height) ─── */}
         <div
           ref={rightPanelRef}
-          className="lg:col-span-7 xl:col-span-6 min-h-[80vh] overflow-y-auto overflow-x-hidden flex flex-col px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 scroll-smooth [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-[var(--vault-line)] [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-[var(--vault-accent)]"
+          className="lg:col-span-7 xl:col-span-6 min-h-[80vh] overflow-y-auto overflow-x-hidden flex flex-col px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 scroll-smooth [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-(--vault-line) [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-(--vault-accent)"
         >
           <div
             ref={formCardRef}
             className="mx-auto sm:my-auto w-full max-w-md py-0 max-sm:my-6 sm:py-14 space-y-7"
           >
             {/* Mobile Brand Header */}
-            <div className="flex items-center justify-between lg:hidden border-b border-[var(--vault-line)] pb-5">
-              <Link href="/" className="font-serif text-xl font-light tracking-[0.2em] text-[var(--vault-ink)] uppercase">
+            <div className="flex items-center justify-between lg:hidden border-b border-(--vault-line) pb-5">
+              <Link href="/" className="font-serif text-xl font-light tracking-[0.2em] text-(--vault-ink) uppercase">
                 VAULT VOGUE
               </Link>
               <Link
                 href="/"
-                className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)] hover:text-[var(--vault-accent)]"
+                className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-(--vault-muted) hover:text-(--vault-accent)"
               >
                 Storefront <ArrowUpRight className="h-3 w-3" />
               </Link>
@@ -502,7 +502,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
               <div
                 role="tablist"
                 aria-label="Authentication Mode"
-                className="grid grid-cols-2 p-1 rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-bg)]"
+                className="grid grid-cols-2 p-1 rounded-2xl border border-(--vault-line) bg-(--vault-bg)"
               >
                 <button
                   type="button"
@@ -512,8 +512,8 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                   onClick={() => handleSwitchMode("signin")}
                   className={`rounded-xl py-2.5 text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
                     mode === "signin"
-                      ? "bg-[var(--vault-accent)] text-white shadow-sm"
-                      : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                      ? "bg-(--vault-accent) text-white shadow-sm"
+                      : "text-(--vault-muted) hover:text-(--vault-ink)"
                   }`}
                 >
                   Sign In
@@ -526,8 +526,8 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                   onClick={() => handleSwitchMode("signup")}
                   className={`rounded-xl py-2.5 text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
                     mode === "signup"
-                      ? "bg-[var(--vault-accent)] text-white shadow-sm"
-                      : "text-[var(--vault-muted)] hover:text-[var(--vault-ink)]"
+                      ? "bg-(--vault-accent) text-white shadow-sm"
+                      : "text-(--vault-muted) hover:text-(--vault-ink)"
                   }`}
                 >
                   Create Account
@@ -536,13 +536,13 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
 
               {/* Dynamic Header Titles */}
               <div className="text-left pt-1">
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-(--vault-accent)">
                   {mode === "signin" ? "Maison Member Access" : "Join The Collective"}
                 </p>
-                <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight text-[var(--vault-ink)] mt-1.5">
+                <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight text-(--vault-ink) mt-1.5">
                   {mode === "signin" ? "Welcome Back" : "Create Your Account"}
                 </h2>
-                <p className="font-sans text-xs sm:text-sm text-[var(--vault-muted)] mt-1.5 font-light">
+                <p className="font-sans text-xs sm:text-sm text-(--vault-muted) mt-1.5 font-light">
                   {mode === "signin"
                     ? "Sign in to continue your VAULT VOGUE experience."
                     : "Join VAULT VOGUE and discover your next icon."}
@@ -556,18 +556,18 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                 type="button"
                 onClick={handleSocialGoogle}
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-3 rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] hover:border-[var(--vault-accent)]/50 py-3.5 px-4 text-xs font-semibold uppercase tracking-wider text-[var(--vault-ink)] transition-all shadow-sm active:scale-[0.98] cursor-pointer disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-3 rounded-2xl border border-(--vault-line) bg-(--vault-panel) hover:border-(--vault-accent)/50 py-3.5 px-4 text-xs font-semibold uppercase tracking-wider text-(--vault-ink) transition-all shadow-sm active:scale-[0.98] cursor-pointer disabled:opacity-50"
               >
                 <FcGoogle className="h-5 w-5" />
                 <span>Continue with Google</span>
               </button>
 
               <div className="relative flex items-center py-2">
-                <div className="flex-grow border-t border-[var(--vault-line)]" />
-                <span className="flex-shrink mx-4 font-mono text-[9px] uppercase tracking-[0.25em] text-[var(--vault-muted)]">
+                <div className="flex-grow border-t border-(--vault-line)" />
+                <span className="flex-shrink mx-4 font-mono text-[9px] uppercase tracking-[0.25em] text-(--vault-muted)">
                   Or with Atelier Credentials
                 </span>
-                <div className="flex-grow border-t border-[var(--vault-line)]" />
+                <div className="flex-grow border-t border-(--vault-line)" />
               </div>
             </div>
 
@@ -578,12 +578,12 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                 <div className="space-y-1.5">
                   <label
                     htmlFor="auth-fullName"
-                    className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--vault-muted)]"
+                    className="block font-mono text-[10px] font-bold uppercase tracking-wider text-(--vault-muted)"
                   >
-                    Full Name <span className="text-[var(--vault-accent)]">*</span>
+                    Full Name <span className="text-(--vault-accent)">*</span>
                   </label>
                   <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--vault-muted)]" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-(--vault-muted)" />
                     <input
                       id="auth-fullName"
                       type="text"
@@ -592,7 +592,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                       value={form.fullName}
                       onChange={handleFieldChange("fullName")}
                       aria-invalid={!!fieldErrors.fullName}
-                      className="w-full rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] pl-11 pr-4 py-3 text-xs sm:text-sm text-[var(--vault-ink)] font-medium focus:border-[var(--vault-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--vault-accent)] transition-colors"
+                      className="w-full rounded-2xl border border-(--vault-line) bg-(--vault-panel) pl-11 pr-4 py-3 text-xs sm:text-sm text-(--vault-ink) font-medium focus:border-(--vault-accent) focus:outline-none focus:ring-1 focus:ring-(--vault-accent) transition-colors"
                     />
                   </div>
                   {fieldErrors.fullName && (
@@ -607,12 +607,12 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
               <div className="space-y-1.5">
                 <label
                   htmlFor="auth-email"
-                  className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--vault-muted)]"
+                  className="block font-mono text-[10px] font-bold uppercase tracking-wider text-(--vault-muted)"
                 >
-                  Email Address <span className="text-[var(--vault-accent)]">*</span>
+                  Email Address <span className="text-(--vault-accent)">*</span>
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--vault-muted)]" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-(--vault-muted)" />
                   <input
                     id="auth-email"
                     type="email"
@@ -621,7 +621,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                     value={form.email}
                     onChange={handleFieldChange("email")}
                     aria-invalid={!!fieldErrors.email}
-                    className="w-full rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] pl-11 pr-4 py-3 text-xs sm:text-sm text-[var(--vault-ink)] font-medium focus:border-[var(--vault-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--vault-accent)] transition-colors"
+                    className="w-full rounded-2xl border border-(--vault-line) bg-(--vault-panel) pl-11 pr-4 py-3 text-xs sm:text-sm text-(--vault-ink) font-medium focus:border-(--vault-accent) focus:outline-none focus:ring-1 focus:ring-(--vault-accent) transition-colors"
                   />
                 </div>
                 {fieldErrors.email && (
@@ -636,12 +636,12 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                 <div className="space-y-1.5">
                   <label
                     htmlFor="auth-phone"
-                    className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--vault-muted)]"
+                    className="block font-mono text-[10px] font-bold uppercase tracking-wider text-(--vault-muted)"
                   >
-                    Telephone / WhatsApp <span className="text-[var(--vault-accent)]">*</span>
+                    Telephone / WhatsApp <span className="text-(--vault-accent)">*</span>
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--vault-muted)]" />
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-(--vault-muted)" />
                     <input
                       id="auth-phone"
                       type="tel"
@@ -650,7 +650,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                       value={form.phoneNumber}
                       onChange={handleFieldChange("phoneNumber")}
                       aria-invalid={!!fieldErrors.phoneNumber}
-                      className="w-full rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] pl-11 pr-4 py-3 text-xs sm:text-sm text-[var(--vault-ink)] font-medium focus:border-[var(--vault-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--vault-accent)] transition-colors"
+                      className="w-full rounded-2xl border border-(--vault-line) bg-(--vault-panel) pl-11 pr-4 py-3 text-xs sm:text-sm text-(--vault-ink) font-medium focus:border-(--vault-accent) focus:outline-none focus:ring-1 focus:ring-(--vault-accent) transition-colors"
                     />
                   </div>
                   {fieldErrors.phoneNumber && (
@@ -666,21 +666,21 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="auth-password"
-                    className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--vault-muted)]"
+                    className="block font-mono text-[10px] font-bold uppercase tracking-wider text-(--vault-muted)"
                   >
-                    Security Key / Password <span className="text-[var(--vault-accent)]">*</span>
+                    Security Key / Password <span className="text-(--vault-accent)">*</span>
                   </label>
                   {mode === "signin" && (
                     <Link
                       href="/forgot-password"
-                      className="font-mono text-[10px] text-[var(--vault-accent)] hover:underline uppercase tracking-wider"
+                      className="font-mono text-[10px] text-(--vault-accent) hover:underline uppercase tracking-wider"
                     >
                       Forgot key?
                     </Link>
                   )}
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--vault-muted)]" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-(--vault-muted)" />
                   <input
                     id="auth-password"
                     type={showPassword ? "text" : "password"}
@@ -689,13 +689,13 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                     value={form.password}
                     onChange={handleFieldChange("password")}
                     aria-invalid={!!fieldErrors.password}
-                    className="w-full rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] pl-11 pr-11 py-3 text-xs sm:text-sm text-[var(--vault-ink)] font-medium focus:border-[var(--vault-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--vault-accent)] transition-colors"
+                    className="w-full rounded-2xl border border-(--vault-line) bg-(--vault-panel) pl-11 pr-11 py-3 text-xs sm:text-sm text-(--vault-ink) font-medium focus:border-(--vault-accent) focus:outline-none focus:ring-1 focus:ring-(--vault-accent) transition-colors"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-[var(--vault-muted)] hover:text-[var(--vault-ink)] transition-colors cursor-pointer"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-(--vault-muted) hover:text-(--vault-ink) transition-colors cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -712,12 +712,12 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                 <div className="space-y-1.5">
                   <label
                     htmlFor="auth-confirmPassword"
-                    className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--vault-muted)]"
+                    className="block font-mono text-[10px] font-bold uppercase tracking-wider text-(--vault-muted)"
                   >
-                    Confirm Security Key <span className="text-[var(--vault-accent)]">*</span>
+                    Confirm Security Key <span className="text-(--vault-accent)">*</span>
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--vault-muted)]" />
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-(--vault-muted)" />
                     <input
                       id="auth-confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
@@ -726,13 +726,13 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                       value={form.confirmPassword}
                       onChange={handleFieldChange("confirmPassword")}
                       aria-invalid={!!fieldErrors.confirmPassword}
-                      className="w-full rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] pl-11 pr-11 py-3 text-xs sm:text-sm text-[var(--vault-ink)] font-medium focus:border-[var(--vault-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--vault-accent)] transition-colors"
+                      className="w-full rounded-2xl border border-(--vault-line) bg-(--vault-panel) pl-11 pr-11 py-3 text-xs sm:text-sm text-(--vault-ink) font-medium focus:border-(--vault-accent) focus:outline-none focus:ring-1 focus:ring-(--vault-accent) transition-colors"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword((prev) => !prev)}
                       aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-[var(--vault-muted)] hover:text-[var(--vault-ink)] transition-colors cursor-pointer"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-(--vault-muted) hover:text-(--vault-ink) transition-colors cursor-pointer"
                     >
                       {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -748,32 +748,32 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
               {/* Options & Policies */}
               {mode === "signin" ? (
                 <div className="flex items-center justify-between pt-1">
-                  <label className="flex items-center gap-2.5 text-xs text-[var(--vault-muted)] cursor-pointer select-none">
+                  <label className="flex items-center gap-2.5 text-xs text-(--vault-muted) cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={form.rememberMe}
                       onChange={handleFieldChange("rememberMe")}
-                      className="h-4 w-4 rounded border-[var(--vault-line)] accent-[var(--vault-accent)] cursor-pointer"
+                      className="h-4 w-4 rounded border-(--vault-line) accent-(--vault-accent) cursor-pointer"
                     />
                     <span>Remember my details for 30 days</span>
                   </label>
                 </div>
               ) : (
                 <div className="pt-2 space-y-1">
-                  <label className="flex items-start gap-2.5 text-xs text-[var(--vault-muted)] cursor-pointer select-none">
+                  <label className="flex items-start gap-2.5 text-xs text-(--vault-muted) cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={form.termsAccepted}
                       onChange={handleFieldChange("termsAccepted")}
                       aria-invalid={!!fieldErrors.termsAccepted}
-                      className="h-4 w-4 mt-0.5 rounded border-[var(--vault-line)] accent-[var(--vault-accent)] cursor-pointer"
+                      className="h-4 w-4 mt-0.5 rounded border-(--vault-line) accent-(--vault-accent) cursor-pointer"
                     />
                     <span className="leading-relaxed">
                       I accept the{" "}
                       <Link
                         href="/terms-and-conditions"
                         target="_blank"
-                        className="text-[var(--vault-accent)] underline hover:opacity-80"
+                        className="text-(--vault-accent) underline hover:opacity-80"
                       >
                         Terms &amp; Conditions
                       </Link>{" "}
@@ -781,7 +781,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
                       <Link
                         href="/privacy-policy"
                         target="_blank"
-                        className="text-[var(--vault-accent)] underline hover:opacity-80"
+                        className="text-(--vault-accent) underline hover:opacity-80"
                       >
                         Privacy Policy
                       </Link>
@@ -807,7 +807,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--vault-accent)] hover:brightness-110 py-3.5 px-6 text-xs font-semibold uppercase tracking-wider text-white shadow-md active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50 mt-4"
+                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-(--vault-accent) hover:brightness-110 py-3.5 px-6 text-xs font-semibold uppercase tracking-wider text-white shadow-md active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50 mt-4"
               >
                 {isSubmitting ? (
                   <>
@@ -824,27 +824,27 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
             </form>
 
             {/* Bottom Mode Switch Link */}
-            <div className="pt-2 text-center border-t border-[var(--vault-line)]">
+            <div className="pt-2 text-center border-t border-(--vault-line)">
               {mode === "signin" ? (
-                <p className="text-xs text-[var(--vault-muted)]">
+                <p className="text-xs text-(--vault-muted)">
                   New to VAULT VOGUE?{" "}
                   <button
                     type="button"
                     onClick={() => handleSwitchMode("signup")}
                     disabled={isSubmitting}
-                    className="font-semibold text-[var(--vault-accent)] uppercase tracking-wider hover:underline cursor-pointer"
+                    className="font-semibold text-(--vault-accent) uppercase tracking-wider hover:underline cursor-pointer"
                   >
                     Create an account
                   </button>
                 </p>
               ) : (
-                <p className="text-xs text-[var(--vault-muted)]">
+                <p className="text-xs text-(--vault-muted)">
                   Already have an account?{" "}
                   <button
                     type="button"
                     onClick={() => handleSwitchMode("signin")}
                     disabled={isSubmitting}
-                    className="font-semibold text-[var(--vault-accent)] uppercase tracking-wider hover:underline cursor-pointer"
+                    className="font-semibold text-(--vault-accent) uppercase tracking-wider hover:underline cursor-pointer"
                   >
                     Sign in to Maison
                   </button>
@@ -853,7 +853,7 @@ export function AuthPage({ initialMode = "signin" }: AuthPageProps) {
             </div>
 
             {/* Microcopy disclaimer */}
-            <p className="font-mono text-[10px] text-[var(--vault-muted)]/70 text-center uppercase tracking-wider">
+            <p className="font-mono text-[10px] text-(--vault-muted)/70 text-center uppercase tracking-wider">
               Encrypted via 256-Bit SSL · All Rights Reserved
             </p>
           </div>

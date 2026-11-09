@@ -70,62 +70,62 @@ export default function ContactUsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* Breadcrumb Navigation */}
-      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+      <div className="w-full border-b border-(--vault-line) bg-(--vault-panel)/60 py-3 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted)"
           >
-            <Link href="/" className="hover:text-[var(--vault-accent)] transition-colors">
+            <Link href="/" className="hover:text-(--vault-accent) transition-colors">
               Vault Vogue
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <span className="text-[var(--vault-accent)] font-semibold">Concierge &amp; Contact</span>
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <span className="text-(--vault-accent) font-semibold">Concierge &amp; Contact</span>
           </nav>
         </div>
       </div>
 
       <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
         {/* Editorial Header Block */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 mb-8 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-(--vault-line) pb-6">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)] animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-(--vault-accent) animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-(--vault-accent) font-semibold flex items-center gap-1.5">
                 Client Care &amp; Private Atelier Inquiries
               </span>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               SLA: RESPONSE WITHIN 24 HOURS
             </span>
           </div>
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-8 space-y-4">
-              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
-                Form &amp; <span className="italic text-[var(--vault-accent)]">Dialogue.</span>
+              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-(--vault-ink) leading-none">
+                Form &amp; <span className="italic text-(--vault-accent)">Dialogue.</span>
                 <br />
                 Contact Concierge.
               </h1>
-              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-(--vault-muted) font-mono">
                 Whether arranging a private salon appointment, requesting garment alterations,
                 or tracking worldwide air-freight consignments, the Vault Vogue atelier desk is at your service.
               </p>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
+            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-(--vault-line) lg:pl-8 pt-4 lg:pt-0">
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">CENTRAL DESK:</span>
+                <span className="text-(--vault-muted)">CENTRAL DESK:</span>
                 <span className="font-bold">PARIS / INDORE</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">COVERAGE:</span>
-                <span className="text-[var(--vault-accent)] font-bold">24 / 7 TELEMETRY</span>
+                <span className="text-(--vault-muted)">COVERAGE:</span>
+                <span className="text-(--vault-accent) font-bold">24 / 7 TELEMETRY</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">ENCRYPTION:</span>
+                <span className="text-(--vault-muted)">ENCRYPTION:</span>
                 <span className="font-bold">END-TO-END VERIFIED</span>
               </div>
             </div>
@@ -137,62 +137,62 @@ export default function ContactUsPage() {
           {CONTACT_CHANNELS.map((item) => (
             <article
               key={item.title}
-              className="group relative flex flex-col justify-between border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 transition-all duration-300 hover:border-[var(--vault-accent)] hover:shadow-xl"
+              className="group relative flex flex-col justify-between border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 transition-all duration-300 hover:border-(--vault-accent) hover:shadow-xl"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between font-mono text-[10px]">
-                  <span className="text-[var(--vault-accent)] font-bold tracking-wider">{item.code}</span>
-                  <span className="px-2 py-0.5 border border-[var(--vault-line)] text-[9px] uppercase tracking-wider text-[var(--vault-muted)]">
+                  <span className="text-(--vault-accent) font-bold tracking-wider">{item.code}</span>
+                  <span className="px-2 py-0.5 border border-(--vault-line) text-[9px] uppercase tracking-wider text-(--vault-muted)">
                     {item.sla}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3 pt-2">
-                  <div className="flex h-11 w-11 items-center justify-center border border-[var(--vault-accent)]/30 bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] transition-transform duration-300 group-hover:scale-105">
+                  <div className="flex h-11 w-11 items-center justify-center border border-(--vault-accent)/30 bg-(--vault-accent)/10 text-(--vault-accent) transition-transform duration-300 group-hover:scale-105">
                     <item.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-mono text-xs uppercase tracking-wider text-[var(--vault-ink)] font-bold">
+                    <h3 className="font-mono text-xs uppercase tracking-wider text-(--vault-ink) font-bold">
                       {item.title}
                     </h3>
-                    <p className="font-mono text-xs text-[var(--vault-accent)] tracking-tight">
+                    <p className="font-mono text-xs text-(--vault-accent) tracking-tight">
                       {item.value}
                     </p>
                   </div>
                 </div>
 
-                <p className="text-xs leading-relaxed text-[var(--vault-muted)] pt-2 font-sans">
+                <p className="text-xs leading-relaxed text-(--vault-muted) pt-2 font-sans">
                   {item.description}
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[var(--vault-line)] flex items-center justify-between font-mono text-[10px] uppercase text-[var(--vault-muted)]">
+              <div className="mt-6 pt-4 border-t border-(--vault-line) flex items-center justify-between font-mono text-[10px] uppercase text-(--vault-muted)">
                 <span>Channel Active</span>
-                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[var(--vault-accent)]" />
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-(--vault-accent)" />
               </div>
             </article>
           ))}
         </div>
 
         {/* Interactive Contact / Message Form */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 shadow-sm">
-          <div className="mb-8 border-b border-[var(--vault-line)] pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 shadow-sm">
+          <div className="mb-8 border-b border-(--vault-line) pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)] block font-semibold">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent) block font-semibold">
                 // SECURE DISPATCH DESK
               </span>
-              <h2 className="mt-2 font-serif text-2xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+              <h2 className="mt-2 font-serif text-2xl sm:text-4xl font-light uppercase tracking-tight text-(--vault-ink)">
                 Transmit an Atelier Request
               </h2>
             </div>
-            <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <p className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               Every inquiry is routed directly to a human curator.
             </p>
           </div>
 
           {/* Topic Pills */}
           <div className="mb-8 space-y-2">
-            <label className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)] block">
+            <label className="font-mono text-[10px] uppercase tracking-widest text-(--vault-muted) block">
               Select Inquiry Classification
             </label>
             <div className="flex flex-wrap gap-2">
@@ -205,8 +205,8 @@ export default function ContactUsPage() {
                     onClick={() => setSelectedTopic(topic)}
                     className={`border px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                       active
-                        ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold shadow-sm"
-                        : "border-[var(--vault-line)] bg-transparent text-[var(--vault-muted)] hover:text-[var(--vault-ink)] hover:border-[var(--vault-accent)]"
+                        ? "border-(--vault-accent) bg-(--vault-accent) text-white font-bold shadow-sm"
+                        : "border-(--vault-line) bg-transparent text-(--vault-muted) hover:text-(--vault-ink) hover:border-(--vault-accent)"
                     }`}
                   >
                     {topic}
@@ -218,7 +218,7 @@ export default function ContactUsPage() {
 
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)] block">
+              <label className="font-mono text-[10px] uppercase tracking-widest text-(--vault-muted) block">
                 Full Name *
               </label>
               <input
@@ -227,12 +227,12 @@ export default function ContactUsPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="e.g. Camille Laurent"
-                className="w-full border border-[var(--vault-line)] bg-[var(--vault-bg)] px-4 py-3 font-mono text-xs uppercase text-[var(--vault-ink)] placeholder:text-[var(--vault-muted)] focus:border-[var(--vault-accent)] focus:outline-none transition-colors"
+                className="w-full border border-(--vault-line) bg-(--vault-bg) px-4 py-3 font-mono text-xs uppercase text-(--vault-ink) placeholder:text-(--vault-muted) focus:border-(--vault-accent) focus:outline-none transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)] block">
+              <label className="font-mono text-[10px] uppercase tracking-widest text-(--vault-muted) block">
                 Client Email Address *
               </label>
               <input
@@ -241,12 +241,12 @@ export default function ContactUsPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="c.laurent@atelier.com"
-                className="w-full border border-[var(--vault-line)] bg-[var(--vault-bg)] px-4 py-3 font-mono text-xs uppercase text-[var(--vault-ink)] placeholder:text-[var(--vault-muted)] focus:border-[var(--vault-accent)] focus:outline-none transition-colors"
+                className="w-full border border-(--vault-line) bg-(--vault-bg) px-4 py-3 font-mono text-xs uppercase text-(--vault-ink) placeholder:text-(--vault-muted) focus:border-(--vault-accent) focus:outline-none transition-colors"
               />
             </div>
 
             <div className="md:col-span-2 space-y-2">
-              <label className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)] block">
+              <label className="font-mono text-[10px] uppercase tracking-widest text-(--vault-muted) block">
                 Inquiry Dossier / Message *
               </label>
               <textarea
@@ -255,12 +255,12 @@ export default function ContactUsPage() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Detail your request, SKU reference, or required appointment timeframe..."
-                className="w-full border border-[var(--vault-line)] bg-[var(--vault-bg)] p-4 font-mono text-xs uppercase text-[var(--vault-ink)] placeholder:text-[var(--vault-muted)] focus:border-[var(--vault-accent)] focus:outline-none transition-colors resize-none"
+                className="w-full border border-(--vault-line) bg-(--vault-bg) p-4 font-mono text-xs uppercase text-(--vault-ink) placeholder:text-(--vault-muted) focus:border-(--vault-accent) focus:outline-none transition-colors resize-none"
               />
             </div>
 
             <div className="md:col-span-2 flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-              <span className="font-mono text-[10px] text-[var(--vault-muted)] uppercase tracking-wider">
+              <span className="font-mono text-[10px] text-(--vault-muted) uppercase tracking-wider">
                 Protected by Vault Vogue® Archival Client Integrity Protocols
               </span>
 

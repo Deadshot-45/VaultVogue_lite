@@ -144,17 +144,31 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   );
 
   const setCartQuantity = useCallback((variantKey: string, quantity: number) => {
-    setCart((items) =>
-      quantity <= 0
-        ? items.filter((item) => item.variantKey !== variantKey)
-        : items.map((item) => {
-            if (item.variantKey !== variantKey) return item;
-            const product = getVariantProduct(item.productSlug);
-            const color = product?.colors.find((option) => option.id === item.colorId);
-            const maxStock = color?.stockBySize[item.size] ?? 0;
-            return { ...item, quantity: Math.min(quantity, maxStock) };
-          }),
-    );
+    setCart((items) => {
+      const item = items.find((i) => i.variantKey === variantKey);
+      if (!item) return items;
+
+      // Removing the item when the quantity drops to zero or below.
+      if (quantity <= 0) {
+        return items.filter((i) => i.variantKey !== variantKey);
+      }
+
+      const product = getVariantProduct(item.productSlug);
+      const color = product?.colors.find((option) => option.id === item.colorId);
+      const maxStock = color?.stockBySize[item.size];
+
+      // Only enforce a stock ceiling when stock is known and available.
+      // An unknown or zero stock value must not collapse the quantity to 0,
+      // otherwise the quantity controls stop working.
+      const resolvedQuantity =
+        maxStock != null && maxStock > 0
+          ? Math.min(quantity, maxStock)
+          : quantity;
+
+      return items.map((i) =>
+        i.variantKey === variantKey ? { ...i, quantity: resolvedQuantity } : i,
+      );
+    });
   }, []);
 
   const removeFromCart = useCallback((variantKey: string) => {

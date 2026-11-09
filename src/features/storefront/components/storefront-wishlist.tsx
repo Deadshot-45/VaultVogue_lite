@@ -78,11 +78,11 @@ export function StorefrontWishlist({ open, onClose }: Props) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="wishlist-title"
-        className="absolute inset-y-0 right-0 flex w-full max-w-lg flex-col border-l border-[var(--vault-line)] bg-[var(--vault-canvas)] text-[var(--vault-ink)] shadow-2xl"
+        className="absolute inset-y-0 right-0 flex w-full max-w-lg flex-col border-l border-(--vault-line) bg-(--vault-canvas) text-(--vault-ink) shadow-2xl"
       >
-        <header className="flex items-center justify-between border-b border-[var(--vault-line)] px-6 py-5">
+        <header className="flex items-center justify-between border-b border-(--vault-line) px-6 py-5">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-muted)]">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-muted)">
               Curated Selection
             </p>
             <h2 id="wishlist-title" className="mt-1 text-2xl font-light">
@@ -93,7 +93,7 @@ export function StorefrontWishlist({ open, onClose }: Props) {
             type="button"
             onClick={handleClose}
             aria-label="Close"
-            className="border border-[var(--vault-line)] p-2 transition hover:border-[var(--vault-accent)]"
+            className="border border-(--vault-line) p-2 transition hover:border-(--vault-accent)"
           >
             <X size={18} />
           </button>
@@ -102,13 +102,13 @@ export function StorefrontWishlist({ open, onClose }: Props) {
         <div className="flex-1 overflow-y-auto px-6 py-6">
           {wishlist.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center">
-              <div className="flex h-16 w-16 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-panel)] text-[var(--vault-accent)]">
+              <div className="flex h-16 w-16 items-center justify-center border border-(--vault-line) bg-(--vault-panel) text-(--vault-accent)">
                 <ShoppingBag size={28} strokeWidth={1.5} />
               </div>
-              <h3 className="mt-4 font-serif text-2xl uppercase tracking-tight text-[var(--vault-ink)]">
+              <h3 className="mt-4 font-serif text-2xl uppercase tracking-tight text-(--vault-ink)">
                 Your Wishlist is Empty
               </h3>
-              <p className="mt-2 max-w-xs font-mono text-xs uppercase tracking-wider text-[var(--vault-muted)]">
+              <p className="mt-2 max-w-xs font-mono text-xs uppercase tracking-wider text-(--vault-muted)">
                 Save pieces as you explore the contemporary wardrobe archive.
               </p>
               <Link
@@ -124,7 +124,7 @@ export function StorefrontWishlist({ open, onClose }: Props) {
               {wishlist.map((item) => (
                 <article
                   key={item.id}
-                  className="flex gap-4 border border-[var(--vault-line)] bg-[var(--vault-panel)] p-4 transition hover:border-[var(--vault-accent)]"
+                  className="flex gap-4 border border-(--vault-line) bg-(--vault-panel) p-4 transition hover:border-(--vault-accent)"
                 >
                   <div className="relative h-28 w-20 flex-shrink-0 overflow-hidden bg-black/5">
                     <Image
@@ -138,14 +138,14 @@ export function StorefrontWishlist({ open, onClose }: Props) {
                   <div className="flex flex-1 flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)]">
+                        <span className="font-mono text-[9px] uppercase tracking-wider text-(--vault-muted)">
                           {item.code} · {item.category}
                         </span>
                         <button
                           type="button"
                           onClick={() => removeFromWishlist(item.id)}
                           aria-label={`Remove ${item.name} from wishlist`}
-                          className="text-[var(--vault-muted)] hover:text-[#DC2626]"
+                          className="text-(--vault-muted) hover:text-[#DC2626]"
                         >
                           <Trash2 size={14} />
                         </button>
@@ -153,11 +153,11 @@ export function StorefrontWishlist({ open, onClose }: Props) {
                       <Link
                         href={`/products/${item.slug}`}
                         onClick={handleClose}
-                        className="mt-1 font-medium text-sm hover:text-[var(--vault-accent)] line-clamp-1"
+                        className="mt-1 font-medium text-sm hover:text-(--vault-accent) line-clamp-1"
                       >
                         {item.name}
                       </Link>
-                      <p className="font-mono text-xs font-semibold text-[var(--vault-ink)] mt-1">
+                      <p className="font-mono text-xs font-semibold text-(--vault-ink) mt-1">
                         {formatCurrency(item.price, "INR")}
                       </p>
                     </div>

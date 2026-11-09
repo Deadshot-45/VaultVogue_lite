@@ -103,7 +103,7 @@ export default function SellerOrdersPage() {
   if (isLoading && orders.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold)]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-(--gold)"></div>
       </div>
     );
   }
@@ -136,7 +136,7 @@ export default function SellerOrdersPage() {
               onClick={() => setActiveFilter(filter)}
               className={`py-1.5 px-3 rounded-xl text-[10px] font-semibold uppercase tracking-wider transition-all cursor-pointer ${
                 activeFilter === filter
-                  ? "bg-[var(--gold)] text-white"
+                  ? "bg-(--gold) text-white"
                   : "text-muted-foreground bg-background/50 border border-border/40 hover:bg-muted/40"
               }`}
             >
@@ -152,7 +152,7 @@ export default function SellerOrdersPage() {
           <div className="card text-center py-16 flex flex-col items-center justify-center space-y-3">
             <ShoppingCart className="h-12 w-12 text-muted-foreground/30" />
             <div>
-              <p className="text-sm font-semibold text-[var(--brand-text)]">
+              <p className="text-sm font-semibold text-(--brand-text)">
                 No Atelier Orders Found
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
@@ -169,13 +169,13 @@ export default function SellerOrdersPage() {
               <motion.div
                 key={order.id}
                 layout
-                className="card flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 hover:border-[var(--gold-soft)] transition-all duration-300 overflow-auto"
+                className="card flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 hover:border-(--gold-soft) transition-all duration-300 overflow-auto"
               >
                 {/* Details Section */}
                 <div className="space-y-3 md:space-y-0 md:flex md:items-center md:gap-8 flex-1">
                   {/* Order ID & Date */}
                   <div className="min-w-[120px]">
-                    <span className="font-mono text-xs font-semibold text-[var(--gold)]">
+                    <span className="font-mono text-xs font-semibold text-(--gold)">
                       {order.id}
                     </span>
                     <div className="flex items-center gap-1 text-[10px] text-muted-foreground mt-0.5 font-medium">
@@ -190,8 +190,8 @@ export default function SellerOrdersPage() {
 
                   {/* Customer Info */}
                   <div className="min-w-[180px]">
-                    <div className="flex items-center gap-1 text-xs font-semibold text-[var(--brand-text)]">
-                      <User className="h-3.5 w-3.5 text-[var(--gold)]" />
+                    <div className="flex items-center gap-1 text-xs font-semibold text-(--brand-text)">
+                      <User className="h-3.5 w-3.5 text-(--gold)" />
                       {order.customer}
                     </div>
                     <p className="text-[10px] text-muted-foreground mt-0.5 ml-4.5 truncate max-w-[200px]">
@@ -201,7 +201,7 @@ export default function SellerOrdersPage() {
 
                   {/* Price & Items Count */}
                   <div className="min-w-[140px]">
-                    <p className="text-xs font-semibold text-[var(--brand-text)]">
+                    <p className="text-xs font-semibold text-(--brand-text)">
                       ₹{order.amount.toLocaleString("en-IN")}
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-0.5">

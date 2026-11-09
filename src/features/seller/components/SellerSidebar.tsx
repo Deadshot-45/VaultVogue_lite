@@ -140,7 +140,7 @@ export function SellerSidebar() {
           })}
 
           {/* Quick link back to shop */}
-          <div className="my-4 border-t border-[var(--gold-faint)]" />
+          <div className="my-4 border-t border-(--gold-faint)" />
           <Link
             href="/"
             className={cn(
@@ -217,7 +217,7 @@ export function SellerSidebar() {
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed((p) => !p)}
-        className="absolute -right-3 top-20 z-10 hidden md:flex h-6 w-6 items-center justify-center rounded-full border shadow-sm transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
+        className="absolute -right-3 top-20 z-10 hidden md:flex h-6 w-6 items-center justify-center rounded-full border shadow-sm transition-colors duration-200 hover:border-(--gold) cursor-pointer"
         style={{
           background: "var(--background)",
           borderColor: "var(--gold-soft)",

@@ -82,13 +82,13 @@ export function ProductCategoryNav({
   return (
     <nav
       aria-label="Catalog Division Navigation"
-      className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)] py-3 sm:py-4 sticky top-16 sm:top-20 z-30 backdrop-blur-md bg-[var(--vault-panel)]/95"
+      className="w-full border-b border-(--vault-line) bg-(--vault-panel) py-3 sm:py-4 sticky top-16 sm:top-20 z-30 backdrop-blur-md bg-(--vault-panel)/95"
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div
           tabIndex={0}
           aria-label="Category navigation options"
-          className="flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar scroll-smooth py-1 focus:outline-none focus:ring-1 focus:ring-[var(--vault-accent)]"
+          className="flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar scroll-smooth py-1 focus:outline-none focus:ring-1 focus:ring-(--vault-accent)"
         >
           {tabs.map((tab) => (
             <button
@@ -97,8 +97,8 @@ export function ProductCategoryNav({
               onClick={tab.onClick}
               className={`flex-shrink-0 px-4 py-2 font-mono text-[11px] uppercase tracking-wider transition-all cursor-pointer border ${
                 tab.isActive
-                  ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold shadow-sm"
-                  : "border-[var(--vault-line)] bg-[var(--vault-bg)] text-[var(--vault-ink)] hover:border-[var(--vault-accent)]/60 hover:text-[var(--vault-accent)]"
+                  ? "border-(--vault-accent) bg-(--vault-accent) text-white font-bold shadow-sm"
+                  : "border-(--vault-line) bg-(--vault-bg) text-(--vault-ink) hover:border-(--vault-accent)/60 hover:text-(--vault-accent)"
               }`}
             >
               {tab.label}

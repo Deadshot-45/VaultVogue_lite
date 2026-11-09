@@ -16,12 +16,12 @@ export function CategoryCampaignBanner({ campaign, categoryKey }: CategoryCampai
     <section
       id="category-campaign"
       aria-label="Category Campaign Spotlight"
-      className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-bg)] py-16 sm:py-24"
+      className="w-full border-b border-(--vault-line) bg-(--vault-bg) py-16 sm:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-10 lg:p-12 shadow-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-10 lg:p-12 shadow-xl">
           {/* Left Column: Editorial Campaign Visual */}
-          <div className="lg:col-span-6 relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] w-full overflow-hidden border border-[var(--vault-line)] group">
+          <div className="lg:col-span-6 relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] w-full overflow-hidden border border-(--vault-line) group">
             <Image
               src={campaign.image}
               alt={campaign.title}
@@ -42,29 +42,29 @@ export function CategoryCampaignBanner({ campaign, categoryKey }: CategoryCampai
           <div className="lg:col-span-6 flex flex-col justify-center space-y-6">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--vault-accent)]" />
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+                <span className="h-1.5 w-1.5 rounded-full bg-(--vault-accent)" />
+                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-(--vault-accent)">
                   {campaign.subtitle}
                 </span>
               </div>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light uppercase tracking-tight text-(--vault-ink) leading-none">
                 {campaign.title}
               </h2>
-              <p className="font-mono text-xs uppercase tracking-widest text-[var(--vault-cobalt)] font-medium">
+              <p className="font-mono text-xs uppercase tracking-widest text-(--vault-cobalt) font-medium">
                 {campaign.tagline}
               </p>
             </div>
 
             {/* Editorial Quote */}
             {campaign.quote && (
-              <blockquote className="relative border-l-2 border-[var(--vault-accent)] pl-4 italic text-sm text-[var(--vault-ink)]/90 font-serif leading-relaxed">
-                <Quote size={16} className="text-[var(--vault-accent)] mb-1 opacity-70" />
+              <blockquote className="relative border-l-2 border-(--vault-accent) pl-4 italic text-sm text-(--vault-ink)/90 font-serif leading-relaxed">
+                <Quote size={16} className="text-(--vault-accent) mb-1 opacity-70" />
                 “{campaign.quote}”
               </blockquote>
             )}
 
             {/* Narrative Body */}
-            <p className="text-xs sm:text-sm text-[var(--vault-muted)] leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-(--vault-muted) leading-relaxed font-sans">
               {campaign.description}
             </p>
 
@@ -78,7 +78,7 @@ export function CategoryCampaignBanner({ campaign, categoryKey }: CategoryCampai
               </Link>
               <Link
                 href="#category-products"
-                className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-[var(--vault-ink)] hover:text-[var(--vault-accent)] transition-colors py-2"
+                className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-(--vault-ink) hover:text-(--vault-accent) transition-colors py-2"
               >
                 View Curated Pieces ↓
               </Link>

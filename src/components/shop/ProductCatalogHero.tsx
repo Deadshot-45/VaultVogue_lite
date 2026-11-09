@@ -59,7 +59,7 @@ export function ProductCatalogHero() {
   return (
     <header
       ref={heroRef}
-      className="relative min-h-[44vh] sm:min-h-[50vh] w-full overflow-hidden border-b border-[var(--vault-line)] bg-[var(--vault-bg)] flex items-end"
+      className="relative min-h-[44vh] sm:min-h-[50vh] w-full overflow-hidden border-b border-(--vault-line) bg-(--vault-bg) flex items-end"
     >
       {/* Background Campaign Visual */}
       <div ref={bgImgRef} className="absolute inset-0 z-0">
@@ -73,8 +73,8 @@ export function ProductCatalogHero() {
         />
 
         {/* Ambient Overlay for High Contrast and Theme Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--vault-bg)] via-[var(--vault-bg)]/75 to-[var(--vault-bg)]/25" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--vault-bg)]/90 via-[var(--vault-bg)]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-(--vault-bg) via-(--vault-bg)/75 to-(--vault-bg)/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-(--vault-bg)/90 via-(--vault-bg)/50 to-transparent" />
         <div className="absolute inset-0 bg-black/20 mix-blend-multiply pointer-events-none" />
       </div>
 
@@ -83,23 +83,23 @@ export function ProductCatalogHero() {
         <div className="max-w-2xl">
           {/* Eyebrow Label */}
           <div className="cat-hero-tag flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--vault-accent)] border border-[var(--vault-accent)]/30 bg-[var(--vault-panel)]/80 backdrop-blur-md">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-(--vault-accent) border border-(--vault-accent)/30 bg-(--vault-panel)/80 backdrop-blur-md">
               THE VAULT COLLECTION
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-muted)">
               ALL SILHOUETTES · EDITION 04
             </span>
           </div>
 
           {/* Masked Headline */}
           <div className="overflow-hidden mt-3">
-            <h1 className="cat-hero-title font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-[var(--vault-ink)] uppercase leading-none">
+            <h1 className="cat-hero-title font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-(--vault-ink) uppercase leading-none">
               FIND YOUR NEXT ICON.
             </h1>
           </div>
 
           {/* Supporting Copy */}
-          <p className="cat-hero-desc mt-3 text-xs sm:text-sm text-[var(--vault-muted)] leading-relaxed font-sans max-w-xl">
+          <p className="cat-hero-desc mt-3 text-xs sm:text-sm text-(--vault-muted) leading-relaxed font-sans max-w-xl">
             Discover contemporary essentials, expressive silhouettes, and everyday pieces designed to move with you.
           </p>
 
@@ -112,7 +112,7 @@ export function ProductCatalogHero() {
             >
               Browse Catalog <ArrowDown size={13} />
             </button>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)] hidden sm:inline">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted) hidden sm:inline">
               Standard Global Dispatch · Authenticity Guaranteed
             </span>
           </div>

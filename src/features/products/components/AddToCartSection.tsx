@@ -141,7 +141,7 @@ export const AddToCartSection = ({
             <Minus size={14} />
           </button>
 
-          <span className="text-sm font-semibold text-[var(--brand-text)]">
+          <span className="text-sm font-semibold text-(--brand-text)">
             {cartItem.quantity}
           </span>
 
@@ -169,7 +169,7 @@ export const AddToCartSection = ({
         disabled={
           !selectedVariant || selectedVariant.isOutOfStock || !isAuthenticated
         }
-        className="btn-secondary w-full py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] border-[var(--gold-soft)] text-[var(--gold)]"
+        className="btn-secondary w-full py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] border-(--gold-soft) text-(--gold)"
       >
         Buy Now
       </button>

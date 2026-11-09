@@ -124,7 +124,7 @@ export default function ForgotPasswordPage() {
           <div className="space-y-2">
             <Label
               htmlFor="email"
-              className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+              className="text-xs font-semibold uppercase tracking-wider text-(--brand-text)"
             >
               Atelier Email / Number
             </Label>
@@ -134,7 +134,7 @@ export default function ForgotPasswordPage() {
                 id="email"
                 type="text"
                 placeholder="you@domain.com or +123456789"
-                className="h-12 pl-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--vault-accent)]"
+                className="h-12 pl-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-(--vault-accent)"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -163,7 +163,7 @@ export default function ForgotPasswordPage() {
           <div className="space-y-2">
             <Label
               htmlFor="otp"
-              className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+              className="text-xs font-semibold uppercase tracking-wider text-(--brand-text)"
             >
               6-Digit Verification Code
             </Label>
@@ -174,7 +174,7 @@ export default function ForgotPasswordPage() {
                 type="text"
                 maxLength={6}
                 placeholder="0 0 0 0 0 0"
-                className="h-12 pl-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--vault-accent)] tracking-[0.75em] text-center font-medium"
+                className="h-12 pl-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-(--vault-accent) tracking-[0.75em] text-center font-medium"
                 value={otp}
                 onChange={(e) => {
                   setOtp(e.target.value.replace(/[^A-Za-z0-9]/g, ""));
@@ -198,7 +198,7 @@ export default function ForgotPasswordPage() {
           <div className="text-center mt-4">
             <button
               type="button"
-              className="text-xs text-muted-foreground hover:text-[var(--vault-accent)] transition-colors flex items-center justify-center gap-1 mx-auto"
+              className="text-xs text-muted-foreground hover:text-(--vault-accent) transition-colors flex items-center justify-center gap-1 mx-auto"
               onClick={() => {
                 setStep(1);
                 setOtp("");
@@ -217,7 +217,7 @@ export default function ForgotPasswordPage() {
           <div className="space-y-2">
             <Label
               htmlFor="password"
-              className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+              className="text-xs font-semibold uppercase tracking-wider text-(--brand-text)"
             >
               New Security Key
             </Label>
@@ -227,7 +227,7 @@ export default function ForgotPasswordPage() {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter new security key"
-                className="h-12 pl-11 pr-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--vault-accent)]"
+                className="h-12 pl-11 pr-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-(--vault-accent)"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -255,7 +255,7 @@ export default function ForgotPasswordPage() {
           <div className="space-y-2">
             <Label
               htmlFor="confirmPassword"
-              className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]"
+              className="text-xs font-semibold uppercase tracking-wider text-(--brand-text)"
             >
               Confirm Security Key
             </Label>
@@ -265,7 +265,7 @@ export default function ForgotPasswordPage() {
                 id="confirmPassword"
                 type={showPassword ? "text" : "password"}
                 placeholder="Confirm new security key"
-                className="h-12 pl-11 pr-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-[var(--vault-accent)]"
+                className="h-12 pl-11 pr-11 rounded-xl border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-(--vault-accent)"
                 value={confirmPassword}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);

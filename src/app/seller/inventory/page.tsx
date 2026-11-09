@@ -427,7 +427,7 @@ export default function SellerInventoryPage() {
   if (isLoading && products.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold)]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-(--gold)"></div>
       </div>
     );
   }
@@ -469,7 +469,7 @@ export default function SellerInventoryPage() {
           onClick={() => setSelectedCategory("All")}
           className={`py-1.5 px-4 rounded-full text-xs transition-all uppercase tracking-wider ${
             selectedCategory === "All"
-              ? "bg-[var(--gold)] text-white"
+              ? "bg-(--gold) text-white"
               : "text-muted-foreground hover:bg-muted/40"
           }`}
         >
@@ -481,7 +481,7 @@ export default function SellerInventoryPage() {
             onClick={() => setSelectedCategory(cat)}
             className={`py-1.5 px-4 rounded-full text-xs transition-all uppercase tracking-wider whitespace-nowrap ${
               selectedCategory === cat
-                ? "bg-[var(--gold)] text-white"
+                ? "bg-(--gold) text-white"
                 : "text-muted-foreground hover:bg-muted/40"
             }`}
           >
@@ -496,7 +496,7 @@ export default function SellerInventoryPage() {
           <div className="flex flex-col items-center justify-center text-center py-16 space-y-3">
             <Package className="h-12 w-12 text-muted-foreground/30" />
             <div>
-              <p className="text-sm font-semibold text-[var(--brand-text)]">
+              <p className="text-sm font-semibold text-(--brand-text)">
                 No Catalog Items Found
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
@@ -519,25 +519,25 @@ export default function SellerInventoryPage() {
                   style={{ borderBottom: "1px solid var(--gold-faint)" }}
                   className="[&>th]:pl-4"
                 >
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                     Item Info
                   </th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                     SKU / Code
                   </th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                     Collection
                   </th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                     Retail Price
                   </th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                     Stock Status
                   </th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold)">
                     Visibility
                   </th>
-                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)] text-right">
+                  <th className="pb-3 text-[10px] font-semibold uppercase tracking-widest text-(--gold) text-right">
                     Actions
                   </th>
                 </tr>
@@ -546,7 +546,7 @@ export default function SellerInventoryPage() {
                 {filteredProducts.map((product) => (
                   <tr
                     key={product.id}
-                    className="transition-colors hover:bg-[var(--gold-glow)] [&>td]:px-4"
+                    className="transition-colors hover:bg-(--gold-glow) [&>td]:px-4"
                     style={{ borderBottom: "1px solid var(--gold-faint)" }}
                   >
                     {/* Item Info */}
@@ -564,7 +564,7 @@ export default function SellerInventoryPage() {
                         }}
                       />
                       <div className="min-w-0">
-                        <p className="text-xs font-semibold text-[var(--brand-text)] truncate max-w-[200px]">
+                        <p className="text-xs font-semibold text-(--brand-text) truncate max-w-[200px]">
                           {product.name}
                         </p>
                         {product.variants && product.variants.length > 0 && (
@@ -572,9 +572,9 @@ export default function SellerInventoryPage() {
                             {product.variants.map((v: any) => (
                               <div
                                 key={v._id || `${v.color}-${v.size}`}
-                                className="flex flex-col gap-1 bg-[var(--gold-faint)]/40 p-2 rounded border border-[var(--gold-soft)]/20"
+                                className="flex flex-col gap-1 bg-(--gold-faint)/40 p-2 rounded border border-(--gold-soft)/20"
                               >
-                                <span className="text-[9px] font-semibold text-[var(--gold)]">
+                                <span className="text-[9px] font-semibold text-(--gold)">
                                   {v.color} / {v.size} ({v.stock} units)
                                 </span>
                                 {v.images && v.images.length > 0 && (
@@ -630,7 +630,7 @@ export default function SellerInventoryPage() {
                     </td>
 
                     {/* Price */}
-                    <td className="py-3.5 text-xs font-medium text-[var(--brand-text)]">
+                    <td className="py-3.5 text-xs font-medium text-(--brand-text)">
                       ₹{product.price.toLocaleString("en-IN")}
                     </td>
 
@@ -714,13 +714,13 @@ export default function SellerInventoryPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="relative h-full w-full max-w-lg border-l bg-[var(--background)] p-6 shadow-2xl overflow-y-auto no-scrollbar flex flex-col justify-between"
+              className="relative h-full w-full max-w-lg border-l bg-(--background) p-6 shadow-2xl overflow-y-auto no-scrollbar flex flex-col justify-between"
               style={{ borderColor: "var(--gold-faint)" }}
             >
               <div>
                 {/* Header */}
                 <div className="flex items-center justify-between pb-4 border-b border-border/10 mb-6">
-                  <h3 className="font-cormorant text-xl font-light text-[var(--brand-text)] flex items-center gap-1.5">
+                  <h3 className="font-cormorant text-xl font-light text-(--brand-text) flex items-center gap-1.5">
                     {editingProduct
                       ? "Revise Collection Item"
                       : "Onboard New Collection Item"}
@@ -906,16 +906,16 @@ export default function SellerInventoryPage() {
 
                   {/* Size & Color Variants */}
                   {isVariantCategory && (
-                    <div className="space-y-4 p-4 rounded-xl border border-[var(--gold-faint)] bg-[var(--gold-glow)]/40 font-sans">
+                    <div className="space-y-4 p-4 rounded-xl border border-(--gold-faint) bg-(--gold-glow)/40 font-sans">
                       <div className="flex items-center justify-between border-b border-border/10 pb-1.5">
-                        <Label className="text-[10px] font-bold uppercase tracking-wider text-[var(--gold)]">
+                        <Label className="text-[10px] font-bold uppercase tracking-wider text-(--gold)">
                           Manage Variations ({formData.category})
                         </Label>
                         <Button
                           type="button"
                           variant="outline"
                           onClick={handleAddVariant}
-                          className="h-6 px-2 text-[9px] uppercase tracking-wider gap-1 border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold-faint)]"
+                          className="h-6 px-2 text-[9px] uppercase tracking-wider gap-1 border-(--gold) text-(--gold) hover:bg-(--gold-faint)"
                         >
                           <Plus className="h-3 w-3" />
                           Add Variation
@@ -1009,7 +1009,7 @@ export default function SellerInventoryPage() {
                                 </Label>
 
                                 <div className="flex gap-3 items-center">
-                                  <label className="flex items-center gap-1.5 justify-center py-1.5 px-3 border border-dashed border-[var(--gold)]/45 rounded-lg hover:bg-[var(--gold-faint)] cursor-pointer text-[10px] text-[var(--gold)] font-medium transition-all">
+                                  <label className="flex items-center gap-1.5 justify-center py-1.5 px-3 border border-dashed border-(--gold)/45 rounded-lg hover:bg-(--gold-faint) cursor-pointer text-[10px] text-(--gold) font-medium transition-all">
                                     {uploadingIndexes[index] ? (
                                       <>
                                         <Loader2 className="h-3 w-3 animate-spin" />
@@ -1130,7 +1130,7 @@ export default function SellerInventoryPage() {
                       )}
 
                       <div className="flex-1">
-                        <label className="inline-flex items-center gap-1.5 justify-center py-2 px-4 border border-[var(--gold)]/45 rounded-lg hover:bg-[var(--gold-faint)] cursor-pointer text-xs text-[var(--gold)] font-medium transition-all">
+                        <label className="inline-flex items-center gap-1.5 justify-center py-2 px-4 border border-(--gold)/45 rounded-lg hover:bg-(--gold-faint) cursor-pointer text-xs text-(--gold) font-medium transition-all">
                           {isUploadingCover ? (
                             <>
                               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -1195,7 +1195,7 @@ export default function SellerInventoryPage() {
                           onChange={() =>
                             setFormData((p) => ({ ...p, status: "active" }))
                           }
-                          className="accent-[var(--gold)]"
+                          className="accent-(--gold)"
                         />
                         Active (Shown in Boutique)
                       </label>
@@ -1208,7 +1208,7 @@ export default function SellerInventoryPage() {
                           onChange={() =>
                             setFormData((p) => ({ ...p, status: "draft" }))
                           }
-                          className="accent-[var(--gold)]"
+                          className="accent-(--gold)"
                         />
                         Draft (Atelier view only)
                       </label>

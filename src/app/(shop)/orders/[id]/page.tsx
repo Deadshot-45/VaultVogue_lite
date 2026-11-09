@@ -89,8 +89,8 @@ export default function OrderDetailsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[var(--vault-bg)]">
-        <Loader2 className="h-8 w-8 animate-spin text-[var(--vault-accent)]" />
+      <div className="flex items-center justify-center h-screen bg-(--vault-bg)">
+        <Loader2 className="h-8 w-8 animate-spin text-(--vault-accent)" />
       </div>
     );
   }
@@ -103,17 +103,17 @@ export default function OrderDetailsPage() {
             <Package className="h-8 w-8" />
           </div>
           <div>
-            <h2 className="font-serif text-3xl font-light text-[var(--vault-ink)]">
+            <h2 className="font-serif text-3xl font-light text-(--vault-ink)">
               Order Not Found
             </h2>
-            <p className="text-xs text-[var(--vault-muted)] mt-2 leading-relaxed">
+            <p className="text-xs text-(--vault-muted) mt-2 leading-relaxed">
               We couldn't retrieve details for this order. It may not exist or
               you may not have authorization to view it.
             </p>
           </div>
           <button
             onClick={() => router.push("/orders")}
-            className="rounded-xl bg-[var(--vault-accent)] px-8 py-3 text-xs font-semibold uppercase tracking-wider text-white shadow-sm hover:brightness-110 active:scale-[0.98] transition-all"
+            className="rounded-xl bg-(--vault-accent) px-8 py-3 text-xs font-semibold uppercase tracking-wider text-white shadow-sm hover:brightness-110 active:scale-[0.98] transition-all"
           >
             Back to Orders
           </button>
@@ -131,7 +131,7 @@ export default function OrderDetailsPage() {
       case "confirmed":
         return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
       case "processing":
-        return "bg-[var(--vault-cobalt)]/10 text-[var(--vault-cobalt)] border border-[var(--vault-cobalt)]/20";
+        return "bg-(--vault-cobalt)/10 text-(--vault-cobalt) border border-(--vault-cobalt)/20";
       case "shipped":
         return "bg-indigo-500/10 text-indigo-500 border border-indigo-500/20";
       case "delivered":
@@ -139,7 +139,7 @@ export default function OrderDetailsPage() {
       case "cancelled":
         return "bg-rose-500/10 text-rose-500 border border-rose-500/20";
       default:
-        return "bg-[var(--vault-muted)]/10 text-[var(--vault-muted)] border border-[var(--vault-muted)]/20";
+        return "bg-(--vault-muted)/10 text-(--vault-muted) border border-(--vault-muted)/20";
     }
   };
 
@@ -155,20 +155,20 @@ export default function OrderDetailsPage() {
 
   return (
     <ProtectedPage>
-      <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+      <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
         {/* ── Breadcrumb Bar ── */}
-        <div className="border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/50 backdrop-blur-md">
+        <div className="border-b border-(--vault-line) bg-(--vault-panel)/50 backdrop-blur-md">
           <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-            <nav className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--vault-muted)]" aria-label="Breadcrumb">
-              <Link href="/" className="hover:text-[var(--vault-ink)] transition-colors">
+            <nav className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-(--vault-muted)" aria-label="Breadcrumb">
+              <Link href="/" className="hover:text-(--vault-ink) transition-colors">
                 Home
               </Link>
               <span>/</span>
-              <Link href="/orders" className="hover:text-[var(--vault-ink)] transition-colors">
+              <Link href="/orders" className="hover:text-(--vault-ink) transition-colors">
                 Orders
               </Link>
               <span>/</span>
-              <span className="text-[var(--vault-accent)] font-semibold font-mono truncate max-w-[140px] sm:max-w-none">
+              <span className="text-(--vault-accent) font-semibold font-mono truncate max-w-[140px] sm:max-w-none">
                 #{order?._id}
               </span>
             </nav>
@@ -180,7 +180,7 @@ export default function OrderDetailsPage() {
           <div className="mb-6">
             <button
               onClick={() => router.push("/orders")}
-              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--vault-accent)] hover:brightness-125 transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--vault-accent) hover:brightness-125 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Orders
@@ -194,20 +194,20 @@ export default function OrderDetailsPage() {
             className="space-y-8"
           >
             {/* Heading & Metadata */}
-            <div className="border-b border-[var(--vault-line)] pb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="border-b border-(--vault-line) pb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="space-y-2">
-                <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+                <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-(--vault-accent)">
                   Order Details
                 </p>
-                <div className="h-0.5 w-12 bg-[var(--vault-accent)]" />
+                <div className="h-0.5 w-12 bg-(--vault-accent)" />
 
                 <div className="mt-3 flex flex-wrap items-center gap-3">
-                  <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-light text-[var(--vault-ink)]">
+                  <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-light text-(--vault-ink)">
                     Receipt #{order?._id?.slice(-12).toUpperCase()}
                   </h1>
                   <button
                     onClick={handleCopyId}
-                    className="p-1.5 rounded-lg border border-[var(--vault-line)] hover:bg-[var(--vault-panel)] transition-colors text-[var(--vault-muted)] hover:text-[var(--vault-accent)]"
+                    className="p-1.5 rounded-lg border border-(--vault-line) hover:bg-(--vault-panel) transition-colors text-(--vault-muted) hover:text-(--vault-accent)"
                     title="Copy Full Order ID"
                   >
                     {copied ? (
@@ -218,9 +218,9 @@ export default function OrderDetailsPage() {
                   </button>
                 </div>
 
-                <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-[var(--vault-muted)]">
+                <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-(--vault-muted)">
                   <span className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5 text-[var(--vault-accent)]" />
+                    <Calendar className="h-3.5 w-3.5 text-(--vault-accent)" />
                     {new Date(order.createdAt).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "long",
@@ -228,9 +228,9 @@ export default function OrderDetailsPage() {
                     })}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CreditCard className="h-3.5 w-3.5 text-[var(--vault-accent)]" />
+                    <CreditCard className="h-3.5 w-3.5 text-(--vault-accent)" />
                     Payment:{" "}
-                    <span className="capitalize font-medium text-[var(--vault-ink)]">
+                    <span className="capitalize font-medium text-(--vault-ink)">
                       {order.paymentMethod}
                     </span>
                   </span>
@@ -248,7 +248,7 @@ export default function OrderDetailsPage() {
                     onClick={() =>
                       order?._id && router.push(`/orders/${order._id}/track`)
                     }
-                    className="rounded-xl bg-[var(--vault-accent)] py-2.5 px-4 font-semibold uppercase tracking-wider text-white flex items-center gap-2 shadow-sm active:scale-95 hover:brightness-110 transition-all cursor-pointer text-xs"
+                    className="rounded-xl bg-(--vault-accent) py-2.5 px-4 font-semibold uppercase tracking-wider text-white flex items-center gap-2 shadow-sm active:scale-95 hover:brightness-110 transition-all cursor-pointer text-xs"
                   >
                     <Truck className="h-4 w-4" />
                     <span>Track Live Package</span>
@@ -262,14 +262,14 @@ export default function OrderDetailsPage() {
               {/* Main Content Area */}
               <div className="lg:col-span-2 space-y-8">
                 {/* Tracking Status Timeline */}
-                <div className="overflow-hidden rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 shadow-sm">
-                  <h3 className="text-sm font-semibold text-[var(--vault-ink)] mb-6 flex items-center gap-2">
-                    <Truck className="h-4 w-4 text-[var(--vault-accent)]" />
+                <div className="overflow-hidden rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 shadow-sm">
+                  <h3 className="text-sm font-semibold text-(--vault-ink) mb-6 flex items-center gap-2">
+                    <Truck className="h-4 w-4 text-(--vault-accent)" />
                     Shipment Progress
                   </h3>
 
                   <div className="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-4 px-2">
-                    <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[var(--vault-line)] -translate-y-1/2 hidden md:block z-0" />
+                    <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-(--vault-line) -translate-y-1/2 hidden md:block z-0" />
 
                     {steps.map((step, idx) => (
                       <div
@@ -279,8 +279,8 @@ export default function OrderDetailsPage() {
                         <div
                           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-all ${
                             step.done
-                              ? "bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] border-[var(--vault-accent)]"
-                              : "bg-[var(--vault-bg)] text-[var(--vault-muted)] border-[var(--vault-line)]"
+                              ? "bg-(--vault-accent)/10 text-(--vault-accent) border-(--vault-accent)"
+                              : "bg-(--vault-bg) text-(--vault-muted) border-(--vault-line)"
                           }`}
                         >
                           {step.done ? (
@@ -293,7 +293,7 @@ export default function OrderDetailsPage() {
                         </div>
                         <div className="text-left md:text-center">
                           <p
-                            className={`text-xs font-medium ${step.done ? "text-[var(--vault-ink)] font-semibold" : "text-[var(--vault-muted)]"}`}
+                            className={`text-xs font-medium ${step.done ? "text-(--vault-ink) font-semibold" : "text-(--vault-muted)"}`}
                           >
                             {step.label}
                           </p>
@@ -304,15 +304,15 @@ export default function OrderDetailsPage() {
                 </div>
 
                 {/* Items Card */}
-                <div className="overflow-hidden rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] shadow-sm">
-                  <div className="px-6 py-5 border-b border-[var(--vault-line)] flex items-center gap-2">
-                    <ShoppingBag className="h-4 w-4 text-[var(--vault-accent)]" />
-                    <h3 className="text-sm font-semibold text-[var(--vault-ink)]">
+                <div className="overflow-hidden rounded-3xl border border-(--vault-line) bg-(--vault-panel) shadow-sm">
+                  <div className="px-6 py-5 border-b border-(--vault-line) flex items-center gap-2">
+                    <ShoppingBag className="h-4 w-4 text-(--vault-accent)" />
+                    <h3 className="text-sm font-semibold text-(--vault-ink)">
                       Order Items
                     </h3>
                   </div>
 
-                  <div className="divide-y divide-[var(--vault-line)]">
+                  <div className="divide-y divide-(--vault-line)">
                     {order.items?.map((item: any, idx: number) => {
                       const imageUrl = resolveProductImage(item.image);
                       return (
@@ -320,7 +320,7 @@ export default function OrderDetailsPage() {
                           key={item._id || idx}
                           className="flex gap-5 p-6 items-center"
                         >
-                          <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-xl border border-[var(--vault-line)] bg-[var(--vault-bg)]">
+                          <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-xl border border-(--vault-line) bg-(--vault-bg)">
                             <img
                               src={imageUrl}
                               alt={item.name}
@@ -328,22 +328,22 @@ export default function OrderDetailsPage() {
                             />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <h4 className="text-sm font-medium text-[var(--vault-ink)] line-clamp-2">
+                            <h4 className="text-sm font-medium text-(--vault-ink) line-clamp-2">
                               {item.name}
                             </h4>
-                            <p className="text-xs text-[var(--vault-muted)] mt-1 flex items-center gap-3">
+                            <p className="text-xs text-(--vault-muted) mt-1 flex items-center gap-3">
                               <span>
                                 Quantity:{" "}
-                                <strong className="text-[var(--vault-ink)]">
+                                <strong className="text-(--vault-ink)">
                                   {item.quantity}
                                 </strong>
                               </span>
                               {item.size && (
                                 <>
-                                  <span className="text-[var(--vault-line)]">|</span>
+                                  <span className="text-(--vault-line)">|</span>
                                   <span>
                                     Size:{" "}
-                                    <strong className="text-[var(--vault-ink)]">
+                                    <strong className="text-(--vault-ink)">
                                       {item.size}
                                     </strong>
                                   </span>
@@ -352,10 +352,10 @@ export default function OrderDetailsPage() {
                             </p>
                           </div>
                           <div className="text-right">
-                            <span className="text-sm font-mono font-semibold text-[var(--vault-accent)] block">
+                            <span className="text-sm font-mono font-semibold text-(--vault-accent) block">
                               {formatCurrency(item.price * item.quantity)}
                             </span>
-                            <span className="text-[10px] text-[var(--vault-muted)]">
+                            <span className="text-[10px] text-(--vault-muted)">
                               {formatCurrency(item.price)} each
                             </span>
                           </div>
@@ -369,17 +369,17 @@ export default function OrderDetailsPage() {
               {/* Right Sidebar Area */}
               <div className="space-y-8">
                 {/* Delivery Address */}
-                <div className="overflow-hidden rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 shadow-sm">
-                  <h3 className="text-sm font-semibold text-[var(--vault-ink)] mb-4 flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-[var(--vault-accent)]" />
+                <div className="overflow-hidden rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-(--vault-ink) mb-4 flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-(--vault-accent)" />
                     Shipping Address
                   </h3>
 
                   <div className="text-xs space-y-2">
-                    <p className="font-semibold text-sm text-[var(--vault-ink)]">
+                    <p className="font-semibold text-sm text-(--vault-ink)">
                       {order.shippingAddress.fullName}
                     </p>
-                    <div className="text-[var(--vault-muted)] space-y-1 leading-relaxed">
+                    <div className="text-(--vault-muted) space-y-1 leading-relaxed">
                       <p>{order.shippingAddress.addressLine1}</p>
                       {order.shippingAddress.addressLine2 && (
                         <p>{order.shippingAddress.addressLine2}</p>
@@ -392,11 +392,11 @@ export default function OrderDetailsPage() {
                       <p>{order.shippingAddress.country}</p>
                     </div>
 
-                    <Separator className="my-3 bg-[var(--vault-line)]" />
+                    <Separator className="my-3 bg-(--vault-line)" />
 
-                    <p className="text-[var(--vault-muted)]">
+                    <p className="text-(--vault-muted)">
                       Phone:{" "}
-                      <strong className="text-[var(--vault-ink)]">
+                      <strong className="text-(--vault-ink)">
                         {order.shippingAddress.phone}
                       </strong>
                     </p>
@@ -404,30 +404,30 @@ export default function OrderDetailsPage() {
                 </div>
 
                 {/* Payment Summary */}
-                <div className="overflow-hidden rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 shadow-sm">
-                  <h3 className="text-sm font-semibold text-[var(--vault-ink)] mb-4 flex items-center gap-2">
-                    <CreditCard className="h-4 w-4 text-[var(--vault-accent)]" />
+                <div className="overflow-hidden rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-(--vault-ink) mb-4 flex items-center gap-2">
+                    <CreditCard className="h-4 w-4 text-(--vault-accent)" />
                     Payment Details
                   </h3>
 
                   <div className="space-y-3 text-xs">
-                    <div className="flex justify-between text-[var(--vault-muted)]">
+                    <div className="flex justify-between text-(--vault-muted)">
                       <span>Subtotal</span>
-                      <span className="font-mono text-[var(--vault-ink)]">
+                      <span className="font-mono text-(--vault-ink)">
                         {formatCurrency(order.subtotal)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-[var(--vault-muted)]">
+                    <div className="flex justify-between text-(--vault-muted)">
                       <span>Shipping Fee</span>
-                      <span className="font-mono text-[var(--vault-ink)]">
+                      <span className="font-mono text-(--vault-ink)">
                         {order.shippingFee === 0
                           ? "Complimentary"
                           : formatCurrency(order.shippingFee)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-[var(--vault-muted)]">
+                    <div className="flex justify-between text-(--vault-muted)">
                       <span>Atelier Duty / Tax</span>
-                      <span className="font-mono text-[var(--vault-ink)]">
+                      <span className="font-mono text-(--vault-ink)">
                         {formatCurrency(order.tax)}
                       </span>
                     </div>
@@ -438,20 +438,20 @@ export default function OrderDetailsPage() {
                       </div>
                     )}
 
-                    <Separator className="my-2 bg-[var(--vault-line)]" />
+                    <Separator className="my-2 bg-(--vault-line)" />
 
-                    <div className="flex justify-between text-sm font-bold text-[var(--vault-ink)] pt-1">
+                    <div className="flex justify-between text-sm font-bold text-(--vault-ink) pt-1">
                       <span>Total Amount</span>
-                      <span className="font-mono text-[var(--vault-accent)]">
+                      <span className="font-mono text-(--vault-accent)">
                         {formatCurrency(order.totalAmount)}
                       </span>
                     </div>
 
-                    <Separator className="my-2 bg-[var(--vault-line)]" />
+                    <Separator className="my-2 bg-(--vault-line)" />
 
                     <div className="pt-1 space-y-1.5">
                       <div className="flex justify-between items-center">
-                        <span className="text-[var(--vault-muted)]">
+                        <span className="text-(--vault-muted)">
                           Payment Status
                         </span>
                         <Badge
@@ -465,7 +465,7 @@ export default function OrderDetailsPage() {
                         </Badge>
                       </div>
                       {order.stripePaymentIntentId && (
-                        <div className="flex justify-between text-[10px] text-[var(--vault-muted)]">
+                        <div className="flex justify-between text-[10px] text-(--vault-muted)">
                           <span>Txn ID</span>
                           <span
                             className="font-mono truncate max-w-[120px]"

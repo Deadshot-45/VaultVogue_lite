@@ -91,7 +91,7 @@ export default function SellerPaymentsPage() {
                 <CreditCard className="h-4 w-4 text-indigo-500" />
               </div>
               <div>
-                <h3 className="text-sm font-semibold tracking-wider uppercase text-[var(--brand-text)]">
+                <h3 className="text-sm font-semibold tracking-wider uppercase text-(--brand-text)">
                   Stripe Instant Payouts
                 </h3>
                 <p className="text-[10px] text-muted-foreground">
@@ -141,11 +141,11 @@ export default function SellerPaymentsPage() {
         {/* Method 2: Direct Bank Transfer */}
         <div className="card space-y-4">
           <div className="flex items-center gap-2 border-b border-border/10 pb-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--gold-faint)] border border-[var(--gold-soft)]">
-              <Building className="h-4 w-4 text-[var(--gold)]" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-(--gold-faint) border border-(--gold-soft)">
+              <Building className="h-4 w-4 text-(--gold)" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold tracking-wider uppercase text-[var(--brand-text)]">
+              <h3 className="text-sm font-semibold tracking-wider uppercase text-(--brand-text)">
                 Direct Bank Transfer (NEFT/RTGS)
               </h3>
               <p className="text-[10px] text-muted-foreground">
@@ -216,7 +216,7 @@ export default function SellerPaymentsPage() {
                   value="weekly"
                   checked={bankDetails.payoutFrequency === "weekly"}
                   onChange={() => setBankDetails((p) => ({ ...p, payoutFrequency: "weekly" }))}
-                  className="accent-[var(--gold)]"
+                  className="accent-(--gold)"
                 />
                 Weekly (Every Wednesday)
               </label>
@@ -227,7 +227,7 @@ export default function SellerPaymentsPage() {
                   value="monthly"
                   checked={bankDetails.payoutFrequency === "monthly"}
                   onChange={() => setBankDetails((p) => ({ ...p, payoutFrequency: "monthly" }))}
-                  className="accent-[var(--gold)]"
+                  className="accent-(--gold)"
                 />
                 Monthly (1st of each month)
               </label>
@@ -243,7 +243,7 @@ export default function SellerPaymentsPage() {
                 <span className="text-[11px] font-bold text-blue-500 font-mono">PP</span>
               </div>
               <div>
-                <h3 className="text-sm font-semibold tracking-wider uppercase text-[var(--brand-text)]">
+                <h3 className="text-sm font-semibold tracking-wider uppercase text-(--brand-text)">
                   PayPal Business Checkout
                 </h3>
                 <p className="text-[10px] text-muted-foreground">
@@ -300,11 +300,11 @@ export default function SellerPaymentsPage() {
         <div className="card flex flex-col justify-between h-full">
           <div>
             <div className="flex items-center gap-2 border-b border-border/10 pb-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--gold-faint)] border border-[var(--gold-soft)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-(--gold-faint) border border-(--gold-soft)">
                 <History className="h-4 w-4" style={{ color: "var(--gold)" }} />
               </div>
               <div>
-                <h3 className="text-sm font-semibold tracking-wider uppercase text-[var(--brand-text)]">
+                <h3 className="text-sm font-semibold tracking-wider uppercase text-(--brand-text)">
                   Payouts Ledger
                 </h3>
                 <p className="text-[10px] text-muted-foreground">
@@ -317,10 +317,10 @@ export default function SellerPaymentsPage() {
               {DEFAULT_PAYOUTS.map((log) => (
                 <div
                   key={log.id}
-                  className="p-3.5 rounded-xl border border-border/20 bg-background/20 space-y-2 hover:border-[var(--gold-faint)] transition-colors"
+                  className="p-3.5 rounded-xl border border-border/20 bg-background/20 space-y-2 hover:border-(--gold-faint) transition-colors"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-semibold text-[var(--gold)]">
+                    <span className="font-mono text-xs font-semibold text-(--gold)">
                       {log.id}
                     </span>
                     <span className="text-[10px] text-green-500 font-semibold bg-green-500/5 px-2 py-0.5 rounded-full border border-green-500/20 flex items-center gap-1">
@@ -330,7 +330,7 @@ export default function SellerPaymentsPage() {
                   </div>
                   <div className="flex justify-between items-center text-xs">
                     <div>
-                      <p className="font-medium text-[var(--brand-text)]">₹{log.amount.toLocaleString("en-IN")}</p>
+                      <p className="font-medium text-(--brand-text)">₹{log.amount.toLocaleString("en-IN")}</p>
                       <p className="text-[9px] text-muted-foreground mt-0.5">Cleared via {log.method}</p>
                     </div>
                     <span className="text-[10px] text-muted-foreground font-medium">
@@ -346,9 +346,9 @@ export default function SellerPaymentsPage() {
             </div>
           </div>
 
-          <div className="pt-3 mt-6 border-t border-[var(--gold-faint)] text-center">
+          <div className="pt-3 mt-6 border-t border-(--gold-faint) text-center">
             <p className="text-[10px] text-muted-foreground flex items-center justify-center gap-1">
-              <HelpCircle className="h-3.5 w-3.5 text-[var(--gold)]" />
+              <HelpCircle className="h-3.5 w-3.5 text-(--gold)" />
               Payout queries? Contact our Boutique Support.
             </p>
           </div>

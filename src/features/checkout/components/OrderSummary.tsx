@@ -46,7 +46,7 @@ export function OrderSummary({
 }: OrderSummaryProps) {
   return (
     <div className="rounded-[2.5rem] border border-slate-200/50 bg-white p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] sticky top-24">
-      <h3 className="font-cormorant text-2xl font-light text-[var(--brand-text)] mb-6 text-left">
+      <h3 className="font-cormorant text-2xl font-light text-(--brand-text) mb-6 text-left">
         Order Summary
       </h3>
 
@@ -67,7 +67,7 @@ export function OrderSummary({
                 />
               </div>
               <div className="min-w-0 text-left">
-                <h4 className="font-semibold text-[var(--brand-text)] truncate text-[11px] max-w-[170px]">
+                <h4 className="font-semibold text-(--brand-text) truncate text-[11px] max-w-[170px]">
                   {item.name}
                 </h4>
                 <p className="text-[9px] text-muted-foreground mt-0.5 font-mono">
@@ -77,7 +77,7 @@ export function OrderSummary({
                 </p>
               </div>
             </div>
-            <span className="font-bold text-[var(--gold)] font-mono">
+            <span className="font-bold text-(--gold) font-mono">
               ₹{((item.price ?? 0) * item.quantity).toFixed(2)}
             </span>
           </div>
@@ -126,9 +126,9 @@ export function OrderSummary({
 
         <Separator className="my-3 border-slate-100" />
 
-        <div className="flex justify-between text-sm font-bold text-[var(--brand-text)] pt-1">
+        <div className="flex justify-between text-sm font-bold text-(--brand-text) pt-1">
           <span>Total Amount</span>
-          <span className="text-[var(--gold)] text-base font-bold font-mono">
+          <span className="text-(--gold) text-base font-bold font-mono">
             ₹{totalAmount.toFixed(2)}
           </span>
         </div>
@@ -163,7 +163,7 @@ export function OrderSummary({
       <div className="flex gap-3.5 items-center rounded-xl bg-slate-50/50 border border-slate-100 p-4 text-[10px] text-muted-foreground leading-normal text-left">
         <ShieldCheck className="h-6 w-6 text-emerald-600 shrink-0" />
         <div>
-          <p className="font-bold text-[var(--brand-text)] flex items-center gap-1">
+          <p className="font-bold text-(--brand-text) flex items-center gap-1">
             Secure Checkout
             <Lock className="h-2.5 w-2.5 text-slate-400" />
           </p>

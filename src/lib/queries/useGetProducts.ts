@@ -78,12 +78,18 @@ export const mapProduct = (p: ApiProduct): UIProduct => {
   const sizes = p.sizes ?? [];
   const variants = p.variants ?? [];
 
-  // Distinct sizes and colors across all variants
+  // Distinct sizes and colors across all variants & sizes
   const availableSizes = [
-    ...new Set(sizes.map((s: { size?: string }) => s.size).filter(Boolean)),
+    ...new Set([
+      ...sizes.map((s: { size?: string }) => s.size),
+      ...variants.map((v: { size?: string }) => v.size),
+    ].filter(Boolean)),
   ] as string[];
   const availableColors = [
-    ...new Set(sizes.map((s: { color?: string }) => s.color).filter(Boolean)),
+    ...new Set([
+      ...sizes.map((s: { color?: string }) => s.color),
+      ...variants.map((v: { color?: string }) => v.color),
+    ].filter(Boolean)),
   ] as string[];
 
   // Stock per size (summed across colors for that size)
@@ -91,6 +97,11 @@ export const mapProduct = (p: ApiProduct): UIProduct => {
   for (const s of sizes) {
     if (s.size) {
       sizeQuantities[s.size] = (sizeQuantities[s.size] ?? 0) + (s.stock ?? 0);
+    }
+  }
+  for (const v of variants) {
+    if (v.size && !sizes.some((s) => s.size === v.size)) {
+      sizeQuantities[v.size] = (sizeQuantities[v.size] ?? 0) + ((v as { stock?: number; quantity?: number }).stock ?? (v as { stock?: number; quantity?: number }).quantity ?? 10);
     }
   }
 

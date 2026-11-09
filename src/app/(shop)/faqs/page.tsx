@@ -95,64 +95,64 @@ export default function FaqsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* Breadcrumb Navigation */}
-      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+      <div className="w-full border-b border-(--vault-line) bg-(--vault-panel)/60 py-3 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted)"
           >
-            <Link href="/" className="hover:text-[var(--vault-accent)] transition-colors">
+            <Link href="/" className="hover:text-(--vault-accent) transition-colors">
               Vault Vogue
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <Link href="/help" className="hover:text-[var(--vault-accent)] transition-colors">
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <Link href="/help" className="hover:text-(--vault-accent) transition-colors">
               Help Center
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <span className="text-[var(--vault-accent)] font-semibold">FAQs</span>
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <span className="text-(--vault-accent) font-semibold">FAQs</span>
           </nav>
         </div>
       </div>
 
       <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
         {/* Editorial Header Block */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 mb-8 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-(--vault-line) pb-6">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)] animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-(--vault-accent) animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-(--vault-accent) font-semibold flex items-center gap-1.5">
               Maison Knowledge Repository
               </span>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               VERSION 4.2 · UPDATED REGULARLY
             </span>
           </div>
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-8 space-y-4">
-              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
-                Frequently Asked <span className="italic text-[var(--vault-accent)]">Inquiries.</span>
+              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-(--vault-ink) leading-none">
+                Frequently Asked <span className="italic text-(--vault-accent)">Inquiries.</span>
               </h1>
-              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-(--vault-muted) font-mono">
                 Comprehensive guidelines detailing archival acquisition, international air-courier transit,
                 cryptographic NFC authentication, and bespoke garment sizing.
               </p>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
+            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-(--vault-line) lg:pl-8 pt-4 lg:pt-0">
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">TOPICS INDEXED:</span>
+                <span className="text-(--vault-muted)">TOPICS INDEXED:</span>
                 <span className="font-bold">4 PRIMARY SECTORS</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">AUTHENTICATION:</span>
-                <span className="text-[var(--vault-accent)] font-bold">100% NFC VERIFIED</span>
+                <span className="text-(--vault-muted)">AUTHENTICATION:</span>
+                <span className="text-(--vault-accent) font-bold">100% NFC VERIFIED</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">GLOBAL DISPATCH:</span>
+                <span className="text-(--vault-muted)">GLOBAL DISPATCH:</span>
                 <span className="font-bold">DDP INCLUDED</span>
               </div>
             </div>
@@ -170,8 +170,8 @@ export default function FaqsPage() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`border px-4 py-2 font-mono text-[11px] uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                   active
-                    ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] text-white font-bold shadow-sm"
-                    : "border-[var(--vault-line)] bg-[var(--vault-panel)] text-[var(--vault-muted)] hover:text-[var(--vault-ink)] hover:border-[var(--vault-accent)]"
+                    ? "border-(--vault-accent) bg-(--vault-accent) text-white font-bold shadow-sm"
+                    : "border-(--vault-line) bg-(--vault-panel) text-(--vault-muted) hover:text-(--vault-ink) hover:border-(--vault-accent)"
                 }`}
               >
                 {cat.label}
@@ -189,8 +189,8 @@ export default function FaqsPage() {
                 key={faq.id}
                 className={`border transition-all duration-300 ${
                   isOpen
-                    ? "border-[var(--vault-accent)]/40 bg-[var(--vault-panel)] shadow-md"
-                    : "border-[var(--vault-line)] bg-[var(--vault-panel)] hover:border-[var(--vault-accent)]/30"
+                    ? "border-(--vault-accent)/40 bg-(--vault-panel) shadow-md"
+                    : "border-(--vault-line) bg-(--vault-panel) hover:border-(--vault-accent)/30"
                 }`}
               >
                 <button
@@ -201,14 +201,14 @@ export default function FaqsPage() {
                 >
                   <div className="space-y-1.5 flex-1 pr-4">
                     <div className="flex items-center gap-3 font-mono text-[10px] uppercase">
-                      <span className="text-[var(--vault-accent)] font-bold">
+                      <span className="text-(--vault-accent) font-bold">
                         0{index + 1} //
                       </span>
-                      <span className="text-[var(--vault-muted)] tracking-wider">
+                      <span className="text-(--vault-muted) tracking-wider">
                         {faq.telemetry}
                       </span>
                     </div>
-                    <h3 className="font-serif text-lg sm:text-xl font-light uppercase tracking-tight text-[var(--vault-ink)] pt-1">
+                    <h3 className="font-serif text-lg sm:text-xl font-light uppercase tracking-tight text-(--vault-ink) pt-1">
                       {faq.question}
                     </h3>
                   </div>
@@ -216,8 +216,8 @@ export default function FaqsPage() {
                   <div
                     className={`flex h-9 w-9 shrink-0 items-center justify-center border transition-all duration-300 ${
                       isOpen
-                        ? "border-[var(--vault-accent)] bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] rotate-180"
-                        : "border-[var(--vault-line)] text-[var(--vault-muted)]"
+                        ? "border-(--vault-accent) bg-(--vault-accent)/10 text-(--vault-accent) rotate-180"
+                        : "border-(--vault-line) text-(--vault-muted)"
                     }`}
                   >
                     <ChevronDown size={15} />
@@ -225,8 +225,8 @@ export default function FaqsPage() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-7 sm:px-7 sm:pb-8 pt-0 border-t border-[var(--vault-line)] mt-2">
-                    <p className="text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-sans pt-4 max-w-4xl">
+                  <div className="px-6 pb-7 sm:px-7 sm:pb-8 pt-0 border-t border-(--vault-line) mt-2">
+                    <p className="text-xs sm:text-sm leading-relaxed text-(--vault-muted) font-sans pt-4 max-w-4xl">
                       {faq.answer}
                     </p>
                   </div>
@@ -237,17 +237,17 @@ export default function FaqsPage() {
         </div>
 
         {/* Still Need Assistance Strip */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-8 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-accent)] font-bold">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-(--vault-accent) font-bold">
                 Require Bespoke Consultation?
               </span>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+            <h2 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-(--vault-ink)">
               Our atelier curators are ready to help.
             </h2>
-            <p className="text-xs text-[var(--vault-muted)] max-w-md font-mono">
+            <p className="text-xs text-(--vault-muted) max-w-md font-mono">
               Direct coordination for custom measurements, private showroom visits, or order assistance.
             </p>
           </div>

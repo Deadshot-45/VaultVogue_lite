@@ -46,15 +46,15 @@ export function ProductPagination({
   return (
     <nav
       aria-label="Catalog Pagination"
-      className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[var(--vault-line)] pt-8 sm:flex-row"
+      className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-(--vault-line) pt-8 sm:flex-row"
     >
       {/* Range Display */}
-      <p className="font-mono text-xs uppercase tracking-wider text-[var(--vault-muted)]">
+      <p className="font-mono text-xs uppercase tracking-wider text-(--vault-muted)">
         Showing{" "}
-        <span className="font-bold text-[var(--vault-ink)]">
+        <span className="font-bold text-(--vault-ink)">
           {startIndex + 1}–{endIndex}
         </span>{" "}
-        of <span className="font-bold text-[var(--vault-ink)]">{totalCount}</span> pieces
+        of <span className="font-bold text-(--vault-ink)">{totalCount}</span> pieces
       </p>
 
       {/* Page controls */}
@@ -66,7 +66,7 @@ export function ProductPagination({
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage <= 1}
             aria-label="Previous Page"
-            className="flex h-9 w-9 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-panel)] text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-[var(--vault-line)] disabled:hover:text-[var(--vault-ink)]"
+            className="flex h-9 w-9 items-center justify-center border border-(--vault-line) bg-(--vault-panel) text-(--vault-ink) transition hover:border-(--vault-accent) hover:text-(--vault-accent) disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-(--vault-line) disabled:hover:text-(--vault-ink)"
           >
             <ChevronLeft size={16} />
           </button>
@@ -77,7 +77,7 @@ export function ProductPagination({
               return (
                 <span
                   key={`ellipsis-${idx}`}
-                  className="flex h-9 w-7 items-center justify-center font-mono text-xs text-[var(--vault-muted)]"
+                  className="flex h-9 w-7 items-center justify-center font-mono text-xs text-(--vault-muted)"
                 >
                   …
                 </span>
@@ -93,8 +93,8 @@ export function ProductPagination({
                 aria-current={isActive ? "page" : undefined}
                 className={`flex h-9 min-w-9 items-center justify-center px-2 font-mono text-xs uppercase transition border ${
                   isActive
-                    ? "border-[var(--vault-accent)] bg-[var(--vault-accent)] font-bold text-white shadow-sm"
-                    : "border-[var(--vault-line)] bg-[var(--vault-panel)] text-[var(--vault-ink)] hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)]"
+                    ? "border-(--vault-accent) bg-(--vault-accent) font-bold text-white shadow-sm"
+                    : "border-(--vault-line) bg-(--vault-panel) text-(--vault-ink) hover:border-(--vault-accent) hover:text-(--vault-accent)"
                 }`}
               >
                 {p}
@@ -108,7 +108,7 @@ export function ProductPagination({
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage >= totalPages}
             aria-label="Next Page"
-            className="flex h-9 w-9 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-panel)] text-[var(--vault-ink)] transition hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-[var(--vault-line)] disabled:hover:text-[var(--vault-ink)]"
+            className="flex h-9 w-9 items-center justify-center border border-(--vault-line) bg-(--vault-panel) text-(--vault-ink) transition hover:border-(--vault-accent) hover:text-(--vault-accent) disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-(--vault-line) disabled:hover:text-(--vault-ink)"
           >
             <ChevronRight size={16} />
           </button>

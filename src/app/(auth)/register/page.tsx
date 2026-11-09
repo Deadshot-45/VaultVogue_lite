@@ -12,8 +12,8 @@ export default function RegisterPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--vault-bg)]">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--vault-accent)]" />
+        <div className="flex flex-col items-center justify-center min-h-screen bg-(--vault-bg)">
+          <Loader2 className="h-8 w-8 animate-spin text-(--vault-accent)" />
         </div>
       }
     >

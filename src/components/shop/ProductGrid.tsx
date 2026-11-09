@@ -30,16 +30,16 @@ function ProductGridSkeleton({ density = 4 }: { density?: 3 | 4 }) {
       {Array.from({ length: 8 }).map((_, i) => (
         <div
           key={i}
-          className="border border-[var(--vault-line)] bg-[var(--vault-panel)] animate-pulse flex flex-col"
+          className="border border-(--vault-line) bg-(--vault-panel) animate-pulse flex flex-col"
         >
-          <div className="aspect-[3/4] w-full bg-[var(--vault-line)]/40" />
+          <div className="aspect-[3/4] w-full bg-(--vault-line)/40" />
           <div className="p-4 sm:p-5 space-y-3 flex-1 flex flex-col justify-between">
             <div className="space-y-2">
-              <div className="h-3 w-1/3 bg-[var(--vault-line)]/50" />
-              <div className="h-4 w-3/4 bg-[var(--vault-line)]/60" />
-              <div className="h-3 w-1/2 bg-[var(--vault-line)]/40" />
+              <div className="h-3 w-1/3 bg-(--vault-line)/50" />
+              <div className="h-4 w-3/4 bg-(--vault-line)/60" />
+              <div className="h-3 w-1/2 bg-(--vault-line)/40" />
             </div>
-            <div className="h-8 w-full bg-[var(--vault-line)]/30 mt-4" />
+            <div className="h-8 w-full bg-(--vault-line)/30 mt-4" />
           </div>
         </div>
       ))}
@@ -88,14 +88,14 @@ export function ProductGrid({
 
   if (isError) {
     return (
-      <div className="mx-auto my-12 max-w-xl border border-[var(--vault-accent)]/40 bg-[var(--vault-panel)] p-8 text-center space-y-4">
-        <div className="flex justify-center text-[var(--vault-accent)]">
+      <div className="mx-auto my-12 max-w-xl border border-(--vault-accent)/40 bg-(--vault-panel) p-8 text-center space-y-4">
+        <div className="flex justify-center text-(--vault-accent)">
           <AlertTriangle size={32} />
         </div>
-        <h3 className="font-serif text-2xl uppercase tracking-tight text-[var(--vault-ink)]">
+        <h3 className="font-serif text-2xl uppercase tracking-tight text-(--vault-ink)">
           Connection Issue
         </h3>
-        <p className="text-xs text-[var(--vault-muted)] max-w-md mx-auto leading-relaxed font-sans">
+        <p className="text-xs text-(--vault-muted) max-w-md mx-auto leading-relaxed font-sans">
           {errorMessage || "Unable to retrieve the catalog pieces. Please check connection and retry."}
         </p>
         {onRetry && (

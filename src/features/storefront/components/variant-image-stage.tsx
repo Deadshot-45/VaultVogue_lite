@@ -65,7 +65,7 @@ export function VariantImageStage({ product, color, size, compact = false }: Pro
 
   return (
     <div
-      className={`group relative w-full overflow-hidden bg-[var(--vault-panel)] ${
+      className={`group relative w-full overflow-hidden bg-(--vault-panel) ${
         compact ? "aspect-[4/3]" : "aspect-[4/4.7]"
       }`}
     >
@@ -107,7 +107,7 @@ export function VariantImageStage({ product, color, size, compact = false }: Pro
       <div className="absolute inset-x-0 bottom-0 z-20 flex justify-between gap-2 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-3 pb-3 pt-10 font-mono text-[9px] uppercase tracking-wide text-white sm:px-4 sm:pb-4">
         <span>Pantone {color.pantone.replace("PMS ", "")}</span>
         <span>Chest {sizeInfo.chest}</span>
-        <span className="text-[var(--vault-accent)] font-semibold">Stock {color.stockBySize[size]}</span>
+        <span className="text-(--vault-accent) font-semibold">Stock {color.stockBySize[size]}</span>
       </div>
     </div>
   );

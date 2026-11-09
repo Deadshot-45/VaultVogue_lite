@@ -54,14 +54,21 @@ function getHexForColorName(colorName: string, defaultHex: string): string {
 export function mapApiProductToVariantProduct(apiProduct: UIProduct): VariantProduct {
   const sizeQuantities = apiProduct.sizeQuantities || {};
 
-  // Build stock by size
-  const stockBySize: Record<VariantSize, number> = {
-    XS: sizeQuantities["XS"] ?? (apiProduct.availableSizes?.includes("XS") ? 10 : 0),
-    S: sizeQuantities["S"] ?? (apiProduct.availableSizes?.includes("S") ? 10 : 0),
-    M: sizeQuantities["M"] ?? (apiProduct.availableSizes?.includes("M") ? 10 : 0),
-    L: sizeQuantities["L"] ?? (apiProduct.availableSizes?.includes("L") ? 10 : 0),
-    XL: sizeQuantities["XL"] ?? (apiProduct.availableSizes?.includes("XL") ? 10 : 0),
-  };
+  // Build stock by size across all sizes in sizeQuantities and variants
+  const stockBySize: Record<string, number> = {};
+  for (const [s, q] of Object.entries(sizeQuantities)) {
+    stockBySize[s] = q;
+  }
+  for (const v of apiProduct.variants || []) {
+    if (v.size) {
+      stockBySize[v.size] = (stockBySize[v.size] ?? 0) + ((v as { stock?: number; quantity?: number }).stock ?? (v as { stock?: number; quantity?: number }).quantity ?? 10);
+    }
+  }
+  if (Object.keys(stockBySize).length === 0) {
+    SIZE_ORDER.forEach((s) => {
+      stockBySize[s] = 10;
+    });
+  }
 
   // Primary image
   const primaryImg = resolveUiProductImage(apiProduct.image);
@@ -172,5 +179,7 @@ export function mapApiProductToVariantProduct(apiProduct: UIProduct): VariantPro
     highlights: [],
     careInstructions: [],
     composition: "",
+    variants: apiProduct.variants,
+    availableSizes: apiProduct.availableSizes,
   };
 }

@@ -79,14 +79,14 @@ export function ProductReviews({
   });
 
   return (
-    <section id="reviews-section" className="border-t border-[var(--vault-line)] pt-8 sm:pt-12">
+    <section id="reviews-section" className="border-t border-(--vault-line) pt-8 sm:pt-12">
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-[var(--vault-line)] pb-8">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-(--vault-line) pb-8">
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent)">
             Client Verification
           </span>
-          <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+          <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-(--vault-ink)">
             Atelier Experiences ({totalReviews})
           </h2>
         </div>
@@ -94,7 +94,7 @@ export function ProductReviews({
         <button
           type="button"
           onClick={() => setIsWriteOpen(!isWriteOpen)}
-          className="inline-flex items-center gap-2 border border-[var(--vault-line)] px-5 py-3 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-ink)] hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 border border-(--vault-line) px-5 py-3 font-mono text-[10px] uppercase tracking-wider text-(--vault-ink) hover:border-(--vault-accent) hover:text-(--vault-accent) transition-colors cursor-pointer"
         >
           <MessageSquare size={14} />
           {isWriteOpen ? "Close Form" : "Write an Evaluation"}
@@ -102,17 +102,17 @@ export function ProductReviews({
       </div>
 
       {/* Review Score Summary */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 p-6 sm:p-8 border border-[var(--vault-line)] bg-[var(--vault-panel)]">
-        <div className="flex flex-col justify-center items-center md:border-r border-[var(--vault-line)] md:pr-8 text-center">
-          <span className="font-mono text-5xl font-light text-[var(--vault-ink)]">
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 p-6 sm:p-8 border border-(--vault-line) bg-(--vault-panel)">
+        <div className="flex flex-col justify-center items-center md:border-r border-(--vault-line) md:pr-8 text-center">
+          <span className="font-mono text-5xl font-light text-(--vault-ink)">
             {displayRating}
           </span>
-          <div className="mt-2 flex items-center gap-1 text-[var(--vault-accent)]">
+          <div className="mt-2 flex items-center gap-1 text-(--vault-accent)">
             {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} size={15} className="fill-[var(--vault-accent)] text-[var(--vault-accent)]" />
+              <Star key={i} size={15} className="fill-(--vault-accent) text-(--vault-accent)" />
             ))}
           </div>
-          <span className="mt-2 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+          <span className="mt-2 font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
             {totalReviews > 0 ? "Verified Client Evaluations" : "Awaiting Client Evaluations"}
           </span>
         </div>
@@ -121,14 +121,14 @@ export function ProductReviews({
         <div className="col-span-2 space-y-2 font-mono text-[10px] uppercase tracking-wider">
           {distribution.map((bar) => (
             <div key={bar.star} className="flex items-center gap-3">
-              <span className="w-12 text-[var(--vault-muted)]">{bar.star} Stars</span>
-              <div className="flex-1 h-2 bg-[var(--vault-line)]/50 overflow-hidden">
+              <span className="w-12 text-(--vault-muted)">{bar.star} Stars</span>
+              <div className="flex-1 h-2 bg-(--vault-line)/50 overflow-hidden">
                 <div
-                  className="h-full bg-[var(--vault-accent)] transition-all duration-500"
+                  className="h-full bg-(--vault-accent) transition-all duration-500"
                   style={{ width: `${bar.pct}%` }}
                 />
               </div>
-              <span className="w-8 text-right text-[var(--vault-muted)]">{bar.count}</span>
+              <span className="w-8 text-right text-(--vault-muted)">{bar.count}</span>
             </div>
           ))}
         </div>
@@ -138,15 +138,15 @@ export function ProductReviews({
       {isWriteOpen && (
         <form
           onSubmit={handleCreateReview}
-          className="mt-8 border border-[var(--vault-accent)] bg-[var(--vault-panel)] p-6 sm:p-8 space-y-4 animate-in fade-in"
+          className="mt-8 border border-(--vault-accent) bg-(--vault-panel) p-6 sm:p-8 space-y-4 animate-in fade-in"
         >
-          <h3 className="font-serif text-xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+          <h3 className="font-serif text-xl font-light uppercase tracking-tight text-(--vault-ink)">
             Share Your Atelier Impression
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
             <div>
-              <label className="block text-[10px] uppercase text-[var(--vault-muted)] mb-1">
+              <label className="block text-[10px] uppercase text-(--vault-muted) mb-1">
                 Your Name
               </label>
               <input
@@ -155,17 +155,17 @@ export function ProductReviews({
                 value={newAuthor}
                 onChange={(e) => setNewAuthor(e.target.value)}
                 placeholder="e.g. Laurent D."
-                className="w-full border border-[var(--vault-line)] bg-[var(--vault-canvas)] px-3 py-2 text-[var(--vault-ink)] focus:border-[var(--vault-accent)] focus:outline-none"
+                className="w-full border border-(--vault-line) bg-(--vault-canvas) px-3 py-2 text-(--vault-ink) focus:border-(--vault-accent) focus:outline-none"
               />
             </div>
             <div>
-              <label className="block text-[10px] uppercase text-[var(--vault-muted)] mb-1">
+              <label className="block text-[10px] uppercase text-(--vault-muted) mb-1">
                 Rating
               </label>
               <select
                 value={newRating}
                 onChange={(e) => setNewRating(Number(e.target.value))}
-                className="w-full border border-[var(--vault-line)] bg-[var(--vault-canvas)] px-3 py-2 text-[var(--vault-ink)] focus:border-[var(--vault-accent)] focus:outline-none"
+                className="w-full border border-(--vault-line) bg-(--vault-canvas) px-3 py-2 text-(--vault-ink) focus:border-(--vault-accent) focus:outline-none"
               >
                 <option value={5}>5 Stars — Masterpiece</option>
                 <option value={4}>4 Stars — Very Impressed</option>
@@ -177,7 +177,7 @@ export function ProductReviews({
           </div>
 
           <div className="font-mono text-xs">
-            <label className="block text-[10px] uppercase text-[var(--vault-muted)] mb-1">
+            <label className="block text-[10px] uppercase text-(--vault-muted) mb-1">
               Headline
             </label>
             <input
@@ -185,12 +185,12 @@ export function ProductReviews({
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               placeholder="e.g. Exceptional cut and drape"
-              className="w-full border border-[var(--vault-line)] bg-[var(--vault-canvas)] px-3 py-2 text-[var(--vault-ink)] focus:border-[var(--vault-accent)] focus:outline-none"
+              className="w-full border border-(--vault-line) bg-(--vault-canvas) px-3 py-2 text-(--vault-ink) focus:border-(--vault-accent) focus:outline-none"
             />
           </div>
 
           <div className="font-mono text-xs">
-            <label className="block text-[10px] uppercase text-[var(--vault-muted)] mb-1">
+            <label className="block text-[10px] uppercase text-(--vault-muted) mb-1">
               Evaluation
             </label>
             <textarea
@@ -199,7 +199,7 @@ export function ProductReviews({
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Detail the fabric hand-feel, proportion, sizing fidelity, and wear comfort..."
-              className="w-full border border-[var(--vault-line)] bg-[var(--vault-canvas)] px-3 py-2 text-[var(--vault-ink)] focus:border-[var(--vault-accent)] focus:outline-none"
+              className="w-full border border-(--vault-line) bg-(--vault-canvas) px-3 py-2 text-(--vault-ink) focus:border-(--vault-accent) focus:outline-none"
             />
           </div>
 
@@ -207,13 +207,13 @@ export function ProductReviews({
             <button
               type="button"
               onClick={() => setIsWriteOpen(false)}
-              className="border border-[var(--vault-line)] px-4 py-2 font-mono text-[10px] uppercase text-[var(--vault-muted)]"
+              className="border border-(--vault-line) px-4 py-2 font-mono text-[10px] uppercase text-(--vault-muted)"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-[var(--vault-accent)] px-6 py-2 font-mono text-[10px] uppercase font-bold text-white hover:opacity-90 transition-opacity"
+              className="bg-(--vault-accent) px-6 py-2 font-mono text-[10px] uppercase font-bold text-white hover:opacity-90 transition-opacity"
             >
               Publish Evaluation
             </button>
@@ -223,11 +223,11 @@ export function ProductReviews({
 
       {/* Review Cards Feed */}
       {reviews.length === 0 ? (
-        <div className="mt-8 border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 text-center space-y-2">
-          <p className="font-mono text-xs uppercase tracking-widest text-[var(--vault-ink)]">
+        <div className="mt-8 border border-(--vault-line) bg-(--vault-panel) p-8 text-center space-y-2">
+          <p className="font-mono text-xs uppercase tracking-widest text-(--vault-ink)">
             No Client Evaluations Yet
           </p>
-          <p className="font-mono text-[11px] text-[var(--vault-muted)]">
+          <p className="font-mono text-[11px] text-(--vault-muted)">
             Acquired this silhouette? Select &ldquo;Write an Evaluation&rdquo; above to share your impression.
           </p>
         </div>
@@ -236,44 +236,44 @@ export function ProductReviews({
           {reviews.map((rev) => (
             <article
               key={rev.id}
-              className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-7 space-y-3"
+              className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-7 space-y-3"
             >
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--vault-line)] pb-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-(--vault-line) pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="font-serif text-base font-light text-[var(--vault-ink)]">
+                  <span className="font-serif text-base font-light text-(--vault-ink)">
                     {rev.name}
                   </span>
-                  <span className="font-mono text-[10px] text-[var(--vault-muted)]">
+                  <span className="font-mono text-[10px] text-(--vault-muted)">
                     ({rev.location})
                   </span>
                   {rev.verified && (
-                    <span className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-wider text-[var(--vault-accent)] border border-[var(--vault-accent)]/30 px-1.5 py-0.5">
+                    <span className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-wider text-(--vault-accent) border border-(--vault-accent)/30 px-1.5 py-0.5">
                       <CheckCircle2 size={10} /> Verified Acquisition
                     </span>
                   )}
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center text-[var(--vault-accent)]">
+                  <div className="flex items-center text-(--vault-accent)">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}
                         size={11}
-                        className={i < Math.floor(rev.rating) ? "fill-[var(--vault-accent)] text-[var(--vault-accent)]" : "text-[var(--vault-line)]"}
+                        className={i < Math.floor(rev.rating) ? "fill-(--vault-accent) text-(--vault-accent)" : "text-(--vault-line)"}
                       />
                     ))}
                   </div>
-                  <span className="font-mono text-[10px] text-[var(--vault-muted)]">
+                  <span className="font-mono text-[10px] text-(--vault-muted)">
                     {rev.date}
                   </span>
                 </div>
               </div>
 
-              <h4 className="font-serif text-lg font-light text-[var(--vault-ink)]">
+              <h4 className="font-serif text-lg font-light text-(--vault-ink)">
                 &ldquo;{rev.title}&rdquo;
               </h4>
 
-              <p className="font-mono text-xs leading-relaxed text-[var(--vault-muted)]">
+              <p className="font-mono text-xs leading-relaxed text-(--vault-muted)">
                 {rev.comment}
               </p>
 
@@ -281,9 +281,9 @@ export function ProductReviews({
                 <button
                   type="button"
                   onClick={() => handleHelpful(rev.id)}
-                  className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)] hover:text-[var(--vault-ink)] transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-wider text-(--vault-muted) hover:text-(--vault-ink) transition-colors cursor-pointer"
                 >
-                  <ThumbsUp size={11} className={helpfulClicked[rev.id] ? "text-[var(--vault-accent)]" : ""} />
+                  <ThumbsUp size={11} className={helpfulClicked[rev.id] ? "text-(--vault-accent)" : ""} />
                   Helpful ({rev.helpfulCount})
                 </button>
               </div>

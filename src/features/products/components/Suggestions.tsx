@@ -15,7 +15,7 @@ export const Suggestions = React.memo(({ items }: SuggestionsProps) => {
       {/* Section Header */}
       <div className="mb-10 text-center">
         <span className="section-label">Recommendations</span>
-        <h2 className="section-title mt-3 font-light text-[var(--brand-text)]">
+        <h2 className="section-title mt-3 font-light text-(--brand-text)">
           You May Also Like
         </h2>
         <div className="gold-divider mx-auto" />

@@ -16,7 +16,7 @@ export default function SellerLayout({
 }) {
   return (
     <SellerGuard>
-      <div className="flex h-screen w-dvw overflow-hidden bg-[var(--background)]">
+      <div className="flex h-screen w-dvw overflow-hidden bg-(--background)">
         {/* Navigation Sidebar */}
         <div className="hidden lg:flex h-full">
           <SellerSidebar />

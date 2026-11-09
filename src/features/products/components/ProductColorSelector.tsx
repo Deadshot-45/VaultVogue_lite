@@ -18,9 +18,9 @@ export function ProductColorSelector({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-wider">
-        <span className="text-[var(--vault-muted)]">Color Tone:</span>
-        <span className="font-bold text-[var(--vault-ink)]">
-          {selectedColor.name} <span className="text-[var(--vault-muted)] font-normal">({selectedColor.code})</span>
+        <span className="text-(--vault-muted)">Color Tone:</span>
+        <span className="font-bold text-(--vault-ink)">
+          {selectedColor.name} <span className="text-(--vault-muted) font-normal">({selectedColor.code})</span>
         </span>
       </div>
 
@@ -41,8 +41,8 @@ export function ProductColorSelector({
               onClick={() => onSelectColor(color.id)}
               className={`group relative flex h-9 w-9 items-center justify-center rounded-full transition-all cursor-pointer ${
                 isSelected
-                  ? "ring-2 ring-[var(--vault-accent)] ring-offset-2 ring-offset-[var(--vault-canvas)] scale-105"
-                  : "border border-[var(--vault-line)] hover:scale-105 hover:ring-1 hover:ring-[var(--vault-accent)]/50"
+                  ? "ring-2 ring-(--vault-accent) ring-offset-2 ring-offset-(--vault-canvas) scale-105"
+                  : "border border-(--vault-line) hover:scale-105 hover:ring-1 hover:ring-(--vault-accent)/50"
               }`}
             >
               <span

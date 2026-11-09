@@ -61,65 +61,65 @@ const REFUND_POLICIES = [
 
 export default function RefundPolicyPage() {
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* Breadcrumb Navigation */}
-      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+      <div className="w-full border-b border-(--vault-line) bg-(--vault-panel)/60 py-3 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted)"
           >
-            <Link href="/" className="hover:text-[var(--vault-accent)] transition-colors">
+            <Link href="/" className="hover:text-(--vault-accent) transition-colors">
               Vault Vogue
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <Link href="/help" className="hover:text-[var(--vault-accent)] transition-colors">
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <Link href="/help" className="hover:text-(--vault-accent) transition-colors">
               Help Center
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <span className="text-[var(--vault-accent)] font-semibold">Refund Policy</span>
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <span className="text-(--vault-accent) font-semibold">Refund Policy</span>
           </nav>
         </div>
       </div>
 
       <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
         {/* Editorial Header Block */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 mb-8 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 mb-8 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-(--vault-line) pb-6">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[var(--vault-accent)] animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--vault-accent)] font-semibold flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-(--vault-accent) animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-(--vault-accent) font-semibold flex items-center gap-1.5">
                  Maison Escrow &amp; Client Guarantee
               </span>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               SLA // 100% SECURE REIMBURSEMENT
             </span>
           </div>
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-8 space-y-4">
-              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+              <h1 className="font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-(--vault-ink) leading-none">
                 Reimbursement &amp;
                 <br />
-                <span className="italic text-[var(--vault-accent)]">Refund</span> Policy.
+                <span className="italic text-(--vault-accent)">Refund</span> Policy.
               </h1>
-              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-mono">
+              <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-(--vault-muted) font-mono">
                 Transparent settlement timelines, pre-dispatch cancellation rights, and uncompromised escrow protection for all global orders.
               </p>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-[var(--vault-line)] lg:pl-8 pt-4 lg:pt-0">
+            <div className="lg:col-span-4 flex flex-col gap-3 font-mono text-xs border-t lg:border-t-0 lg:border-l border-(--vault-line) lg:pl-8 pt-4 lg:pt-0">
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">SETTLEMENT WINDOW:</span>
-                <span className="text-[var(--vault-accent)] font-bold">3 – 5 BANKING DAYS</span>
+                <span className="text-(--vault-muted)">SETTLEMENT WINDOW:</span>
+                <span className="text-(--vault-accent) font-bold">3 – 5 BANKING DAYS</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">CANCELLATIONS:</span>
+                <span className="text-(--vault-muted)">CANCELLATIONS:</span>
                 <span className="font-bold">100% INSTANT REVERSAL</span>
               </div>
               <div className="flex justify-between text-[11px]">
-                <span className="text-[var(--vault-muted)]">RETURN SHIPPING:</span>
+                <span className="text-(--vault-muted)">RETURN SHIPPING:</span>
                 <span className="text-emerald-500 font-bold">COMPLIMENTARY</span>
               </div>
             </div>
@@ -131,33 +131,33 @@ export default function RefundPolicyPage() {
           {REFUND_POLICIES.map((p) => (
             <article
               key={p.title}
-              className="group border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 transition-all duration-300 hover:border-[var(--vault-accent)] hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
+              className="group border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 transition-all duration-300 hover:border-(--vault-accent) hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between font-mono text-[10px] pb-4 border-b border-[var(--vault-line)]">
-                  <span className="text-[var(--vault-accent)] font-bold">{p.code}</span>
-                  <span className="font-serif italic text-lg text-[var(--vault-muted)]">
+                <div className="flex items-center justify-between font-mono text-[10px] pb-4 border-b border-(--vault-line)">
+                  <span className="text-(--vault-accent) font-bold">{p.code}</span>
+                  <span className="font-serif italic text-lg text-(--vault-muted)">
                     {p.step}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3 pt-4">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-[var(--vault-accent)]/30 bg-[var(--vault-accent)]/10 text-[var(--vault-accent)]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-(--vault-accent)/30 bg-(--vault-accent)/10 text-(--vault-accent)">
                     <p.icon className="h-5 w-5" />
                   </div>
-                  <h2 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+                  <h2 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-tight text-(--vault-ink)">
                     {p.title}
                   </h2>
                 </div>
 
-                <p className="mt-4 text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)] font-sans">
+                <p className="mt-4 text-xs sm:text-sm leading-relaxed text-(--vault-muted) font-sans">
                   {p.summary}
                 </p>
 
-                <ul className="mt-6 space-y-2 border-t border-[var(--vault-line)] pt-4 font-mono text-[11px] text-[var(--vault-muted)]">
+                <ul className="mt-6 space-y-2 border-t border-(--vault-line) pt-4 font-mono text-[11px] text-(--vault-muted)">
                   {p.details.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="text-[var(--vault-accent)] mt-0.5">▪</span>
+                      <span className="text-(--vault-accent) mt-0.5">▪</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -168,18 +168,18 @@ export default function RefundPolicyPage() {
         </div>
 
         {/* Initiation Action Strip */}
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <RotateCcw className="h-4 w-4 text-[var(--vault-accent)]" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--vault-accent)] font-bold">
+              <RotateCcw className="h-4 w-4 text-(--vault-accent)" />
+              <span className="font-mono text-[10px] uppercase tracking-widest text-(--vault-accent) font-bold">
                 Ready to Initiate a Return or Exchange?
               </span>
             </div>
-            <h3 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+            <h3 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-(--vault-ink)">
               Manage Purchases in Your Account Workspace
             </h3>
-            <p className="text-xs text-[var(--vault-muted)] font-mono">
+            <p className="text-xs text-(--vault-muted) font-mono">
               Access your active orders, print pre-paid waybills, or contact the atelier concierge.
             </p>
           </div>

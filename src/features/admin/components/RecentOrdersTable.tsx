@@ -97,7 +97,7 @@ export function RecentOrdersTable() {
   if (isLoading) {
     return (
       <div className="card py-8 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--gold)]"></div>
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-(--gold)"></div>
       </div>
     );
   }
@@ -137,7 +137,7 @@ export function RecentOrdersTable() {
             {table.getRowModel().rows.map((row, i) => (
               <tr
                 key={row.id}
-                className="transition-colors duration-200 hover:bg-[var(--gold-glow)]"
+                className="transition-colors duration-200 hover:bg-(--gold-glow)"
                 style={{ borderBottom: i < orders.length - 1 ? '1px solid var(--gold-faint)' : 'none' }}
               >
                 {row.getVisibleCells().map((cell) => (

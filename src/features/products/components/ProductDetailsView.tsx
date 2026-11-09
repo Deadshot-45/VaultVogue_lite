@@ -99,12 +99,12 @@ export default function ProductDetailsView({
     : 0;
 
   return (
-    <section className="mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 bg-[var(--background)]">
+    <section className="mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 bg-(--background)">
       {/* Breadcrumb nav */}
       <div className="mb-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-[var(--gold)] transition-colors duration-200"
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-(--gold) transition-colors duration-200"
           aria-label="Back to catalog"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -122,7 +122,7 @@ export default function ProductDetailsView({
           <div className="space-y-3">
             <span className="section-label">{product.category}</span>
 
-            <h1 className="font-cormorant font-light text-4xl leading-snug lg:text-5xl text-[var(--brand-text)]">
+            <h1 className="font-cormorant font-light text-4xl leading-snug lg:text-5xl text-(--brand-text)">
               {product.name}
             </h1>
 
@@ -131,7 +131,7 @@ export default function ProductDetailsView({
             {/* Seller attribution */}
             <p className="text-sm text-muted-foreground">
               Curated by{" "}
-              <span className="font-semibold text-[var(--brand-text)]">
+              <span className="font-semibold text-(--brand-text)">
                 {product.sellerName || "StyleHub Maison"}
               </span>
             </p>
@@ -145,7 +145,7 @@ export default function ProductDetailsView({
 
           {/* Pricing — USD */}
           <div className="flex items-baseline gap-3 pt-1">
-            <p className="text-3xl font-bold tracking-tight text-[var(--gold)]">
+            <p className="text-3xl font-bold tracking-tight text-(--gold)">
               ₹{displayedPrice.toFixed(2)}
             </p>
 
@@ -154,7 +154,7 @@ export default function ProductDetailsView({
                 <p className="text-base line-through text-muted-foreground/60">
                   ₹{displayedOriginalPrice!.toFixed(2)}
                 </p>
-                <span className="inline-flex items-center gap-1 rounded-full bg-[var(--gold-glow)] px-2.5 py-0.5 text-xs font-bold text-[var(--gold)] border border-[var(--gold-faint)]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-(--gold-glow) px-2.5 py-0.5 text-xs font-bold text-(--gold) border border-(--gold-faint)">
                   <Tag className="h-3 w-3" />
                   {discountPct}% off
                 </span>
@@ -173,9 +173,9 @@ export default function ProductDetailsView({
           {/* Commitment badges */}
           <div className="flex flex-col sm:flex-row gap-4 pt-5 border-t border-border/20">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--gold-glow)] border border-[var(--gold-faint)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--gold-glow) border border-(--gold-faint)">
                 <Truck
-                  className="h-4 w-4 text-[var(--gold)]"
+                  className="h-4 w-4 text-(--gold)"
                   aria-hidden="true"
                 />
               </div>
@@ -184,9 +184,9 @@ export default function ProductDetailsView({
               </span>
             </div>
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--gold-glow)] border border-[var(--gold-faint)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--gold-glow) border border-(--gold-faint)">
                 <ShieldCheck
-                  className="h-4 w-4 text-[var(--gold)]"
+                  className="h-4 w-4 text-(--gold)"
                   aria-hidden="true"
                 />
               </div>
@@ -199,14 +199,14 @@ export default function ProductDetailsView({
 
         {/* ── RIGHT — STICKY BUY BOX ──────────────────────────── */}
         <div className="relative">
-          <div className="sticky top-28 space-y-6 rounded-2xl border border-[var(--gold-soft)] bg-card/45 backdrop-blur-md p-6 shadow-xl">
+          <div className="sticky top-28 space-y-6 rounded-2xl border border-(--gold-soft) bg-card/45 backdrop-blur-md p-6 shadow-xl">
             {/* Summary price row */}
             <div className="space-y-0.5 pb-4 border-b border-border/20">
               <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                 Total Value
               </p>
               <div className="flex items-baseline gap-2 mt-1">
-                <p className="text-2xl font-bold text-[var(--gold)]">
+                <p className="text-2xl font-bold text-(--gold)">
                   ₹{displayedPrice.toFixed(2)}
                 </p>
                 {hasDiscount && (

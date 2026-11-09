@@ -9,20 +9,20 @@ interface ProductEmptyStateProps {
 
 export function ProductEmptyState({ onClearFilters, hasFilters }: ProductEmptyStateProps) {
   return (
-    <div className="mx-auto my-12 max-w-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-12 text-center">
-      <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center border border-[var(--vault-line)] bg-[var(--vault-bg)] text-[var(--vault-accent)]">
+    <div className="mx-auto my-12 max-w-xl border border-(--vault-line) bg-(--vault-panel) p-8 sm:p-12 text-center">
+      <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center border border-(--vault-line) bg-(--vault-bg) text-(--vault-accent)">
         <SearchX size={26} strokeWidth={1.5} />
       </div>
 
-      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-(--vault-accent)">
         Catalog Query
       </p>
 
-      <h3 className="mt-2 font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+      <h3 className="mt-2 font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-(--vault-ink)">
         No pieces found.
       </h3>
 
-      <p className="mx-auto mt-3 max-w-md font-sans text-xs sm:text-sm text-[var(--vault-muted)] leading-relaxed">
+      <p className="mx-auto mt-3 max-w-md font-sans text-xs sm:text-sm text-(--vault-muted) leading-relaxed">
         Try adjusting your filters or search to discover more from the collection.
       </p>
 

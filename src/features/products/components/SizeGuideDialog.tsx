@@ -29,10 +29,10 @@ export function SizeGuideDialog({
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-xl -translate-x-1/2 -translate-y-1/2 border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 text-[var(--vault-ink)] shadow-2xl animate-in zoom-in-95 duration-200 focus:outline-none">
-          <div className="flex items-center justify-between border-b border-[var(--vault-line)] pb-4">
+        <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-xl -translate-x-1/2 -translate-y-1/2 border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 text-(--vault-ink) shadow-2xl animate-in zoom-in-95 duration-200 focus:outline-none">
+          <div className="flex items-center justify-between border-b border-(--vault-line) pb-4">
             <div className="flex items-center gap-2">
-              <Ruler size={18} className="text-[var(--vault-accent)]" />
+              <Ruler size={18} className="text-(--vault-accent)" />
               <Dialog.Title className="font-serif text-xl sm:text-2xl font-light uppercase tracking-tight">
                 Maison Size &amp; Fit Guide
               </Dialog.Title>
@@ -41,14 +41,14 @@ export function SizeGuideDialog({
               <button
                 type="button"
                 aria-label="Close size guide"
-                className="p-1 text-[var(--vault-muted)] hover:text-[var(--vault-ink)] transition-colors"
+                className="p-1 text-(--vault-muted) hover:text-(--vault-ink) transition-colors"
               >
                 <X size={20} />
               </button>
             </Dialog.Close>
           </div>
 
-          <Dialog.Description className="mt-3 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+          <Dialog.Description className="mt-3 font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
             Architectural tailoring measurements in inches and finished garment weight.
           </Dialog.Description>
 
@@ -56,22 +56,22 @@ export function SizeGuideDialog({
           <div className="mt-6 overflow-x-auto">
             <table className="w-full text-left font-mono text-xs">
               <thead>
-                <tr className="border-b border-[var(--vault-line)] text-[10px] uppercase text-[var(--vault-accent)]">
+                <tr className="border-b border-(--vault-line) text-[10px] uppercase text-(--vault-accent)">
                   <th className="py-2.5">Size</th>
                   <th className="py-2.5">Chest</th>
                   <th className="py-2.5">Body Length</th>
                   <th className="py-2.5">Garment Mass</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[var(--vault-line)]/50">
+              <tbody className="divide-y divide-(--vault-line)/50">
                 {sizes.map((s) => {
                   const data = measurements[s] || DEFAULT_MEASUREMENTS[s];
                   return (
-                    <tr key={s} className="hover:bg-[var(--vault-canvas)]/50 transition-colors">
-                      <td className="py-3 font-bold text-[var(--vault-ink)]">{s}</td>
-                      <td className="py-3 text-[var(--vault-muted)]">{data.chest}</td>
-                      <td className="py-3 text-[var(--vault-muted)]">{data.length}</td>
-                      <td className="py-3 text-[var(--vault-muted)]">{data.weight}</td>
+                    <tr key={s} className="hover:bg-(--vault-canvas)/50 transition-colors">
+                      <td className="py-3 font-bold text-(--vault-ink)">{s}</td>
+                      <td className="py-3 text-(--vault-muted)">{data.chest}</td>
+                      <td className="py-3 text-(--vault-muted)">{data.length}</td>
+                      <td className="py-3 text-(--vault-muted)">{data.weight}</td>
                     </tr>
                   );
                 })}
@@ -80,12 +80,12 @@ export function SizeGuideDialog({
           </div>
 
           {/* Model Specification Note */}
-          <div className="mt-6 border-t border-[var(--vault-line)] pt-4 space-y-2 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+          <div className="mt-6 border-t border-(--vault-line) pt-4 space-y-2 font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
             <p>
-              <strong className="text-[var(--vault-ink)]">Model Specs:</strong> 186 cm / 6'1" · 74 kg · Wearing Size Medium
+              <strong className="text-(--vault-ink)">Model Specs:</strong> 186 cm / 6'1" · 74 kg · Wearing Size Medium
             </p>
             <p>
-              <strong className="text-[var(--vault-ink)]">Fit Stance:</strong> Tailored contemporary box silhouette with dropped shoulder articulation. Choose your standard size for the intended drape, or size down for a slimmer formal contour.
+              <strong className="text-(--vault-ink)">Fit Stance:</strong> Tailored contemporary box silhouette with dropped shoulder articulation. Choose your standard size for the intended drape, or size down for a slimmer formal contour.
             </p>
           </div>
         </Dialog.Content>

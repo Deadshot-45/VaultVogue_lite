@@ -116,24 +116,24 @@ export default function AccountPage() {
 
   return (
     <ProtectedPage>
-      <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300 flex flex-col justify-start">
+      <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300 flex flex-col justify-start">
         {/* ── Breadcrumb Bar ── */}
-        <div className="border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/50 backdrop-blur-md">
+        <div className="border-b border-(--vault-line) bg-(--vault-panel)/50 backdrop-blur-md">
           <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
             <nav
-              className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--vault-muted)]"
+              className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-(--vault-muted)"
               aria-label="Breadcrumb"
             >
               <Link
                 href="/"
-                className="hover:text-[var(--vault-ink)] transition-colors"
+                className="hover:text-(--vault-ink) transition-colors"
               >
                 Home
               </Link>
               <span>/</span>
-              <span className="text-[var(--vault-muted)]">Maison Portal</span>
+              <span className="text-(--vault-muted)">Maison Portal</span>
               <span>/</span>
-              <span className="text-[var(--vault-accent)] font-semibold">
+              <span className="text-(--vault-accent) font-semibold">
                 Account Overview
               </span>
             </nav>
@@ -143,13 +143,13 @@ export default function AccountPage() {
         <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8 space-y-8">
           {/* Header Title */}
           <div className="text-left">
-            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-(--vault-accent)">
               Maison Member Portal
             </p>
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-[var(--vault-ink)] mt-2">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-(--vault-ink) mt-2">
               Account Overview
             </h1>
-            <div className="h-0.5 w-12 bg-[var(--vault-accent)] mt-3" />
+            <div className="h-0.5 w-12 bg-(--vault-accent) mt-3" />
           </div>
 
           <motion.div
@@ -161,26 +161,26 @@ export default function AccountPage() {
             {/* ─── 1. OVERVIEW BANNER (Spans all columns) ─── */}
             <motion.div
               variants={cardVariants}
-              className="md:col-span-3 rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6"
+              className="md:col-span-3 rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6"
             >
               <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
                 {/* Avatar */}
-                <div className="relative h-18 w-18 sm:h-20 sm:w-20 rounded-full border border-[var(--vault-accent)]/30 bg-[var(--vault-accent)]/10 flex items-center justify-center overflow-hidden">
-                  <span className="font-mono text-2xl font-bold text-[var(--vault-accent)]">
+                <div className="relative h-18 w-18 sm:h-20 sm:w-20 rounded-full border border-(--vault-accent)/30 bg-(--vault-accent)/10 flex items-center justify-center overflow-hidden">
+                  <span className="font-mono text-2xl font-bold text-(--vault-accent)">
                     {getInitials(fullName)}
                   </span>
                 </div>
                 <div>
                   <div className="flex flex-col sm:flex-row items-center gap-2.5 justify-center sm:justify-start">
-                    <h2 className="font-serif text-2xl font-light text-[var(--vault-ink)]">
+                    <h2 className="font-serif text-2xl font-light text-(--vault-ink)">
                       {fullName}
                     </h2>
-                    <span className="rounded-full bg-[var(--vault-accent)]/10 border border-[var(--vault-accent)]/30 text-[9px] font-bold uppercase tracking-wider text-[var(--vault-accent)] px-3 py-0.5">
+                    <span className="rounded-full bg-(--vault-accent)/10 border border-(--vault-accent)/30 text-[9px] font-bold uppercase tracking-wider text-(--vault-accent) px-3 py-0.5">
                       Elite Member
                     </span>
                   </div>
-                  <p className="text-xs text-[var(--vault-muted)] mt-1 flex items-center gap-1.5 justify-center sm:justify-start">
-                    <Shield className="h-3.5 w-3.5 text-[var(--vault-accent)]" />
+                  <p className="text-xs text-(--vault-muted) mt-1 flex items-center gap-1.5 justify-center sm:justify-start">
+                    <Shield className="h-3.5 w-3.5 text-(--vault-accent)" />
                     Maison Security ID:{" "}
                     {user?.id ? user.id.slice(-8).toUpperCase() : "MEMBER"}
                   </p>
@@ -190,14 +190,14 @@ export default function AccountPage() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => router.push("/orders")}
-                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-[var(--vault-ink)] hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] transition-all shadow-sm active:scale-[0.98]"
+                  className="inline-flex items-center gap-2 rounded-xl border border-(--vault-line) bg-(--vault-panel) px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-(--vault-ink) hover:border-(--vault-accent) hover:text-(--vault-accent) transition-all shadow-sm active:scale-[0.98]"
                 >
                   <Package className="h-4 w-4" />
                   All Orders
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--vault-accent)]/40 bg-[var(--vault-accent)]/10 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-[var(--vault-accent)] hover:bg-[var(--vault-accent)] hover:text-white transition-all shadow-sm active:scale-[0.98]"
+                  className="inline-flex items-center gap-2 rounded-xl border border-(--vault-accent)/40 bg-(--vault-accent)/10 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-(--vault-accent) hover:bg-(--vault-accent) hover:text-white transition-all shadow-sm active:scale-[0.98]"
                 >
                   <LogOut className="h-4 w-4" />
                   Sign Out
@@ -207,19 +207,19 @@ export default function AccountPage() {
 
             {/* ─── 2. MAISON PROFILE CARD ─── */}
             <motion.div variants={cardVariants} className="flex flex-col">
-              <div className="rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 shadow-sm h-full flex flex-col justify-between">
+              <div className="rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 shadow-sm h-full flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
-                      <UserIcon className="h-4 w-4 text-[var(--vault-accent)]" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--vault-muted)]">
+                      <UserIcon className="h-4 w-4 text-(--vault-accent)" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-(--vault-muted)">
                         Profile Details
                       </span>
                     </div>
                     {!isEditing ? (
                       <button
                         onClick={() => setIsEditing(true)}
-                        className="p-1.5 rounded-lg text-[var(--vault-muted)] hover:text-[var(--vault-accent)] hover:bg-[var(--vault-bg)] transition-colors"
+                        className="p-1.5 rounded-lg text-(--vault-muted) hover:text-(--vault-accent) hover:bg-(--vault-bg) transition-colors"
                         aria-label="Edit Profile"
                       >
                         <Edit2 className="h-4 w-4" />
@@ -227,7 +227,7 @@ export default function AccountPage() {
                     ) : (
                       <button
                         onClick={() => setIsEditing(false)}
-                        className="p-1.5 rounded-lg text-[var(--vault-muted)] hover:text-rose-500 hover:bg-[var(--vault-bg)] transition-colors"
+                        className="p-1.5 rounded-lg text-(--vault-muted) hover:text-rose-500 hover:bg-(--vault-bg) transition-colors"
                         aria-label="Cancel Edit"
                       >
                         <X className="h-4 w-4" />
@@ -245,26 +245,26 @@ export default function AccountPage() {
                         className="space-y-5"
                       >
                         <div className="space-y-1">
-                          <span className="text-[10px] font-bold text-[var(--vault-muted)] uppercase tracking-wider block">
+                          <span className="text-[10px] font-bold text-(--vault-muted) uppercase tracking-wider block">
                             Full Name
                           </span>
-                          <p className="text-sm font-semibold text-[var(--vault-ink)]">
+                          <p className="text-sm font-semibold text-(--vault-ink)">
                             {fullName}
                           </p>
                         </div>
                         <div className="space-y-1">
-                          <span className="text-[10px] font-bold text-[var(--vault-muted)] uppercase tracking-wider block">
+                          <span className="text-[10px] font-bold text-(--vault-muted) uppercase tracking-wider block">
                             Email Address
                           </span>
-                          <p className="text-sm font-semibold text-[var(--vault-ink)] truncate">
+                          <p className="text-sm font-semibold text-(--vault-ink) truncate">
                             {user?.email}
                           </p>
                         </div>
                         <div className="space-y-1">
-                          <span className="text-[10px] font-bold text-[var(--vault-muted)] uppercase tracking-wider block">
+                          <span className="text-[10px] font-bold text-(--vault-muted) uppercase tracking-wider block">
                             Phone Number
                           </span>
-                          <p className="text-sm font-semibold text-[var(--vault-ink)]">
+                          <p className="text-sm font-semibold text-(--vault-ink)">
                             {phoneNumber}
                           </p>
                         </div>
@@ -279,7 +279,7 @@ export default function AccountPage() {
                         className="space-y-4"
                       >
                         <div className="space-y-1 text-left">
-                          <label className="text-[10px] font-bold text-[var(--vault-muted)] uppercase tracking-wider">
+                          <label className="text-[10px] font-bold text-(--vault-muted) uppercase tracking-wider">
                             Full Name
                           </label>
                           <input
@@ -287,22 +287,22 @@ export default function AccountPage() {
                             required
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
-                            className="w-full rounded-xl border border-[var(--vault-line)] bg-[var(--vault-bg)] px-3.5 py-2 text-sm text-[var(--vault-ink)] font-medium focus:border-[var(--vault-accent)] focus:outline-none transition-colors"
+                            className="w-full rounded-xl border border-(--vault-line) bg-(--vault-bg) px-3.5 py-2 text-sm text-(--vault-ink) font-medium focus:border-(--vault-accent) focus:outline-none transition-colors"
                           />
                         </div>
                         <div className="space-y-1 text-left">
-                          <label className="text-[10px] font-bold text-[var(--vault-muted)] uppercase tracking-wider">
+                          <label className="text-[10px] font-bold text-(--vault-muted) uppercase tracking-wider">
                             Email Address
                           </label>
                           <input
                             type="email"
                             disabled
                             value={user?.email || ""}
-                            className="w-full rounded-xl border border-[var(--vault-line)]/50 bg-[var(--vault-bg)]/50 px-3.5 py-2 text-sm font-medium text-[var(--vault-muted)] cursor-not-allowed outline-none"
+                            className="w-full rounded-xl border border-(--vault-line)/50 bg-(--vault-bg)/50 px-3.5 py-2 text-sm font-medium text-(--vault-muted) cursor-not-allowed outline-none"
                           />
                         </div>
                         <div className="space-y-1 text-left">
-                          <label className="text-[10px] font-bold text-[var(--vault-muted)] uppercase tracking-wider">
+                          <label className="text-[10px] font-bold text-(--vault-muted) uppercase tracking-wider">
                             Phone Number
                           </label>
                           <input
@@ -310,13 +310,13 @@ export default function AccountPage() {
                             required
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
-                            className="w-full rounded-xl border border-[var(--vault-line)] bg-[var(--vault-bg)] px-3.5 py-2 text-sm text-[var(--vault-ink)] font-medium focus:border-[var(--vault-accent)] focus:outline-none transition-colors"
+                            className="w-full rounded-xl border border-(--vault-line) bg-(--vault-bg) px-3.5 py-2 text-sm text-(--vault-ink) font-medium focus:border-(--vault-accent) focus:outline-none transition-colors"
                           />
                         </div>
                         <button
                           type="submit"
                           disabled={isSaving}
-                          className="w-full flex items-center justify-center gap-2 rounded-xl bg-[var(--vault-accent)] px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-white hover:brightness-110 transition-all shadow-sm mt-4 active:scale-[0.98]"
+                          className="w-full flex items-center justify-center gap-2 rounded-xl bg-(--vault-accent) px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-white hover:brightness-110 transition-all shadow-sm mt-4 active:scale-[0.98]"
                         >
                           {isSaving ? (
                             "Saving Changes..."
@@ -331,8 +331,8 @@ export default function AccountPage() {
                     )}
                   </AnimatePresence>
                 </div>
-                <div className="pt-5 border-t border-[var(--vault-line)] mt-6 flex items-center gap-2 text-[10px] text-[var(--vault-muted)] font-semibold">
-                  <Calendar className="h-3.5 w-3.5 text-[var(--vault-accent)]" />
+                <div className="pt-5 border-t border-(--vault-line) mt-6 flex items-center gap-2 text-[10px] text-(--vault-muted) font-semibold">
+                  <Calendar className="h-3.5 w-3.5 text-(--vault-accent)" />
                   Maison member since July 2026
                 </div>
               </div>
@@ -340,50 +340,50 @@ export default function AccountPage() {
 
             {/* ─── 3. LOYALTY & PERKS CARD ─── */}
             <motion.div variants={cardVariants} className="flex flex-col">
-              <div className="rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 shadow-sm h-full flex flex-col justify-between">
+              <div className="rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 shadow-sm h-full flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-6">
-                    <Coins className="h-4 w-4 text-[var(--vault-accent)]" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--vault-muted)]">
+                    <Coins className="h-4 w-4 text-(--vault-accent)" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-(--vault-muted)">
                       Maison Loyalty Points
                     </span>
                   </div>
 
                   <div className="space-y-5">
                     <div>
-                      <p className="font-mono text-4xl font-extrabold text-[var(--vault-ink)] tracking-tight">
+                      <p className="font-mono text-4xl font-extrabold text-(--vault-ink) tracking-tight">
                         4,720
-                        <span className="text-xs font-normal text-[var(--vault-muted)] ml-1">
+                        <span className="text-xs font-normal text-(--vault-muted) ml-1">
                           pts
                         </span>
                       </p>
-                      <p className="text-xs text-[var(--vault-muted)] mt-1 flex items-center gap-1.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--vault-accent)]" />
+                      <p className="text-xs text-(--vault-muted) mt-1 flex items-center gap-1.5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-(--vault-accent)" />
                         Next Unlock: Platinum Tier (5,000 pts)
                       </p>
                     </div>
 
                     {/* Progress bar */}
                     <div className="space-y-1.5">
-                      <div className="h-1.5 w-full bg-[var(--vault-line)] rounded-full overflow-hidden">
+                      <div className="h-1.5 w-full bg-(--vault-line) rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-[var(--vault-accent)] rounded-full"
+                          className="h-full bg-(--vault-accent) rounded-full"
                           style={{ width: "88%" }}
                         />
                       </div>
-                      <div className="flex justify-between text-[9px] font-mono text-[var(--vault-muted)] tracking-wider">
+                      <div className="flex justify-between text-[9px] font-mono text-(--vault-muted) tracking-wider">
                         <span>4,000 PTS</span>
                         <span>5,000 PTS (PLATINUM)</span>
                       </div>
                     </div>
 
-                    <ul className="space-y-3 pt-3 border-t border-[var(--vault-line)]">
+                    <ul className="space-y-3 pt-3 border-t border-(--vault-line)">
                       <li className="flex items-center gap-3">
                         <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/30">
                           <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                         </div>
                         <div className="text-left">
-                          <p className="text-xs font-semibold text-[var(--vault-ink)]">
+                          <p className="text-xs font-semibold text-(--vault-ink)">
                             Complimentary Courier Dispatch
                           </p>
                           <p className="text-[10px] text-emerald-500 font-medium">
@@ -392,14 +392,14 @@ export default function AccountPage() {
                         </div>
                       </li>
                       <li className="flex items-center gap-3">
-                        <div className="h-5 w-5 rounded-full bg-[var(--vault-cobalt)]/10 flex items-center justify-center border border-[var(--vault-cobalt)]/30">
-                          <Clock className="h-3 w-3 text-[var(--vault-cobalt)]" />
+                        <div className="h-5 w-5 rounded-full bg-(--vault-cobalt)/10 flex items-center justify-center border border-(--vault-cobalt)/30">
+                          <Clock className="h-3 w-3 text-(--vault-cobalt)" />
                         </div>
                         <div className="text-left">
-                          <p className="text-xs font-semibold text-[var(--vault-ink)]">
+                          <p className="text-xs font-semibold text-(--vault-ink)">
                             Early Private Archive Access
                           </p>
-                          <p className="text-[10px] text-[var(--vault-cobalt)] font-medium">
+                          <p className="text-[10px] text-(--vault-cobalt) font-medium">
                             12d 4h remaining
                           </p>
                         </div>
@@ -408,20 +408,20 @@ export default function AccountPage() {
                   </div>
                 </div>
 
-                <div className="pt-5 border-t border-[var(--vault-line)] mt-6">
+                <div className="pt-5 border-t border-(--vault-line) mt-6">
                   <button
                     onClick={() =>
                       toast.info(
                         "Atelier Concierge is available via chat/call.",
                       )
                     }
-                    className="w-full flex items-center justify-between rounded-xl border border-[var(--vault-line)] bg-[var(--vault-bg)] hover:border-[var(--vault-accent)]/50 p-3 text-xs font-semibold text-[var(--vault-ink)] transition-colors active:scale-[0.98]"
+                    className="w-full flex items-center justify-between rounded-xl border border-(--vault-line) bg-(--vault-bg) hover:border-(--vault-accent)/50 p-3 text-xs font-semibold text-(--vault-ink) transition-colors active:scale-[0.98]"
                   >
                     <span className="flex items-center gap-2">
-                      <Award className="h-4 w-4 text-[var(--vault-accent)]" />
+                      <Award className="h-4 w-4 text-(--vault-accent)" />
                       Atelier Perks Catalogue
                     </span>
-                    <ArrowRight className="h-3.5 w-3.5 text-[var(--vault-muted)]" />
+                    <ArrowRight className="h-3.5 w-3.5 text-(--vault-muted)" />
                   </button>
                 </div>
               </div>
@@ -429,11 +429,11 @@ export default function AccountPage() {
 
             {/* ─── 4. RECENT ORDERS CARD ─── */}
             <motion.div variants={cardVariants} className="flex flex-col">
-              <div className="rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 sm:p-8 shadow-sm h-full flex flex-col justify-between">
+              <div className="rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-6 sm:p-8 shadow-sm h-full flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-6">
-                    <Package className="h-4 w-4 text-[var(--vault-accent)]" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--vault-muted)]">
+                    <Package className="h-4 w-4 text-(--vault-accent)" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-(--vault-muted)">
                       Recent Orders
                     </span>
                   </div>
@@ -443,19 +443,19 @@ export default function AccountPage() {
                       {[1, 2, 3].map((n) => (
                         <div
                           key={n}
-                          className="h-14 w-full bg-[var(--vault-bg)] animate-pulse rounded-xl border border-[var(--vault-line)]"
+                          className="h-14 w-full bg-(--vault-bg) animate-pulse rounded-xl border border-(--vault-line)"
                         />
                       ))}
                     </div>
                   ) : recentOrders.length === 0 ? (
                     <div className="py-10 text-center flex flex-col items-center">
-                      <Compass className="h-9 w-9 text-[var(--vault-muted)]/50 mb-2" />
-                      <p className="text-xs font-medium text-[var(--vault-muted)]">
+                      <Compass className="h-9 w-9 text-(--vault-muted)/50 mb-2" />
+                      <p className="text-xs font-medium text-(--vault-muted)">
                         No orders placed yet.
                       </p>
                       <button
                         onClick={() => router.push("/products")}
-                        className="text-[10px] font-bold text-[var(--vault-accent)] uppercase tracking-wider hover:underline mt-2"
+                        className="text-[10px] font-bold text-(--vault-accent) uppercase tracking-wider hover:underline mt-2"
                       >
                         Browse Catalog
                       </button>
@@ -466,19 +466,19 @@ export default function AccountPage() {
                         <div
                           key={order.id}
                           onClick={() => router.push(`/orders/${order.id}`)}
-                          className="group cursor-pointer rounded-2xl border border-[var(--vault-line)] hover:border-[var(--vault-accent)] p-3.5 bg-[var(--vault-bg)] transition-all duration-200 flex items-center justify-between"
+                          className="group cursor-pointer rounded-2xl border border-(--vault-line) hover:border-(--vault-accent) p-3.5 bg-(--vault-bg) transition-all duration-200 flex items-center justify-between"
                         >
                           <div className="min-w-0 text-left">
-                            <p className="text-xs font-bold text-[var(--vault-ink)] group-hover:text-[var(--vault-accent)] transition-colors truncate">
+                            <p className="text-xs font-bold text-(--vault-ink) group-hover:text-(--vault-accent) transition-colors truncate">
                               {order.id.slice(-12).toUpperCase()}
                             </p>
-                            <p className="text-[10px] text-[var(--vault-muted)] font-mono mt-0.5">
+                            <p className="text-[10px] text-(--vault-muted) font-mono mt-0.5">
                               {order.date}
                             </p>
                           </div>
                           <div className="text-right flex items-center gap-3">
                             <div className="space-y-0.5">
-                              <p className="font-mono text-xs font-bold text-[var(--vault-ink)]">
+                              <p className="font-mono text-xs font-bold text-(--vault-ink)">
                                 ₹{order.totalAmount.toLocaleString("en-IN")}.00
                               </p>
                               <div className="flex items-center gap-1.5 justify-end">
@@ -488,15 +488,15 @@ export default function AccountPage() {
                                       "delivered" ||
                                     order.status.toLowerCase() === "confirmed"
                                       ? "bg-emerald-500"
-                                      : "bg-[var(--vault-accent)]"
+                                      : "bg-(--vault-accent)"
                                   }`}
                                 />
-                                <span className="text-[9px] font-bold text-[var(--vault-muted)] uppercase tracking-wider">
+                                <span className="text-[9px] font-bold text-(--vault-muted) uppercase tracking-wider">
                                   {order.status}
                                 </span>
                               </div>
                             </div>
-                            <ArrowRight className="h-3.5 w-3.5 text-[var(--vault-muted)] group-hover:text-[var(--vault-accent)] group-hover:translate-x-0.5 transition-all" />
+                            <ArrowRight className="h-3.5 w-3.5 text-(--vault-muted) group-hover:text-(--vault-accent) group-hover:translate-x-0.5 transition-all" />
                           </div>
                         </div>
                       ))}
@@ -504,16 +504,16 @@ export default function AccountPage() {
                   )}
                 </div>
 
-                <div className="pt-5 border-t border-[var(--vault-line)] mt-6">
+                <div className="pt-5 border-t border-(--vault-line) mt-6">
                   <button
                     onClick={() => router.push("/orders")}
-                    className="w-full flex items-center justify-between rounded-xl border border-[var(--vault-line)] bg-[var(--vault-bg)] hover:border-[var(--vault-accent)]/50 p-3 text-xs font-semibold text-[var(--vault-ink)] transition-colors active:scale-[0.98]"
+                    className="w-full flex items-center justify-between rounded-xl border border-(--vault-line) bg-(--vault-bg) hover:border-(--vault-accent)/50 p-3 text-xs font-semibold text-(--vault-ink) transition-colors active:scale-[0.98]"
                   >
                     <span className="flex items-center gap-2">
-                      <LockIcon className="h-4 w-4 text-[var(--vault-accent)]" />
+                      <LockIcon className="h-4 w-4 text-(--vault-accent)" />
                       Fulfillment History
                     </span>
-                    <ArrowRight className="h-3.5 w-3.5 text-[var(--vault-muted)]" />
+                    <ArrowRight className="h-3.5 w-3.5 text-(--vault-muted)" />
                   </button>
                 </div>
               </div>

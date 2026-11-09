@@ -42,19 +42,19 @@ export function RelatedProducts({ currentProductId, category }: RelatedProductsP
   if (products.length === 0) return null;
 
   return (
-    <section className="border-t border-[var(--vault-line)] pt-16 sm:pt-24">
-      <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[var(--vault-line)] pb-6">
+    <section className="border-t border-(--vault-line) pt-16 sm:pt-24">
+      <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-(--vault-line) pb-6">
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--vault-accent)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent)">
             Complete Your Look
           </span>
-          <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+          <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-(--vault-ink)">
             Complementary Silhouettes
           </h2>
         </div>
         <Link
           href="/products"
-          className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)] hover:text-[var(--vault-ink)] transition-colors"
+          className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-(--vault-muted) hover:text-(--vault-ink) transition-colors"
         >
           View Full Archive <ArrowUpRight size={13} />
         </Link>
@@ -63,11 +63,11 @@ export function RelatedProducts({ currentProductId, category }: RelatedProductsP
       {isLoading ? (
         <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="animate-pulse border border-[var(--vault-line)] bg-[var(--vault-panel)] p-4 space-y-3">
-              <div className="aspect-[3/4] w-full bg-[var(--vault-line)]/50" />
-              <div className="h-3 w-1/3 bg-[var(--vault-line)]/60" />
-              <div className="h-4 w-3/4 bg-[var(--vault-line)]/70" />
-              <div className="h-3 w-1/4 bg-[var(--vault-line)]/60" />
+            <div key={i} className="animate-pulse border border-(--vault-line) bg-(--vault-panel) p-4 space-y-3">
+              <div className="aspect-[3/4] w-full bg-(--vault-line)/50" />
+              <div className="h-3 w-1/3 bg-(--vault-line)/60" />
+              <div className="h-4 w-3/4 bg-(--vault-line)/70" />
+              <div className="h-3 w-1/4 bg-(--vault-line)/60" />
             </div>
           ))}
         </div>
@@ -80,10 +80,10 @@ export function RelatedProducts({ currentProductId, category }: RelatedProductsP
             return (
               <article
                 key={item.id}
-                className="group relative flex flex-col justify-between border border-[var(--vault-line)] bg-[var(--vault-panel)] p-3 sm:p-4 transition-all duration-300 hover:border-[var(--vault-accent)] hover:shadow-xl"
+                className="group relative flex flex-col justify-between border border-(--vault-line) bg-(--vault-panel) p-3 sm:p-4 transition-all duration-300 hover:border-(--vault-accent) hover:shadow-xl"
               >
                 {/* Image Link */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[var(--vault-canvas)]">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-(--vault-canvas)">
                   <Link href={`/products/${item.slug || item.id}`} className="block h-full w-full">
                     <Image
                       src={resolveUiProductImage(
@@ -108,31 +108,31 @@ export function RelatedProducts({ currentProductId, category }: RelatedProductsP
                       toggleWishlist(item);
                     }}
                     aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-                    className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center bg-[var(--vault-canvas)]/80 text-[var(--vault-ink)] backdrop-blur-md transition hover:bg-[var(--vault-accent)] hover:text-white cursor-pointer"
+                    className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center bg-(--vault-canvas)/80 text-(--vault-ink) backdrop-blur-md transition hover:bg-(--vault-accent) hover:text-white cursor-pointer"
                   >
-                    <Heart size={14} className={inWishlist ? "fill-[var(--vault-accent)] text-[var(--vault-accent)]" : ""} />
+                    <Heart size={14} className={inWishlist ? "fill-(--vault-accent) text-(--vault-accent)" : ""} />
                   </button>
                 </div>
 
                 {/* Details */}
                 <div className="pt-4 space-y-2">
-                  <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)]">
+                  <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-(--vault-muted)">
                     <span className="truncate max-w-[110px]">{item.category}</span>
                     <span>{item.code}</span>
                   </div>
 
                   <Link href={`/products/${item.slug || item.id}`}>
-                    <h3 className="font-serif text-base sm:text-lg font-light uppercase tracking-tight text-[var(--vault-ink)] line-clamp-1 transition-colors group-hover:text-[var(--vault-accent)]">
+                    <h3 className="font-serif text-base sm:text-lg font-light uppercase tracking-tight text-(--vault-ink) line-clamp-1 transition-colors group-hover:text-(--vault-accent)">
                       {item.name}
                     </h3>
                   </Link>
 
                   <div className="flex items-center justify-between pt-1">
-                    <span className="font-mono text-xs sm:text-sm font-semibold text-[var(--vault-ink)]">
+                    <span className="font-mono text-xs sm:text-sm font-semibold text-(--vault-ink)">
                       {formatCurrency(item.price, "USD")}
                     </span>
 
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--vault-accent)]">
+                    <span className="font-mono text-[9px] uppercase tracking-wider text-(--vault-accent)">
                       {item.colors.length} {item.colors.length === 1 ? "Color" : "Colors"}
                     </span>
                   </div>

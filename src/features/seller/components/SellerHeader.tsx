@@ -61,7 +61,7 @@ export function SellerHeader() {
         <Sheet>
           <SheetTrigger asChild>
             <button
-              className="lg:hidden flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
+              className="lg:hidden flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-(--gold) cursor-pointer"
               style={{
                 borderColor: "var(--gold-faint)",
                 background: "var(--gold-glow)",
@@ -93,7 +93,7 @@ export function SellerHeader() {
       <div className="flex items-center gap-3">
         {/* Notification Bell */}
         <button
-          className="relative flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-[var(--gold)] cursor-pointer"
+          className="relative flex h-9 w-9 items-center justify-center rounded-xl border transition-colors duration-200 hover:border-(--gold) cursor-pointer"
           style={{
             borderColor: "var(--gold-faint)",
             background: "var(--gold-glow)",

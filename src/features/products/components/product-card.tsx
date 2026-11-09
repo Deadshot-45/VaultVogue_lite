@@ -158,7 +158,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               {product.category || "Atelier"}
             </span>
             <div className="flex items-center gap-0.5">
-              <Star className="h-3 w-3 fill-[var(--gold)] text-[var(--gold)]" />
+              <Star className="h-3 w-3 fill-(--gold) text-(--gold)" />
               <span className="text-xs font-medium text-foreground">
                 {rating.toFixed(1)}
               </span>
@@ -166,13 +166,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
           {/* Title */}
-          <h3 className="font-montserrat text-sm font-medium tracking-wide text-[var(--brand-text)] line-clamp-1 group-hover:text-[var(--gold)] transition-colors">
+          <h3 className="font-montserrat text-sm font-medium tracking-wide text-(--brand-text) line-clamp-1 group-hover:text-(--gold) transition-colors">
             {product.name}
           </h3>
 
           {/* Price */}
           <div className="flex items-baseline gap-2 pt-1 mt-auto">
-            <span className="text-sm font-semibold text-[var(--gold)]">
+            <span className="text-sm font-semibold text-(--gold)">
               ₹
               {product?.price?.toFixed(2) || product?.maxPrice?.toFixed(2) || 0}
             </span>
@@ -190,7 +190,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </span>
             {/* <button
               onClick={handleAddToCart}
-              className="text-[var(--gold)] hover:opacity-85 transition-opacity"
+              className="text-(--gold) hover:opacity-85 transition-opacity"
             >
               Add To Bag
             </button> */}

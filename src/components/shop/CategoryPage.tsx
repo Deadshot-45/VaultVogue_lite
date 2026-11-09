@@ -173,12 +173,12 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
   if (!config) {
     return (
       <div className="py-24 text-center">
-        <h1 className="font-serif text-3xl uppercase text-[var(--vault-ink)]">
+        <h1 className="font-serif text-3xl uppercase text-(--vault-ink)">
           Category Not Found
         </h1>
         <Link
           href="/"
-          className="mt-4 inline-block font-mono text-xs uppercase text-[var(--vault-accent)] underline"
+          className="mt-4 inline-block font-mono text-xs uppercase text-(--vault-accent) underline"
         >
           Return to Storefront
         </Link>
@@ -187,7 +187,7 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
   }
 
   return (
-    <main className="w-full bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <main className="w-full bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* 1. Category Editorial Hero */}
       <CategoryHero config={config} />
 
@@ -217,35 +217,35 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
             <div>
               <nav
                 aria-label="Breadcrumbs"
-                className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)] mb-2"
+                className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted) mb-2"
               >
-                <Link href="/" className="hover:text-[var(--vault-ink)] transition-colors">
+                <Link href="/" className="hover:text-(--vault-ink) transition-colors">
                   Vault Vogue
                 </Link>
                 <ChevronRight size={10} />
-                <span className="text-[var(--vault-accent)] font-semibold">{config.title}</span>
+                <span className="text-(--vault-accent) font-semibold">{config.title}</span>
                 {activeSubcategory !== "all" && (
                   <>
                     <ChevronRight size={10} />
-                    <span className="text-[var(--vault-ink)]">{activeSubcategory}</span>
+                    <span className="text-(--vault-ink)">{activeSubcategory}</span>
                   </>
                 )}
               </nav>
 
               <div className="flex flex-wrap items-center gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+                <h2 className="font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-(--vault-ink)">
                   The {config.title} Collection
                 </h2>
                 {isUsingLiveData && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-[var(--vault-accent)]/40 bg-[var(--vault-accent)]/10 font-mono text-[9px] uppercase tracking-wider text-[var(--vault-accent)]">
-                    <Radio size={11} className="animate-pulse text-[var(--vault-accent)]" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-(--vault-accent)/40 bg-(--vault-accent)/10 font-mono text-[9px] uppercase tracking-wider text-(--vault-accent)">
+                    <Radio size={11} className="animate-pulse text-(--vault-accent)" />
                     Live API Data ({baseProducts.length} Pieces)
                   </span>
                 )}
               </div>
             </div>
 
-            <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--vault-muted)]">
+            <p className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
               Standard Global Dispatch · Authenticity Guaranteed
             </p>
           </div>
@@ -281,61 +281,61 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
       {/* 5. Brand Value Pillars Strip */}
       <section
         aria-label="Brand Assurance"
-        className="w-full border-y border-[var(--vault-line)] bg-[var(--vault-panel)] py-12"
+        className="w-full border-y border-(--vault-line) bg-(--vault-panel) py-12"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-[var(--vault-line)] text-[var(--vault-accent)]">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
                 <ShieldCheck size={18} />
               </div>
               <div>
-                <h4 className="font-serif text-sm uppercase text-[var(--vault-ink)]">
+                <h4 className="font-serif text-sm uppercase text-(--vault-ink)">
                   Archival Provenance
                 </h4>
-                <p className="mt-1 font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)] leading-relaxed">
+                <p className="mt-1 font-mono text-[9px] uppercase tracking-wider text-(--vault-muted) leading-relaxed">
                   Every garment is serialized with traceable provenance.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-[var(--vault-line)] text-[var(--vault-accent)]">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
                 <Truck size={18} />
               </div>
               <div>
-                <h4 className="font-serif text-sm uppercase text-[var(--vault-ink)]">
+                <h4 className="font-serif text-sm uppercase text-(--vault-ink)">
                   Priority Dispatch
                 </h4>
-                <p className="mt-1 font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)] leading-relaxed">
+                <p className="mt-1 font-mono text-[9px] uppercase tracking-wider text-(--vault-muted) leading-relaxed">
                   Complimentary express shipping on orders over ₹5,000.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-[var(--vault-line)] text-[var(--vault-accent)]">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
                 <RotateCcw size={18} />
               </div>
               <div>
-                <h4 className="font-serif text-sm uppercase text-[var(--vault-ink)]">
+                <h4 className="font-serif text-sm uppercase text-(--vault-ink)">
                   Effortless Returns
                 </h4>
-                <p className="mt-1 font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)] leading-relaxed">
+                <p className="mt-1 font-mono text-[9px] uppercase tracking-wider text-(--vault-muted) leading-relaxed">
                   14-day doorstep pick-up with full refund guarantee.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-[var(--vault-line)] text-[var(--vault-accent)]">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
                 <CreditCard size={18} />
               </div>
               <div>
-                <h4 className="font-serif text-sm uppercase text-[var(--vault-ink)]">
+                <h4 className="font-serif text-sm uppercase text-(--vault-ink)">
                   Encrypted Checkout
                 </h4>
-                <p className="mt-1 font-mono text-[9px] uppercase tracking-wider text-[var(--vault-muted)] leading-relaxed">
+                <p className="mt-1 font-mono text-[9px] uppercase tracking-wider text-(--vault-muted) leading-relaxed">
                   Bank-grade 256-bit SSL encrypted transactions.
                 </p>
               </div>

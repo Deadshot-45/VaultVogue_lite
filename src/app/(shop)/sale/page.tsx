@@ -28,29 +28,29 @@ export default function SalePage() {
   const products = data?.pages.flatMap((page) => page) || [];
 
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* Breadcrumb Navigation */}
-      <div className="w-full border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/60 py-3 backdrop-blur-sm">
+      <div className="w-full border-b border-(--vault-line) bg-(--vault-panel)/60 py-3 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--vault-muted)]"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted)"
           >
             <Link
               href="/"
-              className="hover:text-[var(--vault-accent)] transition-colors"
+              className="hover:text-(--vault-accent) transition-colors"
             >
               Vault Vogue
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
+            <ChevronRight size={10} className="text-(--vault-line)" />
             <Link
               href="/products"
-              className="hover:text-[var(--vault-accent)] transition-colors"
+              className="hover:text-(--vault-accent) transition-colors"
             >
               Catalog
             </Link>
-            <ChevronRight size={10} className="text-[var(--vault-line)]" />
-            <span className="text-[var(--vault-accent)] font-semibold">
+            <ChevronRight size={10} className="text-(--vault-line)" />
+            <span className="text-(--vault-accent) font-semibold">
               Private Archive &amp; Seasonal Sale
             </span>
           </nav>
@@ -58,26 +58,26 @@ export default function SalePage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-24 text-center border-b border-[var(--vault-line)] bg-[var(--vault-panel)]">
+      <section className="relative overflow-hidden py-16 sm:py-24 text-center border-b border-(--vault-line) bg-(--vault-panel)">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="flex items-center justify-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--vault-accent)] animate-pulse" />
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-(--vault-accent) animate-pulse" />
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-(--vault-accent)">
               THE PRIVATE ARCHIVE · EDITIONS ROTATION
             </p>
           </div>
 
-          <div className="mx-auto my-4 h-px w-12 bg-[var(--vault-accent)]/40" />
+          <div className="mx-auto my-4 h-px w-12 bg-(--vault-accent)/40" />
 
-          <h1 className="mt-4 font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-[var(--vault-ink)] leading-none">
+          <h1 className="mt-4 font-serif text-4xl sm:text-6xl font-light uppercase tracking-tight text-(--vault-ink) leading-none">
             Seasonal Picks with <br />
-            <span className="italic text-[var(--vault-accent)]">
+            <span className="italic text-(--vault-accent)">
               Maison Special
             </span>{" "}
             Pricing.
           </h1>
 
-          <p className="mx-auto mt-6 max-w-xl font-sans text-xs sm:text-sm leading-relaxed text-[var(--vault-muted)]">
+          <p className="mx-auto mt-6 max-w-xl font-sans text-xs sm:text-sm leading-relaxed text-(--vault-muted)">
             Explore a curated selection of archival pieces and seasonal
             favorites, offering restrained luxury at an exceptional value for
             our collectors.
@@ -102,15 +102,15 @@ export default function SalePage() {
             columns="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
           />
         ) : products.length === 0 ? (
-          <div className="mx-auto my-12 max-w-md border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 text-center space-y-3">
+          <div className="mx-auto my-12 max-w-md border border-(--vault-line) bg-(--vault-panel) p-8 text-center space-y-3">
             <AlertCircle
               size={28}
-              className="mx-auto text-[var(--vault-accent)]"
+              className="mx-auto text-(--vault-accent)"
             />
-            <h3 className="font-serif text-xl uppercase tracking-tight text-[var(--vault-ink)]">
+            <h3 className="font-serif text-xl uppercase tracking-tight text-(--vault-ink)">
               No Archival Creations Marked Down
             </h3>
-            <p className="font-sans text-xs text-[var(--vault-muted)]">
+            <p className="font-sans text-xs text-(--vault-muted)">
               All seasonal editions are currently reserved. Discover the primary
               collection across our catalog.
             </p>
@@ -142,12 +142,12 @@ export default function SalePage() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="rounded-none border border-[var(--vault-line)] bg-[var(--vault-panel)] px-8 font-mono text-xs uppercase tracking-wider text-[var(--vault-ink)] hover:border-[var(--vault-accent)] transition-all cursor-pointer"
+                  className="rounded-none border border-(--vault-line) bg-(--vault-panel) px-8 font-mono text-xs uppercase tracking-wider text-(--vault-ink) hover:border-(--vault-accent) transition-all cursor-pointer"
                   onClick={() => fetchNextPage()}
                   disabled={isFetchingNextPage}
                 >
                   {isFetchingNextPage ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin text-[var(--vault-accent)]" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin text-(--vault-accent)" />
                   ) : null}
                   {isFetchingNextPage
                     ? "Loading Archive..."
@@ -161,15 +161,15 @@ export default function SalePage() {
 
       {/* Footer Banner */}
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-        <div className="border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-14 text-center shadow-lg">
+        <div className="border border-(--vault-line) bg-(--vault-panel) p-8 sm:p-14 text-center shadow-lg">
           <div className="relative z-10 max-w-xl mx-auto space-y-4">
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--vault-accent)] flex items-center justify-center gap-1.5">
+            <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-(--vault-accent) flex items-center justify-center gap-1.5">
               MAISON ARCHIVIST
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-[var(--vault-ink)]">
+            <h2 className="font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-(--vault-ink)">
               Refresh Your Silhouette
             </h2>
-            <p className="font-sans text-xs sm:text-sm text-[var(--vault-muted)] leading-relaxed max-w-sm mx-auto">
+            <p className="font-sans text-xs sm:text-sm text-(--vault-muted) leading-relaxed max-w-sm mx-auto">
               Build your next look with marked-down essentials from across our
               collections before the selection rotates.
             </p>

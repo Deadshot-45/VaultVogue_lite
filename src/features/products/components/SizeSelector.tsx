@@ -16,7 +16,7 @@ export const SizeSelector = React.memo(
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-text)]">
+          <p className="text-xs font-semibold uppercase tracking-wider text-(--brand-text)">
             Select Size
           </p>
           {selectedSize && stockMap[selectedSize] <= 5 && stockMap[selectedSize] > 0 && (
@@ -38,7 +38,7 @@ export const SizeSelector = React.memo(
                 onClick={() => onSelect(item.size)}
                 className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider cursor-pointer border transition-all duration-300 active:scale-95 ${
                   isSelected
-                    ? "bg-[var(--gold)] text-white border-transparent shadow-md"
+                    ? "bg-(--gold) text-white border-transparent shadow-md"
                     : "border-border text-muted-foreground hover:text-foreground hover:border-foreground hover:bg-muted/10"
                 } ${disabled ? "opacity-30 cursor-not-allowed line-through" : ""}`}
               >

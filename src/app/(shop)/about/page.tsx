@@ -76,26 +76,26 @@ const ATELIERS = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[var(--vault-bg)] text-[var(--vault-ink)] transition-colors duration-300">
+    <div className="min-h-screen bg-(--vault-bg) text-(--vault-ink) transition-colors duration-300">
       {/* ── Breadcrumb Bar ── */}
-      <div className="border-b border-[var(--vault-line)] bg-[var(--vault-panel)]/50 backdrop-blur-md">
+      <div className="border-b border-(--vault-line) bg-(--vault-panel)/50 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
           <nav
-            className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--vault-muted)]"
+            className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-(--vault-muted)"
             aria-label="Breadcrumb"
           >
             <Link
               href="/"
-              className="hover:text-[var(--vault-ink)] transition-colors"
+              className="hover:text-(--vault-ink) transition-colors"
             >
               Home
             </Link>
             <span>/</span>
-            <span className="text-[var(--vault-muted)]">
+            <span className="text-(--vault-muted)">
               Heritage & Philosophy
             </span>
             <span>/</span>
-            <span className="text-[var(--vault-accent)] font-semibold">
+            <span className="text-(--vault-accent) font-semibold">
               About Us
             </span>
           </nav>
@@ -104,23 +104,23 @@ export default function AboutPage() {
 
       <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-24">
         {/* ── Hero Section ── */}
-        <section className="relative overflow-hidden rounded-[2.5rem] border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-14 lg:p-20 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.05)]">
-          <div className="absolute top-0 right-0 -mr-24 -mt-24 h-96 w-96 rounded-full bg-[var(--vault-accent)]/5 blur-3xl pointer-events-none" />
+        <section className="relative overflow-hidden rounded-[2.5rem] border border-(--vault-line) bg-(--vault-panel) p-8 sm:p-14 lg:p-20 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.05)]">
+          <div className="absolute top-0 right-0 -mr-24 -mt-24 h-96 w-96 rounded-full bg-(--vault-accent)/5 blur-3xl pointer-events-none" />
 
           <div className="relative max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--vault-accent)]/20 bg-[var(--vault-accent)]/5 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-(--vault-accent)/20 bg-(--vault-accent)/5 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-(--vault-accent)">
               Maison Archive · Established 2024
             </div>
 
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-[var(--vault-ink)] leading-[1.1]">
+            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-(--vault-ink) leading-[1.1]">
               The Architecture of <br className="hidden sm:inline" />
-              <span className="italic font-normal text-[var(--vault-accent)]">
+              <span className="italic font-normal text-(--vault-accent)">
                 Contemporary
               </span>{" "}
               Expression.
             </h1>
 
-            <p className="text-base sm:text-lg text-[var(--vault-muted)] leading-relaxed font-light">
+            <p className="text-base sm:text-lg text-(--vault-muted) leading-relaxed font-light">
               VAULT VOGUE was established at the intersection of high fashion
               editorial sensibility and utilitarian street culture. We challenge
               transient fast-fashion cycles with permanent silhouettes
@@ -130,14 +130,14 @@ export default function AboutPage() {
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2.5 rounded-xl bg-[var(--vault-accent)] px-7 py-3.5 text-xs font-semibold uppercase tracking-wider text-white shadow-md hover:brightness-110 active:scale-[0.98] transition-all"
+                className="inline-flex items-center gap-2.5 rounded-xl bg-(--vault-accent) px-7 py-3.5 text-xs font-semibold uppercase tracking-wider text-white shadow-md hover:brightness-110 active:scale-[0.98] transition-all"
               >
                 <span>Explore the Catalog</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/faqs"
-                className="inline-flex items-center gap-2 rounded-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--vault-ink)] hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] transition-all"
+                className="inline-flex items-center gap-2 rounded-xl border border-(--vault-line) bg-(--vault-panel) px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-(--vault-ink) hover:border-(--vault-accent) hover:text-(--vault-accent) transition-all"
               >
                 Client Care Directives
               </Link>
@@ -148,17 +148,17 @@ export default function AboutPage() {
         {/* ── Brand Manifesto ── */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-5 space-y-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--vault-accent)]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--vault-accent)">
               The Vault Vogue Manifesto
             </p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-light text-[var(--vault-ink)] leading-snug">
+            <h2 className="font-serif text-3xl sm:text-4xl font-light text-(--vault-ink) leading-snug">
               “Timeless Fashion. <br />
               <span className="italic font-normal">Modern Expression.”</span>
             </h2>
-            <div className="h-0.5 w-16 bg-[var(--vault-accent)] mt-3" />
+            <div className="h-0.5 w-16 bg-(--vault-accent) mt-3" />
           </div>
 
-          <div className="lg:col-span-7 space-y-6 text-sm sm:text-base text-[var(--vault-muted)] leading-relaxed font-light">
+          <div className="lg:col-span-7 space-y-6 text-sm sm:text-base text-(--vault-muted) leading-relaxed font-light">
             <p>
               We view fashion as functional sculpture. In an era dominated by
               synthetic obsolescence, VAULT VOGUE curates a focused wardrobe for
@@ -176,16 +176,16 @@ export default function AboutPage() {
 
         {/* ── 4 Core Pillars Bento Grid ── */}
         <section className="space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[var(--vault-line)] pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-(--vault-line) pb-5">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-(--vault-accent)">
                 The Four Tenets
               </p>
-              <h2 className="font-serif text-2xl sm:text-3xl font-light text-[var(--vault-ink)] mt-1">
+              <h2 className="font-serif text-2xl sm:text-3xl font-light text-(--vault-ink) mt-1">
                 Atelier Craftsmanship Standards
               </h2>
             </div>
-            <span className="font-mono text-xs text-[var(--vault-muted)]">
+            <span className="font-mono text-xs text-(--vault-muted)">
               STD-SPEC // 004-VERIFIED
             </span>
           </div>
@@ -196,24 +196,24 @@ export default function AboutPage() {
               return (
                 <div
                   key={idx}
-                  className="group relative rounded-3xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-8 sm:p-10 transition-all duration-300 hover:border-[var(--vault-accent)]/50 hover:shadow-lg"
+                  className="group relative rounded-3xl border border-(--vault-line) bg-(--vault-panel) p-8 sm:p-10 transition-all duration-300 hover:border-(--vault-accent)/50 hover:shadow-lg"
                 >
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--vault-accent)]/10 text-[var(--vault-accent)] transition-colors group-hover:bg-[var(--vault-accent)] group-hover:text-white">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-(--vault-accent)/10 text-(--vault-accent) transition-colors group-hover:bg-(--vault-accent) group-hover:text-white">
                       <Icon className="h-6 w-6" />
                     </div>
-                    <span className="font-mono text-xs font-semibold text-[var(--vault-muted)]">
+                    <span className="font-mono text-xs font-semibold text-(--vault-muted)">
                       0{idx + 1}
                     </span>
                   </div>
 
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--vault-accent)] mb-2">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-(--vault-accent) mb-2">
                     {pillar.subtitle}
                   </p>
-                  <h3 className="font-serif text-xl sm:text-2xl font-light text-[var(--vault-ink)] mb-3">
+                  <h3 className="font-serif text-xl sm:text-2xl font-light text-(--vault-ink) mb-3">
                     {pillar.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[var(--vault-muted)] leading-relaxed font-light">
+                  <p className="text-xs sm:text-sm text-(--vault-muted) leading-relaxed font-light">
                     {pillar.description}
                   </p>
                 </div>
@@ -224,17 +224,17 @@ export default function AboutPage() {
 
         {/* ── Global Ateliers & Coordinates ── */}
         <section className="space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[var(--vault-line)] pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-(--vault-line) pb-5">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--vault-accent)]">
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-(--vault-accent)">
                 Presence & Reach
               </p>
-              <h2 className="font-serif text-2xl sm:text-3xl font-light text-[var(--vault-ink)] mt-1">
+              <h2 className="font-serif text-2xl sm:text-3xl font-light text-(--vault-ink) mt-1">
                 Global Atelier Coordinates
               </h2>
             </div>
-            <div className="flex items-center gap-2 text-xs text-[var(--vault-muted)] font-mono">
-              <Globe className="h-4 w-4 text-[var(--vault-accent)]" />
+            <div className="flex items-center gap-2 text-xs text-(--vault-muted) font-mono">
+              <Globe className="h-4 w-4 text-(--vault-accent)" />
               <span>4 TIME ZONES · 1 CONVICTION</span>
             </div>
           </div>
@@ -243,22 +243,22 @@ export default function AboutPage() {
             {ATELIERS.map((atelier, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-[var(--vault-line)] bg-[var(--vault-panel)] p-6 space-y-4 hover:border-[var(--vault-accent)]/40 transition-colors"
+                className="rounded-2xl border border-(--vault-line) bg-(--vault-panel) p-6 space-y-4 hover:border-(--vault-accent)/40 transition-colors"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-serif text-2xl font-light text-[var(--vault-ink)]">
+                  <span className="font-serif text-2xl font-light text-(--vault-ink)">
                     {atelier.city}
                   </span>
-                  <Compass className="h-4 w-4 text-[var(--vault-accent)]" />
+                  <Compass className="h-4 w-4 text-(--vault-accent)" />
                 </div>
-                <p className="text-xs font-medium text-[var(--vault-muted)]">
+                <p className="text-xs font-medium text-(--vault-muted)">
                   {atelier.district}
                 </p>
-                <div className="pt-2 border-t border-[var(--vault-line)] space-y-1">
-                  <p className="font-mono text-[10px] text-[var(--vault-accent)]">
+                <div className="pt-2 border-t border-(--vault-line) space-y-1">
+                  <p className="font-mono text-[10px] text-(--vault-accent)">
                     {atelier.coordinates}
                   </p>
-                  <p className="text-[11px] text-[var(--vault-muted)] font-light">
+                  <p className="text-[11px] text-(--vault-muted) font-light">
                     {atelier.role}
                   </p>
                 </div>
@@ -268,12 +268,12 @@ export default function AboutPage() {
         </section>
 
         {/* ── Client Directives Banner ── */}
-        <section className="rounded-3xl border border-[var(--vault-line)] bg-gradient-to-r from-[var(--vault-panel)] to-[var(--vault-panel)]/70 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+        <section className="rounded-3xl border border-(--vault-line) bg-gradient-to-r from-(--vault-panel) to-(--vault-panel)/70 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-2 text-center md:text-left">
-            <h3 className="font-serif text-2xl sm:text-3xl font-light text-[var(--vault-ink)]">
+            <h3 className="font-serif text-2xl sm:text-3xl font-light text-(--vault-ink)">
               Experience the Craftsmanship Firsthand
             </h3>
-            <p className="text-xs sm:text-sm text-[var(--vault-muted)] max-w-xl font-light">
+            <p className="text-xs sm:text-sm text-(--vault-muted) max-w-xl font-light">
               Discover our permanent menswear, womenswear, and youth archives
               with complimentary insured domestic courier dispatch on qualifying
               orders.
@@ -282,13 +282,13 @@ export default function AboutPage() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/products"
-              className="rounded-xl bg-[var(--vault-accent)] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white hover:brightness-110 active:scale-[0.98] transition-all"
+              className="rounded-xl bg-(--vault-accent) px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white hover:brightness-110 active:scale-[0.98] transition-all"
             >
               Browse Full Archive
             </Link>
             <Link
               href="/size-guide"
-              className="rounded-xl border border-[var(--vault-line)] bg-[var(--vault-panel)] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[var(--vault-ink)] hover:border-[var(--vault-accent)] hover:text-[var(--vault-accent)] transition-all"
+              className="rounded-xl border border-(--vault-line) bg-(--vault-panel) px-6 py-3 text-xs font-semibold uppercase tracking-wider text-(--vault-ink) hover:border-(--vault-accent) hover:text-(--vault-accent) transition-all"
             >
               Size Guide
             </Link>
