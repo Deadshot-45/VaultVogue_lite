@@ -202,7 +202,7 @@ export function ProductGallery({
           role="dialog"
           aria-modal="true"
           aria-label={`${productName} image viewer`}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-xl animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xl animate-in fade-in duration-200"
         >
           {/* Close button */}
           <button

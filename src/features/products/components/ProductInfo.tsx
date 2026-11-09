@@ -73,7 +73,7 @@ export function ProductInfo({
       {/* ── PRODUCT TITLE & HEADER ── */}
       <div className="space-y-2">
         <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-accent)">
-          <span>{product.code}</span>
+          {/*<span>{product.code}</span>*/}
           <span>·</span>
           <span>{product.category}</span>
           <span>·</span>
@@ -90,8 +90,8 @@ export function ProductInfo({
         price={product.price}
         originalPrice={product.originalPrice}
         currency="INR"
-        rating={product.rating || 4.9}
-        reviewsCount={product.reviewsCount || 42}
+        rating={product.rating || 0}
+        reviewsCount={product.reviewsCount || 0}
         onReviewsClick={onReviewsClick}
       />
 

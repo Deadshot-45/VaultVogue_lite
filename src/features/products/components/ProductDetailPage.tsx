@@ -87,7 +87,7 @@ export function ProductDetailPage({ product }: ProductDetailPageProps) {
       {/* ── TWO COLUMN DESKTOP PDP LAYOUT ── */}
       <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-14 items-start">
         {/* Left Column: Sticky Product Image Gallery */}
-        <div ref={galleryRef} className="w-full lg:sticky lg:top-24 self-start">
+        <div ref={galleryRef} className="w-full lg:sticky lg:top-24 self-start z-50">
           <ProductGallery
             gallery={product.gallery || []}
             productName={product.name}
@@ -113,8 +113,8 @@ export function ProductDetailPage({ product }: ProductDetailPageProps) {
       <div className="mt-10 sm:mt-14 space-y-12 sm:space-y-16">
         {/* Customer Reviews & Feedback */}
         <ProductReviews
-          rating={product.rating || 4.9}
-          reviewsCount={product.reviewsCount || 42}
+          rating={product.rating || 0}
+          reviewsCount={product.reviewsCount || 0}
         />
 
         {/* You May Also Like / Complementary Silhouettes */}

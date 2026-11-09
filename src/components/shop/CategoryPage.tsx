@@ -44,7 +44,7 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
     return rawApiProducts.map(mapApiProductToVariantProduct);
   }, [rawApiProducts]);
 
-  // Determine active product pool: prefer live API data; fallback to curated archive if API empty/error
+  // Determine active product pool: prefer live API data
   const baseProducts: VariantProduct[] = useMemo(() => {
     if (apiVariantProducts.length > 0) {
       return apiVariantProducts;
@@ -191,35 +191,32 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
       {/* 1. Category Editorial Hero */}
       <CategoryHero config={config} />
 
-      {/* 2. Horizontal Quick Sub-Navigation */}
+      {/* 2. Sticky Horizontal Silhouettes Filter Bar */}
       <CategoryNavigation
         subcategories={dynamicSubcategories}
         activeSubcategory={activeSubcategory}
         onSelectSubcategory={(id) => {
           setActiveSubcategory(id);
-          const el = document.getElementById("category-products-section");
+          const el = document.getElementById("category-catalog-section");
           if (el) el.scrollIntoView({ behavior: "smooth" });
         }}
       />
 
-      {/* 3. Category Campaign Spotlight Feature */}
-      <CategoryCampaignBanner campaign={config.campaign} categoryKey={config.key} />
-
-      {/* 4. Filter Toolbar & Product Catalog Section */}
+      {/* 3. Product Catalog Section */}
       <section
-        id="category-products-section"
-        aria-label={`${config.title} Products Archive`}
-        className="w-full py-10 sm:py-16"
+        id="category-catalog-section"
+        aria-label={`${config.title} Products Collection`}
+        className="w-full py-8 sm:py-12"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Breadcrumbs, Section Heading & Live API Badge */}
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="mb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
               <nav
                 aria-label="Breadcrumbs"
                 className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-(--vault-muted) mb-2"
               >
-                <Link href="/" className="hover:text-(--vault-ink) transition-colors">
+                <Link href="/" className="hover:text-(--vault-accent) transition-colors">
                   Vault Vogue
                 </Link>
                 <ChevronRight size={10} />
@@ -233,24 +230,24 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
               </nav>
 
               <div className="flex flex-wrap items-center gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-light uppercase tracking-tight text-(--vault-ink)">
-                  The {config.title} Collection
+                <h2 className="font-serif text-2xl sm:text-3xl font-light uppercase tracking-tight text-(--vault-ink)">
+                  The {config.title} Archive
                 </h2>
                 {isUsingLiveData && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-(--vault-accent)/40 bg-(--vault-accent)/10 font-mono text-[9px] uppercase tracking-wider text-(--vault-accent)">
-                    <Radio size={11} className="animate-pulse text-(--vault-accent)" />
-                    Live API Data ({baseProducts.length} Pieces)
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-(--vault-accent)/30 bg-(--vault-accent)/10 font-mono text-[9px] uppercase tracking-wider text-(--vault-accent)">
+                    <Radio size={10} className="animate-pulse text-(--vault-accent)" />
+                    Live Catalog ({baseProducts.length})
                   </span>
                 )}
               </div>
             </div>
 
             <p className="font-mono text-[10px] uppercase tracking-wider text-(--vault-muted)">
-              Standard Global Dispatch · Authenticity Guaranteed
+              Express Global Dispatch · Verified Authentic
             </p>
           </div>
 
-          {/* Filter Bar */}
+          {/* Filter Toolbar */}
           <CategoryFilterBar
             totalCount={filteredProducts.length}
             subcategories={dynamicSubcategories}
@@ -266,7 +263,7 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
             hasActiveFilters={hasActiveFilters}
           />
 
-          {/* Product Grid with Loading & Error States */}
+          {/* Product Grid with Loading, Error, and Empty States */}
           <CategoryProductGrid
             products={filteredProducts}
             isLoading={isApiLoading && baseProducts.length === 0}
@@ -278,16 +275,19 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
         </div>
       </section>
 
-      {/* 5. Brand Value Pillars Strip */}
+      {/* 4. Category Campaign Spotlight Feature (Editorial Immersion below catalog) */}
+      <CategoryCampaignBanner campaign={config.campaign} categoryKey={config.key} />
+
+      {/* 5. Brand Assurance Strip */}
       <section
         aria-label="Brand Assurance"
-        className="w-full border-y border-(--vault-line) bg-(--vault-panel) py-12"
+        className="w-full border-y border-(--vault-line) bg-(--vault-panel) py-10 sm:py-12"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
-                <ShieldCheck size={18} />
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
+                <ShieldCheck size={16} />
               </div>
               <div>
                 <h4 className="font-serif text-sm uppercase text-(--vault-ink)">
@@ -300,8 +300,8 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
-                <Truck size={18} />
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
+                <Truck size={16} />
               </div>
               <div>
                 <h4 className="font-serif text-sm uppercase text-(--vault-ink)">
@@ -314,8 +314,8 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
-                <RotateCcw size={18} />
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
+                <RotateCcw size={16} />
               </div>
               <div>
                 <h4 className="font-serif text-sm uppercase text-(--vault-ink)">
@@ -328,8 +328,8 @@ export function CategoryPage({ categoryKey }: CategoryPageProps) {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
-                <CreditCard size={18} />
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center border border-(--vault-line) text-(--vault-accent)">
+                <CreditCard size={16} />
               </div>
               <div>
                 <h4 className="font-serif text-sm uppercase text-(--vault-ink)">

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { gsap } from "gsap";
 import { isReducedMotion } from "@/lib/animations/gsap-utils";
 import type { CategoryConfig } from "@/types/category";
@@ -14,7 +14,7 @@ interface CategoryHeroProps {
 export function CategoryHero({ config }: CategoryHeroProps) {
   const heroRef = useRef<HTMLElement>(null);
   const imgWrapperRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const titleWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isReducedMotion() || !heroRef.current) return;
@@ -22,70 +22,37 @@ export function CategoryHero({ config }: CategoryHeroProps) {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      // Image reveal
+      // Subtle scale-in on the editorial campaign backdrop
       if (imgWrapperRef.current) {
         tl.fromTo(
           imgWrapperRef.current,
-          {
-            clipPath: "polygon(0 10%, 100% 10%, 100% 90%, 0 90%)",
-            scale: 1.08,
-            opacity: 0.7,
-          },
-          {
-            clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0 100%)",
-            scale: 1,
-            opacity: 1,
-            duration: 1.3,
-            ease: "power2.out",
-          },
+          { scale: 1.06, opacity: 0.8 },
+          { scale: 1, opacity: 1, duration: 1.4, ease: "power2.out" },
         );
       }
 
-      // Kicker & Badge reveal
+      // Title reveal from overflow mask
       tl.fromTo(
-        ".cat-hero-kicker",
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.5 },
-        "-=0.8",
-      );
-
-      // Oversized Headline reveal
-      tl.fromTo(
-        ".cat-hero-title",
-        { y: "110%", opacity: 0 },
+        ".cat-hero-title-text",
+        { y: "100%", opacity: 0 },
         { y: "0%", opacity: 1, duration: 0.9, ease: "power4.out" },
-        "-=0.5",
+        "-=0.9",
       );
 
-      // Subtitle & Tagline
+      // Meta and description fade & slide
       tl.fromTo(
-        ".cat-hero-subtitle",
-        { opacity: 0, y: 18 },
+        ".cat-hero-meta",
+        { opacity: 0, y: 12 },
         { opacity: 1, y: 0, duration: 0.6 },
-        "-=0.4",
-      );
-
-      // CTAs
-      tl.fromTo(
-        ".cat-hero-cta",
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, stagger: 0.1, duration: 0.5 },
-        "-=0.3",
+        "-=0.5",
       );
     }, heroRef);
 
     return () => ctx.revert();
   }, [config.key]);
 
-  const scrollToGrid = () => {
-    const el = document.getElementById("category-products");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const scrollToCampaign = () => {
-    const el = document.getElementById("category-campaign");
+  const scrollToCatalog = () => {
+    const el = document.getElementById("category-catalog");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
@@ -94,9 +61,9 @@ export function CategoryHero({ config }: CategoryHeroProps) {
   return (
     <header
       ref={heroRef}
-      className="relative min-h-[82vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-(--vault-line) bg-(--vault-bg) flex items-end"
+      className="relative min-h-[48vh] sm:min-h-[54vh] lg:min-h-[58vh] w-full overflow-hidden border-b border-(--vault-line) bg-(--vault-bg) flex items-end"
     >
-      {/* Background Campaign Imagery with Contrast Overlays */}
+      {/* Background Campaign Imagery with Atmospheric Gradients */}
       <div ref={imgWrapperRef} className="absolute inset-0 z-0">
         <Image
           src={config.heroImage}
@@ -107,73 +74,60 @@ export function CategoryHero({ config }: CategoryHeroProps) {
           className="object-cover object-center lg:object-top"
         />
 
-        {/* Cinematic Dual Gradient Overlays for Readability across Light & Dark themes */}
-        <div className="absolute inset-0 bg-gradient-to-t from-(--vault-bg) via-(--vault-bg)/60 to-(--vault-bg)/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-(--vault-bg)/85 via-(--vault-bg)/40 to-transparent" />
-        <div className="absolute inset-0 bg-black/25 mix-blend-multiply pointer-events-none" />
+        {/* Ambient Dark/Light adaptive gradients for optimal contrast */}
+        <div className="absolute inset-0 bg-gradient-to-t from-(--vault-bg) via-(--vault-bg)/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-(--vault-bg)/90 via-(--vault-bg)/40 to-transparent" />
+        <div className="absolute inset-0 bg-black/20 mix-blend-multiply pointer-events-none" />
       </div>
 
       {/* Hero Content Container */}
-      <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-14 pt-32 sm:pb-20">
-        <div className="max-w-3xl">
-          {/* Accent Kicker & Season Label */}
-          <div className="cat-hero-kicker flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-(--vault-accent) border border-(--vault-accent)/30 bg-(--vault-panel)/80 backdrop-blur-md">
-              {config.accentLabel}
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-(--vault-muted)">
-              {config.seasonBadge}
-            </span>
+      <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-10 pt-28 sm:pb-14">
+        <div className="max-w-2xl">
+          {/* Subtle Category Season Label */}
+          <div className="cat-hero-meta flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.25em] text-(--vault-accent)">
+            <span>{config.seasonBadge || "ARCHIVE COLLECTION"}</span>
+            <span className="opacity-40">/</span>
+            <span className="text-(--vault-muted)">EDITION 04</span>
           </div>
 
-          {/* Masked Headline */}
-          <div className="overflow-hidden mt-4">
-            <h1
-              ref={headlineRef}
-              className="cat-hero-title font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-tight text-(--vault-ink) uppercase leading-[0.9]"
-            >
+          {/* Masked Editorial Headline */}
+          <div ref={titleWrapperRef} className="overflow-hidden mt-3">
+            <h1 className="cat-hero-title-text font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight text-(--vault-ink) uppercase leading-[0.9]">
               {config.title}
             </h1>
           </div>
 
-          {/* Subtitle & Tagline */}
-          <div className="cat-hero-subtitle mt-5 space-y-2">
-            <p className="font-mono text-sm sm:text-base uppercase tracking-widest text-(--vault-accent) font-semibold">
+          {/* Subtitle & Narrative */}
+          <div className="cat-hero-meta mt-4 space-y-2">
+            <p className="font-mono text-xs sm:text-sm uppercase tracking-wider text-(--vault-ink) font-medium">
               {config.subtitle} — {config.tagline}
             </p>
-            <p className="text-xs sm:text-sm text-(--vault-muted) max-w-xl leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-(--vault-muted) max-w-lg leading-relaxed font-sans line-clamp-2 sm:line-clamp-none">
               {config.description}
             </p>
           </div>
 
-          {/* Dual CTAs */}
-          <div className="cat-hero-cta mt-8 flex flex-wrap items-center gap-4">
+          {/* Single Streamlined Anchor CTA */}
+          <div className="cat-hero-meta mt-6">
             <button
               type="button"
-              onClick={scrollToGrid}
-              className="btn-primary inline-flex items-center gap-2 px-7 py-3.5 font-mono text-xs uppercase tracking-widest font-bold shadow-xl hover:scale-[1.02] active:scale-98 transition-transform cursor-pointer"
+              onClick={scrollToCatalog}
+              className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-(--vault-accent) hover:text-(--vault-ink) transition-colors cursor-pointer"
             >
-              Shop Collection <ArrowDown size={14} />
-            </button>
-
-            <button
-              type="button"
-              onClick={scrollToCampaign}
-              className="btn-secondary inline-flex items-center gap-2 px-6 py-3.5 font-mono text-xs uppercase tracking-widest transition-colors cursor-pointer"
-            >
-              Explore Campaign <ArrowUpRight size={14} />
+              <span>Explore Collection</span>
+              <span className="flex h-6 w-6 items-center justify-center border border-(--vault-accent)/50 rounded-full transition-transform duration-300 group-hover:translate-y-1 group-hover:border-(--vault-ink)">
+                <ArrowDown size={11} />
+              </span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Decorative Corner Coordinate */}
-      <div className="hidden md:flex absolute bottom-6 right-8 z-10 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em] text-(--vault-muted) border-t border-(--vault-line) pt-2">
-        <span>VAULT VOGUE</span>
-        <span>//</span>
-        <span className="text-(--vault-ink)">
-          {config.key.toUpperCase()} CATEGORY ARCHIVE
-        </span>
+      {/* Minimal Corner Monospace Signature */}
+      <div className="hidden lg:flex absolute bottom-6 right-8 z-10 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em] text-(--vault-muted)">
+        <span>VAULT ARCHIVE</span>
+        <span className="opacity-40">·</span>
+        <span className="text-(--vault-ink)">{config.key.toUpperCase()}</span>
       </div>
     </header>
   );
