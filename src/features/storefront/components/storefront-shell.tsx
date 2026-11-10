@@ -254,7 +254,7 @@ export function StorefrontChrome({
               {megaMenuOpen && (
                 <div
                   ref={megaMenuRef}
-                  className="absolute left-0 top-[100%] w-[680px] -translate-x-12 border border-(--vault-line) bg-(--vault-panel) p-6 shadow-2xl"
+                  className="absolute left-0 top-[100%] z-50 w-[680px] -translate-x-12 border border-(--vault-line) bg-(--vault-panel) p-6 shadow-2xl"
                 >
                   <div className="grid grid-cols-3 gap-6">
                     {/* Col 1 */}

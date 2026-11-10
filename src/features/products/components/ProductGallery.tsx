@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 import { resolveUiProductImage } from "@/lib/utility/utils";
 
@@ -39,7 +40,23 @@ export function ProductGallery({
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [mounted, setMounted] = useState(false);
   const mainImageContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent page background scroll when lightbox is open
+  useEffect(() => {
+    if (isLightboxOpen) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prevOverflow;
+      };
+    }
+  }, [isLightboxOpen]);
 
   // If activeColorImage changes from variant selector, automatically switch to image 0
   useEffect(() => {
@@ -196,20 +213,23 @@ export function ProductGallery({
         </div>
       </div>
 
-      {/* ── FULLSCREEN LIGHTBOX MODAL ── */}
-      {isLightboxOpen && (
+      {/* ── FULLSCREEN LIGHTBOX MODAL (PORTALED TO BODY TO PREVENT STACKING CONTEXT ISSUES) ── */}
+      {isLightboxOpen && mounted && createPortal(
         <div
           role="dialog"
           aria-modal="true"
           aria-label={`${productName} image viewer`}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xl animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsLightboxOpen(false);
+          }}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-xl animate-in fade-in duration-200"
         >
           {/* Close button */}
           <button
             type="button"
             onClick={() => setIsLightboxOpen(false)}
             aria-label="Close image lightbox"
-            className="absolute right-6 top-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) hover:text-white cursor-pointer"
+            className="absolute right-6 top-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) hover:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <X size={20} />
           </button>
@@ -219,7 +239,7 @@ export function ProductGallery({
             type="button"
             onClick={handlePrev}
             aria-label="Previous lightbox photo"
-            className="absolute left-6 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) cursor-pointer"
+            className="absolute left-6 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ChevronLeft size={24} />
           </button>
@@ -227,7 +247,7 @@ export function ProductGallery({
             type="button"
             onClick={handleNext}
             aria-label="Next lightbox photo"
-            className="absolute right-6 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) cursor-pointer"
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-(--vault-accent) cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ChevronRight size={24} />
           </button>
@@ -250,7 +270,8 @@ export function ProductGallery({
             <span>·</span>
             <span>0{activeIndex + 1} of 0{displayImages.length}</span>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

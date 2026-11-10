@@ -87,7 +87,7 @@ export function ProductDetailPage({ product }: ProductDetailPageProps) {
       {/* ── TWO COLUMN DESKTOP PDP LAYOUT ── */}
       <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-14 items-start">
         {/* Left Column: Sticky Product Image Gallery */}
-        <div ref={galleryRef} className="w-full lg:sticky lg:top-24 self-start z-50">
+        <div ref={galleryRef} className="w-full lg:sticky lg:top-24 self-start">
           <ProductGallery
             gallery={product.gallery || []}
             productName={product.name}
